@@ -191,7 +191,7 @@ static void simpleProfileChangeCB(uint8 paramID)
 {
     if (paramID != SIMPLEPROFILE_CHAR1) return;
 
-    uint8 buf[BYS_PKT_LEN];
+    uint8 buf[SIMPLEPROFILE_CHAR1_LEN];  /* 必须与 GetParameter 拷贝长度一致 */
     SimpleProfile_GetParameter(SIMPLEPROFILE_CHAR1, buf);
 
     /* 加入发送队列（高优先级），自动修正设备类型字段 */

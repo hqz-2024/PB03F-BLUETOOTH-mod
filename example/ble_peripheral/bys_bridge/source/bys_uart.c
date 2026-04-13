@@ -2,6 +2,7 @@
 #include "uart.h"
 #include "OSAL.h"
 #include "log.h"
+#include "pwrmgr.h"
 
 /* ─── 模块内部变量 ─────────────────────────────── */
 static uint8  s_task_id;
@@ -155,6 +156,9 @@ void bys_uart_init(uint8 task_id, uint16 rx_evt, bys_uart_rx_cb_t rx_cb)
         .evt_handler = uart_rx_cb,
     };
     hal_uart_init(cfg, BYS_UART_PORT);
+
+    /* 锁定 UART1 电源域，防止 BLE 连接事件间隙的时钟门控导致 RX 中断丢失 */
+    hal_pwrmgr_lock(MOD_UART1);
 }
 
 /* 发送当前轮询命令，内部自动推进索引，返回0成功 */
