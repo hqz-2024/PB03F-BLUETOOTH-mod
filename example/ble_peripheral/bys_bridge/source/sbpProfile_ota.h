@@ -59,8 +59,8 @@ extern "C" {
 /* Service 标志位 */
 #define SIMPLEPROFILE_SERVICE           0x00000001
 
-/* 单包数据缓冲区长度（字节） */
-#define SIMPLEPROFILE_CHAR1_LEN         20
+/* 单包数据缓冲区长度（字节），与协议包长 BYS_PKT_LEN 一致 */
+#define SIMPLEPROFILE_CHAR1_LEN         12
 
 /* App写回调 */
 typedef void (*simpleProfileChange_t)(uint8 paramID);
