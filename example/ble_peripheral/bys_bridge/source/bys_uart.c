@@ -4,10 +4,16 @@
 #include "log.h"
 #include "pwrmgr.h"
 
+/* TX 软件缓冲区（用于中断驱动异步发送，避免 BLE 中断打断字节流） */
+#define BYS_TX_BUF_SIZE   32
+static uint8  s_tx_hw_buf[BYS_TX_BUF_SIZE];
+
 /* ─── 模块内部变量 ─────────────────────────────── */
 static uint8  s_task_id;
 static uint16 s_rx_evt;
+static uint16 s_tx_next_evt;
 static bys_uart_rx_cb_t s_rx_cb;  /* 每包响应回调 */
+static uint8  s_tx_busy = 0;       /* 1=硬件正在发送，禁止下一包入FIFO */
 
 /* 接收环形缓冲区，最多缓存3包 */
 static uint8  s_rx_buf[BYS_PKT_LEN * 3];
@@ -19,9 +25,8 @@ static uint8  s_query_idx = 0;
 /* 发送队列：最多缓存2包APP控制指令（高优先级） + 1包轮询查询 */
 #define TX_QUEUE_SIZE   3
 static uint8  s_tx_queue[TX_QUEUE_SIZE][BYS_PKT_LEN];
-static uint8  s_tx_head = 0;  /* 队头（读位置） */
-static uint8  s_tx_tail = 0;  /* 队尾（写位置） */
-static uint8  s_tx_busy = 0;  /* 当前是否正在发送 */
+static uint8  s_tx_head = 0;
+static uint8  s_tx_tail = 0;
 
 /* 全局设备状态，供广播数据使用 */
 bys_device_state_t g_bys_state = {0};
@@ -60,17 +65,14 @@ static uint8* tx_dequeue(void)
     return pkt;
 }
 
-/* 尝试发送队列头部的一包（无数据则返回） */
+/* 尝试发送队列头部的一包（busy时不发，TX_COMPLETED后由事件驱动再次调用） */
 static void tx_process(void)
 {
     if (s_tx_busy) return;
-
     uint8 *pkt = tx_dequeue();
     if (pkt == NULL) return;
-
     s_tx_busy = 1;
     hal_uart_send_buff(BYS_UART_PORT, pkt, BYS_PKT_LEN);
-    s_tx_busy = 0;  /* 同步发送，立即清除 */
 }
 
 /* 构造并发送一个标准12字节数据包（加入发送队列） */
@@ -120,9 +122,15 @@ static uint8 apply_response(uint16 cmd, uint16 data)
     }
 }
 
-/* UART RX 中断回调，在中断上下文中执行，仅搬数据+触发OSAL事件 */
+/* UART 中断回调：RX搬数据触发OSAL事件；TX完成清busy并触发下一包发送 */
 static void uart_rx_cb(uart_Evt_t *evt)
 {
+    if (evt->type == UART_EVT_TYPE_TX_COMPLETED) {
+        /* 保持 s_tx_busy=1，30ms 到期后才清零并发下一包，期间任何 tx_process() 都会被拦截 */
+        osal_start_timerEx(s_task_id, s_tx_next_evt, 15);
+        return;
+    }
+
     if (evt->type != UART_EVT_TYPE_RX_DATA &&
         evt->type != UART_EVT_TYPE_RX_DATA_TO) return;
 
@@ -137,11 +145,12 @@ static void uart_rx_cb(uart_Evt_t *evt)
 
 /* ─── 对外接口 ──────────────────────────────────── */
 
-void bys_uart_init(uint8 task_id, uint16 rx_evt, bys_uart_rx_cb_t rx_cb)
+void bys_uart_init(uint8 task_id, uint16 rx_evt, uint16 tx_next_evt, bys_uart_rx_cb_t rx_cb)
 {
-    s_task_id = task_id;
-    s_rx_evt  = rx_evt;
-    s_rx_cb   = rx_cb;
+    s_task_id    = task_id;
+    s_rx_evt     = rx_evt;
+    s_tx_next_evt = tx_next_evt;
+    s_rx_cb      = rx_cb;
 
     uart_Cfg_t cfg = {
         .tx_pin      = BYS_UART_TX_PIN,
@@ -151,11 +160,12 @@ void bys_uart_init(uint8 task_id, uint16 rx_evt, bys_uart_rx_cb_t rx_cb)
         .baudrate    = BYS_UART_BAUD,
         .use_fifo    = TRUE,
         .hw_fwctrl   = FALSE,
-        .use_tx_buf  = FALSE,
+        .use_tx_buf  = TRUE,
         .parity      = FALSE,
         .evt_handler = uart_rx_cb,
     };
     hal_uart_init(cfg, BYS_UART_PORT);
+    hal_uart_set_tx_buf(BYS_UART_PORT, s_tx_hw_buf, BYS_TX_BUF_SIZE);
 
     /* 锁定 UART1 电源域，防止 BLE 连接事件间隙的时钟门控导致 RX 中断丢失 */
     hal_pwrmgr_lock(MOD_UART1);
@@ -251,4 +261,11 @@ uint8 bys_uart_send_app_cmd(uint8 *buf, uint8 len)
     /* 立即尝试发送 */
     tx_process();
     return 0;
+}
+
+/* 在BYS_UART_TX_NEXT_EVT事件处理中调用：30ms间隔到期，清busy并发下一包 */
+void bys_uart_tx_process(void)
+{
+    s_tx_busy = 0;
+    tx_process();
 }

@@ -108,7 +108,7 @@ void BYS_Bridge_Init(uint8 task_id)
     SimpleProfile_RegisterAppCBs(&bys_SimpleProfileCBs);
 
     /* 初始化UART模块，注册每包响应回调 */
-    bys_uart_init(bys_TaskID, BYS_UART_RX_EVT, bys_uart_rx_callback);
+    bys_uart_init(bys_TaskID, BYS_UART_RX_EVT, BYS_UART_TX_NEXT_EVT, bys_uart_rx_callback);
 
     /* 触发启动事件 */
     osal_set_event(bys_TaskID, BYS_START_DEVICE_EVT);
@@ -148,6 +148,12 @@ uint16 BYS_Bridge_ProcessEvent(uint8 task_id, uint16 events)
         bys_uart_process_rx();
         bys_update_adv_data();  /* 刷新广播数据 */
         return events ^ BYS_UART_RX_EVT;
+    }
+
+    /* 上一包TX完成，发送队列中的下一包 */
+    if (events & BYS_UART_TX_NEXT_EVT) {
+        bys_uart_tx_process();
+        return events ^ BYS_UART_TX_NEXT_EVT;
     }
 
     return 0;

@@ -63,8 +63,11 @@ typedef void (*bys_uart_rx_cb_t)(uint8 *raw_pkt);
 
 /* ─── 接口函数 ──────────────────────────────────── */
 
-/* 初始化UART1，task_id/rx_evt用于UART回调触发OSAL事件，rx_cb为每包响应回调 */
-void bys_uart_init(uint8 task_id, uint16 rx_evt, bys_uart_rx_cb_t rx_cb);
+/* 初始化UART1，tx_next_evt为TX完成后触发的OSAL事件位 */
+void bys_uart_init(uint8 task_id, uint16 rx_evt, uint16 tx_next_evt, bys_uart_rx_cb_t rx_cb);
+
+/* 在BYS_UART_TX_NEXT_EVT事件处理里调用，从队列取下一包发送 */
+void bys_uart_tx_process(void);
 
 /* 向下位机发送下一条轮询查询（内部自动循环8条命令），队满返回1 */
 uint8 bys_uart_poll_next(uint8 app_connected);

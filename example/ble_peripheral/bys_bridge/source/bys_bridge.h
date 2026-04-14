@@ -8,6 +8,7 @@
 #define BYS_RESET_ADV_EVT       0x0002u   /* 断连后重新开启广播 */
 #define BYS_POLL_TIMER_EVT      0x0004u   /* 1秒轮询下位机 */
 #define BYS_UART_RX_EVT         0x0008u   /* UART收到数据（uart_rx_cb触发） */
+#define BYS_UART_TX_NEXT_EVT    0x0010u   /* 上一包TX完成，从队列取下一包发送 */
 
 /* ─── 参数配置 ──────────────────────────────────── */
 #define BYS_POLL_INTERVAL_MS    250u      /* 每包查询间隔(ms)，8包×250ms=2s一轮 */
