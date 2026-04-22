@@ -1,0 +1,3154 @@
+<!-- _templates/layout.html -->
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>K230 SDK IoT WiFi AiW4211LV10使用指南 &#8212; K230 Linux+RT-Smart SDK</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/topbar.css?v=d050732f" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom-theme.css?v=e40dc788" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/auto-nums.css?v=c078078a" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../../_static/documentation_options.js?v=946197a6"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '01_software/board/osdrv/K230_SDK_IoT_WiFi_AiW4211LV10_使用指南';</script>
+    <script src="../../../_static/mermaid.min.js?v=45c054c2"></script>
+    <script src="../../../_static/init_mermaid.js?v=999e7285"></script>
+    <script src="../../../_static/transform.js?v=23760c99"></script>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="K230 SDK IoT WiFi AiW4211LV10驱动开发指南" href="K230_SDK_IoT_WiFi_AiW4211LV10_%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97.html" />
+    <link rel="prev" title="K230 lpddr3/lpddr4驱动适配指南" href="K230_lpddr4_lpddr3%E9%A9%B1%E5%8A%A8%E9%80%82%E9%85%8D%E6%8C%87%E5%8D%97.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+
+  gtag("config", "G-7J9HL06P02");
+</script>
+ <script>
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "tqhe6w0zs6");
+ </script>
+<script>
+  var _hmt = _hmt || [];
+  window._hmt = _hmt; // 修改为window 全局变量
+  (function () {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?d4832d9026d5bdd9eca72f27bb63dfb3"; //此处请替换你的站点i
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item"><a href="/" style="height: 100%; display: flex; align-items: center;"><img src="https://www.kendryte.com/uploads/branding/5rtuJdbiAZ7.png" style="height: 50%; width: auto;" alt=""></a> </div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><div class="document-navbar-nav">
+  <span class="nav-item"><a href="/zh/products">产品中心</a></span>
+  <span class="nav-item md-none sm-show"
+    ><a href="/zh/resource">资料下载</a></span
+  >
+  <span class="nav-item active"><a href="/zh/document">文档中心</a></span>
+  <span class="nav-item md-none sm-show"
+    ><a href="/zh/model/library">应用下载</a></span
+  >
+  <span class="nav-item md-none sm-show"
+    ><a href="/zh/training/start">模型训练</a></span
+  >
+  <span class="nav-item md-none lg-none sm-show"
+    ><a href="/zh/blog">博客</a></span
+  >
+  <span class="nav-item md-none sm-show"
+    ><a href="/zh/coursecenter">课程中心</a></span
+  >
+  <!-- 添加点击事件 -->
+  <span class="nav-item bbs" onclick="goBbs()"
+    >问答社区
+    <img
+      src="https://www.kendryte.com/img/hot.ebb7d69e.svg"
+      style="transform: translateY(-50%)"
+      alt=""
+  /></span>
+</div>
+<!-- 写样式 -->
+<style>
+  .document-navbar-nav .nav-item {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    margin-right: 20px;
+    cursor: pointer;
+  }
+
+  .document-navbar-nav .nav-item a {
+    color: #303133;
+  }
+
+  .document-navbar-nav .nav-item a:hover {
+    color: #66819d;
+  }
+
+  .document-navbar-nav .active a {
+    color: #002d5c;
+    font-weight: 700;
+  }
+
+  .document-navbar-nav .bbs {
+    color: #d12d26;
+  }
+
+  .document-navbar-nav .bbs:hover {
+    color: rgb(231, 100, 100);
+  }
+
+  @media screen and (max-width: 1200px) {
+    .document-navbar-nav .md-none {
+      display: none !important;
+    }
+  }
+
+  @media screen and (max-width: 960px) {
+    .document-navbar-nav .nav-item {
+      display: block !important;
+    }
+    .document-user-info {
+      display: none !important;
+    }
+  }
+  @media screen and (max-width: 1450px) {
+    .lg-none {
+      display: none !important;
+    }
+  }
+</style>
+<script>
+  function goBbs() {
+    location.href = `/answer/`;
+  }
+</script></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item"><div class="document-user-info">
+  <div class="name-info" onclick="(e) => showDropDown(e)">
+    <div class="login-con">
+      <span class="user-avatar jn_user-avt"></span>
+      <div class="jn_user-name">
+        <span></span>
+      </div>
+      <ul class="Dropdown-menu" style="display: none">
+        <li class="item-profile">
+          <a class="Button-label" href="/user">个人资料</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="login-con jn_user-btns">
+    <a class="jn_user-btn" onclick="goLogin()">登录</a>
+    <a class="jn_user-btn" onclick="goRegister()">注册</a>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  if (!window._LOGIN_LOADED) {
+    console.log("1111111111，header login.js loaded");
+    window._LOGIN_LOADED = true;
+
+    function goLogin() {
+      const currentUser = JSON.parse(sessionStorage.getItem("user"));
+      if (currentUser && currentUser.id) {
+        return;
+      }
+      location.href = "/ssoLogin/?website=" + location.href;
+    }
+
+    function goUser(event) {
+      event.stopPropagation();
+      location.href = "/zh/user";
+    }
+
+    function goRegister() {
+      const currentUser = JSON.parse(sessionStorage.getItem("user"));
+      if (currentUser && currentUser.id) {
+        return;
+      }
+      location.href = "/ssoRegister/?website=" + location.href;
+    }
+    async function getUser() {
+      const cachedUser = sessionStorage.getItem("user");
+      if (cachedUser) {
+        return JSON.parse(cachedUser);
+      }
+      // 异步请求数据
+      try {
+        const res = await axios.get("/api/user");
+	if(!res.data.username) return false;
+        sessionStorage.setItem("user", JSON.stringify(res.data));
+        return res.data;
+      } catch (error) {
+        console.error("获取用户信息失败", error);
+        return null; // 或 throw error 让调用方处理
+      }
+    }
+
+    function getMd5OfEmail(email) {
+      const emailLowercase = email.toLowerCase();
+      const md5Hash = CryptoJS.MD5(emailLowercase).toString();
+      return md5Hash;
+    }
+
+    async function loginInit() {
+      const jn_user_name = document.querySelector(".jn_user-name");
+      const user_avatar = document.querySelector(".user-avatar"); //头像
+      const jn_user_info = document.querySelector(".name-info"); //用户信息
+      const jn_user_btns = document.querySelector(".jn_user-btns"); //登录注册按钮
+      const Dropdown_menu = document.querySelector(".Dropdown-menu"); //下拉菜单
+      const userInfo = await getUser(); // 注意：需在 async 函数中使用
+      if (userInfo && userInfo.username) {
+        jn_user_info.style.display = "block";
+        jn_user_btns.style.display = "none";
+        if (userInfo.nickname) {
+          jn_user_name.innerHTML = userInfo.nickname;
+        } else if (userInfo.username) {
+          jn_user_name.innerHTML = userInfo.username;
+        }
+        let avatarUrl = userInfo.avatar;
+        if (avatarUrl) {
+          avatarUrl += `?id=${userInfo.id}&t=${userInfo.id}`; // 添加查询参数
+        } else {
+          avatarUrl = `https://cravatar.cn/avatar/${getMd5OfEmail(
+          userInfo.email
+        )}?d=retro&f=y`;
+        }
+        user_avatar.src = avatarUrl;
+        user_avatar.style.backgroundImage = `url(${avatarUrl})`;
+        user_avatar.style.backgroundSize = "cover";
+      } else {
+        jn_user_info.style.display = "none";
+        jn_user_btns.style.display = "block";
+      }
+      jn_user_info.addEventListener("click", function (event) {
+        event.stopPropagation();
+        Dropdown_menu.style.display =
+          Dropdown_menu.style.display === "none" ? "block" : "none";
+      });
+    }
+    loginInit();
+  }
+</script>
+<!-- 增加css -->
+<style>
+  .document-user-info .login-con {
+    display: flex;
+    align-items: center;
+    margin-left: 30px;
+    font-size: 15px;
+    color: #303133;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .document-user-info .jn_user-avt {
+    background: #99abbe;
+    border-radius: 30px;
+    width: 31px;
+    height: 31px;
+    position: relative;
+    margin-right: 5px;
+    overflow: hidden;
+  }
+
+  .document-user-info .jn_user-avt img {
+    width: 100%;
+  }
+
+  .document-user-info .jn_user-name {
+    max-width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+  }
+
+  .document-user-info .jn_user-name :hover {
+    opacity: 0.9;
+  }
+
+  .document-user-info .jn_user-btn {
+    padding: 0 10px;
+    cursor: pointer;
+  }
+
+  .document-user-info .jn_user-btn:hover {
+    opacity: 0.9;
+  }
+
+  .document-user-info .Dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1030;
+    min-width: 160px;
+    padding: 8px 0;
+    margin: 7px 0;
+    background: #002d5c;
+    border: 1px solid #121212;
+    border-radius: 4px;
+    box-shadow: 0 2px 6px #013972;
+    list-style: none;
+    text-align: left;
+    color: #111;
+    font-size: 15px;
+    line-height: 1.5;
+    overflow: hidden;
+  }
+
+  .document-user-info .Dropdown-menu a {
+    display: block;
+    color: #b9b9b9;
+    padding-left: 30px;
+  }
+
+  .document-user-info .Dropdown-menu:hover {
+    text-decoration: none;
+  }
+
+  .document-user-info .item-profile a {
+    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACi0lEQVRYR+2Wy3EbMQyGAc6Ie4xcQeQKIlcQ6SKuTokriFOBlQqcDixXEKuC6LbkXmRVEKWCqAOvr5oRkYGHzDDrfXDXyfhiHLlc4iPwAwTCCxu+sH+IBsiybCSEuCSiMSKOiahAxB0A7Iho4tcAYA8A6yRJVtPptGi7YBSA1nqBiNcAsOLDrbWFEOICAD7VOSCivRDifDabMWSttQIYY74CAANM/GF5nl8Q0be22/F3RDxrgmgEyLJsIoRYh85dKn4AwDAGgCORJMlZXToaAbTW7HynlOIoPJox5rYp9FVQRPQlTdNl1bdagM1mMzwcDvfW2tP5fM7C8gAsrDcxtw/2bJVSk04ALvwbpdRfkMYY6uictxdKqZM+AN/DH31UegBA+SL+jNoUOLH9klKehALqGYHuKXCC2yHicjabsfAezQnzQ5coENFNmqaLTingzVzv1tqrsIy8NjoAPFhrx6GQw39bG5G78Vsp5dSnQmu9RMTLGAhE/BxGsPxPK4ATHtcwh31hrd3ybWL6QVP9t4qwTGqM+QgA3JDeBd8e+DECgPfhGhHdEdGiLuydUlAV5jzPx4PBYB9WB68dj8cixumzAWJyH7unVQP+INcXONQjABi7dZ4FeC4Y8kzAswAi7ololyTJ9p/MA+wYEa8Qkd//n5xfdh5RBfxmLKWUN00gjRFw7/41EW29qJwYeRaIfo6bBpNaAD90hHXcZRApaYDTNK0aTCoBgm53rpRau67IcyAPIn2tkFKeltNRCaC1ZjHdlgYRrvewB/QBWSmlWEt/7AmACzOLZ+Rpe/T/WrjygPMEwBjDKr/nV9CfwgIEAO6Ez7Zye64DeLajhgPuwtRGN6L/RfQK8BqB38AuVjD+RLVIAAAAAElFTkSuQmCC") no-repeat left center;
+    background-size: auto 80%;
+  }
+
+  .document-user-info .Dropdown-menu li {
+    padding: 8px 15px;
+    display: block;
+    width: 100%;
+    color: #b9b9b9;
+    text-align: left;
+    font-size: 15px;
+    font-weight: normal;
+    text-decoration: none;
+  }
+
+  .document-user-info .Dropdown-menu li:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+
+  @media screen and (max-width: 960px) {
+    .document-user-info {
+      display: none !important;
+    }
+  }
+</style></div>
+      
+        <div class="navbar-item"><div class="document-nav-lang">
+  <div class="document-menu-lang">
+    <span tabindex="0" class="lang-txt" style="
+        background-image: url('https://kendryte.com/img/ch-flag.a61145a4.svg');
+      ">中文 | English</span>
+    <div class="jn_lan-list">
+      <a class="jn_lan-item cn">简体中文</a>
+      <a class="jn_lan-item eng">English</a>
+    </div>
+  </div>
+  <div class="document-menu-lang-mobile">
+    <span class="lang-zh cn">简体中文</span> | <span class="lang-en eng">English</span>
+  </div>
+</div>
+<style>
+  .document-menu-lang-mobile {
+    display: none;
+  }
+
+  .document-menu-lang-mobile .lang-con {
+    text-align: center;
+  }
+
+  .document-menu-lang-mobile.lang-zh,
+  .document-menu-lang-mobile.lang-en {
+    color: #2980b9;
+    cursor: pointer;
+  }
+
+  .document-menu-lang {
+    padding: 0 8px;
+    position: relative;
+    font-size: 13px;
+    border: 1px solid #c0c4cc;
+    border-radius: 10px;
+    color: #303133;
+  }
+
+  .document-menu-lang .lang-txt {
+    padding-right: 28px;
+    background: url("https://kendryte.com/img/ch-flag.a61145a4.svg") no-repeat right 50%;
+    background-size: auto 68%;
+    display: block;
+    cursor: pointer;
+  }
+
+  .document-menu-lang .jn_lan-list {
+    display: none;
+    text-align: center;
+    position: absolute;
+    background: #fff;
+    border-radius: 5px;
+    padding: 10px 20px;
+    flex-wrap: wrap;
+    top: 43px;
+    left: 50%;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    border: 1px solid #ebeef5;
+    transform: translateX(-50%);
+  }
+
+  .document-menu-lang .jn_lan-list a {
+    color: #303133;
+  }
+
+  .document-menu-lang .jn_lan-item.cn {
+    background: url("https://kendryte.com/img/ch-flag.a61145a4.svg") no-repeat 0;
+  }
+
+  .document-menu-lang .jn_lan-item {
+    font-size: 15px;
+    cursor: pointer;
+    padding-left: 32px;
+    color: #606266;
+    width: 100%;
+    line-height: 3;
+    display: block;
+    white-space: nowrap;
+    background-size: auto 40%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .document-menu-lang .jn_lan-item.eng {
+    background: url("https://kendryte.com/img/en-flag.2d05326c.svg") no-repeat 0;
+  }
+
+  .document-menu-lang .jn_lan-list::after {
+    content: "";
+    border-width: 8px;
+    border-style: solid;
+    border-color: transparent transparent #fff transparent;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translate(-50%, -100%);
+  }
+
+  .document-menu-lang-mobile {
+    display: none;
+    border: 1px solid #c0c4cc;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    padding: 0 8px;
+  }
+
+  @media screen and (max-width: 960px) {
+    .document-menu-lang-mobile {
+      display: block;
+    }
+
+    .document-menu-lang {
+      display: none;
+    }
+  }
+</style>
+<script>
+  if (!window._LANGUAGE_TOGGLE_LOADED) {
+    window._LANGUAGE_TOGGLE_LOADED = true
+    const docsUrlList = {
+      k230_docs: {
+        zh: "https://www.kendryte.com/k230/zh/dev/index.html",
+        en: "https://www.kendryte.com/k230/en/dev/index.html",
+      },
+      k230_canmv_docs: {
+        zh: "https://www.kendryte.com/k230_canmv/zh/main/index.html",
+        en: "https://www.kendryte.com/k230_canmv/en/main/index.html",
+      },
+      rtt: {
+        zh: "https://www.kendryte.com/k230/zh/rtt/dev/index_rtt_only.html",
+        en: "https://www.kendryte.com/k230/en/rtt/dev/index_rtt_only.html",
+      },
+      k230_ai_docs: {
+        zh: "https://www.kendryte.com/ai_docs/zh/main/index.html",
+        en: "https://www.kendryte.com/ai_docs/en/main/index.html",
+      },
+      rtos: {
+        zh: "https://www.kendryte.com/k230_rtos/zh/main/index.html",
+        en: "https://www.kendryte.com/k230_rtos/en/main/index.html",
+      },
+    };
+    const whichDocs = () => {
+      if (
+        location.href.includes("/k230_canmv/zh/") ||
+        location.href.includes("/k230_canmv/en/")
+      ) {
+        return "k230_canmv_docs";
+      } else if (
+        location.href.includes("/k230/k230_rtos_sdk_docs/") ||
+        location.href.includes("/k230/k230_rtos_sdk_docs/")
+      ) {
+        return "rtos";
+      } else if (
+        location.href.includes("/k230/zh/") ||
+        location.href.includes("/k230/en/")
+      ) {
+        return "k230_docs";
+      } else if (
+        location.href.includes("/ai_docs/zh/") ||
+        location.href.includes("/ai_docs/en/")
+      ) {
+        return "k230_ai_docs";
+      } else {
+        return "rtos";
+      }
+      return null;
+    };
+
+    function setupLanguageToggle() {
+      function handleLanguageSwitch(language) {
+        const langButton = document.querySelector(".lang-txt");
+        const flagUrl =
+          language === "cn" ?
+          "https://kendryte.com/img/ch-flag.a61145a4.svg" :
+          "https://kendryte.com/img/en-flag.2d05326c.svg";
+        langButton.style.backgroundImage = `url('${flagUrl}')`;
+        const docsKey = whichDocs();
+        if (docsKey && docsUrlList[docsKey]) {
+          location.href = docsUrlList[docsKey][language === "cn" ? "zh" : "en"];
+        }
+        langList.style.display = "none";
+      }
+
+      // 监听整个document的点击事件
+      document.addEventListener("click", function (event) {
+        const langList = document.querySelector(".jn_lan-list");
+        const target = event.target;
+        if (target.closest(".lang-txt")) {
+          langList.style.display =
+            langList.style.display === "flex" ? "none" : "flex";
+        }
+        if (target.closest(".cn")) {
+          console.log("点击了中文");
+          handleLanguageSwitch("cn");
+          return;
+        }
+        if (target.closest(".eng")) {
+          console.log("点击了eng");
+          handleLanguageSwitch("eng");
+          return;
+        }
+      });
+    }
+    // 初始化语言切换功能
+    document.addEventListener("DOMContentLoaded", setupLanguageToggle);
+  }
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><div class="document-navbar-nav">
+  <span class="nav-item"><a href="/zh/products">产品中心</a></span>
+  <span class="nav-item md-none sm-show"
+    ><a href="/zh/resource">资料下载</a></span
+  >
+  <span class="nav-item active"><a href="/zh/document">文档中心</a></span>
+  <span class="nav-item md-none sm-show"
+    ><a href="/zh/model/library">应用下载</a></span
+  >
+  <span class="nav-item md-none sm-show"
+    ><a href="/zh/training/start">模型训练</a></span
+  >
+  <span class="nav-item md-none lg-none sm-show"
+    ><a href="/zh/blog">博客</a></span
+  >
+  <span class="nav-item md-none sm-show"
+    ><a href="/zh/coursecenter">课程中心</a></span
+  >
+  <!-- 添加点击事件 -->
+  <span class="nav-item bbs" onclick="goBbs()"
+    >问答社区
+    <img
+      src="https://www.kendryte.com/img/hot.ebb7d69e.svg"
+      style="transform: translateY(-50%)"
+      alt=""
+  /></span>
+</div>
+<!-- 写样式 -->
+<style>
+  .document-navbar-nav .nav-item {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    margin-right: 20px;
+    cursor: pointer;
+  }
+
+  .document-navbar-nav .nav-item a {
+    color: #303133;
+  }
+
+  .document-navbar-nav .nav-item a:hover {
+    color: #66819d;
+  }
+
+  .document-navbar-nav .active a {
+    color: #002d5c;
+    font-weight: 700;
+  }
+
+  .document-navbar-nav .bbs {
+    color: #d12d26;
+  }
+
+  .document-navbar-nav .bbs:hover {
+    color: rgb(231, 100, 100);
+  }
+
+  @media screen and (max-width: 1200px) {
+    .document-navbar-nav .md-none {
+      display: none !important;
+    }
+  }
+
+  @media screen and (max-width: 960px) {
+    .document-navbar-nav .nav-item {
+      display: block !important;
+    }
+    .document-user-info {
+      display: none !important;
+    }
+  }
+  @media screen and (max-width: 1450px) {
+    .lg-none {
+      display: none !important;
+    }
+  }
+</style>
+<script>
+  function goBbs() {
+    location.href = `/answer/`;
+  }
+</script></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><div class="document-user-info">
+  <div class="name-info" onclick="(e) => showDropDown(e)">
+    <div class="login-con">
+      <span class="user-avatar jn_user-avt"></span>
+      <div class="jn_user-name">
+        <span></span>
+      </div>
+      <ul class="Dropdown-menu" style="display: none">
+        <li class="item-profile">
+          <a class="Button-label" href="/user">个人资料</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="login-con jn_user-btns">
+    <a class="jn_user-btn" onclick="goLogin()">登录</a>
+    <a class="jn_user-btn" onclick="goRegister()">注册</a>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  if (!window._LOGIN_LOADED) {
+    console.log("1111111111，header login.js loaded");
+    window._LOGIN_LOADED = true;
+
+    function goLogin() {
+      const currentUser = JSON.parse(sessionStorage.getItem("user"));
+      if (currentUser && currentUser.id) {
+        return;
+      }
+      location.href = "/ssoLogin/?website=" + location.href;
+    }
+
+    function goUser(event) {
+      event.stopPropagation();
+      location.href = "/zh/user";
+    }
+
+    function goRegister() {
+      const currentUser = JSON.parse(sessionStorage.getItem("user"));
+      if (currentUser && currentUser.id) {
+        return;
+      }
+      location.href = "/ssoRegister/?website=" + location.href;
+    }
+    async function getUser() {
+      const cachedUser = sessionStorage.getItem("user");
+      if (cachedUser) {
+        return JSON.parse(cachedUser);
+      }
+      // 异步请求数据
+      try {
+        const res = await axios.get("/api/user");
+	if(!res.data.username) return false;
+        sessionStorage.setItem("user", JSON.stringify(res.data));
+        return res.data;
+      } catch (error) {
+        console.error("获取用户信息失败", error);
+        return null; // 或 throw error 让调用方处理
+      }
+    }
+
+    function getMd5OfEmail(email) {
+      const emailLowercase = email.toLowerCase();
+      const md5Hash = CryptoJS.MD5(emailLowercase).toString();
+      return md5Hash;
+    }
+
+    async function loginInit() {
+      const jn_user_name = document.querySelector(".jn_user-name");
+      const user_avatar = document.querySelector(".user-avatar"); //头像
+      const jn_user_info = document.querySelector(".name-info"); //用户信息
+      const jn_user_btns = document.querySelector(".jn_user-btns"); //登录注册按钮
+      const Dropdown_menu = document.querySelector(".Dropdown-menu"); //下拉菜单
+      const userInfo = await getUser(); // 注意：需在 async 函数中使用
+      if (userInfo && userInfo.username) {
+        jn_user_info.style.display = "block";
+        jn_user_btns.style.display = "none";
+        if (userInfo.nickname) {
+          jn_user_name.innerHTML = userInfo.nickname;
+        } else if (userInfo.username) {
+          jn_user_name.innerHTML = userInfo.username;
+        }
+        let avatarUrl = userInfo.avatar;
+        if (avatarUrl) {
+          avatarUrl += `?id=${userInfo.id}&t=${userInfo.id}`; // 添加查询参数
+        } else {
+          avatarUrl = `https://cravatar.cn/avatar/${getMd5OfEmail(
+          userInfo.email
+        )}?d=retro&f=y`;
+        }
+        user_avatar.src = avatarUrl;
+        user_avatar.style.backgroundImage = `url(${avatarUrl})`;
+        user_avatar.style.backgroundSize = "cover";
+      } else {
+        jn_user_info.style.display = "none";
+        jn_user_btns.style.display = "block";
+      }
+      jn_user_info.addEventListener("click", function (event) {
+        event.stopPropagation();
+        Dropdown_menu.style.display =
+          Dropdown_menu.style.display === "none" ? "block" : "none";
+      });
+    }
+    loginInit();
+  }
+</script>
+<!-- 增加css -->
+<style>
+  .document-user-info .login-con {
+    display: flex;
+    align-items: center;
+    margin-left: 30px;
+    font-size: 15px;
+    color: #303133;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .document-user-info .jn_user-avt {
+    background: #99abbe;
+    border-radius: 30px;
+    width: 31px;
+    height: 31px;
+    position: relative;
+    margin-right: 5px;
+    overflow: hidden;
+  }
+
+  .document-user-info .jn_user-avt img {
+    width: 100%;
+  }
+
+  .document-user-info .jn_user-name {
+    max-width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+  }
+
+  .document-user-info .jn_user-name :hover {
+    opacity: 0.9;
+  }
+
+  .document-user-info .jn_user-btn {
+    padding: 0 10px;
+    cursor: pointer;
+  }
+
+  .document-user-info .jn_user-btn:hover {
+    opacity: 0.9;
+  }
+
+  .document-user-info .Dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1030;
+    min-width: 160px;
+    padding: 8px 0;
+    margin: 7px 0;
+    background: #002d5c;
+    border: 1px solid #121212;
+    border-radius: 4px;
+    box-shadow: 0 2px 6px #013972;
+    list-style: none;
+    text-align: left;
+    color: #111;
+    font-size: 15px;
+    line-height: 1.5;
+    overflow: hidden;
+  }
+
+  .document-user-info .Dropdown-menu a {
+    display: block;
+    color: #b9b9b9;
+    padding-left: 30px;
+  }
+
+  .document-user-info .Dropdown-menu:hover {
+    text-decoration: none;
+  }
+
+  .document-user-info .item-profile a {
+    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACi0lEQVRYR+2Wy3EbMQyGAc6Ie4xcQeQKIlcQ6SKuTokriFOBlQqcDixXEKuC6LbkXmRVEKWCqAOvr5oRkYGHzDDrfXDXyfhiHLlc4iPwAwTCCxu+sH+IBsiybCSEuCSiMSKOiahAxB0A7Iho4tcAYA8A6yRJVtPptGi7YBSA1nqBiNcAsOLDrbWFEOICAD7VOSCivRDifDabMWSttQIYY74CAANM/GF5nl8Q0be22/F3RDxrgmgEyLJsIoRYh85dKn4AwDAGgCORJMlZXToaAbTW7HynlOIoPJox5rYp9FVQRPQlTdNl1bdagM1mMzwcDvfW2tP5fM7C8gAsrDcxtw/2bJVSk04ALvwbpdRfkMYY6uictxdKqZM+AN/DH31UegBA+SL+jNoUOLH9klKehALqGYHuKXCC2yHicjabsfAezQnzQ5coENFNmqaLTingzVzv1tqrsIy8NjoAPFhrx6GQw39bG5G78Vsp5dSnQmu9RMTLGAhE/BxGsPxPK4ATHtcwh31hrd3ybWL6QVP9t4qwTGqM+QgA3JDeBd8e+DECgPfhGhHdEdGiLuydUlAV5jzPx4PBYB9WB68dj8cixumzAWJyH7unVQP+INcXONQjABi7dZ4FeC4Y8kzAswAi7ololyTJ9p/MA+wYEa8Qkd//n5xfdh5RBfxmLKWUN00gjRFw7/41EW29qJwYeRaIfo6bBpNaAD90hHXcZRApaYDTNK0aTCoBgm53rpRau67IcyAPIn2tkFKeltNRCaC1ZjHdlgYRrvewB/QBWSmlWEt/7AmACzOLZ+Rpe/T/WrjygPMEwBjDKr/nV9CfwgIEAO6Ez7Zye64DeLajhgPuwtRGN6L/RfQK8BqB38AuVjD+RLVIAAAAAElFTkSuQmCC") no-repeat left center;
+    background-size: auto 80%;
+  }
+
+  .document-user-info .Dropdown-menu li {
+    padding: 8px 15px;
+    display: block;
+    width: 100%;
+    color: #b9b9b9;
+    text-align: left;
+    font-size: 15px;
+    font-weight: normal;
+    text-decoration: none;
+  }
+
+  .document-user-info .Dropdown-menu li:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+
+  @media screen and (max-width: 960px) {
+    .document-user-info {
+      display: none !important;
+    }
+  }
+</style></div>
+        
+          <div class="navbar-item"><div class="document-nav-lang">
+  <div class="document-menu-lang">
+    <span tabindex="0" class="lang-txt" style="
+        background-image: url('https://kendryte.com/img/ch-flag.a61145a4.svg');
+      ">中文 | English</span>
+    <div class="jn_lan-list">
+      <a class="jn_lan-item cn">简体中文</a>
+      <a class="jn_lan-item eng">English</a>
+    </div>
+  </div>
+  <div class="document-menu-lang-mobile">
+    <span class="lang-zh cn">简体中文</span> | <span class="lang-en eng">English</span>
+  </div>
+</div>
+<style>
+  .document-menu-lang-mobile {
+    display: none;
+  }
+
+  .document-menu-lang-mobile .lang-con {
+    text-align: center;
+  }
+
+  .document-menu-lang-mobile.lang-zh,
+  .document-menu-lang-mobile.lang-en {
+    color: #2980b9;
+    cursor: pointer;
+  }
+
+  .document-menu-lang {
+    padding: 0 8px;
+    position: relative;
+    font-size: 13px;
+    border: 1px solid #c0c4cc;
+    border-radius: 10px;
+    color: #303133;
+  }
+
+  .document-menu-lang .lang-txt {
+    padding-right: 28px;
+    background: url("https://kendryte.com/img/ch-flag.a61145a4.svg") no-repeat right 50%;
+    background-size: auto 68%;
+    display: block;
+    cursor: pointer;
+  }
+
+  .document-menu-lang .jn_lan-list {
+    display: none;
+    text-align: center;
+    position: absolute;
+    background: #fff;
+    border-radius: 5px;
+    padding: 10px 20px;
+    flex-wrap: wrap;
+    top: 43px;
+    left: 50%;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    border: 1px solid #ebeef5;
+    transform: translateX(-50%);
+  }
+
+  .document-menu-lang .jn_lan-list a {
+    color: #303133;
+  }
+
+  .document-menu-lang .jn_lan-item.cn {
+    background: url("https://kendryte.com/img/ch-flag.a61145a4.svg") no-repeat 0;
+  }
+
+  .document-menu-lang .jn_lan-item {
+    font-size: 15px;
+    cursor: pointer;
+    padding-left: 32px;
+    color: #606266;
+    width: 100%;
+    line-height: 3;
+    display: block;
+    white-space: nowrap;
+    background-size: auto 40%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .document-menu-lang .jn_lan-item.eng {
+    background: url("https://kendryte.com/img/en-flag.2d05326c.svg") no-repeat 0;
+  }
+
+  .document-menu-lang .jn_lan-list::after {
+    content: "";
+    border-width: 8px;
+    border-style: solid;
+    border-color: transparent transparent #fff transparent;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translate(-50%, -100%);
+  }
+
+  .document-menu-lang-mobile {
+    display: none;
+    border: 1px solid #c0c4cc;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    padding: 0 8px;
+  }
+
+  @media screen and (max-width: 960px) {
+    .document-menu-lang-mobile {
+      display: block;
+    }
+
+    .document-menu-lang {
+      display: none;
+    }
+  }
+</style>
+<script>
+  if (!window._LANGUAGE_TOGGLE_LOADED) {
+    window._LANGUAGE_TOGGLE_LOADED = true
+    const docsUrlList = {
+      k230_docs: {
+        zh: "https://www.kendryte.com/k230/zh/dev/index.html",
+        en: "https://www.kendryte.com/k230/en/dev/index.html",
+      },
+      k230_canmv_docs: {
+        zh: "https://www.kendryte.com/k230_canmv/zh/main/index.html",
+        en: "https://www.kendryte.com/k230_canmv/en/main/index.html",
+      },
+      rtt: {
+        zh: "https://www.kendryte.com/k230/zh/rtt/dev/index_rtt_only.html",
+        en: "https://www.kendryte.com/k230/en/rtt/dev/index_rtt_only.html",
+      },
+      k230_ai_docs: {
+        zh: "https://www.kendryte.com/ai_docs/zh/main/index.html",
+        en: "https://www.kendryte.com/ai_docs/en/main/index.html",
+      },
+      rtos: {
+        zh: "https://www.kendryte.com/k230_rtos/zh/main/index.html",
+        en: "https://www.kendryte.com/k230_rtos/en/main/index.html",
+      },
+    };
+    const whichDocs = () => {
+      if (
+        location.href.includes("/k230_canmv/zh/") ||
+        location.href.includes("/k230_canmv/en/")
+      ) {
+        return "k230_canmv_docs";
+      } else if (
+        location.href.includes("/k230/k230_rtos_sdk_docs/") ||
+        location.href.includes("/k230/k230_rtos_sdk_docs/")
+      ) {
+        return "rtos";
+      } else if (
+        location.href.includes("/k230/zh/") ||
+        location.href.includes("/k230/en/")
+      ) {
+        return "k230_docs";
+      } else if (
+        location.href.includes("/ai_docs/zh/") ||
+        location.href.includes("/ai_docs/en/")
+      ) {
+        return "k230_ai_docs";
+      } else {
+        return "rtos";
+      }
+      return null;
+    };
+
+    function setupLanguageToggle() {
+      function handleLanguageSwitch(language) {
+        const langButton = document.querySelector(".lang-txt");
+        const flagUrl =
+          language === "cn" ?
+          "https://kendryte.com/img/ch-flag.a61145a4.svg" :
+          "https://kendryte.com/img/en-flag.2d05326c.svg";
+        langButton.style.backgroundImage = `url('${flagUrl}')`;
+        const docsKey = whichDocs();
+        if (docsKey && docsUrlList[docsKey]) {
+          location.href = docsUrlList[docsKey][language === "cn" ? "zh" : "en"];
+        }
+        langList.style.display = "none";
+      }
+
+      // 监听整个document的点击事件
+      document.addEventListener("click", function (event) {
+        const langList = document.querySelector(".jn_lan-list");
+        const target = event.target;
+        if (target.closest(".lang-txt")) {
+          langList.style.display =
+            langList.style.display === "flex" ? "none" : "flex";
+        }
+        if (target.closest(".cn")) {
+          console.log("点击了中文");
+          handleLanguageSwitch("cn");
+          return;
+        }
+        if (target.closest(".eng")) {
+          console.log("点击了eng");
+          handleLanguageSwitch("eng");
+          return;
+        }
+      });
+    }
+    // 初始化语言切换功能
+    document.addEventListener("DOMContentLoaded", setupLanguageToggle);
+  }
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">K230 Linux+RT-Smart SDK</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">搜索</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../CanMV_K230_%E6%95%99%E7%A8%8B.html">CanMV K230 教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../K230_SDK_%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E.html">K230 SDK使用说明</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../index_normal_tutorial.html">K230 SDK 实用教程</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_%E5%AE%9E%E6%88%98%E5%9F%BA%E7%A1%80%E7%AF%87_hello_world.html">K230 实战基础篇 - hello world</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_AI%E5%AE%9E%E6%88%98_HHB%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E5%B7%A5%E5%85%B7.html">K230 AI实战 - HHB神经网络模型部署工具</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_GPU%E5%BA%94%E7%94%A8%E5%AE%9E%E6%88%98.html">K230 GPU 应用实战 - VGLite 绘制酷炫图形</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_GUI%E5%AE%9E%E6%88%98_LVGL%E7%A7%BB%E6%A4%8D%E6%95%99%E7%A8%8B.html">K230 GUI实战 - LVGL移植教程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_RVV%E5%AE%9E%E6%88%98.html">K230 RVV实战</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_USB%E5%BA%94%E7%94%A8%E5%AE%9E%E6%88%98_UVC%E4%BC%A0%E8%BE%93YUV%E5%8F%8A%E7%BC%96%E7%A0%81%E7%A0%81%E6%B5%81.html">K230 USB应用实战-UVC传输YUV及编码码流</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_%E5%9B%BE%E5%83%8F%E5%AE%9E%E6%88%98_%E5%BC%80%E6%9C%BA%E8%A7%86%E9%A2%91%E5%92%8C%E5%BC%80%E6%9C%BAlogo.html">K230 图像实战 - 开机视频和开机logo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_%E7%BC%96%E7%A0%81%E5%AE%9E%E6%88%98_rtsp_server%E6%90%AD%E5%BB%BA%E5%92%8C%E6%8E%A8%E6%B5%81.html">K230 编码实战 - rtsp sever搭建和推流</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_%E9%9F%B3%E9%A2%91%E5%AE%9E%E6%88%98_%E9%9F%B3%E9%A2%91%E9%87%87%E9%9B%86_%E6%92%AD%E6%94%BE%E5%92%8C%E7%BC%96%E8%A7%A3%E7%A0%81.html">K230 音频实战 - 音频采集、播放和编解码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/business_poc/K230_%E5%9C%BA%E6%99%AF%E5%AE%9E%E6%88%98_%E6%99%BA%E8%83%BD%E9%97%A8%E9%94%81.html">K230 场景实战-智能门锁POC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/business_poc/K230_%E5%9C%BA%E6%99%AF%E5%AE%9E%E6%88%98_%E6%99%BA%E8%83%BD%E9%97%A8%E9%94%81_OV9286.html">K230 场景实战-智能门锁POC-3D结构光</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/business_poc/K230_%E5%9C%BA%E6%99%AF%E5%AE%9E%E6%88%98_%E7%8C%AB%E7%9C%BC.html">K230 场景实战-猫眼POC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/business_poc/K230_%E5%9C%BA%E6%99%AF%E5%AE%9E%E6%88%98_%E8%AF%8D%E5%85%B8%E7%AC%94.html">K230 场景实战-词典笔POC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/business_poc/K230_%E5%9C%BA%E6%99%AF%E5%AE%9E%E6%88%98_dpu%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA.html">K230 场景实战-dpu深度相机POC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/business_poc/k230_%E5%9C%BA%E6%99%AF%E5%AE%9E%E6%88%98_ahd_sensor%E7%A7%BB%E6%A4%8D.html">K230 ahd sensor 移植参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/ai_demos/K230_AI_Demo%E4%BB%8B%E7%BB%8D.html">K230 AI Demo介绍</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/fancy_poc/K230_Fancy_Poc%E4%BB%8B%E7%BB%8D.html">K230 Fancy POC介绍</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/K230_SDK_CanMV_Board_Demo%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 SDK CanMV Board Demo使用指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/K230_SDK_EVB_Board_Demo%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 SDK EVB Board Demo使用指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/K230D_SDK_Zero_Board_Demo%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 SDK CanMV Board Demo使用指南</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../../../index_dev_guide.html">K230 SDK 开发指南</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_RVV%E4%BC%98%E5%8C%96%E6%80%A7%E8%83%BD%E8%AF%B4%E6%98%8E.html">K230 RVV优化性能说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_%E5%86%85%E5%AD%98%E4%BC%98%E5%8C%96%E6%8C%87%E5%8D%97.html">K230 内存优化指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_%E5%86%85%E5%AD%98%E5%8D%A0%E7%94%A8%E5%88%86%E6%9E%90%E6%8C%87%E5%8D%97.html">K230 内存分析指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_%E5%90%AF%E5%8A%A8%E4%BC%98%E5%8C%96%E6%8C%87%E5%8D%97.html">K230 启动优化指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_%E5%A4%A7%E5%B0%8F%E6%A0%B8%E9%80%9A%E8%AE%AF_sharefs%E7%94%A8%E6%B3%95%E4%BB%8B%E7%BB%8D.html">K230大小核通讯Sharefs使用简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../middleware/K230_openblas_%E5%BC%80%E5%8F%91%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 OpenBLAS开发指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../middleware/K230_opencv_%E5%BC%80%E5%8F%91%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 OpenCV开发指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mpp/K230_Camera_Sensor%E9%80%82%E9%85%8D%E6%8C%87%E5%8D%97.html">K230 Camera Sensor适配指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mpp/K230_PM%E6%A1%86%E6%9E%B6%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230_功耗管理适配指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mpp/K230_VICAP_SENSOR_%E5%8F%82%E6%95%B0%E5%88%86%E5%8C%BA%E5%8F%82%E8%80%83.html">K230 VICAP SENSOR 参数分区参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mpp/K230_LCD%E9%80%82%E9%85%8D%E6%8C%87%E5%8D%97.html">K230 LCD适配指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="K230_PMU_%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 PMU使用指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="K230_lpddr4_lpddr3%E9%A9%B1%E5%8A%A8%E9%80%82%E9%85%8D%E6%8C%87%E5%8D%97.html">K230 lpddr3/lpddr4驱动适配指南</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">K230 SDK IoT WiFi AiW4211LV10使用指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="K230_SDK_IoT_WiFi_AiW4211LV10_%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97.html">K230 SDK IoT WiFi AiW4211LV10驱动开发指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ai/K230_nncase_%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97.html">K230 nncase开发指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../03_other/K230_SDK%E6%9B%B4%E6%96%B0nncase%E8%BF%90%E8%A1%8C%E6%97%B6%E5%BA%93%E6%8C%87%E5%8D%97.html">K230 SDK 更新nncase运行时库指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../03_other/K230_debian_ubuntu%E8%AF%B4%E6%98%8E.html">K230 debian ubuntu 说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pc/burntool/K230_SDK_Burntool%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 SDK Burntool使用指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pc/dewarp/K230_SDK_Dewarp%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 SDK Dewarp 使用指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pc/ISP_tuning/K230_ISP%E5%9B%BE%E5%83%8F%E8%B0%83%E4%BC%98%E6%8C%87%E5%8D%97.html">K230 ISP图像调优指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pc/ISP_tuning/K230_ISP%E5%88%9D%E5%A7%8B%E5%8C%96%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97.html">K230 ISP初始化配置指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pc/pqtools/K230_ISP_Tuning_Tool%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 ISP Tuning Tool使用指南</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../00_hardware/index.html">硬件</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../00_hardware/K230_DEMO_BOARD%E8%B5%84%E6%BA%90%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 DEMO BOARD 资源使用说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../00_hardware/K230_%E7%A1%AC%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%8C%87%E5%8D%97.html">K230 硬件设计指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../00_hardware/K230_datasheet.html">K230 Product Full Datasheet</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../index_api.html">K230 SDK API 参考</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../cdk/K230_%E6%A0%B8%E9%97%B4%E9%80%9A%E8%AE%AF_API%E5%8F%82%E8%80%83.html">K230核间通讯API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cdk/K230_%E7%B3%BB%E7%BB%9F%E6%8E%A7%E5%88%B6_MAPI%E5%8F%82%E8%80%83.html">K230系统控制MAPI参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../middleware/K230_%E5%A4%9A%E5%AA%92%E4%BD%93%E4%B8%AD%E9%97%B4%E4%BB%B6_API%E5%8F%82%E8%80%83.html">K230 多媒体中间件API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mpp/K230_DMA_API%E5%8F%82%E8%80%83.html">K230 DMA API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mpp/K230_DPU_API%E5%8F%82%E8%80%83.html">K230 DPU API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mpp/K230_FFT_API%E5%8F%82%E8%80%83.html">K230 FFT API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mpp/K230_GPU_API%E5%8F%82%E8%80%83.html">K230 GPU API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mpp/K230_SHA256_API%E5%8F%82%E8%80%83.html">K230 SHA256 API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mpp/K230_VICAP_API%E5%8F%82%E8%80%83.html">K230 VICAP API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mpp/K230_VICAP_SENSOR_%E5%8F%82%E6%95%B0%E5%88%86%E5%8C%BA%E5%8F%82%E8%80%83.html">K230 VICAP SENSOR 参数分区参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mpp/K230_%E7%B3%BB%E7%BB%9F%E6%8E%A7%E5%88%B6_API%E5%8F%82%E8%80%83.html">K230系统控制API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mpp/K230_%E8%A7%86%E9%A2%91%E7%BC%96%E8%A7%A3%E7%A0%81_API%E5%8F%82%E8%80%83.html">K230视频编解码API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mpp/K230_%E8%A7%86%E9%A2%91%E8%BE%93%E5%87%BA_API%E5%8F%82%E8%80%83.html">K230视频输出API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mpp/K230_%E9%9F%B3%E9%A2%91_API%E5%8F%82%E8%80%83.html">K230音频API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="K230_DRM_API%E5%8F%82%E8%80%83.html">K230 DRM使用指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="K230_%E5%A4%A7%E6%A0%B8%E4%BD%8E%E9%80%9F%E9%A9%B1%E5%8A%A8_API%E5%8F%82%E8%80%83.html">K230大核低速驱动API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="K230_%E5%B0%8F%E6%A0%B8Linux%E9%A9%B1%E5%8A%A8_API%E5%8F%82%E8%80%83.html">K230小核Linux驱动API参考</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../index_faq.html">K230 常见问题解答</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../03_other/K230_SDK%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E8%A7%A3%E7%AD%94_C.html">K230 SDK 常见问题解答（C）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../03_other/K230_nncase%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E8%A7%A3%E7%AD%94.html">K230 nncase 常见问题解答</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../03_other/K230_AI_demo%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E8%A7%A3%E7%AD%94_C%2B%2B.html">K230 AI demo 常见问题解答（C++）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../03_other/K230_AI_Cube%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98.html">AI Cube常见问题解答</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../03_other/index.html">版本说明文档</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../03_other/K230_SDK_%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E.html">K230 SDK版本说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../03_other/K230_SDK_nncase%E7%89%88%E6%9C%AC%E5%AF%B9%E5%BA%94%E5%85%B3%E7%B3%BB.html">K230 SDK nncase版本对应关系</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item"><style>
+  .rst-versions {
+    color: #100e0e;
+    background: #eaebec;
+    font-family: Lato, proxima-nova, Helvetica Neue, Arial, sans-serif;
+    z-index: 400;
+    width: 100%;
+  }
+  .rst-versions.shift-up {
+    height: auto;
+    max-height: 100%;
+    overflow-y: scroll;
+  }
+  .rst-versions .rst-current-version {
+    padding: 12px;
+    background-color: #f3f4f5;
+    display: block;
+    text-align: right;
+    padding-left: 10px;
+    font-size: 90%;
+    cursor: pointer;
+    color: #27ae60;
+  }
+
+  .rst-versions .rst-other-versions dd {
+    display: inline-block;
+    margin: 0;
+  }
+  .rst-versions .rst-other-versions dd a {
+    display: inline-block;
+    padding: 6px;
+    color: #201919;
+    font-size: 12px;
+    text-decoration: none;
+  }
+  .rst-versions .rst-other-versions dd a:hover {
+    text-decoration-thickness: inherit;
+    color: #0d6efd;
+  }
+  .rst-versions .rst-other-versions {
+    font-size: 90%;
+    padding: 12px;
+    display: none;
+  }
+  .shift-up .rst-other-versions {
+    display: block;
+  }
+  .lang-con {
+    text-align: center;
+  }
+  .lang-zh,
+  .lang-en {
+    color: #2980b9;
+    cursor: pointer;
+  }
+</style>
+<div
+  class="rst-versions"
+  style="overflow: unset"
+  data-toggle="rst-versions"
+  role="note"
+  aria-label="versions"
+>
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    dev
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dt>Versions</dt>
+        <dd><a href="../../../../v1.0.1/index.html">v1.0.1</a></dd>
+        <dd><a href="../../../../v1.1/index.html">v1.1</a></dd>
+        <dd><a href="../../../../v1.2/index.html">v1.2</a></dd>
+        <dd><a href="../../../../v1.3/index.html">v1.3</a></dd>
+        <dd><a href="../../../../v1.4/index.html">v1.4</a></dd>
+        <dd><a href="../../../../v1.5/index.html">v1.5</a></dd>
+        <dd><a href="../../../../v1.6/01_software/board/osdrv/K230_SDK_IoT_WiFi_AiW4211LV10_使用指南.html">v1.6</a></dd>
+        <dd><a href="../../../../v1.7/01_software/board/osdrv/K230_SDK_IoT_WiFi_AiW4211LV10_使用指南.html">v1.7</a></dd>
+        <dd><a href="../../../../v1.8/01_software/board/osdrv/K230_SDK_IoT_WiFi_AiW4211LV10_使用指南.html">v1.8</a></dd>
+        <dd><a href="../../../../v1.9/01_software/board/osdrv/K230_SDK_IoT_WiFi_AiW4211LV10_使用指南.html">v1.9</a></dd>
+        <dd><a href="../../../../v2.0/01_software/board/osdrv/K230_SDK_IoT_WiFi_AiW4211LV10_使用指南.html">v2.0</a></dd>
+        <dd><a href="K230_SDK_IoT_WiFi_AiW4211LV10_使用指南.html">dev</a></dd>
+        <dd><a href="../../../../main/01_software/board/osdrv/K230_SDK_IoT_WiFi_AiW4211LV10_使用指南.html">main</a></dd>
+    </dl>
+  </div>
+</div>
+<script>
+    document.querySelector('.rst-versions').addEventListener('click', function() {
+          var details = document.querySelector('.rst-versions');
+          details.classList.toggle('shift-up');
+      });
+</script></div>
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/kendryte/k230_docs" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="源码库"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/01_software/board/osdrv/K230_SDK_IoT_WiFi_AiW4211LV10_使用指南.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+    
+    <div class="admonition warning">
+      <p class="admonition-title">
+        
+          注意
+        
+      </p>
+      <p>
+        
+          这是最新开发分支配套的文档，可能包含已发布版本中尚未提供的功能。如果您要查看特定版本的文档，请使用左侧的下拉菜单并选择所需要的版本。
+        
+      </p>
+    </div>
+    
+
+    
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>K230 SDK IoT WiFi AiW4211LV10使用指南</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">功能介绍</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">模块依赖</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">软件环境</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">硬件环境</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">模块配置</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sdk">SDK目录结构</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">定制化修改</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">固件编译</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">编译环境</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">编译方法</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">模块启动</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">固件烧写</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">驱动加载</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">参数配置</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ap">通过网络配置AP接入</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">通过消息配置AP接入</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">通过配置工具配置</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#api">通过调用API配置</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">系统休眠</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">通过工具配置休眠</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">通过调用API休眠</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">通过监控电平休眠</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">系统唤醒</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">按键唤醒</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">网络唤醒</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">API参考</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#config">config接口</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">API</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">数据结构</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#wifi-config-t">wifi_config_t</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#wifi-sleep-t">wifi_sleep_t</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#wifi-connect-t">wifi_connect_t</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#wifi-keepalive-t">wifi_keepalive_t</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sleep">sleep接口</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wifi">wifi功能限制</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="k230-sdk-iot-wifi-aiw4211lv10">
+<h1>K230 SDK IoT WiFi AiW4211LV10使用指南<a class="headerlink" href="#k230-sdk-iot-wifi-aiw4211lv10" title="Link to this heading">#</a></h1>
+<section id="id1">
+<h2>功能介绍<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<p>AiW4211LV10是一款低功耗IoT WiFi芯片，我司采用该芯片平台设计了一款AiW4211LV10开发板，该开发板可通过TF卡插槽接入K230 EVB板。K230 EVB加载AiW4211LV10驱动之后，可以生成wlan0无线网卡，实现网络数据通信。</p>
+<p><img alt="WiFi子板" src="../../../_images/907ec0b9b9b7bafdd715a7e6a293fe33.jpeg" /></p>
+<p>图1-1 AiW4211LV10开发板</p>
+<p>WiFi主要功能如图1-1所示：</p>
+<p><img alt="WiFi功能框图" src="../../../_images/f09a29152cf3ccca9d2e2602a62f6d64.png" /></p>
+<p>图1-1 WiFi功能框图</p>
+<p>WiFi主要功能简介：</p>
+<ul class="simple">
+<li><p>消息通信：WiFi接收并解析Host端发送的消息指令及指令参数，触发相应事件执行</p></li>
+<li><p>网络通信：网络数据透传</p></li>
+<li><p>参数配置：建立SoftAP，接收配置参数，并触发配置事件</p></li>
+<li><p>配置存取：管理配置数据形成的配置文件，存储在flash上</p></li>
+<li><p>AP接入：接入指定AP，监控接入状态并进行相应处理</p></li>
+<li><p>保活链路：建立维护与远程服务器之间的保活链路</p></li>
+<li><p>休眠：设置软硬件环境，给Host下电（依据平台特性，K230自下电），WiFi进入休眠模式</p></li>
+<li><p>IO唤醒：处理button或PIR唤醒信号，恢复软硬件环境，给Host上电</p></li>
+<li><p>网络唤醒：处理来自保活链路的唤醒数据包，恢复软硬件环境，给Host上电</p></li>
+</ul>
+</section>
+<section id="id2">
+<h2>模块依赖<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p>硬件上依赖AiW4211LV10开发板，依赖K230 EVB开发板。软件上依赖于K230 SDK。</p>
+<section id="id3">
+<h3>软件环境<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<p>K230 SDK V0.5.1及后续版本。
+AiW4211LV10 SDK。</p>
+</section>
+<section id="id4">
+<h3>硬件环境<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<p>K230 EVB开发板设置emmc启动，空出TF卡插槽用于AiW4211LV10开发板接入。
+开发板硬件版本及跳线见表2-1：</p>
+<p>表2-1开发板版本</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>开发板</strong></p></th>
+<th class="head"><p><strong>硬件版本</strong></p></th>
+<th class="head"><p><strong>设置</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>K230 EVB</p></td>
+<td><p>V1.1</p></td>
+<td><p>POWER BY BUTTON启动模式，跳线关系： 1.JUMPER J1 1—-2 2.JUMPER J1 13–14</p></td>
+</tr>
+<tr class="row-odd"><td><p>AiW4211LV10</p></td>
+<td><p>V1.1</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p>K230 EVB开发板飞线到AiW4211LV10开发板排针，连接关系见表2-2：</p>
+<p>表2-2 飞线关系</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p><strong>Link1</strong></p></th>
+<th class="head"><p><strong>Link2</strong></p></th>
+<th class="head"><p><strong>Link3</strong></p></th>
+<th class="head"><p><strong>Link4</strong></p></th>
+<th class="head"><p><strong>Link5</strong></p></th>
+<th class="head"><p><strong>Link6</strong></p></th>
+<th class="head"><p><strong>Link7</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>K230</strong> <strong>排针</strong></p></td>
+<td><p>TP21 (5V)</p></td>
+<td><p>J8.PIN9 (GPIO34)</p></td>
+<td><p>J1.PIN9 (RTC_INT4)</p></td>
+<td><p>J1.PIN14 (PW_EN)</p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>WiFi</strong> <strong>排针</strong></p></td>
+<td><p>J6.PIN1 (5V)</p></td>
+<td><p>J2.PIN3 (SDIO_INT_OUT)</p></td>
+<td><p>J6.PIN3 (WH)</p></td>
+<td><p>J2.PIN2 (GPIO2)</p></td>
+<td><p>J2.PIN4 (TX)</p></td>
+<td><p>J2.PIN5 (RX)</p></td>
+<td><p>J2.PIN6 (GND)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>TTL-USB</strong></p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p>RX</p></td>
+<td><p>TX</p></td>
+<td><p>GND</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>说明</strong></p></td>
+<td><p>5V供电线</p></td>
+<td><p>WiFi数据中断线</p></td>
+<td><p>WiFi唤醒K230中断线</p></td>
+<td><p>WiFi监控K230电平</p></td>
+<td><p>com口收发</p></td>
+<td><p>com口收发</p></td>
+<td><p>com口GND</p></td>
+</tr>
+</tbody>
+</table>
+<p>连接说明：</p>
+<ul class="simple">
+<li><p>TP21是5V电压测试点，需要焊接一个插针，如果K230 EVB版本为V1.0则需要连接到J5 PIN16</p></li>
+<li><p>如果使用不涉及WiFi唤醒K230 EVB则无需建立Link3</p></li>
+<li><p>如果WiFi配置成通过监控K230 core的电源状态进入休眠则建立Link4，否则不需要。</p></li>
+<li><p>TTL-USB与WiFi的连线主要是为了观察WiFi的固件输出，无需要可以不连接</p></li>
+<li><p>AiW4211LV10开发板排针说明见表2-3</p></li>
+</ul>
+<p>表2-3 WiFi开发板排针说明</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>WIFI子板</strong> <strong>接口</strong></p></th>
+<th class="head"><p><strong>信号定义</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+<th class="head"><p><strong>电平</strong></p></th>
+<th class="head"><p><strong>必要性</strong></p></th>
+<th class="head"><p><strong>K230 USIP LP3 EVB</strong> <strong>接口</strong></p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>J4</p></td>
+<td><p>金手指</p></td>
+<td><p>SDIO_CLK/CMD/DATA</p></td>
+<td><p>SDIO信号及GND</p></td>
+<td><p>3.3V</p></td>
+<td><p>必连</p></td>
+<td><p>TF卡槽</p></td>
+</tr>
+<tr class="row-odd"><td><p>J6</p></td>
+<td><p>PIN1</p></td>
+<td><p>VDD_5V_WIFI</p></td>
+<td><p>供电输入_5V</p></td>
+<td><p>POWER</p></td>
+<td><p>必连</p></td>
+<td><p>TP21(V1.1) 或J5.PIN16(V1.0)</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p>PIN2</p></td>
+<td><p>GND</p></td>
+<td><p>GND</p></td>
+<td><p>GND</p></td>
+<td><p>预留</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p>PIN3</p></td>
+<td><p>WIFI_WAKE_HOST</p></td>
+<td><p>WIFI唤醒K230</p></td>
+<td><p>1.8V</p></td>
+<td><p>功能信号</p></td>
+<td><p>J1.PIN9</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p>PIN4</p></td>
+<td><p>WIFI_UART0_TX</p></td>
+<td><p>串口TX，可连接K230</p></td>
+<td><p>1.8V</p></td>
+<td><p>预留</p></td>
+<td><p>J8.PIN15，目前无连接需求</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p>PIN5</p></td>
+<td><p>WIFI_UART0_RX</p></td>
+<td><p>串口RX，可连接K230</p></td>
+<td><p>1.8V</p></td>
+<td><p>预留</p></td>
+<td><p>J8.PIN13，目前无连接需求</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p>PIN6</p></td>
+<td><p>HOST_WAKE_WIFI</p></td>
+<td><p>K230唤醒WIFI</p></td>
+<td><p>1.8V</p></td>
+<td><p>功能信号</p></td>
+<td><p>J8.PIN11, 目前无连接需求</p></td>
+</tr>
+<tr class="row-odd"><td><p>J2</p></td>
+<td><p>PIN1</p></td>
+<td><p>WIFI_POWER_EN</p></td>
+<td><p>WIFI使能，预留</p></td>
+<td><p>3.3V</p></td>
+<td><p>预留</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p>PIN2</p></td>
+<td><p>GPIO2</p></td>
+<td><p>监控K230电平</p></td>
+<td><p>3.3V</p></td>
+<td><p>功能信号</p></td>
+<td><p>J1.PIN14</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p>PIN3</p></td>
+<td><p>SDIO_INT_OUT</p></td>
+<td><p>SDIO中断</p></td>
+<td><p>1.8V</p></td>
+<td><p>功能信号</p></td>
+<td><p>J8.PIN9</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p>PIN4</p></td>
+<td><p>UART0_TXD</p></td>
+<td><p>调试串口TXD</p></td>
+<td><p>3.3V</p></td>
+<td><p>调试串口</p></td>
+<td><p>连PC</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p>PIN5</p></td>
+<td><p>UART0_RXD</p></td>
+<td><p>调试串口RXD</p></td>
+<td><p>3.3V</p></td>
+<td><p>调试串口</p></td>
+<td><p>连PC</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p>PIN6</p></td>
+<td><p>GND</p></td>
+<td><p>GND</p></td>
+<td><p>GND</p></td>
+<td><p>调试串口</p></td>
+<td><p>连PC</p></td>
+</tr>
+<tr class="row-odd"><td><p>J3</p></td>
+<td><p>PIN1</p></td>
+<td><p>PIR_WAKE_HOST</p></td>
+<td><p>PIR唤醒K230</p></td>
+<td><p>1.8V</p></td>
+<td><p>可选</p></td>
+<td><p>J1.PIN待定</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p>PIN2</p></td>
+<td><p>GND</p></td>
+<td><p>PIR供电，接PIR黑色线</p></td>
+<td><p>GND</p></td>
+<td><p>\</p></td>
+<td><p>\</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p>PIN3</p></td>
+<td><p>PIR_WAKE_WiFi</p></td>
+<td><p>PIR信号，接PIR棕色线</p></td>
+<td><p>3.3V</p></td>
+<td><p>\</p></td>
+<td><p>\</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p>PIN4</p></td>
+<td><p>VDD_3V3</p></td>
+<td><p>PIR供电，接PIR红色线</p></td>
+<td><p>POWER</p></td>
+<td><p>\</p></td>
+<td><p>\</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="id5">
+<h2>模块配置<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
+<section id="sdk">
+<h3>SDK目录结构<a class="headerlink" href="#sdk" title="Link to this heading">#</a></h3>
+<p>WiFi SDK的目录结构如下：</p>
+<p>├── README.txt //简要编译及使用说明文档</p>
+<p>├── support //存放固件烧写工具BurnTool.exe，编译环境搭建说明文档及支持包</p>
+<p>├── toolchain //固件交叉编译工具链</p>
+<p>├── Makefile //编译入口Makefile，可实现一键编译</p>
+<p>├── SocChannel //WiFi驱动及配置工具源码</p>
+<p>├── AiW4211LV10 //WiFi固件源码</p>
+<p>编译驱动的工具链因与平台相关，故未放入SDK之中，如有需要请联系我们。</p>
+</section>
+<section id="id6">
+<h3>定制化修改<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<p>在WiFi SDK之中，为了便于固件的定制化，与硬件设计关联比较紧密的代码，需要公布且可由用户定制的SoftAP相关参数，以及自定义的被多个文件使用的全局变量等，被放置在canaan_private.h及canaan_private.c文件之中。重点项目说明见表3-1：</p>
+<p>表3-1 定制化重点项说明</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>项目</strong></p></th>
+<th class="head"><p><strong>说明</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CONFIG_WIFI_MONITOR_HOSTLEVEL</p></td>
+<td><p>使能该宏之后WiFi通过监控K230的电源状态引脚触发休眠，将忽略休眠指令</p></td>
+</tr>
+<tr class="row-odd"><td><p>HOST_LLEVEL_TIME</p></td>
+<td><p>配合CONFIG_WIFI_MONITOR_HOSTLEVEL使用，电源状态引脚拉低持续HOST_LLEVEL_TIME时间将触发休眠，设置该时间是为了防抖及过滤冷启动的不稳定状态</p></td>
+</tr>
+<tr class="row-even"><td><p>LONG_PRESS_TIME</p></td>
+<td><p>长按WiFi开发板上的K4按键持续LONG_PRESS_TIME时间WiFi将建立SoftAP模式，用于配置AP接入。参考5.3.1。</p></td>
+</tr>
+<tr class="row-odd"><td><p>TCP_SERVER_PORT</p></td>
+<td><p>SoftAP建立之后，WiFi启动一个tcp socket server用于接收网络配置信息，TCP_SERVER_PORT是指定监听端口</p></td>
+</tr>
+<tr class="row-even"><td><p>g_softap_ipaddr</p></td>
+<td><p>SoftAP的网关、掩码及ip</p></td>
+</tr>
+<tr class="row-odd"><td><p>g_softapcfg</p></td>
+<td><p>SoftAP的热点名称及密码等</p></td>
+</tr>
+<tr class="row-even"><td><p>gpios_config[] g_gpios_config</p></td>
+<td><p>WiFi GPIO配置表，与硬件设计相关，描述各功能GPIO的编号、功能名、方向、中断类型及触发方式和中断回调函数</p></td>
+</tr>
+<tr class="row-odd"><td><p>kd_gpios_hoststanby</p></td>
+<td><p>WiFi给Host下电接口，可根据平台特性实现，因K230自下电，此接口未操作任何IO</p></td>
+</tr>
+<tr class="row-even"><td><p>kd_gpios_wakehost</p></td>
+<td><p>WiFi给Host上电接口，可根据平台特性实现，针对K230平台，WiFi给K230 PMU发送了一个IO信号</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="id7">
+<h2>固件编译<a class="headerlink" href="#id7" title="Link to this heading">#</a></h2>
+<section id="id8">
+<h3>编译环境<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<p>固件编译环境搭建请参考文档《AiW4211V10／AiW4211LV10 SDK开发环境搭建 用户指南.pdf》，该文档存储于WiFi SDK的support目录。
+使用者也可以联系 成都爱旗科技有限公司(<a class="reference external" href="http://www.aichtech.com/">http://www.aichtech.com/</a>) 索取相关资料。</p>
+</section>
+<section id="id9">
+<h3>编译方法<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<p>进入WiFi SDK源码目录执行指令make all和make install，编译得到WiFi固件、驱动、配置工具及通信接口共享库文件存储在顶层的out目录下：</p>
+<p>out/</p>
+<p>├── bin</p>
+<p>│ ├── aiw4211l_demo_allinone.bin</p>
+<p>│ ├── aiw4211lv10.ko</p>
+<p>│ ├── wifi.conf</p>
+<p>│ ├── iotwifi_link</p>
+<p>│ ├── iotwifi_cli</p>
+<p>│ └── k230_pwrdown</p>
+<p>├── inc</p>
+<p>│ ├── soc_msg.h</p>
+<p>│ └── hal_iotwifi_cli.h</p>
+<p>└── lib</p>
+<p>└── libhal_iotwifi.so</p>
+<p>也可以各部分独立编译：
+make firmware：编译WiFi固件aiw4211l_demo_allinone.bin
+make driver：编译WiFi驱动aiw4211lv10.ko
+make tools：编译配置工具和通信接口共享库，iotwifi_link、iotwifi_cli、libhal_iotwifi.so、k230_pwrdown</p>
+<p>备注：K230 SDK已经集成了WiFi驱动、配置工具和通信接口库，因此这些可以不编译</p>
+</section>
+</section>
+<section id="id10">
+<h2>模块启动<a class="headerlink" href="#id10" title="Link to this heading">#</a></h2>
+<section id="id11">
+<h3>固件烧写<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<p>使用WiFi SDK support目录 下的烧写工具BurnTool.exe，通过串口将固件aiw4211l_demo_allinone.bin烧写到AiW4211LV10开发板。</p>
+<p>烧写方法请参考文档《AiW4211V10／AiW4211LV10 BurnTool工具 使用指南.pdf》，该文档存储于WiFi SDK的support目录。</p>
+<p>使用者也可以联系 成都爱旗科技有限公司(<a class="reference external" href="http://www.aichtech.com/">http://www.aichtech.com/</a>) 索取相关资料。</p>
+<p>图5-1展示的是单板快速烧写的示意图：</p>
+<p><img alt="烧写3" src="../../../_images/9c1b166e281b6ae4532a24e3fb4ab544.png" /></p>
+<p>图5-1 单板快速烧写</p>
+<p>step 1: 选择烧写COM口
+step 2: 通过“Setting”菜单项配置COM口参数
+step 3: 选择WiFi固件
+step 4: 点击“Connect”控件向WiFi开发板发起连接，WiFi开发板上电，工具log窗口可以看到ready to load …，表示连接已经建立，可以开始烧写了
+step 5: 点击“Send file”控件开始烧写</p>
+</section>
+<section id="id12">
+<h3>驱动加载<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<p>参考2.2节内容配置硬件环境，长按K230 EVB板上K1按键上电启动，加载驱动：</p>
+<p>modprobe aiw4211lv10 或者 modprobe aiw4211lv10 mmc=1 gpio=34</p>
+<p>启动配置工具server端并置于后台运行：iotwifi_link &amp;</p>
+<p>当前驱动支持传入mmc主控编号及用于中断检测的gpio编号，可以实现较为灵活的硬件配置，如果不传参则分别使用代码中规定的默认值1和34。iotwifi_link的功能角色类似于wpa_supplicant，它首先会将wlan0 up起来，然后从WiFi设备侧同步mac地址及ip地址到Host端。</p>
+<p><img alt="驱动加载" src="../../../_images/78ce42062b1b3c4eea2724d722f587f5.png" /></p>
+<p>图 5-2 驱动加载及iotwifi_link启动</p>
+</section>
+<section id="id13">
+<h3>参数配置<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
+<p>AiW4211LV10的接入AP、休眠等级、休眠周期、唤醒IO、tcp keepalive的目标server、保活参数等直接影响WiFi运行，且需要根据实际场景进行动态调整的参数，可以通过5.3.1和5.3.2节提供的方式方法进行传参配置。</p>
+<p>除非用户想要改变配置，否则每次启动之后无需重配。</p>
+<section id="ap">
+<h4>通过网络配置AP接入<a class="headerlink" href="#ap" title="Link to this heading">#</a></h4>
+<p>AiW4211LV10开发板支持通过网络配置目标AP的名称、密码和加密方式这三个参数。配置AP接入的步骤如下：</p>
+<p>step 1: 准备一个路由器，并记录其热点名称、密码和加密方式信息
+step 2: AiW4211LV10开发板在固件烧写之后初次启动运行时，或者在已经完成配置的情况下长按板上K4按键3s，WiFi将启动SoftAP模式生成一个热点并建立一个基于TCP协议的socket server
+step 3: 将PC连入该热点，然后启动NetAssist
+step 4: 配置NetAssist作为 tcp socket client连接到WiFi
+step 5: server解析配置数据后连接到指定AP，退出SoftAP模式</p>
+<p>使用者如有能力可以开发一个手机APP进行网络配置，这里为简单起见只是使用了PC+NetAssist方案。SoftAP参数及配置数据格式见表5-1，NetAssist配置运行见图5-1：</p>
+<p>表 5-1 SoftAP参数及配置数据格式</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>项目</strong></p></th>
+<th class="head"><p><strong>参数</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AP name</p></td>
+<td><p>k230</p></td>
+</tr>
+<tr class="row-odd"><td><p>AP password</p></td>
+<td><p>12345678</p></td>
+</tr>
+<tr class="row-even"><td><p>server ip</p></td>
+<td><p>192.168.43.1</p></td>
+</tr>
+<tr class="row-odd"><td><p>server port</p></td>
+<td><p>35556</p></td>
+</tr>
+<tr class="row-even"><td><p>config data</p></td>
+<td><p>cfg=&lt;targer ap name&gt;,&lt;targer ap auth&gt;,&lt;targer ap password&gt; 例如：cfg=xuyuxuan,2,Xuyuxuan123</p></td>
+</tr>
+</tbody>
+</table>
+<p><img alt="softAP接入" src="../../../_images/da2c89ea92bffca6b1dd4d9b09efd855.png" /></p>
+<p>图 5-3 NetAssist配置运行</p>
+</section>
+<section id="id14">
+<h4>通过消息配置AP接入<a class="headerlink" href="#id14" title="Link to this heading">#</a></h4>
+<p>AiW4211LV10开发板支持通过消息通道配置目标AP参数（与5.3.1功能相同），除此之外还可以通过消息通道配置WiFi休眠参数和tcp keepalive参数。消息通道是K230与AiW4211LV10之间通过SDIO总线建立起来的软件通道。</p>
+<section id="id15">
+<h5>通过配置工具配置<a class="headerlink" href="#id15" title="Link to this heading">#</a></h5>
+<p>配置步骤如下：</p>
+<p>step 1: 准备一个路由器并启动热点
+step 2: 将PC接入该热点，然后启动NetAssist，这里为简单起见使用PC+NetAssist作为远端保活服务器
+step 3: 配置NetAssist作为 tcp socket server等待WiFi保活链路的接入
+step 4: K230端根据热点信息和NetAssist启动的server信息编辑配置文件/etc/wifi.conf
+step 5: 运行配置工具client端，解析配置文件，发送配置消息：iotwifi_cli –config /etc/wifi.conf
+step 6: AiW4211LV10接收到配置参数之后，首先存储休眠参数，然后接入指定AP，最后建立tcp socket client连入NetAssist建立的 tcp socket server</p>
+<p>/etc/wifi.conf是WiFi工作参数配置文件，以json格式编写，基本上是对<a class="reference internal" href="#wifi-config-t">wifi_config_t</a>结构体的映射，具体可参考6.1.2章节。文件内容如下：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="s">&quot;sleep&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="s">&quot;level&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="s">&quot;period&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">3000</span><span class="p">,</span>
+<span class="s">&quot;wake_gpios&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+<span class="p">},</span>
+<span class="s">&quot;conn&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="s">&quot;ssid&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;xuyuxuan&quot;</span><span class="p">,</span>
+<span class="s">&quot;auth&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="s">&quot;key&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Xuyuxuan123&quot;</span><span class="p">,</span>
+<span class="s">&quot;bssid&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">,</span>
+<span class="s">&quot;pairwise&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="p">},</span>
+<span class="s">&quot;keepalive&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="s">&quot;svrip&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;192.168.50.197&quot;</span><span class="p">,</span>
+<span class="s">&quot;svrport&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">5001</span><span class="p">,</span>
+<span class="s">&quot;time&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
+<span class="s">&quot;intvl&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="s">&quot;probes&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
+<span class="s">&quot;hrintvl&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">60</span><span class="p">,</span>
+<span class="s">&quot;hrprobes&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">5</span>
+<span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>备注： “wake_gpios”: [5] 是一个数组项，当前数组只有一个元素5，表示WiFi可以被自身的gpio5唤醒，该IO对应按键K4，如果新添加唤醒源可以以逗号分隔追加。这取决于具体的硬件设计。</p>
+<p><img alt="config" src="../../../_images/befd53872f5678c01b6a9680165bf4f0.png" /></p>
+<p>图 5-4 （A）WiFi接入路由器并被分配IP （B）tcp keepalive server</p>
+</section>
+<section id="api">
+<h5>通过调用API配置<a class="headerlink" href="#api" title="Link to this heading">#</a></h5>
+<p>在实际的业务程序中，可以通过调用通信接口共享库libhal_iotwifi.so提供的API接口<a class="reference internal" href="#wifi-config-t">kd_wifi_config</a>进行参数配置，API说明请参考6.1.1章节，配置步骤与5.3.2.1相同。</p>
+<p>5.3.2.1节当中介绍的工具iotwifi_cli也是通过调用该接口实现WiFi参数配置的。</p>
+</section>
+</section>
+</section>
+<section id="id16">
+<h3>系统休眠<a class="headerlink" href="#id16" title="Link to this heading">#</a></h3>
+<section id="id17">
+<h4>通过工具配置休眠<a class="headerlink" href="#id17" title="Link to this heading">#</a></h4>
+<p>运行配置工具client端发送休眠指令触发WiFi休眠：iotwifi_cli –dirsleep</p>
+<p><img alt="enter sleep" src="../../../_images/a8681956288af97fa64d83522360b540.png" /></p>
+<p>图 5-5 WiFi进入休眠log</p>
+</section>
+<section id="id18">
+<h4>通过调用API休眠<a class="headerlink" href="#id18" title="Link to this heading">#</a></h4>
+<p>在实际的业务程序中，可以通过调用通信接口共享库libhal_iotwifi.so提供的API接口<a class="reference internal" href="#sleep">kd_wifi_sleep</a>触发WiFi休眠，具体请参考6.2章节。</p>
+<p>工具iotwifi_cli也是通过调用该接口触发WiFi休眠的。</p>
+</section>
+<section id="id19">
+<h4>通过监控电平休眠<a class="headerlink" href="#id19" title="Link to this heading">#</a></h4>
+<p>K230 EVB可以实现自下电，下电之后K230 EVB开发板J1 PIN14（PW_EN）引脚的电平将会被拉低，WiFi也可以通过监控该引脚的电平触发休眠。该功能使用的前提是K230功耗管理功能正常，并在编译WiFi固件时使能宏 CONFIG_WIFI_MONITOR_HOSTLEVEL（默认不使能），使能该宏之后WiFi将忽略K230发送的sleep指令，仅依据引脚电平状态进行休眠。</p>
+<p>工具k230_pwrdown可以实现较为简单的K230 EVB双核自下电，它未做任何文件存储、状态检测等业务逻辑上的安全处理，因此只可以用于电平触发WiFi休眠的场景验证。该工具未集成到K230 SDK当中，因此需要拷贝到K230 EVB上执行：</p>
+<p>./k230_pwrdown</p>
+</section>
+</section>
+<section id="id20">
+<h3>系统唤醒<a class="headerlink" href="#id20" title="Link to this heading">#</a></h3>
+<section id="id21">
+<h4>按键唤醒<a class="headerlink" href="#id21" title="Link to this heading">#</a></h4>
+<p>如果WiFi已进入休眠状态，短按AiW4211LV10开发板上的K4按键可唤醒WiFi，WiFi将给K230 EVB的PMU发送唤醒信号，如果此时K230 EVB处于5.4.3节配置的下电状态（非冷启动），其将被上电。</p>
+<p><img alt="WiFi唤醒" src="../../../_images/e19ef72c437edd32f4e48ce8e8eb6552.png" /></p>
+<p>图5-6 按键唤醒log</p>
+</section>
+<section id="id22">
+<h4>网络唤醒<a class="headerlink" href="#id22" title="Link to this heading">#</a></h4>
+<p>如果WiFi已进入休眠状态，NetAssist发送wakeup可唤醒WiFi，WiFi将给K230 EVB的PMU发送唤醒信号，如果此时K230 EVB处于5.4.3节配置的下电状态（非冷启动），其将被上电。</p>
+<p><img alt="网络唤醒" src="../../../_images/c243ed2abdfa36f6d918274132ae3bff.png" /></p>
+<p>图5-7 网络唤醒log</p>
+</section>
+</section>
+</section>
+<section id="id23">
+<h2>API参考<a class="headerlink" href="#id23" title="Link to this heading">#</a></h2>
+<p>AiW4211LV10驱动加载后生成的无线网卡与一般WiFi网卡无异，因此网络通信功能无特殊API需要说明。
+除基本的网络通信外，K230与WiFi还存在两个消息通信接口，需要重点说明。</p>
+<section id="config">
+<h3>config接口<a class="headerlink" href="#config" title="Link to this heading">#</a></h3>
+<section id="id24">
+<h4>API<a class="headerlink" href="#id24" title="Link to this heading">#</a></h4>
+<p>int kd_wifi_config(<a class="reference internal" href="#wifi-config-t">wifi_config_t</a> *config)
+配置WiFi工作参数：</p>
+<ul class="simple">
+<li><p>配置目标AP的名称、密码、认证及加密方式</p></li>
+<li><p>配置WiFi休眠等级，苏醒周期以及可唤醒的gpio</p></li>
+<li><p>配置tcp keepalive时间参数等</p></li>
+</ul>
+</section>
+<section id="id25">
+<h4>数据结构<a class="headerlink" href="#id25" title="Link to this heading">#</a></h4>
+<section id="wifi-config-t">
+<h5>wifi_config_t<a class="headerlink" href="#wifi-config-t" title="Link to this heading">#</a></h5>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="p">{</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">config_mask</span><span class="p">;</span>
+<span class="cp">#define CFG_MASK_SLEEP (1 &lt;&lt; 0)</span>
+<span class="cp">#define CFG_MASK_CONNECT (1 &lt;&lt; 1)</span>
+<span class="cp">#define CFG_MASK_KEEPALIVE (1 &lt;&lt; 2)</span>
+<span class="n">wifi_sleep_t</span><span class="w"> </span><span class="n">sleep</span><span class="p">;</span>
+<span class="n">wifi_connect_t</span><span class="w"> </span><span class="n">conn</span><span class="p">;</span>
+<span class="n">wifi_keepalive_t</span><span class="w"> </span><span class="n">keepalive</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span><span class="n">wifi_config_t</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>表6-1 wifi_config_t结构体成员</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>config_mask</p></th>
+<th class="head"><p>配置目标项掩码，使能或屏蔽目标项，例如全部配置则：config_mask = CFG_MASK_SLEEP|CFG_MASK_CONNECT|CFG_MASK_KEEPALIVE CFG_MASK_SLEEP：配置休眠参数 CFG_MASK_CONNECT：配置AP连接参数 CFG_MASK_KEEPALIVE：配置tcp keepalive参数</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="#wifi-sleep-t">sleep</a></p></td>
+<td><p>休眠参数</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#wifi-connect-t">conn</a></p></td>
+<td><p>AP连接参数</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#wifi-keepalive-t">keepalive</a></p></td>
+<td><p>tcp keepalive参数</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="wifi-sleep-t">
+<h5>wifi_sleep_t<a class="headerlink" href="#wifi-sleep-t" title="Link to this heading">#</a></h5>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span>
+<span class="p">{</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">level</span><span class="p">;</span>
+<span class="cp">#define WIFI_SLEEP_LIGHT 1</span>
+<span class="cp">#define WIFI_SLEEP_DEEP 2</span>
+<span class="cp">#define WIFI_SLEEP_ULTRA 3</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">period</span><span class="p">;</span>
+<span class="k">union</span>
+<span class="p">{</span>
+<span class="cm">/*</span>
+<span class="cm">* gpioX_wake: 0---disable, 1---enable</span>
+<span class="cm">*/</span>
+<span class="k">struct</span><span class="w"> </span><span class="p">{</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">gpio0_wake</span><span class="o">:</span><span class="mi">1</span><span class="p">;</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">gpio1_wake</span><span class="o">:</span><span class="mi">1</span><span class="p">;</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">gpio2_wake</span><span class="o">:</span><span class="mi">1</span><span class="p">;</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">gpio3_wake</span><span class="o">:</span><span class="mi">1</span><span class="p">;</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">gpio4_wake</span><span class="o">:</span><span class="mi">1</span><span class="p">;</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">gpio5_wake</span><span class="o">:</span><span class="mi">1</span><span class="p">;</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">gpio6_wake</span><span class="o">:</span><span class="mi">1</span><span class="p">;</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">gpio7_wake</span><span class="o">:</span><span class="mi">1</span><span class="p">;</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">gpio8_wake</span><span class="o">:</span><span class="mi">1</span><span class="p">;</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">gpio9_wake</span><span class="o">:</span><span class="mi">1</span><span class="p">;</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">gpio10_wake</span><span class="o">:</span><span class="mi">1</span><span class="p">;</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">gpio11_wake</span><span class="o">:</span><span class="mi">1</span><span class="p">;</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">gpio12_wake</span><span class="o">:</span><span class="mi">1</span><span class="p">;</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">gpio13_wake</span><span class="o">:</span><span class="mi">1</span><span class="p">;</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">gpio14_wake</span><span class="o">:</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">wake_gpios</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="p">}</span><span class="w"> </span><span class="n">wifi_sleep_t</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>表6-2 wifi_sleep_t结构体成员</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>level</p></th>
+<th class="head"><p>休眠等级 WIFI_SLEEP_LIGHT：浅睡 WIFI_SLEEP_DEEP：深睡，主要休眠模式 WIFI_SLEEP_ULTRA：超深睡，只有3/5/7/14号gpio可唤醒，目前不使用</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>period</p></td>
+<td><p>苏醒周期，有效数值33~~4000ms。WiFi周期性从休眠态醒来，检测AP是否有发给自己的数据缓存</p></td>
+</tr>
+<tr class="row-odd"><td><p>wake_gpios</p></td>
+<td><p>enable或disable可唤醒WiFi的gpio（WiFi侧gpio）</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="wifi-connect-t">
+<h5>wifi_connect_t<a class="headerlink" href="#wifi-connect-t" title="Link to this heading">#</a></h5>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span>
+<span class="p">{</span>
+<span class="kt">char</span><span class="w"> </span><span class="n">ssid</span><span class="p">[</span><span class="n">EXT_WIFI_MAX_SSID_LEN</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">];</span>
+<span class="n">ext_wifi_auth_mode</span><span class="w"> </span><span class="n">auth</span><span class="p">;</span>
+<span class="kt">char</span><span class="w"> </span><span class="n">key</span><span class="p">[</span><span class="n">EXT_WIFI_MAX_KEY_LEN</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">];</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">bssid</span><span class="p">[</span><span class="n">EXT_WIFI_MAC_LEN</span><span class="p">];</span>
+<span class="n">ext_wifi_pairwise</span><span class="w"> </span><span class="n">pairwise</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span><span class="n">wifi_connect_t</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>表6-3 wifi_<strong>connect</strong>_t结构体成员</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>ssid</p></th>
+<th class="head"><p>AP名称</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>auth</p></td>
+<td><p>认证类型 EXT_WIFI_SECURITY_OPEN EXT_WIFI_SECURITY_WEP EXT_WIFI_SECURITY_WPA2PSK EXT_WIFI_SECURITY_WPAPSK_WPA2PSK_MIX EXT_WIFI_SECURITY_WPAPSK EXT_WIFI_SECURITY_WPA EXT_WIFI_SECURITY_WPA2 EXT_WIFI_SECURITY_SAE EXT_WIFI_SECURITY_WPA3_WPA2_PSK_MIX EXT_WIFI_SECURITY_UNKNOWN</p></td>
+</tr>
+<tr class="row-odd"><td><p>Key</p></td>
+<td><p>AP密码</p></td>
+</tr>
+<tr class="row-even"><td><p>bssid</p></td>
+<td><p>AP bssid，一般为AP mac地址</p></td>
+</tr>
+<tr class="row-odd"><td><p>pairwise</p></td>
+<td><p>加密类型 EXT_WIFI_PARIWISE_UNKNOWN EXT_WIFI_PAIRWISE_AES EXT_WIFI_PAIRWISE_TKIP EXT_WIFI_PAIRWISE_TKIP_AES_MIX</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="wifi-keepalive-t">
+<h5>wifi_keepalive_t<a class="headerlink" href="#wifi-keepalive-t" title="Link to this heading">#</a></h5>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span>
+<span class="p">{</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">svrip</span><span class="p">[</span><span class="mi">16</span><span class="p">];</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">short</span><span class="w"> </span><span class="n">svrport</span><span class="p">;</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">short</span><span class="w"> </span><span class="n">tcp_keepalive_time</span><span class="p">;</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">short</span><span class="w"> </span><span class="n">tcp_keepalive_intvl</span><span class="p">;</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">short</span><span class="w"> </span><span class="n">tcp_keepalive_probes</span><span class="p">;</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">short</span><span class="w"> </span><span class="n">heartbeat_intvl</span><span class="p">;</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">short</span><span class="w"> </span><span class="n">heartbeat_probes</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span><span class="n">wifi_keepalive_t</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>表6-4 wifi_keepalive_t结构体成员</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>svrip</p></th>
+<th class="head"><p>server端ip地址</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>svrport</p></td>
+<td><p>server端端口号</p></td>
+</tr>
+<tr class="row-odd"><td><p>tcp_keepalive_time</p></td>
+<td><p>TCP层keepalive心跳包常规发送周期，秒</p></td>
+</tr>
+<tr class="row-even"><td><p>tcp_keepalive_intvl</p></td>
+<td><p>TCP层keepalive心跳包无回应之后新的发送周期，秒</p></td>
+</tr>
+<tr class="row-odd"><td><p>tcp_keepalive_probes</p></td>
+<td><p>TCP层keepalive心跳包无回应计数超过该阈值之后，判断TCP连接异常，断开重连</p></td>
+</tr>
+<tr class="row-even"><td><p>heartbeat_intvl</p></td>
+<td><p>应用层心跳包发送周期，秒</p></td>
+</tr>
+<tr class="row-odd"><td><p>heartbeat_probes</p></td>
+<td><p>应用层心跳包无回应计数超过该阈值之后，判断socket连接异常，断开重连</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+<section id="sleep">
+<h3>sleep接口<a class="headerlink" href="#sleep" title="Link to this heading">#</a></h3>
+<p>int kd_wifi_sleep(void)
+控制WiFi进入休眠，休眠相关参数在config API当中设置。</p>
+</section>
+</section>
+<section id="wifi">
+<h2>wifi功能限制<a class="headerlink" href="#wifi" title="Link to this heading">#</a></h2>
+<p>AiW4211LV10芯片为单频wifi芯片,不支持ap和sta同时共存，当ap启动时固定在某一信道，再起sta的话sta会在不同的信道上扫描，此时ap就会断连。
+当通过sdio传入conf为错误配置时，AiW4211LV10会显示sta连接ap失败 串口打印 please reset conf，此时可通过iotwifi_cli传入新的正确的conf。
+当通过client传入sta错误配置时，wifi从ap会切换到sta模式，AiW4211LV10会显示sta连接ap失败 串口同样打印please reset conf，由于sta与ap不能同时共存，这时wifi芯片会从sta切换到ap模式重新起tcp server ，sta需要重新连接ap,作为client重新接入。</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+
+              
+              
+                <footer class="bd-footer-article">
+                  <div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+  <title>评论列表</title>
+  <style>
+    /* 评论顶部 */
+    .docs-comment .head {
+      display: flex;
+      justify-content: space-between;
+      padding-bottom: 1em;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .docs-comment .nickname {
+      cursor: pointer;
+    }
+
+    /* 评论输入框 */
+    .docs-comment .input {
+      display: flex;
+      margin-top: 20px;
+      position: relative;
+    }
+
+    .docs-comment .head-img {
+      border-radius: 3px;
+      width: 50px;
+      height: 50px;
+    }
+
+    .docs-comment .head-img img {
+      height: 50px;
+      width: 50px;
+    }
+
+    .docs-comment textarea,
+    .docs-comment .comment-content {
+      width: 100%;
+      margin-left: 10px;
+      border-radius: 5px;
+      padding: 0.75em;
+      display: block;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      width: 100%;
+      min-height: 5.125em;
+      /* max-height: 15em; */
+      border-radius: 5px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      font-size: 12px;
+      word-wrap: break-word;
+      resize: vertical;
+      background-color: #f6f6f6;
+      outline: none;
+    }
+
+    .docs-comment .replies .comment-content {
+      border: none;
+    }
+
+    .docs-comment .submit {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+    }
+
+    .docs-comment button {
+      padding: 0.75em 1.25em;
+      display: inline-block;
+      line-height: 1;
+      text-decoration: none;
+      white-space: nowrap;
+      cursor: pointer;
+      border: 1px solid #2962ff;
+      border-radius: 5px;
+      background-color: #2962ff;
+      color: #fff;
+      outline: none;
+      font-size: 0.75em;
+    }
+
+    .docs-comment .button .login {
+      margin-left: 20px;
+      background-color: #fff;
+      color: #2962ff;
+    }
+
+    .docs-comment .action {
+      text-align: right;
+
+      svg {
+        height: 16px;
+        width: 16px;
+        cursor: pointer;
+      }
+    }
+
+    .docs-comment .secondary {
+      color: #666;
+    }
+
+    /* 评论列表 */
+    #comment-list {
+      margin-top: 20px;
+    }
+
+    .docs-comment .comment-item,
+    .docs-comment .reply-item {
+      display: flex;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    .docs-comment .reply-icon {
+      margin-left: 10px;
+    }
+
+    .docs-comment .primary {
+      color: #2962ff;
+    }
+
+    .docs-comment .content {
+      margin-top: 0.5em;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="docs-comment">
+    <div class="head">
+      <div class="count primary">条评论</div>
+      <div class="nickname primary" onclick="handleLogin()">登录</div>
+    </div>
+    <div class="input">
+      <div class="head-img"></div>
+      <textarea id="comment" name="comment" rows="5" cols="5" placeholder="说点什么..." required minlength="10"
+        maxlength="200" spellcheck="true" autocomplete="on"></textarea>
+      <button class="submit" onclick="handleAdd()">评论</button>
+    </div>
+    <!-- 评论列表 -->
+    <div id="comment-list"></div>
+  </div>
+
+  <script>
+    let timer = null;
+    const deleteIcon = `<svg
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="#6190e8"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+  <line x1="10" y1="11" x2="10" y2="17" />
+  <line x1="14" y1="11" x2="14" y2="17" />
+</svg>`;
+    const replyIcon = `<svg
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="#6190e8"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10z" />
+</svg>`;
+
+    function getMd5OfEmail(email) {
+      const emailLowercase = email.toLowerCase();
+      const md5Hash = CryptoJS.MD5(emailLowercase).toString();
+      return md5Hash;
+    }
+
+    function formatTimestamp(timestamp) {
+      const now = Date.now(); // 当前时间的时间戳
+      const diff = now - timestamp; // 时间差（毫秒）
+
+      // 转换为秒、分钟、小时
+      const seconds = Math.floor(diff / 1000);
+      const minutes = Math.floor(seconds / 60);
+      const hours = Math.floor(minutes / 60);
+      if (seconds < 60) {
+        return ` 刚刚`;
+      } else if (minutes < 60) {
+        return `${minutes}分钟前`;
+      } else if (hours < 24) {
+        return `${hours}小时前`;
+      } else {
+        // 大于24小时，显示月份和日期
+        const date = new Date(timestamp);
+        const month = date.getMonth() + 1; // 月份从0开始，需要加1
+        const day = date.getDate();
+        return `${month}月${day}日`;
+      }
+    }
+    // 获取评论列表并渲染到页面
+    function getComments(url) {
+      axios({
+          method: "get",
+          url: "/api/docs/comments",
+          params: {
+            pageNo: 1,
+            pageSize: 20,
+            url: url,
+          },
+        })
+        .then((res) => {
+          renderComments(res.data.rows); // 渲染评论列表
+          const count = document.querySelector(".count");
+          count.innerHTML = `${res.data.count}条评论`;
+          clearInterval(timer);
+          timer = setInterval(() => {
+            document.querySelectorAll(".time").forEach((item) => {
+              item.innerHTML = formatTimestamp(
+                item.getAttribute("value") * 1
+              );
+            });
+          }, 10000);
+        })
+        .catch((error) => {
+          console.error("获取评论列表失败", error);
+        });
+    }
+    // 渲染评论列表
+    function renderComments(comments) {
+      const currentUser = JSON.parse(sessionStorage.getItem("user")) || {};
+      const commentList = document.getElementById("comment-list");
+      commentList.innerHTML = ""; // 清空当前列表
+
+      // 找到所有顶级评论（parent_id = 0）
+      const topLevelComments = comments.filter(
+        (comment) => comment.parent_id === 0
+      );
+
+      // 渲染每条评论及其回复
+      topLevelComments.forEach((comment) => {
+        const commentItem = document.createElement("div");
+        commentItem.className = "comment-item";
+        commentItem.innerHTML = `
+            <div class="head-img"><img src="${
+              comment.user.avatar
+                ? `/api/user/avatar?id=${comment.user.id}`
+                : `https://cravatar.cn/avatar/${getMd5OfEmail(
+                    comment.user.email
+                  )}?d=retro&f=y`
+            }" /></div>
+            <div class="comment-content">
+               <span class="nickname primary">${
+                 comment.user?.nickname || comment.user?.username
+               }</span><span>发表于</span><span class="secondary time" value="${
+            comment.createdAt
+          }"> ${formatTimestamp(comment.createdAt)}</span>
+<div class="content">${comment.content}</div>
+<div class="action">
+${
+  currentUser.role === "admin" || currentUser.id === comment.user.id
+    ? `<span onclick="handleDelete(${comment.id})">${deleteIcon}</span>`
+    : ""
+}
+  <span onclick="handleReply(${comment.id}, ${comment.id}, '${
+            comment.user.nickname || comment.user.username
+          }', '${comment.user.email}')" class="reply-icon">${replyIcon}</span>
+  </div>
+ <div class="replies" id="replies-${comment.id}"></div>
+              </div>
+           
+          `;
+        // <button onclick="handleDelete(${comment.id})">删除</button>
+        commentList.appendChild(commentItem);
+
+        // 找到当前评论的所有回复
+        const replies = comments.filter(
+          (reply) => reply.parent_id === comment.id
+        );
+        renderReplies(comment.id, replies); // 渲染回复
+      });
+    }
+
+    // 渲染回复
+    function renderReplies(parentId, replies) {
+      const currentUser = JSON.parse(sessionStorage.getItem("user")) || {};
+      const repliesContainer = document.getElementById(`replies-${parentId}`);
+      repliesContainer.innerHTML = ""; // 清空当前回复
+
+      replies.forEach((reply) => {
+        const replyItem = document.createElement("div");
+        replyItem.className = "reply-item";
+        replyItem.innerHTML = `
+            <div class="head-img"><img src="${
+              reply.user.avatar
+                ? `/api/user/avatar?id=${reply.user.id}`
+                : `https://cravatar.cn/avatar/${getMd5OfEmail(
+                    reply.user.email
+                  )}?d=retro&f=y`
+            }" /></div>
+            <div class="comment-content">
+               <span class="nickname primary">${
+                 reply.user?.nickname || reply.user?.username
+               }</span><span>回复于</span><span class="secondary time" value="${
+            reply.createdAt
+          }">  ${formatTimestamp(reply.createdAt)}</span>
+<div class="content">${reply.content}</div>
+              <div class="action">
+                ${
+                  currentUser.role === "admin" ||
+                  currentUser.id === reply.user.id
+                    ? `<span onclick="handleDelete(${reply.id})">${deleteIcon}</span>`
+                    : ""
+                }
+                 <span onclick="handleReply(${reply.parent_id}, ${reply.id}, '${
+            reply.user.nickname || reply.user.username
+          }', '${reply.user.email}')" class="reply-icon">${replyIcon}</span>
+                </div>
+                <div class="replies" id="replies-${reply.id}">
+                  
+                  </div>
+              </div>
+            
+          `;
+        repliesContainer.appendChild(replyItem);
+      });
+    }
+
+    // 新增评论
+    function handleAdd(parent_id = 0, email) {
+      const isLogin = sessionStorage.getItem("user");
+      if (isLogin) {
+        const currentUser = JSON.parse(isLogin);
+        if (!currentUser.id) {
+          alert("请先登录");
+          return;
+        }
+      } else {
+        alert("请先登录");
+        return;
+      }
+      let inputValue = document.getElementsByTagName("textarea")[0].value;
+      const url = window.location.href;
+      if (parent_id !== 0 && email) {
+        inputValue = document.getElementById("current-comment").value;
+      }
+      if (!inputValue) {
+        return false;
+      }
+      axios({
+          method: "post",
+          url: "/api/docs/comment",
+          data: {
+            url: url,
+            content: inputValue,
+            parent_id: parent_id, // 默认添加顶级评论
+          },
+        })
+        .then((res) => {
+          const url = window.location.href;
+          getComments(url); // 重新获取评论列表
+          document.getElementsByTagName("textarea")[0].value = "";
+          // 发送飞书消息
+          axios({
+              method: "post",
+              url: "/api/docs/sendMsg",
+              data: {
+                content: inputValue,
+                url: url,
+              },
+            })
+            .then((res) => {
+              console.log("发送邮件成功", res.data);
+            })
+            .catch((error) => {
+              console.error("发送邮件失败", error);
+            });
+          if (parent_id !== 0 && email) {
+            // 发送邮件提醒
+            axios({
+                method: "post",
+                url: "/api/docs/replyNotify",
+                data: {
+                  email: email,
+                  url: url,
+                },
+              })
+              .then((res) => {
+                console.log("发送邮件成功", res.data);
+              })
+              .catch((error) => {
+                console.error("发送邮件失败", error);
+              });
+          }
+        })
+        .catch((error) => {
+          console.error("新增评论失败", error);
+        });
+    }
+
+    // 删除评论
+    function handleDelete(id) {
+      if (confirm("确定要删除这条评论吗？")) {
+        axios({
+            method: "delete",
+            url: `/api/docs/comment/${id}`,
+          })
+          .then((res) => {
+            console.log("删除评论成功", res.data);
+            const url = window.location.href;
+            getComments(url); // 重新获取评论列表
+          })
+          .catch((error) => {
+            console.error("删除评论失败", error);
+          });
+      }
+    }
+    // 获取用户信息
+    function getUser() {
+      if (sessionStorage.getItem("user")) {
+        const currentUser = JSON.parse(sessionStorage.getItem("user"));
+	if(!currentUser.username) return false;
+        document.querySelector(".nickname").innerHTML =
+          currentUser.nickname || currentUser.username;
+        if (currentUser.avatar) {
+          document.querySelector(
+            ".head-img"
+          ).innerHTML = `<img src="/api/user/avatar?id=${currentUser.id}" />`;
+          return;
+        } else {
+          document.querySelector(
+            ".head-img"
+          ).innerHTML = `<img src="https://cravatar.cn/avatar/${getMd5OfEmail(
+              currentUser.email
+            )}?d=retro&f=y" />`;
+        }
+        return;
+      } else {
+        axios({
+            method: "get",
+            url: "/api/user",
+          })
+          .then((res) => {
+            if (res.data && res.data.id) {
+              sessionStorage.setItem("user", JSON.stringify(res.data));
+              document.querySelector(".nickname").innerHTML =
+                res.data.nickname || res.data.username;
+              if (currentUser.avatar) {
+                document.querySelector(
+                  ".head-img"
+                ).innerHTML = `<img src="/api/user/avatar?id=${res.data.id}" />`;
+                return;
+              } else {
+                document.querySelector(
+                  ".head-img"
+                ).innerHTML = `<img src="https://cravatar.cn/avatar/${getMd5OfEmail(
+                  res.data.email
+                )}?d=retro&f=y" />`;
+              }
+            }
+
+          })
+          .catch((error) => {
+            console.error("获取用户信息失败", error);
+          });
+      }
+    }
+    //回复评论
+    function handleReply(parentId, id, nickname, email) {
+      // 删除其他输入框
+      const currentReply = document.querySelector(".current-reply");
+      if (currentReply) {
+        currentReply.remove();
+      }
+      const repliesContainer = document.getElementById(`replies-${id}`);
+      // 创建一个新的 div 元素，并设置 class 为 "input"
+      const newInputDiv = document.createElement("div");
+      newInputDiv.className = "input current-reply";
+      // 创建 head-img 元素
+      const headImgDiv = document.createElement("div");
+      headImgDiv.className = "head-img";
+      // 创建 textarea 元素
+      const textareaElement = document.createElement("textarea");
+      textareaElement.id = "current-comment";
+      textareaElement.name = "comment";
+      textareaElement.rows = 5;
+      textareaElement.cols = 5;
+      textareaElement.placeholder = "说点什么...";
+      textareaElement.required = true;
+      textareaElement.minLength = 10;
+      textareaElement.maxLength = 200;
+      textareaElement.autofocus = true;
+      textareaElement.spellcheck = true;
+      textareaElement.autocomplete = "on";
+      textareaElement.value = `回复 @${nickname}: `;
+      // 创建 button 元素
+      const submitButton = document.createElement("button");
+      submitButton.className = "submit";
+      submitButton.textContent = "评论";
+      submitButton.onclick = () => handleAdd(parentId, email); // 绑定点击事件
+      // 将 head-img、textarea 和 button 添加到 newInputDiv 中
+      newInputDiv.appendChild(headImgDiv);
+      newInputDiv.appendChild(textareaElement);
+      newInputDiv.appendChild(submitButton);
+      repliesContainer.insertAdjacentElement("beforeend", newInputDiv);
+      textareaElement.focus();
+    }
+    const handleLogin = () => {
+      const currentUser = JSON.parse(sessionStorage.getItem("user"));
+      if (currentUser && currentUser.id) {
+        return;
+      }
+      window.location.href = "/ssoLogin/?website=" + window.location.href;
+    };
+    // 页面加载时获取评论列表
+    window.onload = function () {
+      getUser();
+      const url = window.location.href;
+      timer && clearInterval(timer);
+      getComments(url);
+    };
+    window.onbeforeunload = function () {
+      alert("页面关闭");
+      timer && clearInterval(timer);
+    };
+  </script>
+</body>
+
+</html></div>
+  
+</div>
+                </footer>
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="K230_lpddr4_lpddr3%E9%A9%B1%E5%8A%A8%E9%80%82%E9%85%8D%E6%8C%87%E5%8D%97.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">K230 lpddr3/lpddr4驱动适配指南</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="K230_SDK_IoT_WiFi_AiW4211LV10_%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">K230 SDK IoT WiFi AiW4211LV10驱动开发指南</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">功能介绍</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">模块依赖</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">软件环境</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">硬件环境</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">模块配置</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sdk">SDK目录结构</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">定制化修改</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">固件编译</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">编译环境</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">编译方法</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">模块启动</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">固件烧写</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">驱动加载</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">参数配置</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ap">通过网络配置AP接入</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">通过消息配置AP接入</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">通过配置工具配置</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#api">通过调用API配置</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">系统休眠</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">通过工具配置休眠</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">通过调用API休眠</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">通过监控电平休眠</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">系统唤醒</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">按键唤醒</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">网络唤醒</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">API参考</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#config">config接口</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">API</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">数据结构</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#wifi-config-t">wifi_config_t</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#wifi-sleep-t">wifi_sleep_t</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#wifi-connect-t">wifi_connect_t</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#wifi-keepalive-t">wifi_keepalive_t</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sleep">sleep接口</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wifi">wifi功能限制</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026 嘉楠 | 京ICP备2025124317号 | 京公网安备11010802045870号.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item"><style>
+    .cancat{
+        font-size: 1rem;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 1rem;
+      }
+      .canact-section a{
+       color: #ebedf0;
+       line-height: 30px;
+       font-weight: 400;
+       text-decoration: none;
+      }
+      .canact-section a:hover {
+       color: #4d8eef;
+      }
+   </style>
+   <div class="footer-center">
+    <div class="cancat">开发者资源</div>
+    <section class="canact-section"><a href="https://www.kendryte.com/zh/resource">资料下载</a></section>
+    <section class="canact-section"><a href="https://www.kendryte.com/zh/document">文档中心</a></section>
+    <section class="canact-section"><a href="https://www.kendryte.com/zh/training/start">模型训练</a></section>
+    <section class="canact-section"><a href="https://www.kendryte.com/zh/model/library">模型库</a></section>
+   </div></div>
+      
+    </div>
+  
+  
+    <div class="footer-items__center">
+      
+        <div class="footer-item"><style>
+ .cancat{
+     font-size: 1rem;
+     font-weight: 700;
+     color: #fff;
+     margin-bottom: 1rem;
+   }
+   .canact-section a{
+    color: #ebedf0;
+    line-height: 30px;
+    font-weight: 400;
+    text-decoration: none;
+   }
+   .canact-section a:hover {
+    color: #4d8eef;
+   }
+   .copy-right {
+    margin-top:30px;
+    color: #ebedf0;
+   }
+</style>
+<div class="footer-center">
+ <div class="cancat">联系我们</div>
+ <section class="canact-section"><a href="mailto:salesai@canaan-creative.com">邮箱：salesAI@canaan-creative.com</a></section>
+ <section class="canact-section"><a href="/">QQ 群： 578895334 </a></section>
+ <section class="canact-section"><a href="/">微信公众号：嘉楠开发者</a></section>
+</div></div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><style>
+    .cancat{
+        font-size: 1rem;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 1rem;
+      }
+      .canact-section a{
+       color: #ebedf0;
+       line-height: 30px;
+       font-weight: 400;
+       text-decoration: none;
+      }
+      .canact-section a:hover {
+       color: #4d8eef;
+      }
+   </style>
+   <div class="footer-center">
+    <div class="cancat">资讯和社区</div>
+    <section class="canact-section"><a href="https://www.kendryte.com">勘智开发者社区</a></section>
+    <section class="canact-section"><a href="https://www.kendryte.com/zh/products">产品中心</a></section>
+    <section class="canact-section"><a href="https://www.kendryte.com/answer">问答社区</a></section>
+    <section class="canact-section"><a href="https://www.kendryte.com/zh/blog">博客</a></section>
+   </div></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

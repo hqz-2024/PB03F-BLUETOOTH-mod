@@ -5,8 +5,8 @@
 
 /* ─── 串口硬件配置 ─────────────────────────────── */
 #define BYS_UART_PORT       UART1
-#define BYS_UART_TX_PIN     P23
-#define BYS_UART_RX_PIN     P24
+#define BYS_UART_TX_PIN     P24
+#define BYS_UART_RX_PIN     P23
 #define BYS_UART_BAUD       19200
 
 /* ─── 协议常量 ──────────────────────────────────── */

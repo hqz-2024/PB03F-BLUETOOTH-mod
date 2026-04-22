@@ -1,0 +1,3870 @@
+<!-- _templates/layout.html -->
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>K230 DMA API参考 &#8212; K230 Linux+RT-Smart SDK</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/topbar.css?v=d050732f" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom-theme.css?v=e40dc788" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/auto-nums.css?v=c078078a" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../../_static/documentation_options.js?v=946197a6"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '01_software/board/mpp/K230_DMA_API参考';</script>
+    <script src="../../../_static/mermaid.min.js?v=45c054c2"></script>
+    <script src="../../../_static/init_mermaid.js?v=999e7285"></script>
+    <script src="../../../_static/transform.js?v=23760c99"></script>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="K230 DPU API参考" href="K230_DPU_API%E5%8F%82%E8%80%83.html" />
+    <link rel="prev" title="K230 多媒体中间件API参考" href="../middleware/K230_%E5%A4%9A%E5%AA%92%E4%BD%93%E4%B8%AD%E9%97%B4%E4%BB%B6_API%E5%8F%82%E8%80%83.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+
+  gtag("config", "G-7J9HL06P02");
+</script>
+ <script>
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "tqhe6w0zs6");
+ </script>
+<script>
+  var _hmt = _hmt || [];
+  window._hmt = _hmt; // 修改为window 全局变量
+  (function () {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?d4832d9026d5bdd9eca72f27bb63dfb3"; //此处请替换你的站点i
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item"><a href="/" style="height: 100%; display: flex; align-items: center;"><img src="https://www.kendryte.com/uploads/branding/5rtuJdbiAZ7.png" style="height: 50%; width: auto;" alt=""></a> </div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><div class="document-navbar-nav">
+  <span class="nav-item"><a href="/zh/products">产品中心</a></span>
+  <span class="nav-item md-none sm-show"
+    ><a href="/zh/resource">资料下载</a></span
+  >
+  <span class="nav-item active"><a href="/zh/document">文档中心</a></span>
+  <span class="nav-item md-none sm-show"
+    ><a href="/zh/model/library">应用下载</a></span
+  >
+  <span class="nav-item md-none sm-show"
+    ><a href="/zh/training/start">模型训练</a></span
+  >
+  <span class="nav-item md-none lg-none sm-show"
+    ><a href="/zh/blog">博客</a></span
+  >
+  <span class="nav-item md-none sm-show"
+    ><a href="/zh/coursecenter">课程中心</a></span
+  >
+  <!-- 添加点击事件 -->
+  <span class="nav-item bbs" onclick="goBbs()"
+    >问答社区
+    <img
+      src="https://www.kendryte.com/img/hot.ebb7d69e.svg"
+      style="transform: translateY(-50%)"
+      alt=""
+  /></span>
+</div>
+<!-- 写样式 -->
+<style>
+  .document-navbar-nav .nav-item {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    margin-right: 20px;
+    cursor: pointer;
+  }
+
+  .document-navbar-nav .nav-item a {
+    color: #303133;
+  }
+
+  .document-navbar-nav .nav-item a:hover {
+    color: #66819d;
+  }
+
+  .document-navbar-nav .active a {
+    color: #002d5c;
+    font-weight: 700;
+  }
+
+  .document-navbar-nav .bbs {
+    color: #d12d26;
+  }
+
+  .document-navbar-nav .bbs:hover {
+    color: rgb(231, 100, 100);
+  }
+
+  @media screen and (max-width: 1200px) {
+    .document-navbar-nav .md-none {
+      display: none !important;
+    }
+  }
+
+  @media screen and (max-width: 960px) {
+    .document-navbar-nav .nav-item {
+      display: block !important;
+    }
+    .document-user-info {
+      display: none !important;
+    }
+  }
+  @media screen and (max-width: 1450px) {
+    .lg-none {
+      display: none !important;
+    }
+  }
+</style>
+<script>
+  function goBbs() {
+    location.href = `/answer/`;
+  }
+</script></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item"><div class="document-user-info">
+  <div class="name-info" onclick="(e) => showDropDown(e)">
+    <div class="login-con">
+      <span class="user-avatar jn_user-avt"></span>
+      <div class="jn_user-name">
+        <span></span>
+      </div>
+      <ul class="Dropdown-menu" style="display: none">
+        <li class="item-profile">
+          <a class="Button-label" href="/user">个人资料</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="login-con jn_user-btns">
+    <a class="jn_user-btn" onclick="goLogin()">登录</a>
+    <a class="jn_user-btn" onclick="goRegister()">注册</a>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  if (!window._LOGIN_LOADED) {
+    console.log("1111111111，header login.js loaded");
+    window._LOGIN_LOADED = true;
+
+    function goLogin() {
+      const currentUser = JSON.parse(sessionStorage.getItem("user"));
+      if (currentUser && currentUser.id) {
+        return;
+      }
+      location.href = "/ssoLogin/?website=" + location.href;
+    }
+
+    function goUser(event) {
+      event.stopPropagation();
+      location.href = "/zh/user";
+    }
+
+    function goRegister() {
+      const currentUser = JSON.parse(sessionStorage.getItem("user"));
+      if (currentUser && currentUser.id) {
+        return;
+      }
+      location.href = "/ssoRegister/?website=" + location.href;
+    }
+    async function getUser() {
+      const cachedUser = sessionStorage.getItem("user");
+      if (cachedUser) {
+        return JSON.parse(cachedUser);
+      }
+      // 异步请求数据
+      try {
+        const res = await axios.get("/api/user");
+	if(!res.data.username) return false;
+        sessionStorage.setItem("user", JSON.stringify(res.data));
+        return res.data;
+      } catch (error) {
+        console.error("获取用户信息失败", error);
+        return null; // 或 throw error 让调用方处理
+      }
+    }
+
+    function getMd5OfEmail(email) {
+      const emailLowercase = email.toLowerCase();
+      const md5Hash = CryptoJS.MD5(emailLowercase).toString();
+      return md5Hash;
+    }
+
+    async function loginInit() {
+      const jn_user_name = document.querySelector(".jn_user-name");
+      const user_avatar = document.querySelector(".user-avatar"); //头像
+      const jn_user_info = document.querySelector(".name-info"); //用户信息
+      const jn_user_btns = document.querySelector(".jn_user-btns"); //登录注册按钮
+      const Dropdown_menu = document.querySelector(".Dropdown-menu"); //下拉菜单
+      const userInfo = await getUser(); // 注意：需在 async 函数中使用
+      if (userInfo && userInfo.username) {
+        jn_user_info.style.display = "block";
+        jn_user_btns.style.display = "none";
+        if (userInfo.nickname) {
+          jn_user_name.innerHTML = userInfo.nickname;
+        } else if (userInfo.username) {
+          jn_user_name.innerHTML = userInfo.username;
+        }
+        let avatarUrl = userInfo.avatar;
+        if (avatarUrl) {
+          avatarUrl += `?id=${userInfo.id}&t=${userInfo.id}`; // 添加查询参数
+        } else {
+          avatarUrl = `https://cravatar.cn/avatar/${getMd5OfEmail(
+          userInfo.email
+        )}?d=retro&f=y`;
+        }
+        user_avatar.src = avatarUrl;
+        user_avatar.style.backgroundImage = `url(${avatarUrl})`;
+        user_avatar.style.backgroundSize = "cover";
+      } else {
+        jn_user_info.style.display = "none";
+        jn_user_btns.style.display = "block";
+      }
+      jn_user_info.addEventListener("click", function (event) {
+        event.stopPropagation();
+        Dropdown_menu.style.display =
+          Dropdown_menu.style.display === "none" ? "block" : "none";
+      });
+    }
+    loginInit();
+  }
+</script>
+<!-- 增加css -->
+<style>
+  .document-user-info .login-con {
+    display: flex;
+    align-items: center;
+    margin-left: 30px;
+    font-size: 15px;
+    color: #303133;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .document-user-info .jn_user-avt {
+    background: #99abbe;
+    border-radius: 30px;
+    width: 31px;
+    height: 31px;
+    position: relative;
+    margin-right: 5px;
+    overflow: hidden;
+  }
+
+  .document-user-info .jn_user-avt img {
+    width: 100%;
+  }
+
+  .document-user-info .jn_user-name {
+    max-width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+  }
+
+  .document-user-info .jn_user-name :hover {
+    opacity: 0.9;
+  }
+
+  .document-user-info .jn_user-btn {
+    padding: 0 10px;
+    cursor: pointer;
+  }
+
+  .document-user-info .jn_user-btn:hover {
+    opacity: 0.9;
+  }
+
+  .document-user-info .Dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1030;
+    min-width: 160px;
+    padding: 8px 0;
+    margin: 7px 0;
+    background: #002d5c;
+    border: 1px solid #121212;
+    border-radius: 4px;
+    box-shadow: 0 2px 6px #013972;
+    list-style: none;
+    text-align: left;
+    color: #111;
+    font-size: 15px;
+    line-height: 1.5;
+    overflow: hidden;
+  }
+
+  .document-user-info .Dropdown-menu a {
+    display: block;
+    color: #b9b9b9;
+    padding-left: 30px;
+  }
+
+  .document-user-info .Dropdown-menu:hover {
+    text-decoration: none;
+  }
+
+  .document-user-info .item-profile a {
+    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACi0lEQVRYR+2Wy3EbMQyGAc6Ie4xcQeQKIlcQ6SKuTokriFOBlQqcDixXEKuC6LbkXmRVEKWCqAOvr5oRkYGHzDDrfXDXyfhiHLlc4iPwAwTCCxu+sH+IBsiybCSEuCSiMSKOiahAxB0A7Iho4tcAYA8A6yRJVtPptGi7YBSA1nqBiNcAsOLDrbWFEOICAD7VOSCivRDifDabMWSttQIYY74CAANM/GF5nl8Q0be22/F3RDxrgmgEyLJsIoRYh85dKn4AwDAGgCORJMlZXToaAbTW7HynlOIoPJox5rYp9FVQRPQlTdNl1bdagM1mMzwcDvfW2tP5fM7C8gAsrDcxtw/2bJVSk04ALvwbpdRfkMYY6uictxdKqZM+AN/DH31UegBA+SL+jNoUOLH9klKehALqGYHuKXCC2yHicjabsfAezQnzQ5coENFNmqaLTingzVzv1tqrsIy8NjoAPFhrx6GQw39bG5G78Vsp5dSnQmu9RMTLGAhE/BxGsPxPK4ATHtcwh31hrd3ybWL6QVP9t4qwTGqM+QgA3JDeBd8e+DECgPfhGhHdEdGiLuydUlAV5jzPx4PBYB9WB68dj8cixumzAWJyH7unVQP+INcXONQjABi7dZ4FeC4Y8kzAswAi7ololyTJ9p/MA+wYEa8Qkd//n5xfdh5RBfxmLKWUN00gjRFw7/41EW29qJwYeRaIfo6bBpNaAD90hHXcZRApaYDTNK0aTCoBgm53rpRau67IcyAPIn2tkFKeltNRCaC1ZjHdlgYRrvewB/QBWSmlWEt/7AmACzOLZ+Rpe/T/WrjygPMEwBjDKr/nV9CfwgIEAO6Ez7Zye64DeLajhgPuwtRGN6L/RfQK8BqB38AuVjD+RLVIAAAAAElFTkSuQmCC") no-repeat left center;
+    background-size: auto 80%;
+  }
+
+  .document-user-info .Dropdown-menu li {
+    padding: 8px 15px;
+    display: block;
+    width: 100%;
+    color: #b9b9b9;
+    text-align: left;
+    font-size: 15px;
+    font-weight: normal;
+    text-decoration: none;
+  }
+
+  .document-user-info .Dropdown-menu li:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+
+  @media screen and (max-width: 960px) {
+    .document-user-info {
+      display: none !important;
+    }
+  }
+</style></div>
+      
+        <div class="navbar-item"><div class="document-nav-lang">
+  <div class="document-menu-lang">
+    <span tabindex="0" class="lang-txt" style="
+        background-image: url('https://kendryte.com/img/ch-flag.a61145a4.svg');
+      ">中文 | English</span>
+    <div class="jn_lan-list">
+      <a class="jn_lan-item cn">简体中文</a>
+      <a class="jn_lan-item eng">English</a>
+    </div>
+  </div>
+  <div class="document-menu-lang-mobile">
+    <span class="lang-zh cn">简体中文</span> | <span class="lang-en eng">English</span>
+  </div>
+</div>
+<style>
+  .document-menu-lang-mobile {
+    display: none;
+  }
+
+  .document-menu-lang-mobile .lang-con {
+    text-align: center;
+  }
+
+  .document-menu-lang-mobile.lang-zh,
+  .document-menu-lang-mobile.lang-en {
+    color: #2980b9;
+    cursor: pointer;
+  }
+
+  .document-menu-lang {
+    padding: 0 8px;
+    position: relative;
+    font-size: 13px;
+    border: 1px solid #c0c4cc;
+    border-radius: 10px;
+    color: #303133;
+  }
+
+  .document-menu-lang .lang-txt {
+    padding-right: 28px;
+    background: url("https://kendryte.com/img/ch-flag.a61145a4.svg") no-repeat right 50%;
+    background-size: auto 68%;
+    display: block;
+    cursor: pointer;
+  }
+
+  .document-menu-lang .jn_lan-list {
+    display: none;
+    text-align: center;
+    position: absolute;
+    background: #fff;
+    border-radius: 5px;
+    padding: 10px 20px;
+    flex-wrap: wrap;
+    top: 43px;
+    left: 50%;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    border: 1px solid #ebeef5;
+    transform: translateX(-50%);
+  }
+
+  .document-menu-lang .jn_lan-list a {
+    color: #303133;
+  }
+
+  .document-menu-lang .jn_lan-item.cn {
+    background: url("https://kendryte.com/img/ch-flag.a61145a4.svg") no-repeat 0;
+  }
+
+  .document-menu-lang .jn_lan-item {
+    font-size: 15px;
+    cursor: pointer;
+    padding-left: 32px;
+    color: #606266;
+    width: 100%;
+    line-height: 3;
+    display: block;
+    white-space: nowrap;
+    background-size: auto 40%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .document-menu-lang .jn_lan-item.eng {
+    background: url("https://kendryte.com/img/en-flag.2d05326c.svg") no-repeat 0;
+  }
+
+  .document-menu-lang .jn_lan-list::after {
+    content: "";
+    border-width: 8px;
+    border-style: solid;
+    border-color: transparent transparent #fff transparent;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translate(-50%, -100%);
+  }
+
+  .document-menu-lang-mobile {
+    display: none;
+    border: 1px solid #c0c4cc;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    padding: 0 8px;
+  }
+
+  @media screen and (max-width: 960px) {
+    .document-menu-lang-mobile {
+      display: block;
+    }
+
+    .document-menu-lang {
+      display: none;
+    }
+  }
+</style>
+<script>
+  if (!window._LANGUAGE_TOGGLE_LOADED) {
+    window._LANGUAGE_TOGGLE_LOADED = true
+    const docsUrlList = {
+      k230_docs: {
+        zh: "https://www.kendryte.com/k230/zh/dev/index.html",
+        en: "https://www.kendryte.com/k230/en/dev/index.html",
+      },
+      k230_canmv_docs: {
+        zh: "https://www.kendryte.com/k230_canmv/zh/main/index.html",
+        en: "https://www.kendryte.com/k230_canmv/en/main/index.html",
+      },
+      rtt: {
+        zh: "https://www.kendryte.com/k230/zh/rtt/dev/index_rtt_only.html",
+        en: "https://www.kendryte.com/k230/en/rtt/dev/index_rtt_only.html",
+      },
+      k230_ai_docs: {
+        zh: "https://www.kendryte.com/ai_docs/zh/main/index.html",
+        en: "https://www.kendryte.com/ai_docs/en/main/index.html",
+      },
+      rtos: {
+        zh: "https://www.kendryte.com/k230_rtos/zh/main/index.html",
+        en: "https://www.kendryte.com/k230_rtos/en/main/index.html",
+      },
+    };
+    const whichDocs = () => {
+      if (
+        location.href.includes("/k230_canmv/zh/") ||
+        location.href.includes("/k230_canmv/en/")
+      ) {
+        return "k230_canmv_docs";
+      } else if (
+        location.href.includes("/k230/k230_rtos_sdk_docs/") ||
+        location.href.includes("/k230/k230_rtos_sdk_docs/")
+      ) {
+        return "rtos";
+      } else if (
+        location.href.includes("/k230/zh/") ||
+        location.href.includes("/k230/en/")
+      ) {
+        return "k230_docs";
+      } else if (
+        location.href.includes("/ai_docs/zh/") ||
+        location.href.includes("/ai_docs/en/")
+      ) {
+        return "k230_ai_docs";
+      } else {
+        return "rtos";
+      }
+      return null;
+    };
+
+    function setupLanguageToggle() {
+      function handleLanguageSwitch(language) {
+        const langButton = document.querySelector(".lang-txt");
+        const flagUrl =
+          language === "cn" ?
+          "https://kendryte.com/img/ch-flag.a61145a4.svg" :
+          "https://kendryte.com/img/en-flag.2d05326c.svg";
+        langButton.style.backgroundImage = `url('${flagUrl}')`;
+        const docsKey = whichDocs();
+        if (docsKey && docsUrlList[docsKey]) {
+          location.href = docsUrlList[docsKey][language === "cn" ? "zh" : "en"];
+        }
+        langList.style.display = "none";
+      }
+
+      // 监听整个document的点击事件
+      document.addEventListener("click", function (event) {
+        const langList = document.querySelector(".jn_lan-list");
+        const target = event.target;
+        if (target.closest(".lang-txt")) {
+          langList.style.display =
+            langList.style.display === "flex" ? "none" : "flex";
+        }
+        if (target.closest(".cn")) {
+          console.log("点击了中文");
+          handleLanguageSwitch("cn");
+          return;
+        }
+        if (target.closest(".eng")) {
+          console.log("点击了eng");
+          handleLanguageSwitch("eng");
+          return;
+        }
+      });
+    }
+    // 初始化语言切换功能
+    document.addEventListener("DOMContentLoaded", setupLanguageToggle);
+  }
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><div class="document-navbar-nav">
+  <span class="nav-item"><a href="/zh/products">产品中心</a></span>
+  <span class="nav-item md-none sm-show"
+    ><a href="/zh/resource">资料下载</a></span
+  >
+  <span class="nav-item active"><a href="/zh/document">文档中心</a></span>
+  <span class="nav-item md-none sm-show"
+    ><a href="/zh/model/library">应用下载</a></span
+  >
+  <span class="nav-item md-none sm-show"
+    ><a href="/zh/training/start">模型训练</a></span
+  >
+  <span class="nav-item md-none lg-none sm-show"
+    ><a href="/zh/blog">博客</a></span
+  >
+  <span class="nav-item md-none sm-show"
+    ><a href="/zh/coursecenter">课程中心</a></span
+  >
+  <!-- 添加点击事件 -->
+  <span class="nav-item bbs" onclick="goBbs()"
+    >问答社区
+    <img
+      src="https://www.kendryte.com/img/hot.ebb7d69e.svg"
+      style="transform: translateY(-50%)"
+      alt=""
+  /></span>
+</div>
+<!-- 写样式 -->
+<style>
+  .document-navbar-nav .nav-item {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    margin-right: 20px;
+    cursor: pointer;
+  }
+
+  .document-navbar-nav .nav-item a {
+    color: #303133;
+  }
+
+  .document-navbar-nav .nav-item a:hover {
+    color: #66819d;
+  }
+
+  .document-navbar-nav .active a {
+    color: #002d5c;
+    font-weight: 700;
+  }
+
+  .document-navbar-nav .bbs {
+    color: #d12d26;
+  }
+
+  .document-navbar-nav .bbs:hover {
+    color: rgb(231, 100, 100);
+  }
+
+  @media screen and (max-width: 1200px) {
+    .document-navbar-nav .md-none {
+      display: none !important;
+    }
+  }
+
+  @media screen and (max-width: 960px) {
+    .document-navbar-nav .nav-item {
+      display: block !important;
+    }
+    .document-user-info {
+      display: none !important;
+    }
+  }
+  @media screen and (max-width: 1450px) {
+    .lg-none {
+      display: none !important;
+    }
+  }
+</style>
+<script>
+  function goBbs() {
+    location.href = `/answer/`;
+  }
+</script></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><div class="document-user-info">
+  <div class="name-info" onclick="(e) => showDropDown(e)">
+    <div class="login-con">
+      <span class="user-avatar jn_user-avt"></span>
+      <div class="jn_user-name">
+        <span></span>
+      </div>
+      <ul class="Dropdown-menu" style="display: none">
+        <li class="item-profile">
+          <a class="Button-label" href="/user">个人资料</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="login-con jn_user-btns">
+    <a class="jn_user-btn" onclick="goLogin()">登录</a>
+    <a class="jn_user-btn" onclick="goRegister()">注册</a>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  if (!window._LOGIN_LOADED) {
+    console.log("1111111111，header login.js loaded");
+    window._LOGIN_LOADED = true;
+
+    function goLogin() {
+      const currentUser = JSON.parse(sessionStorage.getItem("user"));
+      if (currentUser && currentUser.id) {
+        return;
+      }
+      location.href = "/ssoLogin/?website=" + location.href;
+    }
+
+    function goUser(event) {
+      event.stopPropagation();
+      location.href = "/zh/user";
+    }
+
+    function goRegister() {
+      const currentUser = JSON.parse(sessionStorage.getItem("user"));
+      if (currentUser && currentUser.id) {
+        return;
+      }
+      location.href = "/ssoRegister/?website=" + location.href;
+    }
+    async function getUser() {
+      const cachedUser = sessionStorage.getItem("user");
+      if (cachedUser) {
+        return JSON.parse(cachedUser);
+      }
+      // 异步请求数据
+      try {
+        const res = await axios.get("/api/user");
+	if(!res.data.username) return false;
+        sessionStorage.setItem("user", JSON.stringify(res.data));
+        return res.data;
+      } catch (error) {
+        console.error("获取用户信息失败", error);
+        return null; // 或 throw error 让调用方处理
+      }
+    }
+
+    function getMd5OfEmail(email) {
+      const emailLowercase = email.toLowerCase();
+      const md5Hash = CryptoJS.MD5(emailLowercase).toString();
+      return md5Hash;
+    }
+
+    async function loginInit() {
+      const jn_user_name = document.querySelector(".jn_user-name");
+      const user_avatar = document.querySelector(".user-avatar"); //头像
+      const jn_user_info = document.querySelector(".name-info"); //用户信息
+      const jn_user_btns = document.querySelector(".jn_user-btns"); //登录注册按钮
+      const Dropdown_menu = document.querySelector(".Dropdown-menu"); //下拉菜单
+      const userInfo = await getUser(); // 注意：需在 async 函数中使用
+      if (userInfo && userInfo.username) {
+        jn_user_info.style.display = "block";
+        jn_user_btns.style.display = "none";
+        if (userInfo.nickname) {
+          jn_user_name.innerHTML = userInfo.nickname;
+        } else if (userInfo.username) {
+          jn_user_name.innerHTML = userInfo.username;
+        }
+        let avatarUrl = userInfo.avatar;
+        if (avatarUrl) {
+          avatarUrl += `?id=${userInfo.id}&t=${userInfo.id}`; // 添加查询参数
+        } else {
+          avatarUrl = `https://cravatar.cn/avatar/${getMd5OfEmail(
+          userInfo.email
+        )}?d=retro&f=y`;
+        }
+        user_avatar.src = avatarUrl;
+        user_avatar.style.backgroundImage = `url(${avatarUrl})`;
+        user_avatar.style.backgroundSize = "cover";
+      } else {
+        jn_user_info.style.display = "none";
+        jn_user_btns.style.display = "block";
+      }
+      jn_user_info.addEventListener("click", function (event) {
+        event.stopPropagation();
+        Dropdown_menu.style.display =
+          Dropdown_menu.style.display === "none" ? "block" : "none";
+      });
+    }
+    loginInit();
+  }
+</script>
+<!-- 增加css -->
+<style>
+  .document-user-info .login-con {
+    display: flex;
+    align-items: center;
+    margin-left: 30px;
+    font-size: 15px;
+    color: #303133;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .document-user-info .jn_user-avt {
+    background: #99abbe;
+    border-radius: 30px;
+    width: 31px;
+    height: 31px;
+    position: relative;
+    margin-right: 5px;
+    overflow: hidden;
+  }
+
+  .document-user-info .jn_user-avt img {
+    width: 100%;
+  }
+
+  .document-user-info .jn_user-name {
+    max-width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+  }
+
+  .document-user-info .jn_user-name :hover {
+    opacity: 0.9;
+  }
+
+  .document-user-info .jn_user-btn {
+    padding: 0 10px;
+    cursor: pointer;
+  }
+
+  .document-user-info .jn_user-btn:hover {
+    opacity: 0.9;
+  }
+
+  .document-user-info .Dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1030;
+    min-width: 160px;
+    padding: 8px 0;
+    margin: 7px 0;
+    background: #002d5c;
+    border: 1px solid #121212;
+    border-radius: 4px;
+    box-shadow: 0 2px 6px #013972;
+    list-style: none;
+    text-align: left;
+    color: #111;
+    font-size: 15px;
+    line-height: 1.5;
+    overflow: hidden;
+  }
+
+  .document-user-info .Dropdown-menu a {
+    display: block;
+    color: #b9b9b9;
+    padding-left: 30px;
+  }
+
+  .document-user-info .Dropdown-menu:hover {
+    text-decoration: none;
+  }
+
+  .document-user-info .item-profile a {
+    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACi0lEQVRYR+2Wy3EbMQyGAc6Ie4xcQeQKIlcQ6SKuTokriFOBlQqcDixXEKuC6LbkXmRVEKWCqAOvr5oRkYGHzDDrfXDXyfhiHLlc4iPwAwTCCxu+sH+IBsiybCSEuCSiMSKOiahAxB0A7Iho4tcAYA8A6yRJVtPptGi7YBSA1nqBiNcAsOLDrbWFEOICAD7VOSCivRDifDabMWSttQIYY74CAANM/GF5nl8Q0be22/F3RDxrgmgEyLJsIoRYh85dKn4AwDAGgCORJMlZXToaAbTW7HynlOIoPJox5rYp9FVQRPQlTdNl1bdagM1mMzwcDvfW2tP5fM7C8gAsrDcxtw/2bJVSk04ALvwbpdRfkMYY6uictxdKqZM+AN/DH31UegBA+SL+jNoUOLH9klKehALqGYHuKXCC2yHicjabsfAezQnzQ5coENFNmqaLTingzVzv1tqrsIy8NjoAPFhrx6GQw39bG5G78Vsp5dSnQmu9RMTLGAhE/BxGsPxPK4ATHtcwh31hrd3ybWL6QVP9t4qwTGqM+QgA3JDeBd8e+DECgPfhGhHdEdGiLuydUlAV5jzPx4PBYB9WB68dj8cixumzAWJyH7unVQP+INcXONQjABi7dZ4FeC4Y8kzAswAi7ololyTJ9p/MA+wYEa8Qkd//n5xfdh5RBfxmLKWUN00gjRFw7/41EW29qJwYeRaIfo6bBpNaAD90hHXcZRApaYDTNK0aTCoBgm53rpRau67IcyAPIn2tkFKeltNRCaC1ZjHdlgYRrvewB/QBWSmlWEt/7AmACzOLZ+Rpe/T/WrjygPMEwBjDKr/nV9CfwgIEAO6Ez7Zye64DeLajhgPuwtRGN6L/RfQK8BqB38AuVjD+RLVIAAAAAElFTkSuQmCC") no-repeat left center;
+    background-size: auto 80%;
+  }
+
+  .document-user-info .Dropdown-menu li {
+    padding: 8px 15px;
+    display: block;
+    width: 100%;
+    color: #b9b9b9;
+    text-align: left;
+    font-size: 15px;
+    font-weight: normal;
+    text-decoration: none;
+  }
+
+  .document-user-info .Dropdown-menu li:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+
+  @media screen and (max-width: 960px) {
+    .document-user-info {
+      display: none !important;
+    }
+  }
+</style></div>
+        
+          <div class="navbar-item"><div class="document-nav-lang">
+  <div class="document-menu-lang">
+    <span tabindex="0" class="lang-txt" style="
+        background-image: url('https://kendryte.com/img/ch-flag.a61145a4.svg');
+      ">中文 | English</span>
+    <div class="jn_lan-list">
+      <a class="jn_lan-item cn">简体中文</a>
+      <a class="jn_lan-item eng">English</a>
+    </div>
+  </div>
+  <div class="document-menu-lang-mobile">
+    <span class="lang-zh cn">简体中文</span> | <span class="lang-en eng">English</span>
+  </div>
+</div>
+<style>
+  .document-menu-lang-mobile {
+    display: none;
+  }
+
+  .document-menu-lang-mobile .lang-con {
+    text-align: center;
+  }
+
+  .document-menu-lang-mobile.lang-zh,
+  .document-menu-lang-mobile.lang-en {
+    color: #2980b9;
+    cursor: pointer;
+  }
+
+  .document-menu-lang {
+    padding: 0 8px;
+    position: relative;
+    font-size: 13px;
+    border: 1px solid #c0c4cc;
+    border-radius: 10px;
+    color: #303133;
+  }
+
+  .document-menu-lang .lang-txt {
+    padding-right: 28px;
+    background: url("https://kendryte.com/img/ch-flag.a61145a4.svg") no-repeat right 50%;
+    background-size: auto 68%;
+    display: block;
+    cursor: pointer;
+  }
+
+  .document-menu-lang .jn_lan-list {
+    display: none;
+    text-align: center;
+    position: absolute;
+    background: #fff;
+    border-radius: 5px;
+    padding: 10px 20px;
+    flex-wrap: wrap;
+    top: 43px;
+    left: 50%;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    border: 1px solid #ebeef5;
+    transform: translateX(-50%);
+  }
+
+  .document-menu-lang .jn_lan-list a {
+    color: #303133;
+  }
+
+  .document-menu-lang .jn_lan-item.cn {
+    background: url("https://kendryte.com/img/ch-flag.a61145a4.svg") no-repeat 0;
+  }
+
+  .document-menu-lang .jn_lan-item {
+    font-size: 15px;
+    cursor: pointer;
+    padding-left: 32px;
+    color: #606266;
+    width: 100%;
+    line-height: 3;
+    display: block;
+    white-space: nowrap;
+    background-size: auto 40%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .document-menu-lang .jn_lan-item.eng {
+    background: url("https://kendryte.com/img/en-flag.2d05326c.svg") no-repeat 0;
+  }
+
+  .document-menu-lang .jn_lan-list::after {
+    content: "";
+    border-width: 8px;
+    border-style: solid;
+    border-color: transparent transparent #fff transparent;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translate(-50%, -100%);
+  }
+
+  .document-menu-lang-mobile {
+    display: none;
+    border: 1px solid #c0c4cc;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    padding: 0 8px;
+  }
+
+  @media screen and (max-width: 960px) {
+    .document-menu-lang-mobile {
+      display: block;
+    }
+
+    .document-menu-lang {
+      display: none;
+    }
+  }
+</style>
+<script>
+  if (!window._LANGUAGE_TOGGLE_LOADED) {
+    window._LANGUAGE_TOGGLE_LOADED = true
+    const docsUrlList = {
+      k230_docs: {
+        zh: "https://www.kendryte.com/k230/zh/dev/index.html",
+        en: "https://www.kendryte.com/k230/en/dev/index.html",
+      },
+      k230_canmv_docs: {
+        zh: "https://www.kendryte.com/k230_canmv/zh/main/index.html",
+        en: "https://www.kendryte.com/k230_canmv/en/main/index.html",
+      },
+      rtt: {
+        zh: "https://www.kendryte.com/k230/zh/rtt/dev/index_rtt_only.html",
+        en: "https://www.kendryte.com/k230/en/rtt/dev/index_rtt_only.html",
+      },
+      k230_ai_docs: {
+        zh: "https://www.kendryte.com/ai_docs/zh/main/index.html",
+        en: "https://www.kendryte.com/ai_docs/en/main/index.html",
+      },
+      rtos: {
+        zh: "https://www.kendryte.com/k230_rtos/zh/main/index.html",
+        en: "https://www.kendryte.com/k230_rtos/en/main/index.html",
+      },
+    };
+    const whichDocs = () => {
+      if (
+        location.href.includes("/k230_canmv/zh/") ||
+        location.href.includes("/k230_canmv/en/")
+      ) {
+        return "k230_canmv_docs";
+      } else if (
+        location.href.includes("/k230/k230_rtos_sdk_docs/") ||
+        location.href.includes("/k230/k230_rtos_sdk_docs/")
+      ) {
+        return "rtos";
+      } else if (
+        location.href.includes("/k230/zh/") ||
+        location.href.includes("/k230/en/")
+      ) {
+        return "k230_docs";
+      } else if (
+        location.href.includes("/ai_docs/zh/") ||
+        location.href.includes("/ai_docs/en/")
+      ) {
+        return "k230_ai_docs";
+      } else {
+        return "rtos";
+      }
+      return null;
+    };
+
+    function setupLanguageToggle() {
+      function handleLanguageSwitch(language) {
+        const langButton = document.querySelector(".lang-txt");
+        const flagUrl =
+          language === "cn" ?
+          "https://kendryte.com/img/ch-flag.a61145a4.svg" :
+          "https://kendryte.com/img/en-flag.2d05326c.svg";
+        langButton.style.backgroundImage = `url('${flagUrl}')`;
+        const docsKey = whichDocs();
+        if (docsKey && docsUrlList[docsKey]) {
+          location.href = docsUrlList[docsKey][language === "cn" ? "zh" : "en"];
+        }
+        langList.style.display = "none";
+      }
+
+      // 监听整个document的点击事件
+      document.addEventListener("click", function (event) {
+        const langList = document.querySelector(".jn_lan-list");
+        const target = event.target;
+        if (target.closest(".lang-txt")) {
+          langList.style.display =
+            langList.style.display === "flex" ? "none" : "flex";
+        }
+        if (target.closest(".cn")) {
+          console.log("点击了中文");
+          handleLanguageSwitch("cn");
+          return;
+        }
+        if (target.closest(".eng")) {
+          console.log("点击了eng");
+          handleLanguageSwitch("eng");
+          return;
+        }
+      });
+    }
+    // 初始化语言切换功能
+    document.addEventListener("DOMContentLoaded", setupLanguageToggle);
+  }
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">K230 Linux+RT-Smart SDK</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">搜索</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../CanMV_K230_%E6%95%99%E7%A8%8B.html">CanMV K230 教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../K230_SDK_%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E.html">K230 SDK使用说明</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../index_normal_tutorial.html">K230 SDK 实用教程</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_%E5%AE%9E%E6%88%98%E5%9F%BA%E7%A1%80%E7%AF%87_hello_world.html">K230 实战基础篇 - hello world</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_AI%E5%AE%9E%E6%88%98_HHB%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E5%B7%A5%E5%85%B7.html">K230 AI实战 - HHB神经网络模型部署工具</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_GPU%E5%BA%94%E7%94%A8%E5%AE%9E%E6%88%98.html">K230 GPU 应用实战 - VGLite 绘制酷炫图形</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_GUI%E5%AE%9E%E6%88%98_LVGL%E7%A7%BB%E6%A4%8D%E6%95%99%E7%A8%8B.html">K230 GUI实战 - LVGL移植教程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_RVV%E5%AE%9E%E6%88%98.html">K230 RVV实战</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_USB%E5%BA%94%E7%94%A8%E5%AE%9E%E6%88%98_UVC%E4%BC%A0%E8%BE%93YUV%E5%8F%8A%E7%BC%96%E7%A0%81%E7%A0%81%E6%B5%81.html">K230 USB应用实战-UVC传输YUV及编码码流</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_%E5%9B%BE%E5%83%8F%E5%AE%9E%E6%88%98_%E5%BC%80%E6%9C%BA%E8%A7%86%E9%A2%91%E5%92%8C%E5%BC%80%E6%9C%BAlogo.html">K230 图像实战 - 开机视频和开机logo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_%E7%BC%96%E7%A0%81%E5%AE%9E%E6%88%98_rtsp_server%E6%90%AD%E5%BB%BA%E5%92%8C%E6%8E%A8%E6%B5%81.html">K230 编码实战 - rtsp sever搭建和推流</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_%E9%9F%B3%E9%A2%91%E5%AE%9E%E6%88%98_%E9%9F%B3%E9%A2%91%E9%87%87%E9%9B%86_%E6%92%AD%E6%94%BE%E5%92%8C%E7%BC%96%E8%A7%A3%E7%A0%81.html">K230 音频实战 - 音频采集、播放和编解码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/business_poc/K230_%E5%9C%BA%E6%99%AF%E5%AE%9E%E6%88%98_%E6%99%BA%E8%83%BD%E9%97%A8%E9%94%81.html">K230 场景实战-智能门锁POC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/business_poc/K230_%E5%9C%BA%E6%99%AF%E5%AE%9E%E6%88%98_%E6%99%BA%E8%83%BD%E9%97%A8%E9%94%81_OV9286.html">K230 场景实战-智能门锁POC-3D结构光</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/business_poc/K230_%E5%9C%BA%E6%99%AF%E5%AE%9E%E6%88%98_%E7%8C%AB%E7%9C%BC.html">K230 场景实战-猫眼POC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/business_poc/K230_%E5%9C%BA%E6%99%AF%E5%AE%9E%E6%88%98_%E8%AF%8D%E5%85%B8%E7%AC%94.html">K230 场景实战-词典笔POC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/business_poc/K230_%E5%9C%BA%E6%99%AF%E5%AE%9E%E6%88%98_dpu%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA.html">K230 场景实战-dpu深度相机POC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/business_poc/k230_%E5%9C%BA%E6%99%AF%E5%AE%9E%E6%88%98_ahd_sensor%E7%A7%BB%E6%A4%8D.html">K230 ahd sensor 移植参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/ai_demos/K230_AI_Demo%E4%BB%8B%E7%BB%8D.html">K230 AI Demo介绍</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/fancy_poc/K230_Fancy_Poc%E4%BB%8B%E7%BB%8D.html">K230 Fancy POC介绍</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/K230_SDK_CanMV_Board_Demo%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 SDK CanMV Board Demo使用指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/K230_SDK_EVB_Board_Demo%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 SDK EVB Board Demo使用指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/K230D_SDK_Zero_Board_Demo%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 SDK CanMV Board Demo使用指南</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../index_dev_guide.html">K230 SDK 开发指南</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_RVV%E4%BC%98%E5%8C%96%E6%80%A7%E8%83%BD%E8%AF%B4%E6%98%8E.html">K230 RVV优化性能说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_%E5%86%85%E5%AD%98%E4%BC%98%E5%8C%96%E6%8C%87%E5%8D%97.html">K230 内存优化指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_%E5%86%85%E5%AD%98%E5%8D%A0%E7%94%A8%E5%88%86%E6%9E%90%E6%8C%87%E5%8D%97.html">K230 内存分析指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_%E5%90%AF%E5%8A%A8%E4%BC%98%E5%8C%96%E6%8C%87%E5%8D%97.html">K230 启动优化指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_%E5%A4%A7%E5%B0%8F%E6%A0%B8%E9%80%9A%E8%AE%AF_sharefs%E7%94%A8%E6%B3%95%E4%BB%8B%E7%BB%8D.html">K230大小核通讯Sharefs使用简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../middleware/K230_openblas_%E5%BC%80%E5%8F%91%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 OpenBLAS开发指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../middleware/K230_opencv_%E5%BC%80%E5%8F%91%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 OpenCV开发指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="K230_Camera_Sensor%E9%80%82%E9%85%8D%E6%8C%87%E5%8D%97.html">K230 Camera Sensor适配指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="K230_PM%E6%A1%86%E6%9E%B6%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230_功耗管理适配指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="K230_VICAP_SENSOR_%E5%8F%82%E6%95%B0%E5%88%86%E5%8C%BA%E5%8F%82%E8%80%83.html">K230 VICAP SENSOR 参数分区参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="K230_LCD%E9%80%82%E9%85%8D%E6%8C%87%E5%8D%97.html">K230 LCD适配指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../osdrv/K230_PMU_%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 PMU使用指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../osdrv/K230_lpddr4_lpddr3%E9%A9%B1%E5%8A%A8%E9%80%82%E9%85%8D%E6%8C%87%E5%8D%97.html">K230 lpddr3/lpddr4驱动适配指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../osdrv/K230_SDK_IoT_WiFi_AiW4211LV10_%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 SDK IoT WiFi AiW4211LV10使用指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../osdrv/K230_SDK_IoT_WiFi_AiW4211LV10_%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97.html">K230 SDK IoT WiFi AiW4211LV10驱动开发指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ai/K230_nncase_%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97.html">K230 nncase开发指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../03_other/K230_SDK%E6%9B%B4%E6%96%B0nncase%E8%BF%90%E8%A1%8C%E6%97%B6%E5%BA%93%E6%8C%87%E5%8D%97.html">K230 SDK 更新nncase运行时库指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../03_other/K230_debian_ubuntu%E8%AF%B4%E6%98%8E.html">K230 debian ubuntu 说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pc/burntool/K230_SDK_Burntool%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 SDK Burntool使用指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pc/dewarp/K230_SDK_Dewarp%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 SDK Dewarp 使用指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pc/ISP_tuning/K230_ISP%E5%9B%BE%E5%83%8F%E8%B0%83%E4%BC%98%E6%8C%87%E5%8D%97.html">K230 ISP图像调优指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pc/ISP_tuning/K230_ISP%E5%88%9D%E5%A7%8B%E5%8C%96%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97.html">K230 ISP初始化配置指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pc/pqtools/K230_ISP_Tuning_Tool%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 ISP Tuning Tool使用指南</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../00_hardware/index.html">硬件</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../00_hardware/K230_DEMO_BOARD%E8%B5%84%E6%BA%90%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 DEMO BOARD 资源使用说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../00_hardware/K230_%E7%A1%AC%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%8C%87%E5%8D%97.html">K230 硬件设计指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../00_hardware/K230_datasheet.html">K230 Product Full Datasheet</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../../../index_api.html">K230 SDK API 参考</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../cdk/K230_%E6%A0%B8%E9%97%B4%E9%80%9A%E8%AE%AF_API%E5%8F%82%E8%80%83.html">K230核间通讯API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cdk/K230_%E7%B3%BB%E7%BB%9F%E6%8E%A7%E5%88%B6_MAPI%E5%8F%82%E8%80%83.html">K230系统控制MAPI参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../middleware/K230_%E5%A4%9A%E5%AA%92%E4%BD%93%E4%B8%AD%E9%97%B4%E4%BB%B6_API%E5%8F%82%E8%80%83.html">K230 多媒体中间件API参考</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">K230 DMA API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="K230_DPU_API%E5%8F%82%E8%80%83.html">K230 DPU API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="K230_FFT_API%E5%8F%82%E8%80%83.html">K230 FFT API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="K230_GPU_API%E5%8F%82%E8%80%83.html">K230 GPU API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="K230_SHA256_API%E5%8F%82%E8%80%83.html">K230 SHA256 API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="K230_VICAP_API%E5%8F%82%E8%80%83.html">K230 VICAP API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="K230_VICAP_SENSOR_%E5%8F%82%E6%95%B0%E5%88%86%E5%8C%BA%E5%8F%82%E8%80%83.html">K230 VICAP SENSOR 参数分区参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="K230_%E7%B3%BB%E7%BB%9F%E6%8E%A7%E5%88%B6_API%E5%8F%82%E8%80%83.html">K230系统控制API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="K230_%E8%A7%86%E9%A2%91%E7%BC%96%E8%A7%A3%E7%A0%81_API%E5%8F%82%E8%80%83.html">K230视频编解码API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="K230_%E8%A7%86%E9%A2%91%E8%BE%93%E5%87%BA_API%E5%8F%82%E8%80%83.html">K230视频输出API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="K230_%E9%9F%B3%E9%A2%91_API%E5%8F%82%E8%80%83.html">K230音频API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../osdrv/K230_DRM_API%E5%8F%82%E8%80%83.html">K230 DRM使用指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../osdrv/K230_%E5%A4%A7%E6%A0%B8%E4%BD%8E%E9%80%9F%E9%A9%B1%E5%8A%A8_API%E5%8F%82%E8%80%83.html">K230大核低速驱动API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../osdrv/K230_%E5%B0%8F%E6%A0%B8Linux%E9%A9%B1%E5%8A%A8_API%E5%8F%82%E8%80%83.html">K230小核Linux驱动API参考</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../index_faq.html">K230 常见问题解答</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../03_other/K230_SDK%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E8%A7%A3%E7%AD%94_C.html">K230 SDK 常见问题解答（C）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../03_other/K230_nncase%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E8%A7%A3%E7%AD%94.html">K230 nncase 常见问题解答</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../03_other/K230_AI_demo%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E8%A7%A3%E7%AD%94_C%2B%2B.html">K230 AI demo 常见问题解答（C++）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../03_other/K230_AI_Cube%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98.html">AI Cube常见问题解答</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../03_other/index.html">版本说明文档</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../03_other/K230_SDK_%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E.html">K230 SDK版本说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../03_other/K230_SDK_nncase%E7%89%88%E6%9C%AC%E5%AF%B9%E5%BA%94%E5%85%B3%E7%B3%BB.html">K230 SDK nncase版本对应关系</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item"><style>
+  .rst-versions {
+    color: #100e0e;
+    background: #eaebec;
+    font-family: Lato, proxima-nova, Helvetica Neue, Arial, sans-serif;
+    z-index: 400;
+    width: 100%;
+  }
+  .rst-versions.shift-up {
+    height: auto;
+    max-height: 100%;
+    overflow-y: scroll;
+  }
+  .rst-versions .rst-current-version {
+    padding: 12px;
+    background-color: #f3f4f5;
+    display: block;
+    text-align: right;
+    padding-left: 10px;
+    font-size: 90%;
+    cursor: pointer;
+    color: #27ae60;
+  }
+
+  .rst-versions .rst-other-versions dd {
+    display: inline-block;
+    margin: 0;
+  }
+  .rst-versions .rst-other-versions dd a {
+    display: inline-block;
+    padding: 6px;
+    color: #201919;
+    font-size: 12px;
+    text-decoration: none;
+  }
+  .rst-versions .rst-other-versions dd a:hover {
+    text-decoration-thickness: inherit;
+    color: #0d6efd;
+  }
+  .rst-versions .rst-other-versions {
+    font-size: 90%;
+    padding: 12px;
+    display: none;
+  }
+  .shift-up .rst-other-versions {
+    display: block;
+  }
+  .lang-con {
+    text-align: center;
+  }
+  .lang-zh,
+  .lang-en {
+    color: #2980b9;
+    cursor: pointer;
+  }
+</style>
+<div
+  class="rst-versions"
+  style="overflow: unset"
+  data-toggle="rst-versions"
+  role="note"
+  aria-label="versions"
+>
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    dev
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dt>Versions</dt>
+        <dd><a href="../../../../v1.0.1/index.html">v1.0.1</a></dd>
+        <dd><a href="../../../../v1.1/index.html">v1.1</a></dd>
+        <dd><a href="../../../../v1.2/index.html">v1.2</a></dd>
+        <dd><a href="../../../../v1.3/index.html">v1.3</a></dd>
+        <dd><a href="../../../../v1.4/index.html">v1.4</a></dd>
+        <dd><a href="../../../../v1.5/index.html">v1.5</a></dd>
+        <dd><a href="../../../../v1.6/01_software/board/mpp/K230_DMA_API参考.html">v1.6</a></dd>
+        <dd><a href="../../../../v1.7/01_software/board/mpp/K230_DMA_API参考.html">v1.7</a></dd>
+        <dd><a href="../../../../v1.8/01_software/board/mpp/K230_DMA_API参考.html">v1.8</a></dd>
+        <dd><a href="../../../../v1.9/01_software/board/mpp/K230_DMA_API参考.html">v1.9</a></dd>
+        <dd><a href="../../../../v2.0/01_software/board/mpp/K230_DMA_API参考.html">v2.0</a></dd>
+        <dd><a href="K230_DMA_API参考.html">dev</a></dd>
+        <dd><a href="../../../../main/01_software/board/mpp/K230_DMA_API参考.html">main</a></dd>
+    </dl>
+  </div>
+</div>
+<script>
+    document.querySelector('.rst-versions').addEventListener('click', function() {
+          var details = document.querySelector('.rst-versions');
+          details.classList.toggle('shift-up');
+      });
+</script></div>
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/kendryte/k230_docs" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="源码库"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/01_software/board/mpp/K230_DMA_API参考.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+    
+    <div class="admonition warning">
+      <p class="admonition-title">
+        
+          注意
+        
+      </p>
+      <p>
+        
+          这是最新开发分支配套的文档，可能包含已发布版本中尚未提供的功能。如果您要查看特定版本的文档，请使用左侧的下拉菜单并选择所需要的版本。
+        
+      </p>
+    </div>
+    
+
+    
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>K230 DMA API参考</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">概述</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">概述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">功能描述</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#gdma">gdma</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#sdma">sdma</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#api">API 参考</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dma">DMA 使用</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-mpi-dma-set-dev-attr">kd_mpi_dma_set_dev_attr</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-mpi-dma-get-dev-attr">kd_mpi_dma_get_dev_attr</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-mpi-dma-start-dev">kd_mpi_dma_start_dev</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-mpi-dma-stop-dev">kd_mpi_dma_stop_dev</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-mpi-dma-set-chn-attr">kd_mpi_dma_set_chn_attr</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-mpi-dma-get-chn-attr">kd_mpi_dma_get_chn_attr</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-mpi-dma-start-chn">kd_mpi_dma_start_chn</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-mpi-dma-stop-chn">kd_mpi_dma_stop_chn</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-mpi-dma-send-frame">kd_mpi_dma_send_frame</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-mpi-dma-get-frame">kd_mpi_dma_get_frame</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-mpi-dma-release-frame">kd_mpi_dma_release_frame</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">数据类型</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">公共数据类型</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#dma-max-dev-nums">DMA_MAX_DEV_NUMS</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#dma-max-chn-nums">DMA_MAX_CHN_NUMS</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-dma-mode-e">k_dma_mode_e</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-dma-dev-attr-t">k_dma_dev_attr_t</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-dma-chn-attr-u">k_dma_chn_attr_u</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-video-frame-info">k_video_frame_info</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-video-frame">k_video_frame</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">gdma 通道数据类型</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#gdma-max-chn-nums">GDMA_MAX_CHN_NUMS</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-gdma-rotation-e">k_gdma_rotation_e</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-pixel-format-dma-e">k_pixel_format_dma_e</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-gdma-chn-attr-t">k_gdma_chn_attr_t</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">sdma 通道数据类型</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#sdma-max-chn-nums">SDMA_MAX_CHN_NUMS</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-sdma-data-mode-e">k_sdma_data_mode_e</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-sdma-chn-attr-t">k_sdma_chn_attr_t</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">错误码</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">dma 错误码</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">调试信息</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">概述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">系统绑定</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">系统绑定调试信息</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#demo">demo 描述</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">非绑定模式 demo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">绑定模式 demo</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="k230-dma-api">
+<h1>K230 DMA API参考<a class="headerlink" href="#k230-dma-api" title="Link to this heading">#</a></h1>
+<section id="id1">
+<h2>概述<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<section id="id2">
+<h3>概述<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<p>GSDMA：DMA 全称 Direct Memory Access，即直接存储器访问，将数据从一个地址空间复制到另一个地址空间，提供在存储器和存储器之间的高速数据传输。GDMA 全称 Graphic Direct Memory Access，负责将内存中的图像复制到另一块内存中，同时可以完成图像的旋转和镜像等功能。SDMA 全称 System Direct Memory Access，负责将内存中的数据复制到另一块内存中，即传统意义上的 DMA。</p>
+<p>软件代码将 GSDMA 硬件的各个功能以 API 的方式提供给使用者使用，帮助用户快速实现图像传输、旋转、镜像、2D 功能及数据传输功能。同时实现了模块状态信息统计等功能。</p>
+</section>
+<section id="id3">
+<h3>功能描述<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<p>将 dma 硬件抽象为一个设备，八个通道，其中，通道 0~3 是 gdma 通道，通道 4~7 是 sdma 通道。</p>
+<section id="gdma">
+<h4>gdma<a class="headerlink" href="#gdma" title="Link to this heading">#</a></h4>
+<p>用户通过 gdma 来实现图像的旋转镜像工作，主要调用流程如下：</p>
+<ol class="arabic simple">
+<li><p>进行 dma 设备属性的配置；</p></li>
+<li><p>启动 dma 设备。在调用此函数以后驱动会自动申请 VB 空间作为目的地址的数据缓冲区；</p></li>
+<li><p>进行 gdma 通道属性的配置；</p></li>
+<li><p>启动 gdma 通道；</p></li>
+<li><p>用户在用户态申请 VB 空间作为源数据的数据缓冲区，调用 kd_mpi_dma_send_frame 发送数据的源地址给 gdma；</p></li>
+<li><p>驱动会将源地址中的数据传输到步骤二中申请的目的地址数据缓冲区中；</p></li>
+<li><p>用户调用 kd_mpi_dma_get_frame 获取目的地址中的数据地址。</p></li>
+</ol>
+</section>
+<section id="sdma">
+<h4>sdma<a class="headerlink" href="#sdma" title="Link to this heading">#</a></h4>
+<p>用户通过 sdma 来实现数据搬移工作，主要调用流程如下：</p>
+<ol class="arabic simple">
+<li><p>进行 dma 设备属性的配置；</p></li>
+<li><p>启动 dma 设备。在调用此函数以后驱动会自动申请 VB 空间作为目的地址的数据缓冲区；</p></li>
+<li><p>进行 sdma 通道属性的配置；</p></li>
+<li><p>启动 sdma 通道；</p></li>
+<li><p>用户在用户态申请 VB 空间作为源数据的数据缓冲区，调用 kd_mpi_dma_send_frame 发送数据的源地址给 sdma；</p></li>
+<li><p>驱动会将源地址中的数据传输到步骤二中申请的目的地址数据缓冲区中；</p></li>
+<li><p>用户调用 kd_mpi_dma_get_frame 获取目的地址中的数据地址。</p></li>
+</ol>
+</section>
+</section>
+</section>
+<section id="api">
+<h2>API 参考<a class="headerlink" href="#api" title="Link to this heading">#</a></h2>
+<section id="dma">
+<h3>DMA 使用<a class="headerlink" href="#dma" title="Link to this heading">#</a></h3>
+<p>该功能模块提供以下API：</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#kd-mpi-dma-set-dev-attr">kd_mpi_dma_set_dev_attr</a></p></li>
+<li><p><a class="reference internal" href="#kd-mpi-dma-get-dev-attr">kd_mpi_dma_get_dev_attr</a></p></li>
+<li><p><a class="reference internal" href="#kd-mpi-dma-start-dev">kd_mpi_dma_start_dev</a></p></li>
+<li><p><a class="reference internal" href="#kd-mpi-dma-stop-dev">kd_mpi_dma_stop_dev</a></p></li>
+<li><p><a class="reference internal" href="#kd-mpi-dma-set-chn-attr">kd_mpi_dma_set_chn_attr</a></p></li>
+<li><p><a class="reference internal" href="#kd-mpi-dma-get-chn-attr">kd_mpi_dma_get_chn_attr</a></p></li>
+<li><p><a class="reference internal" href="#kd-mpi-dma-start-chn">kd_mpi_dma_start_chn</a></p></li>
+<li><p><a class="reference internal" href="#kd-mpi-dma-stop-chn">kd_mpi_dma_stop_chn</a></p></li>
+<li><p><a class="reference internal" href="#kd-mpi-dma-send-frame">kd_mpi_dma_send_frame</a></p></li>
+<li><p><a class="reference internal" href="#kd-mpi-dma-get-frame">kd_mpi_dma_get_frame</a></p></li>
+<li><p><a class="reference internal" href="#kd-mpi-dma-release-frame">kd_mpi_dma_release_frame</a></p></li>
+</ul>
+<section id="kd-mpi-dma-set-dev-attr">
+<h4>kd_mpi_dma_set_dev_attr<a class="headerlink" href="#kd-mpi-dma-set-dev-attr" title="Link to this heading">#</a></h4>
+<p>【描述】</p>
+<p>配置 dma 设备属性</p>
+<p>【语法】</p>
+<p>k_s32 kd_mpi_dma_set_dev_attr(k_dma_dev_attr_t *attr);</p>
+<p>【参数】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>attr</p></td>
+<td><p>dma 设备属性结构体指针。</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>成功</p></td>
+</tr>
+<tr class="row-odd"><td><p>非0</p></td>
+<td><p>失败，其值参见错误码</p></td>
+</tr>
+</tbody>
+</table>
+<p>【芯片差异】</p>
+<p>无。</p>
+<p>【需求】</p>
+<ul class="simple">
+<li><p>头文件：mpi_dma_api.h</p></li>
+<li><p>库文件：libdma.a</p></li>
+</ul>
+<p>【注意】</p>
+<p>无</p>
+<p>【举例】</p>
+<p>无</p>
+<p>【相关主题】</p>
+<p><a class="reference internal" href="#k-dma-dev-attr-t">k_dma_dev_attr_t</a></p>
+</section>
+<section id="kd-mpi-dma-get-dev-attr">
+<h4>kd_mpi_dma_get_dev_attr<a class="headerlink" href="#kd-mpi-dma-get-dev-attr" title="Link to this heading">#</a></h4>
+<p>【描述】</p>
+<p>获取已经配置的 dma 设备属性。</p>
+<p>【语法】</p>
+<p>k_s32 kd_mpi_dma_get_dev_attr(k_dma_dev_attr_t *attr);</p>
+<p>【参数】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>attr</p></td>
+<td><p>dma 设备属性结构体指针</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>成功</p></td>
+</tr>
+<tr class="row-odd"><td><p>非0</p></td>
+<td><p>失败，其值参见错误码</p></td>
+</tr>
+</tbody>
+</table>
+<p>【芯片差异】</p>
+<p>无</p>
+<p>【需求】</p>
+<ul class="simple">
+<li><p>头文件：mpi_dma_api.h</p></li>
+<li><p>库文件：libdma.a</p></li>
+</ul>
+<p>【注意】</p>
+<p>需要在配置 dma 设备属性之后才可以获取 dma 设备属性。</p>
+<p>【举例】</p>
+<p>无</p>
+<p>【相关主题】</p>
+<p><a class="reference internal" href="#k-dma-dev-attr-t">k_dma_dev_attr_t</a></p>
+</section>
+<section id="kd-mpi-dma-start-dev">
+<h4>kd_mpi_dma_start_dev<a class="headerlink" href="#kd-mpi-dma-start-dev" title="Link to this heading">#</a></h4>
+<p>【描述】</p>
+<p>启动 dma 设备。</p>
+<p>【语法】</p>
+<p>k_s32 kd_mpi_dma_start_dev();</p>
+<p>【参数】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>无</p></td>
+<td><p>无</p></td>
+<td><p>无</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>成功</p></td>
+</tr>
+<tr class="row-odd"><td><p>非0</p></td>
+<td><p>失败，其值参见错误码</p></td>
+</tr>
+</tbody>
+</table>
+<p>【芯片差异】</p>
+<p>无</p>
+<p>【需求】</p>
+<ul class="simple">
+<li><p>头文件：mpi_dma_api.h</p></li>
+<li><p>库文件：libdma.a</p></li>
+</ul>
+<p>【注意】</p>
+<ul class="simple">
+<li><p>需要配置 dma 设备属性之后才可以调用此函数启动 dma</p></li>
+</ul>
+<p>【举例】</p>
+<p>无</p>
+<p>【相关主题】</p>
+<p>无</p>
+</section>
+<section id="kd-mpi-dma-stop-dev">
+<h4>kd_mpi_dma_stop_dev<a class="headerlink" href="#kd-mpi-dma-stop-dev" title="Link to this heading">#</a></h4>
+<p>【描述】</p>
+<p>停止 dma 设备。</p>
+<p>【语法】</p>
+<p>kd_mpi_dma_stop_dev();</p>
+<p>【参数】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>无</p></td>
+<td><p>无</p></td>
+<td><p>无</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>成功</p></td>
+</tr>
+<tr class="row-odd"><td><p>非0</p></td>
+<td><p>失败，其值参见错误码</p></td>
+</tr>
+</tbody>
+</table>
+<p>【芯片差异】</p>
+<p>无</p>
+<p>【需求】</p>
+<ul class="simple">
+<li><p>头文件：mpi_dma_api.h</p></li>
+<li><p>库文件：libdma.a</p></li>
+</ul>
+<p>【注意】</p>
+<ul class="simple">
+<li><p>只有启动 dma 设备之后才可以调用此函数来停止 dma 设备。</p></li>
+</ul>
+<p>【举例】</p>
+<p>无</p>
+<p>【相关主题】</p>
+<p>无</p>
+</section>
+<section id="kd-mpi-dma-set-chn-attr">
+<h4>kd_mpi_dma_set_chn_attr<a class="headerlink" href="#kd-mpi-dma-set-chn-attr" title="Link to this heading">#</a></h4>
+<p>【描述】</p>
+<p>配置 dma 通道属性。</p>
+<p>【语法】</p>
+<p>k_s32 kd_mpi_dma_set_chn_attr(k_u8 chn_num, k_dma_chn_attr_u *attr);</p>
+<p>【参数】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>chn_num</p></td>
+<td><p>通道号</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>attr</p></td>
+<td><p>dma 通道属性，该参数是一个联合体，可以选择配置 gdma 通道属性，也可以选择配置 sdma 通道属性。通道 0~3 是 gdma，通道 4~7 是 sdma</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>成功</p></td>
+</tr>
+<tr class="row-odd"><td><p>非0</p></td>
+<td><p>失败，其值参见错误码</p></td>
+</tr>
+</tbody>
+</table>
+<p>【芯片差异】</p>
+<p>无</p>
+<p>【需求】</p>
+<ul class="simple">
+<li><p>头文件：mpi_dma_api.h</p></li>
+<li><p>库文件：libdma.a</p></li>
+</ul>
+<p>【注意】</p>
+<p>无</p>
+<p>【举例】</p>
+<p>无</p>
+<p>【相关主题】</p>
+<p><a class="reference internal" href="#k-dma-chn-attr-u">k_dma_chn_attr_u</a></p>
+</section>
+<section id="kd-mpi-dma-get-chn-attr">
+<h4>kd_mpi_dma_get_chn_attr<a class="headerlink" href="#kd-mpi-dma-get-chn-attr" title="Link to this heading">#</a></h4>
+<p>【描述】</p>
+<p>获取已经配置的 dma 通道属性。</p>
+<p>【语法】</p>
+<p>k_s32 kd_mpi_dma_get_chn_attr(k_u8 chn_num, k_dma_chn_attr_u *attr);</p>
+<p>【参数】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>chn_num</p></td>
+<td><p>通道号</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>attr</p></td>
+<td><p>dma 通道属性，该参数是一个联合体，可以选择获取 gdma 通道属性，也可以选择获取 sdma 通道属性。通道 0~3 是 gdma，通道 4~7 是 sdma</p></td>
+<td><p>输出</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>成功</p></td>
+</tr>
+<tr class="row-odd"><td><p>非0</p></td>
+<td><p>失败，其值参见错误码</p></td>
+</tr>
+</tbody>
+</table>
+<p>【芯片差异】</p>
+<p>无</p>
+<p>【需求】</p>
+<ul class="simple">
+<li><p>头文件：mpi_dma_api.h</p></li>
+<li><p>库文件：libdma.a</p></li>
+</ul>
+<p>【注意】</p>
+<ul class="simple">
+<li><p>需要在配置 dma 通道属性之后才可以获取 dma 通道属性。</p></li>
+</ul>
+<p>【举例】</p>
+<p>无</p>
+<p>【相关主题】</p>
+<p><a class="reference internal" href="#k-dma-chn-attr-u">k_dma_chn_attr_u</a></p>
+</section>
+<section id="kd-mpi-dma-start-chn">
+<h4>kd_mpi_dma_start_chn<a class="headerlink" href="#kd-mpi-dma-start-chn" title="Link to this heading">#</a></h4>
+<p>【描述】</p>
+<p>启动 dma 通道。</p>
+<p>【语法】</p>
+<p>k_s32 kd_mpi_dma_start_chn(k_u8 chn_num);</p>
+<p>【参数】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>chn_num</p></td>
+<td><p>通道号。</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>成功</p></td>
+</tr>
+<tr class="row-odd"><td><p>非0</p></td>
+<td><p>失败，其值参见错误码</p></td>
+</tr>
+</tbody>
+</table>
+<p>【芯片差异】</p>
+<p>无</p>
+<p>【需求】</p>
+<ul class="simple">
+<li><p>头文件：mpi_dma_api.h</p></li>
+<li><p>库文件：libdma.a</p></li>
+</ul>
+<p>【注意】</p>
+<ul class="simple">
+<li><p>只有在配置启动 dma 设备，配置 dma 通道属性之后才可以启动 dma 通道。</p></li>
+</ul>
+<p>【举例】</p>
+<p>无</p>
+<p>【相关主题】</p>
+<p>无</p>
+</section>
+<section id="kd-mpi-dma-stop-chn">
+<h4>kd_mpi_dma_stop_chn<a class="headerlink" href="#kd-mpi-dma-stop-chn" title="Link to this heading">#</a></h4>
+<p>【描述】</p>
+<p>暂停 dma 通道</p>
+<p>【语法】</p>
+<p>k_s32 kd_mpi_dma_stop_chn(k_u8 chn_num);</p>
+<p>【参数】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>chn_num</p></td>
+<td><p>通道号。</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>成功</p></td>
+</tr>
+<tr class="row-odd"><td><p>非0</p></td>
+<td><p>失败，其值参见错误码</p></td>
+</tr>
+</tbody>
+</table>
+<p>【芯片差异】</p>
+<p>无</p>
+<p>【需求】</p>
+<ul class="simple">
+<li><p>头文件：mpi_dma_api.h</p></li>
+<li><p>库文件：libdma.a</p></li>
+</ul>
+<p>【注意】</p>
+<ul class="simple">
+<li><p>只有启动 dma 通道之后才可以调用此函数来停止 dma 通道。</p></li>
+</ul>
+<p>【举例】</p>
+<p>无</p>
+<p>【相关主题】</p>
+<p>无</p>
+</section>
+<section id="kd-mpi-dma-send-frame">
+<h4>kd_mpi_dma_send_frame<a class="headerlink" href="#kd-mpi-dma-send-frame" title="Link to this heading">#</a></h4>
+<p>【描述】</p>
+<p>从用户空间发送数据到目的地址。</p>
+<p>【语法】</p>
+<p>k_s32 kd_mpi_dma_send_frame(k_u8 chn_num, k_video_frame_info *df_info, k_s32 millisec);</p>
+<p>【参数】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>chn_num</p></td>
+<td><p>通道号。</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>df_info</p></td>
+<td><p>发送数据的地址信息。</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-even"><td><p>millisec</p></td>
+<td><p>等待时间。 当此参数设置为 -1 时，阻塞； 当此参数设置为 0 时，非阻塞； 当此参数设置为大于 0 的值时，会等待相应时间直到成功发送数据，如果超时后仍未成功发送，返回失败。</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>成功</p></td>
+</tr>
+<tr class="row-odd"><td><p>非0</p></td>
+<td><p>失败，其值参见错误码</p></td>
+</tr>
+</tbody>
+</table>
+<p>【芯片差异】</p>
+<p>无</p>
+<p>【需求】</p>
+<ul class="simple">
+<li><p>头文件：mpi_dma_api.h</p></li>
+<li><p>库文件：libdma.a</p></li>
+</ul>
+<p>【注意】</p>
+<p>无</p>
+<p>【举例】</p>
+<p>无</p>
+<p>【相关主题】</p>
+<p><a class="reference internal" href="#k-video-frame-info">k_video_frame_info</a></p>
+</section>
+<section id="kd-mpi-dma-get-frame">
+<h4>kd_mpi_dma_get_frame<a class="headerlink" href="#kd-mpi-dma-get-frame" title="Link to this heading">#</a></h4>
+<p>【描述】</p>
+<p>获取 dma 搬运后的数据。</p>
+<p>【语法】</p>
+<p>k_s32 kd_mpi_dma_get_frame(k_u8 chn_num, k_video_frame_info *df_info, k_s32 millisec);</p>
+<p>【参数】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>chn_num</p></td>
+<td><p>通道号。</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>df_info</p></td>
+<td><p>获取数据的地址信息。</p></td>
+<td><p>输出</p></td>
+</tr>
+<tr class="row-even"><td><p>millisec</p></td>
+<td><p>等待时间。 当此参数设置为 -1 时，阻塞； 当此参数设置为 0 时，非阻塞； 当此参数设置为大于 0 的值时，会等待相应时间知道成功获取数据，如果超时后仍未成功发送，返回失败。</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>成功</p></td>
+</tr>
+<tr class="row-odd"><td><p>非0</p></td>
+<td><p>失败，其值参见错误码</p></td>
+</tr>
+</tbody>
+</table>
+<p>【芯片差异】</p>
+<p>无</p>
+<p>【需求】</p>
+<ul class="simple">
+<li><p>头文件：mpi_dma_api.h</p></li>
+<li><p>库文件：libdma.a</p></li>
+</ul>
+<p>【注意】</p>
+<p>无</p>
+<p>【举例】</p>
+<p>无</p>
+<p>【相关主题】</p>
+<p><a class="reference internal" href="#k-video-frame-info">k_video_frame_info</a></p>
+</section>
+<section id="kd-mpi-dma-release-frame">
+<h4>kd_mpi_dma_release_frame<a class="headerlink" href="#kd-mpi-dma-release-frame" title="Link to this heading">#</a></h4>
+<p>【描述】</p>
+<p>释放获取的 dma 数据。</p>
+<p>【语法】</p>
+<p>k_s32 kd_mpi_dma_release_frame(k_u8 chn_num, k_video_frame_info *df_info);</p>
+<p>【参数】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>chn_num</p></td>
+<td><p>通道号。</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>df_info</p></td>
+<td><p>要释放的数据。</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>返回值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>成功</p></td>
+</tr>
+<tr class="row-odd"><td><p>非0</p></td>
+<td><p>失败，其值参见错误码</p></td>
+</tr>
+</tbody>
+</table>
+<p>【芯片差异】</p>
+<p>无</p>
+<p>【需求】</p>
+<ul class="simple">
+<li><p>头文件：mpi_dma_api.h</p></li>
+<li><p>库文件：libdma.a</p></li>
+</ul>
+<p>【注意】</p>
+<ul class="simple">
+<li><p>当前设计中 dma 输出 buffer 为 3，如果获取 3 帧数据都没有调用此函数进行释放，那么无法继续输入数据。因此，用户应该在获取数据，使用完之后及时释放。</p></li>
+</ul>
+<p>【举例】</p>
+<p>无</p>
+<p>【相关主题】</p>
+<p><a class="reference internal" href="#k-video-frame-info">k_video_frame_info</a></p>
+</section>
+</section>
+</section>
+<section id="id4">
+<h2>数据类型<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<section id="id5">
+<h3>公共数据类型<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<section id="dma-max-dev-nums">
+<h4>DMA_MAX_DEV_NUMS<a class="headerlink" href="#dma-max-dev-nums" title="Link to this heading">#</a></h4>
+<p>【说明】</p>
+<p>DMA 最大设备数</p>
+<p>【定义】</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define DMA_MAX_DEV_NUMS (1)</span>
+</pre></div>
+</div>
+<p>【注意事项】</p>
+<p>无</p>
+<p>【相关数据类型及接口】</p>
+<p>无</p>
+</section>
+<section id="dma-max-chn-nums">
+<h4>DMA_MAX_CHN_NUMS<a class="headerlink" href="#dma-max-chn-nums" title="Link to this heading">#</a></h4>
+<p>【说明】</p>
+<p>DMA 最大通道数</p>
+<p>【定义】</p>
+<p>#define DMA_MAX_CHN_NUMS (8)</p>
+<p>【注意事项】</p>
+<p>无</p>
+<p>【相关数据类型及接口】</p>
+<p>无</p>
+</section>
+<section id="k-dma-mode-e">
+<h4>k_dma_mode_e<a class="headerlink" href="#k-dma-mode-e" title="Link to this heading">#</a></h4>
+<p>【说明】</p>
+<p>定义 dma 工作模式。</p>
+<p>【定义】</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">enum</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">DMA_BIND</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DMA_UNBIND</span><span class="p">,</span>
+<span class="p">}</span><span class="w"> </span><span class="n">k_dma_mode_e</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>【成员】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>成员名称</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>BIND</p></td>
+<td><p>绑定模式。</p></td>
+</tr>
+<tr class="row-odd"><td><p>UNBIND</p></td>
+<td><p>非绑定模式</p></td>
+</tr>
+</tbody>
+</table>
+<p>【注意事项】</p>
+<p>无</p>
+<p>【相关数据类型及接口】</p>
+<p><a class="reference internal" href="#k-gdma-chn-attr-t">k_gdma_chn_attr_t</a>
+<a class="reference internal" href="#k-sdma-chn-attr-t">k_sdma_chn_attr_t</a></p>
+</section>
+<section id="k-dma-dev-attr-t">
+<h4>k_dma_dev_attr_t<a class="headerlink" href="#k-dma-dev-attr-t" title="Link to this heading">#</a></h4>
+<p>【说明】</p>
+<p>定义 dma 设备属性。</p>
+<p>【定义】</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">k_u8</span><span class="w"> </span><span class="n">burst_len</span><span class="p">;</span>
+<span class="w">    </span><span class="n">k_u8</span><span class="w"> </span><span class="n">outstanding</span><span class="p">;</span>
+<span class="w">    </span><span class="n">k_bool</span><span class="w"> </span><span class="n">ckg_bypass</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span><span class="n">k_dma_dev_attr_t</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>【成员】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>成员名称</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>burst_len</p></td>
+<td><p>配置 dma 的 burst length</p></td>
+</tr>
+<tr class="row-odd"><td><p>outstanding</p></td>
+<td><p>配置 dma outstanding</p></td>
+</tr>
+<tr class="row-even"><td><p>ckg_bypass</p></td>
+<td><p>配置 clock gate bypass</p></td>
+</tr>
+</tbody>
+</table>
+<p>【注意事项】</p>
+<p>无</p>
+<p>【相关数据类型及接口】</p>
+<p><a class="reference internal" href="#kd-mpi-dma-set-dev-attr">kd_mpi_dma_set_dev_attr</a>
+<a class="reference internal" href="#kd-mpi-dma-get-dev-attr">kd_mpi_dma_get_dev_attr</a></p>
+</section>
+<section id="k-dma-chn-attr-u">
+<h4>k_dma_chn_attr_u<a class="headerlink" href="#k-dma-chn-attr-u" title="Link to this heading">#</a></h4>
+<p>【说明】</p>
+<p>定义 dma 通道属性。</p>
+<p>【定义】</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">union</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">k_gdma_chn_attr_t</span><span class="w"> </span><span class="n">gdma_attr</span><span class="p">;</span>
+<span class="w">    </span><span class="n">k_sdma_chn_attr_t</span><span class="w"> </span><span class="n">sdma_attr</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span><span class="n">k_dma_chn_attr_u</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>【成员】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>成员名称</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>gdma_attr</p></td>
+<td><p>gdma 通道属性</p></td>
+</tr>
+<tr class="row-odd"><td><p>sdma_attr</p></td>
+<td><p>sdma 通道属性</p></td>
+</tr>
+<tr class="row-even"><td><p>ckg_bypass</p></td>
+<td><p>配置 clock gate bypass</p></td>
+</tr>
+</tbody>
+</table>
+<p>【注意事项】</p>
+<p>无</p>
+<p>【相关数据类型及接口】</p>
+<p><a class="reference internal" href="#k-gdma-chn-attr-t">k_gdma_chn_attr_t</a>
+<a class="reference internal" href="#k-sdma-chn-attr-t">k_sdma_chn_attr_t</a>
+<a class="reference internal" href="#kd-mpi-dma-set-chn-attr">kd_mpi_dma_set_chn_attr</a>
+<a class="reference internal" href="#kd-mpi-dma-get-chn-attr">kd_mpi_dma_get_chn_attr</a></p>
+</section>
+<section id="k-video-frame-info">
+<h4>k_video_frame_info<a class="headerlink" href="#k-video-frame-info" title="Link to this heading">#</a></h4>
+<p>【说明】</p>
+<p>定义 dma 数据地址。</p>
+<p>【定义】</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">k_video_frame</span><span class="w"> </span><span class="n">v_frame</span><span class="p">;</span><span class="w">  </span><span class="cm">/**&lt; Video picture frame */</span>
+<span class="w">    </span><span class="n">k_u32</span><span class="w"> </span><span class="n">pool_id</span><span class="p">;</span><span class="w">          </span><span class="cm">/**&lt; VB pool ID */</span>
+<span class="w">    </span><span class="n">k_mod_id</span><span class="w"> </span><span class="n">mod_id</span><span class="p">;</span><span class="w">        </span><span class="cm">/**&lt; Logical unit for generating video frames */</span>
+<span class="p">}</span><span class="w"> </span><span class="n">k_video_frame_info</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>【成员】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>成员名称</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>v_frame</p></td>
+<td><p>时间戳，绑定模式下有效。</p></td>
+</tr>
+<tr class="row-odd"><td><p>pool_id</p></td>
+<td><p>数据 vb 池的 pool id。</p></td>
+</tr>
+<tr class="row-even"><td><p>mod_id</p></td>
+<td><p>模块 id</p></td>
+</tr>
+</tbody>
+</table>
+<p>【注意事项】</p>
+<p>无</p>
+<p>【相关数据类型及接口】</p>
+<p><a class="reference internal" href="#kd-mpi-dma-send-frame">kd_mpi_dma_send_frame</a>
+<a class="reference internal" href="#kd-mpi-dma-get-frame">kd_mpi_dma_get_frame</a>
+<a class="reference internal" href="#kd-mpi-dma-release-frame">kd_mpi_dma_release_frame</a></p>
+</section>
+<section id="k-video-frame">
+<h4>k_video_frame<a class="headerlink" href="#k-video-frame" title="Link to this heading">#</a></h4>
+<p>【说明】</p>
+<p>定义 dma 数据地址。使用公用的数据结构 k_video_frame，只使用到了其中的一部分成员。</p>
+<p>【定义】</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">k_u64</span><span class="w"> </span><span class="n">phys_addr</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
+<span class="w">    </span><span class="n">k_u64</span><span class="w"> </span><span class="n">virt_addr</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
+<span class="w">    </span><span class="n">k_u32</span><span class="w"> </span><span class="n">time_ref</span><span class="p">;</span>
+<span class="w">    </span><span class="n">k_u64</span><span class="w"> </span><span class="n">pts</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span><span class="n">k_video_frame</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>【成员】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>成员名称</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>phys_addr</p></td>
+<td><p>图像的物理地址，如果是单通道图像，只需配置第一个物理地址；如果是双通道图像，只需配置前两个物理地址；如果是三通道图像，需要配置三个物理地址。</p></td>
+</tr>
+<tr class="row-odd"><td><p>virt_addr</p></td>
+<td><p>图像的虚拟地址，如果是单通道图像，只需配置第一个虚拟地址；如果是双通道图像，只需配置前两个虚拟地址；如果是三通道图像，需要配置三个虚拟地址。</p></td>
+</tr>
+<tr class="row-even"><td><p>time_ref</p></td>
+<td><p>透传的帧号，在绑定模式下，由前级输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>pts</p></td>
+<td><p>透传的时间戳，在绑定模式下，由前级输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【注意事项】</p>
+<p>无</p>
+<p>【相关数据类型及接口】</p>
+<p><a class="reference internal" href="#kd-mpi-dma-send-frame">kd_mpi_dma_send_frame</a>
+<a class="reference internal" href="#kd-mpi-dma-get-frame">kd_mpi_dma_get_frame</a></p>
+</section>
+</section>
+<section id="id6">
+<h3>gdma 通道数据类型<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<p>该模块有如下数据类型</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#gdma-max-chn-nums">GDMA_MAX_CHN_NUMS</a></p></li>
+<li><p><a class="reference internal" href="#k-gdma-rotation-e">k_gdma_rotation_e</a></p></li>
+<li><p><a class="reference internal" href="#k-pixel-format-dma-e">k_pixel_format_dma_e</a></p></li>
+<li><p><a class="reference internal" href="#k-gdma-chn-attr-t">k_gdma_chn_attr_t</a></p></li>
+</ul>
+<section id="gdma-max-chn-nums">
+<h4>GDMA_MAX_CHN_NUMS<a class="headerlink" href="#gdma-max-chn-nums" title="Link to this heading">#</a></h4>
+<p>【说明】</p>
+<p>GDMA 最大通道数</p>
+<p>【定义】</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">define</span><span class="w"> </span><span class="n">GDMA_MAX_CHN_NUMS</span><span class="w"> </span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>【注意事项】</p>
+<p>无</p>
+<p>【相关数据类型及接口】</p>
+<p>无</p>
+</section>
+<section id="k-gdma-rotation-e">
+<h4>k_gdma_rotation_e<a class="headerlink" href="#k-gdma-rotation-e" title="Link to this heading">#</a></h4>
+<p>【说明】</p>
+<p>定义 gdma 通道旋转角度。</p>
+<p>【定义】</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">enum</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">DEGREE_0</span><span class="p">,</span><span class="w">       </span><span class="cm">/**&lt; Rotate 0 degrees */</span>
+<span class="w">    </span><span class="n">DEGREE_90</span><span class="p">,</span><span class="w">      </span><span class="cm">/**&lt; Rotate 90 degrees */</span>
+<span class="w">    </span><span class="n">DEGREE_180</span><span class="p">,</span><span class="w">     </span><span class="cm">/**&lt; Rotate 180 degrees */</span>
+<span class="w">    </span><span class="n">DEGREE_270</span><span class="p">,</span><span class="w">     </span><span class="cm">/**&lt; Rotate 270 degrees */</span>
+<span class="p">}</span><span class="w"> </span><span class="n">k_gdma_rotation_e</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>【注意事项】</p>
+<p>无</p>
+<p>【相关数据类型及接口】</p>
+<p><a class="reference internal" href="#k-gdma-chn-attr-t">k_gdma_chn_attr_t</a></p>
+</section>
+<section id="k-pixel-format-dma-e">
+<h4>k_pixel_format_dma_e<a class="headerlink" href="#k-pixel-format-dma-e" title="Link to this heading">#</a></h4>
+<p>【说明】</p>
+<p>定义 gdma 图像格式。</p>
+<p>【定义】</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">enum</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">DMA_PIXEL_FORMAT_RGB_444</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DMA_PIXEL_FORMAT_RGB_555</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DMA_PIXEL_FORMAT_RGB_565</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DMA_PIXEL_FORMAT_RGB_888</span><span class="p">,</span>
+
+<span class="w">    </span><span class="n">DMA_PIXEL_FORMAT_BGR_444</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DMA_PIXEL_FORMAT_BGR_555</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DMA_PIXEL_FORMAT_BGR_565</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DMA_PIXEL_FORMAT_BGR_888</span><span class="p">,</span>
+
+<span class="w">    </span><span class="n">DMA_PIXEL_FORMAT_ARGB_1555</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DMA_PIXEL_FORMAT_ARGB_4444</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DMA_PIXEL_FORMAT_ARGB_8565</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DMA_PIXEL_FORMAT_ARGB_8888</span><span class="p">,</span>
+
+<span class="w">    </span><span class="n">DMA_PIXEL_FORMAT_ABGR_1555</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DMA_PIXEL_FORMAT_ABGR_4444</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DMA_PIXEL_FORMAT_ABGR_8565</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DMA_PIXEL_FORMAT_ABGR_8888</span><span class="p">,</span>
+
+<span class="w">    </span><span class="n">DMA_PIXEL_FORMAT_YVU_PLANAR_420_8BIT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DMA_PIXEL_FORMAT_YVU_PLANAR_420_10BIT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DMA_PIXEL_FORMAT_YVU_PLANAR_420_16BIT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DMA_PIXEL_FORMAT_YVU_PLANAR_444_8BIT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DMA_PIXEL_FORMAT_YVU_PLANAR_444_10BIT</span><span class="p">,</span>
+
+<span class="w">    </span><span class="n">DMA_PIXEL_FORMAT_YUV_PLANAR_420_8BIT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DMA_PIXEL_FORMAT_YUV_PLANAR_420_10BIT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DMA_PIXEL_FORMAT_YUV_PLANAR_420_16BIT</span><span class="p">,</span>
+
+<span class="w">    </span><span class="n">DMA_PIXEL_FORMAT_YVU_SEMIPLANAR_420_8BIT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DMA_PIXEL_FORMAT_YVU_SEMIPLANAR_420_10BIT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DMA_PIXEL_FORMAT_YVU_SEMIPLANAR_420_16BIT</span><span class="p">,</span>
+
+<span class="w">    </span><span class="n">DMA_PIXEL_FORMAT_YUV_SEMIPLANAR_420_8BIT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DMA_PIXEL_FORMAT_YUV_SEMIPLANAR_420_10BIT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DMA_PIXEL_FORMAT_YUV_SEMIPLANAR_420_16BIT</span><span class="p">,</span>
+
+<span class="w">    </span><span class="n">DMA_PIXEL_FORMAT_YUV_400_8BIT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DMA_PIXEL_FORMAT_YUV_400_10BIT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DMA_PIXEL_FORMAT_YUV_400_12BIT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DMA_PIXEL_FORMAT_YUV_400_16BIT</span><span class="p">,</span>
+
+<span class="w">    </span><span class="n">DMA_PIXEL_FORMAT_YUV_PACKED_444_8BIT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DMA_PIXEL_FORMAT_YUV_PACKED_444_10BIT</span><span class="p">,</span>
+
+<span class="w">    </span><span class="cm">/* SVP data format */</span>
+<span class="w">    </span><span class="n">DMA_PIXEL_FORMAT_BGR_888_PLANAR</span><span class="p">,</span>
+<span class="p">}</span><span class="w"> </span><span class="n">k_pixel_format_dma_e</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="k-gdma-chn-attr-t">
+<h4>k_gdma_chn_attr_t<a class="headerlink" href="#k-gdma-chn-attr-t" title="Link to this heading">#</a></h4>
+<p>【说明】</p>
+<p>定义 gdma 通道属性。</p>
+<p>【定义】</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">k_u8</span><span class="w"> </span><span class="n">buffer_num</span><span class="p">;</span>
+<span class="w">    </span><span class="n">k_gdma_rotation_e</span><span class="w"> </span><span class="n">rotation</span><span class="p">;</span>
+<span class="w">    </span><span class="n">k_bool</span><span class="w"> </span><span class="n">x_mirror</span><span class="p">;</span>
+<span class="w">    </span><span class="n">k_bool</span><span class="w"> </span><span class="n">y_mirror</span><span class="p">;</span>
+<span class="w">    </span><span class="n">k_u16</span><span class="w"> </span><span class="n">width</span><span class="p">;</span>
+<span class="w">    </span><span class="n">k_u16</span><span class="w"> </span><span class="n">height</span><span class="p">;</span>
+<span class="w">    </span><span class="n">k_u16</span><span class="w"> </span><span class="n">src_stride</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
+<span class="w">    </span><span class="n">k_u16</span><span class="w"> </span><span class="n">dst_stride</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
+<span class="w">    </span><span class="n">k_dma_mode_e</span><span class="w"> </span><span class="n">work_mode</span><span class="p">;</span>
+<span class="w">    </span><span class="n">k_pixel_format_dma_e</span><span class="w"> </span><span class="n">pixel_format</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span><span class="n">k_gdma_chn_attr_t</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>【成员】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>成员名称</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>buffer_num</p></td>
+<td><p>gdma 通道 buffer 数量，至少为 1。</p></td>
+</tr>
+<tr class="row-odd"><td><p>rotation</p></td>
+<td><p>gdma 通道旋转角度。</p></td>
+</tr>
+<tr class="row-even"><td><p>x_mirror</p></td>
+<td><p>gdma 通道是否进行水平镜像</p></td>
+</tr>
+<tr class="row-odd"><td><p>y_mirror</p></td>
+<td><p>gdma 通道是否进行垂直镜像</p></td>
+</tr>
+<tr class="row-even"><td><p>width</p></td>
+<td><p>gdma 通道宽度，以像素为单位。</p></td>
+</tr>
+<tr class="row-odd"><td><p>height</p></td>
+<td><p>gdma 通道高度，以像素为单位。</p></td>
+</tr>
+<tr class="row-even"><td><p>src_stride</p></td>
+<td><p>gdma 源数据 stride。如果图像格式是单通道模式，只需配置<code class="docutils literal notranslate"><span class="pre">src_stride[0]</span></code>；如果图像格式是双通道模式，需要配置<code class="docutils literal notranslate"><span class="pre">src_stride[0]</span></code>，<code class="docutils literal notranslate"><span class="pre">src_stride[1]</span></code>；如果图像格式是三通道模式，需要配置 <code class="docutils literal notranslate"><span class="pre">src_stride[0]</span></code>，<code class="docutils literal notranslate"><span class="pre">src_stride[1]</span></code>，<code class="docutils literal notranslate"><span class="pre">src_stride[2]</span></code>。</p></td>
+</tr>
+<tr class="row-odd"><td><p>dst_stride</p></td>
+<td><p>gdma目的数据 stride。如果图像格式是单通道模式，只需配置<code class="docutils literal notranslate"><span class="pre">dst_stride[0]</span></code>；如果图像格式是双通道模式，需要配置<code class="docutils literal notranslate"><span class="pre">dst_stride[0]</span></code>，<code class="docutils literal notranslate"><span class="pre">dst_stride[1]</span></code>；如果图像格式是三通道模式，需要配置 <code class="docutils literal notranslate"><span class="pre">dst_stride[0]</span></code>，<code class="docutils literal notranslate"><span class="pre">dst_stride[1]</span></code>，<code class="docutils literal notranslate"><span class="pre">dst_stride[2]</span></code>。</p></td>
+</tr>
+<tr class="row-even"><td><p>work_mode</p></td>
+<td><p>工作模式，可以选择绑定模式或者非绑定模式。</p></td>
+</tr>
+<tr class="row-odd"><td><p>pixel_format</p></td>
+<td><p>图像格式。</p></td>
+</tr>
+</tbody>
+</table>
+<p>【注意事项】</p>
+<ul class="simple">
+<li><p>无。</p></li>
+</ul>
+<p>【相关数据类型及接口】</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#kd-mpi-dma-set-chn-attr">kd_mpi_dma_set_chn_attr</a></p></li>
+<li><p><a class="reference internal" href="#kd-mpi-dma-get-chn-attr">kd_mpi_dma_get_chn_attr</a></p></li>
+</ul>
+</section>
+</section>
+<section id="id7">
+<h3>sdma 通道数据类型<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<p>本模块有如下数据类型</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#sdma-max-chn-nums">SDMA_MAX_CHN_NUMS</a></p></li>
+<li><p><a class="reference internal" href="#k-sdma-data-mode-e">k_sdma_data_mode_e</a></p></li>
+<li><p><a class="reference internal" href="#k-sdma-chn-attr-t">k_sdma_chn_attr_t</a></p></li>
+</ul>
+<section id="sdma-max-chn-nums">
+<h4>SDMA_MAX_CHN_NUMS<a class="headerlink" href="#sdma-max-chn-nums" title="Link to this heading">#</a></h4>
+<p>【说明】</p>
+<p>SDMA 最大通道数</p>
+<p>【定义】</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define SDMA_MAX_CHN_NUMS (4)</span>
+</pre></div>
+</div>
+<p>【注意事项】</p>
+<p>无</p>
+<p>【相关数据类型及接口】</p>
+<p>无</p>
+</section>
+<section id="k-sdma-data-mode-e">
+<h4>k_sdma_data_mode_e<a class="headerlink" href="#k-sdma-data-mode-e" title="Link to this heading">#</a></h4>
+<p>【说明】</p>
+<p>定义 sdma 通道传输数据的模式</p>
+<p>【定义】</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">enum</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">DIMENSION1</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DIMENSION2</span><span class="p">,</span>
+<span class="p">}</span><span class="w"> </span><span class="n">k_sdma_data_mode_e</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>【成员】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>成员名称</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>DIMENSION1</p></td>
+<td><p>一维 dma 传输模式</p></td>
+</tr>
+<tr class="row-odd"><td><p>DIMENSION1</p></td>
+<td><p>二维 dma 传输模式</p></td>
+</tr>
+</tbody>
+</table>
+<p>【注意事项】</p>
+<p>无</p>
+<p>【相关数据类型及接口】</p>
+<p><a class="reference internal" href="#k-sdma-chn-attr-t">k_sdma_chn_attr_t</a></p>
+</section>
+<section id="k-sdma-chn-attr-t">
+<h4>k_sdma_chn_attr_t<a class="headerlink" href="#k-sdma-chn-attr-t" title="Link to this heading">#</a></h4>
+<p>【说明】</p>
+<p>定义 sdma 通道属性。</p>
+<p>【定义】</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">k_u8</span><span class="w"> </span><span class="n">buffer_num</span><span class="p">;</span>
+<span class="w">    </span><span class="n">k_u32</span><span class="w"> </span><span class="n">line_size</span><span class="p">;</span>
+<span class="w">    </span><span class="n">k_u16</span><span class="w"> </span><span class="n">line_num</span><span class="p">;</span>
+<span class="w">    </span><span class="n">k_u16</span><span class="w"> </span><span class="n">line_space</span><span class="p">;</span>
+<span class="w">    </span><span class="n">k_sdma_data_mode_e</span><span class="w"> </span><span class="n">data_mode</span><span class="p">;</span>
+<span class="w">    </span><span class="n">k_dma_mode_e</span><span class="w"> </span><span class="n">work_mode</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span><span class="n">k_sdma_chn_attr_t</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>【成员】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>成员名称</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>buffer_num</p></td>
+<td><p>sdma 通道 buffer 数量，至少为 1。</p></td>
+</tr>
+<tr class="row-odd"><td><p>line_size</p></td>
+<td><p>对于 1d 模式来说，是传输数据的总长度；对于 2d 模式来说，是单行数据的长度。</p></td>
+</tr>
+<tr class="row-even"><td><p>line_num</p></td>
+<td><p>对于 1d 模式来说，此成员无效；对于 2d 模式来说，是传输的行的个数。</p></td>
+</tr>
+<tr class="row-odd"><td><p>line_space</p></td>
+<td><p>对于 1d 模式来说，此成员无效；对于 2d 模式来说，是行与行之间的间隔。</p></td>
+</tr>
+<tr class="row-even"><td><p>data_mode</p></td>
+<td><p>sdma 传输数据的模式，包括 1d 模式和 2d 模式。</p></td>
+</tr>
+<tr class="row-odd"><td><p>work_mode</p></td>
+<td><p>工作模式，可以选择绑定模式或者非绑定模式。</p></td>
+</tr>
+</tbody>
+</table>
+<p>【注意事项】</p>
+<p>无</p>
+<p>【相关数据类型及接口】</p>
+<p><a class="reference internal" href="#k-dma-chn-attr-u">k_dma_chn_attr_u</a></p>
+</section>
+</section>
+</section>
+<section id="id8">
+<h2>错误码<a class="headerlink" href="#id8" title="Link to this heading">#</a></h2>
+<section id="id9">
+<h3>dma 错误码<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<p>表 41</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>错误代码</p></th>
+<th class="head"><p>宏定义</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0xa0148001</p></td>
+<td><p>K_ERR_DMA_INVALID_DEVID</p></td>
+<td><p>无效的设备号</p></td>
+</tr>
+<tr class="row-odd"><td><p>0xa0148002</p></td>
+<td><p>K_ERR_DMA_INVALID_CHNID</p></td>
+<td><p>无效的通道号</p></td>
+</tr>
+<tr class="row-even"><td><p>0xa0148003</p></td>
+<td><p>K_ERR_DMA_ILLEGAL_PARAM</p></td>
+<td><p>参数错误</p></td>
+</tr>
+<tr class="row-odd"><td><p>0xa0148004</p></td>
+<td><p>K_ERR_DMA_EXIST</p></td>
+<td><p>DMA 设备已经存在</p></td>
+</tr>
+<tr class="row-even"><td><p>0xa0148005</p></td>
+<td><p>K_ERR_DMA_UNEXIST</p></td>
+<td><p>DMA 设备不存在</p></td>
+</tr>
+<tr class="row-odd"><td><p>0xa0148006</p></td>
+<td><p>K_ERR_DMA_NULL_PTR</p></td>
+<td><p>空指针错误</p></td>
+</tr>
+<tr class="row-even"><td><p>0xa0148007</p></td>
+<td><p>K_ERR_DMA_NOT_CONFIG</p></td>
+<td><p>尚未配置 DMA</p></td>
+</tr>
+<tr class="row-odd"><td><p>0xa0148008</p></td>
+<td><p>K_ERR_DMA_NOT_SUPPORT</p></td>
+<td><p>不支持的功能</p></td>
+</tr>
+<tr class="row-even"><td><p>0xa0148009</p></td>
+<td><p>K_ERR_DMA_NOT_PERM</p></td>
+<td><p>操作不允许</p></td>
+</tr>
+<tr class="row-odd"><td><p>0xa014800c</p></td>
+<td><p>K_ERR_DMA_NOMEM</p></td>
+<td><p>分配内存失败，如系统内存不足</p></td>
+</tr>
+<tr class="row-even"><td><p>0xa014800d</p></td>
+<td><p>K_ERR_DMA_NOBUF</p></td>
+<td><p>BUFF 不足</p></td>
+</tr>
+<tr class="row-odd"><td><p>0xa014800e</p></td>
+<td><p>K_ERR_DMA_BUF_EMPTY</p></td>
+<td><p>BUFF 为空</p></td>
+</tr>
+<tr class="row-even"><td><p>0xa014800f</p></td>
+<td><p>K_ERR_DMA_BUF_FULL</p></td>
+<td><p>BUFF 已满</p></td>
+</tr>
+<tr class="row-odd"><td><p>0xa0148010</p></td>
+<td><p>K_ERR_DMA_NOTREADY</p></td>
+<td><p>设备未就绪</p></td>
+</tr>
+<tr class="row-even"><td><p>0xa0148011</p></td>
+<td><p>K_ERR_DMA_BADADDR</p></td>
+<td><p>错误的地址</p></td>
+</tr>
+<tr class="row-odd"><td><p>0xa0148012</p></td>
+<td><p>K_ERR_DMA_BUSY</p></td>
+<td><p>DMA 处与忙状态</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="id10">
+<h2>调试信息<a class="headerlink" href="#id10" title="Link to this heading">#</a></h2>
+<section id="id11">
+<h3>概述<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<p>调试信息采用了 proc 文件系统，可实时反映当前系统的运行状态，所记录的信息可供问题定位及分析时使用</p>
+<p>【文件目录】</p>
+<p>/proc/</p>
+<p>【文件清单】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>文件名称</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>umap/dma</p></td>
+<td><p>记录当前 dma 模块的使用情况</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id12">
+<h3>系统绑定<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<section id="id13">
+<h4>系统绑定调试信息<a class="headerlink" href="#id13" title="Link to this heading">#</a></h4>
+<p>【调试信息】</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>msh<span class="w"> </span>/<span class="se">\&gt;</span>cat<span class="w"> </span>/proc/umap/dma
+-------------------------------dma<span class="w"> </span>dev<span class="w"> </span>attr<span class="w"> </span>info---------------------------------
+DevId<span class="w"> </span>burst_len<span class="w"> </span>outstanding<span class="w"> </span>ckg_bypass
+<span class="m">0</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">0</span>
+
+-------------------------------dma<span class="w"> </span>chn<span class="w"> </span><span class="m">0</span><span class="se">\~</span><span class="m">3</span><span class="w"> </span>attr<span class="w"> </span>info-------------------------------
+ChnId<span class="w"> </span>rotation<span class="w"> </span>x_mirror<span class="w"> </span>y_mirror<span class="w"> </span>width<span class="w"> </span>height<span class="w"> </span>work_mode
+<span class="m">0</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="nb">false</span><span class="w"> </span><span class="nb">false</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">0</span><span class="w"> </span>BIND
+<span class="m">1</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="nb">false</span><span class="w"> </span><span class="nb">false</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">0</span><span class="w"> </span>BIND
+<span class="m">2</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="nb">false</span><span class="w"> </span><span class="nb">false</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">0</span><span class="w"> </span>BIND
+<span class="m">3</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="nb">false</span><span class="w"> </span><span class="nb">false</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">0</span><span class="w"> </span>BIND
+
+-------------------------------dma<span class="w"> </span>chn<span class="w"> </span><span class="m">4</span><span class="se">\~</span><span class="m">7</span><span class="w"> </span>attr<span class="w"> </span>info-------------------------------
+ChnId<span class="w"> </span>line_size<span class="w"> </span>line_num<span class="w"> </span>line_space<span class="w"> </span>data_mode<span class="w"> </span>work_mode
+<span class="m">4</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">1</span><span class="w"> </span>DIMENSION<span class="w"> </span>BIND
+<span class="m">5</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">1</span><span class="w"> </span>DIMENSION<span class="w"> </span>BIND
+<span class="m">6</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">1</span><span class="w"> </span>DIMENSION<span class="w"> </span>BIND
+<span class="m">7</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">1</span><span class="w"> </span>DIMENSION<span class="w"> </span>BIND
+</pre></div>
+</div>
+<p>【调试信息分析】</p>
+<p>记录当前 dma 模块的使用情况</p>
+<p>【设备参数说明】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数</p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>DevId</p></td>
+<td><p>设备号</p></td>
+</tr>
+<tr class="row-odd"><td><p>burst_len</p></td>
+<td><p>dma burst length</p></td>
+</tr>
+<tr class="row-even"><td><p>outstanding</p></td>
+<td><p>dma outstanding</p></td>
+</tr>
+</tbody>
+</table>
+<p>【gdma 通道参数说明】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数</p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ChnId</p></td>
+<td><p>通道号</p></td>
+</tr>
+<tr class="row-odd"><td><p>rotation</p></td>
+<td><p>旋转度数</p></td>
+</tr>
+<tr class="row-even"><td><p>x_mirror</p></td>
+<td><p>是否进行了水平镜像</p></td>
+</tr>
+<tr class="row-odd"><td><p>y_mirror</p></td>
+<td><p>是否进行了垂直镜像</p></td>
+</tr>
+<tr class="row-even"><td><p>width</p></td>
+<td><p>图像宽度，以像素为单位</p></td>
+</tr>
+<tr class="row-odd"><td><p>height</p></td>
+<td><p>图像高度，以像素为单位</p></td>
+</tr>
+<tr class="row-even"><td><p>work_mode</p></td>
+<td><p>工作模式</p></td>
+</tr>
+</tbody>
+</table>
+<p>【sdma 通道参数说明】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数</p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ChnId</p></td>
+<td><p>通道号</p></td>
+</tr>
+<tr class="row-odd"><td><p>line_size</p></td>
+<td><p>对于 1d 模式来说，是传输数据的总长度；对于 2d 模式来说，是单行数据的长度。</p></td>
+</tr>
+<tr class="row-even"><td><p>ine_num</p></td>
+<td><p>对于 1d 模式来说，此成员无效；对于 2d 模式来说，是传输的行的个数。</p></td>
+</tr>
+<tr class="row-odd"><td><p>line_space</p></td>
+<td><p>对于 1d 模式来说，此成员无效；对于 2d 模式来说，是行与行之间的间隔。</p></td>
+</tr>
+<tr class="row-even"><td><p>data_mode</p></td>
+<td><p>sdma 传输数据的模式，包括 1d 模式和 2d 模式</p></td>
+</tr>
+<tr class="row-odd"><td><p>work_mode</p></td>
+<td><p>工作模式，可以选择绑定模式或者非绑定模式。</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+<section id="demo">
+<h2>demo 描述<a class="headerlink" href="#demo" title="Link to this heading">#</a></h2>
+<section id="id14">
+<h3>非绑定模式 demo<a class="headerlink" href="#id14" title="Link to this heading">#</a></h3>
+<p>非绑定模式 demo 位于 /bin/sample_dma.elf，执行 /bin/sample_dma.elf 后开始循环运行，按 e + 回车结束运行。</p>
+<p>demo 主要实现了以下功能：</p>
+<ul class="simple">
+<li><p>使用通道 0 搬运分辨率为 1920*1080，8bit，YUV400 单通道的图像，gdma 旋转 90 度后输出；</p></li>
+<li><p>使用通道 1 搬运分辨率为 1280*720，8bit，YUV420 双通道的图像，gdma 旋转 180 度后输出；</p></li>
+<li><p>使用通道 2 搬运分辨率为 1280*720，10bit，YUV420 三通道的图像，gdma 进行水平和垂直镜像后输出；</p></li>
+<li><p>使用通道 4 搬运数据，sdma 使用 1d 模式搬运；</p></li>
+<li><p>使用通道 5 搬运数据，sdma 使用 2d 模式搬运。</p></li>
+</ul>
+</section>
+<section id="id15">
+<h3>绑定模式 demo<a class="headerlink" href="#id15" title="Link to this heading">#</a></h3>
+<p>绑定模式 demo 位于 /bin/sample_dma_bind.elf，执行 /bin/sample_dma_bind.elf 后开始循环运行，按 e + 回车结束运行。</p>
+<p>demo 主要实现了以下功能：</p>
+<ul class="simple">
+<li><p>以 vvi 模块作为 gsdma 前级绑定的模拟输入，实现绑定功能的测试；</p></li>
+<li><p>两个通道分别输入分辨率为 640*320，8bit，YUV400 单通道的图像，gdma 分别旋转 90 度和 180 度后输出。</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+
+              
+              
+                <footer class="bd-footer-article">
+                  <div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+  <title>评论列表</title>
+  <style>
+    /* 评论顶部 */
+    .docs-comment .head {
+      display: flex;
+      justify-content: space-between;
+      padding-bottom: 1em;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .docs-comment .nickname {
+      cursor: pointer;
+    }
+
+    /* 评论输入框 */
+    .docs-comment .input {
+      display: flex;
+      margin-top: 20px;
+      position: relative;
+    }
+
+    .docs-comment .head-img {
+      border-radius: 3px;
+      width: 50px;
+      height: 50px;
+    }
+
+    .docs-comment .head-img img {
+      height: 50px;
+      width: 50px;
+    }
+
+    .docs-comment textarea,
+    .docs-comment .comment-content {
+      width: 100%;
+      margin-left: 10px;
+      border-radius: 5px;
+      padding: 0.75em;
+      display: block;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      width: 100%;
+      min-height: 5.125em;
+      /* max-height: 15em; */
+      border-radius: 5px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      font-size: 12px;
+      word-wrap: break-word;
+      resize: vertical;
+      background-color: #f6f6f6;
+      outline: none;
+    }
+
+    .docs-comment .replies .comment-content {
+      border: none;
+    }
+
+    .docs-comment .submit {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+    }
+
+    .docs-comment button {
+      padding: 0.75em 1.25em;
+      display: inline-block;
+      line-height: 1;
+      text-decoration: none;
+      white-space: nowrap;
+      cursor: pointer;
+      border: 1px solid #2962ff;
+      border-radius: 5px;
+      background-color: #2962ff;
+      color: #fff;
+      outline: none;
+      font-size: 0.75em;
+    }
+
+    .docs-comment .button .login {
+      margin-left: 20px;
+      background-color: #fff;
+      color: #2962ff;
+    }
+
+    .docs-comment .action {
+      text-align: right;
+
+      svg {
+        height: 16px;
+        width: 16px;
+        cursor: pointer;
+      }
+    }
+
+    .docs-comment .secondary {
+      color: #666;
+    }
+
+    /* 评论列表 */
+    #comment-list {
+      margin-top: 20px;
+    }
+
+    .docs-comment .comment-item,
+    .docs-comment .reply-item {
+      display: flex;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    .docs-comment .reply-icon {
+      margin-left: 10px;
+    }
+
+    .docs-comment .primary {
+      color: #2962ff;
+    }
+
+    .docs-comment .content {
+      margin-top: 0.5em;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="docs-comment">
+    <div class="head">
+      <div class="count primary">条评论</div>
+      <div class="nickname primary" onclick="handleLogin()">登录</div>
+    </div>
+    <div class="input">
+      <div class="head-img"></div>
+      <textarea id="comment" name="comment" rows="5" cols="5" placeholder="说点什么..." required minlength="10"
+        maxlength="200" spellcheck="true" autocomplete="on"></textarea>
+      <button class="submit" onclick="handleAdd()">评论</button>
+    </div>
+    <!-- 评论列表 -->
+    <div id="comment-list"></div>
+  </div>
+
+  <script>
+    let timer = null;
+    const deleteIcon = `<svg
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="#6190e8"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+  <line x1="10" y1="11" x2="10" y2="17" />
+  <line x1="14" y1="11" x2="14" y2="17" />
+</svg>`;
+    const replyIcon = `<svg
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="#6190e8"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10z" />
+</svg>`;
+
+    function getMd5OfEmail(email) {
+      const emailLowercase = email.toLowerCase();
+      const md5Hash = CryptoJS.MD5(emailLowercase).toString();
+      return md5Hash;
+    }
+
+    function formatTimestamp(timestamp) {
+      const now = Date.now(); // 当前时间的时间戳
+      const diff = now - timestamp; // 时间差（毫秒）
+
+      // 转换为秒、分钟、小时
+      const seconds = Math.floor(diff / 1000);
+      const minutes = Math.floor(seconds / 60);
+      const hours = Math.floor(minutes / 60);
+      if (seconds < 60) {
+        return ` 刚刚`;
+      } else if (minutes < 60) {
+        return `${minutes}分钟前`;
+      } else if (hours < 24) {
+        return `${hours}小时前`;
+      } else {
+        // 大于24小时，显示月份和日期
+        const date = new Date(timestamp);
+        const month = date.getMonth() + 1; // 月份从0开始，需要加1
+        const day = date.getDate();
+        return `${month}月${day}日`;
+      }
+    }
+    // 获取评论列表并渲染到页面
+    function getComments(url) {
+      axios({
+          method: "get",
+          url: "/api/docs/comments",
+          params: {
+            pageNo: 1,
+            pageSize: 20,
+            url: url,
+          },
+        })
+        .then((res) => {
+          renderComments(res.data.rows); // 渲染评论列表
+          const count = document.querySelector(".count");
+          count.innerHTML = `${res.data.count}条评论`;
+          clearInterval(timer);
+          timer = setInterval(() => {
+            document.querySelectorAll(".time").forEach((item) => {
+              item.innerHTML = formatTimestamp(
+                item.getAttribute("value") * 1
+              );
+            });
+          }, 10000);
+        })
+        .catch((error) => {
+          console.error("获取评论列表失败", error);
+        });
+    }
+    // 渲染评论列表
+    function renderComments(comments) {
+      const currentUser = JSON.parse(sessionStorage.getItem("user")) || {};
+      const commentList = document.getElementById("comment-list");
+      commentList.innerHTML = ""; // 清空当前列表
+
+      // 找到所有顶级评论（parent_id = 0）
+      const topLevelComments = comments.filter(
+        (comment) => comment.parent_id === 0
+      );
+
+      // 渲染每条评论及其回复
+      topLevelComments.forEach((comment) => {
+        const commentItem = document.createElement("div");
+        commentItem.className = "comment-item";
+        commentItem.innerHTML = `
+            <div class="head-img"><img src="${
+              comment.user.avatar
+                ? `/api/user/avatar?id=${comment.user.id}`
+                : `https://cravatar.cn/avatar/${getMd5OfEmail(
+                    comment.user.email
+                  )}?d=retro&f=y`
+            }" /></div>
+            <div class="comment-content">
+               <span class="nickname primary">${
+                 comment.user?.nickname || comment.user?.username
+               }</span><span>发表于</span><span class="secondary time" value="${
+            comment.createdAt
+          }"> ${formatTimestamp(comment.createdAt)}</span>
+<div class="content">${comment.content}</div>
+<div class="action">
+${
+  currentUser.role === "admin" || currentUser.id === comment.user.id
+    ? `<span onclick="handleDelete(${comment.id})">${deleteIcon}</span>`
+    : ""
+}
+  <span onclick="handleReply(${comment.id}, ${comment.id}, '${
+            comment.user.nickname || comment.user.username
+          }', '${comment.user.email}')" class="reply-icon">${replyIcon}</span>
+  </div>
+ <div class="replies" id="replies-${comment.id}"></div>
+              </div>
+           
+          `;
+        // <button onclick="handleDelete(${comment.id})">删除</button>
+        commentList.appendChild(commentItem);
+
+        // 找到当前评论的所有回复
+        const replies = comments.filter(
+          (reply) => reply.parent_id === comment.id
+        );
+        renderReplies(comment.id, replies); // 渲染回复
+      });
+    }
+
+    // 渲染回复
+    function renderReplies(parentId, replies) {
+      const currentUser = JSON.parse(sessionStorage.getItem("user")) || {};
+      const repliesContainer = document.getElementById(`replies-${parentId}`);
+      repliesContainer.innerHTML = ""; // 清空当前回复
+
+      replies.forEach((reply) => {
+        const replyItem = document.createElement("div");
+        replyItem.className = "reply-item";
+        replyItem.innerHTML = `
+            <div class="head-img"><img src="${
+              reply.user.avatar
+                ? `/api/user/avatar?id=${reply.user.id}`
+                : `https://cravatar.cn/avatar/${getMd5OfEmail(
+                    reply.user.email
+                  )}?d=retro&f=y`
+            }" /></div>
+            <div class="comment-content">
+               <span class="nickname primary">${
+                 reply.user?.nickname || reply.user?.username
+               }</span><span>回复于</span><span class="secondary time" value="${
+            reply.createdAt
+          }">  ${formatTimestamp(reply.createdAt)}</span>
+<div class="content">${reply.content}</div>
+              <div class="action">
+                ${
+                  currentUser.role === "admin" ||
+                  currentUser.id === reply.user.id
+                    ? `<span onclick="handleDelete(${reply.id})">${deleteIcon}</span>`
+                    : ""
+                }
+                 <span onclick="handleReply(${reply.parent_id}, ${reply.id}, '${
+            reply.user.nickname || reply.user.username
+          }', '${reply.user.email}')" class="reply-icon">${replyIcon}</span>
+                </div>
+                <div class="replies" id="replies-${reply.id}">
+                  
+                  </div>
+              </div>
+            
+          `;
+        repliesContainer.appendChild(replyItem);
+      });
+    }
+
+    // 新增评论
+    function handleAdd(parent_id = 0, email) {
+      const isLogin = sessionStorage.getItem("user");
+      if (isLogin) {
+        const currentUser = JSON.parse(isLogin);
+        if (!currentUser.id) {
+          alert("请先登录");
+          return;
+        }
+      } else {
+        alert("请先登录");
+        return;
+      }
+      let inputValue = document.getElementsByTagName("textarea")[0].value;
+      const url = window.location.href;
+      if (parent_id !== 0 && email) {
+        inputValue = document.getElementById("current-comment").value;
+      }
+      if (!inputValue) {
+        return false;
+      }
+      axios({
+          method: "post",
+          url: "/api/docs/comment",
+          data: {
+            url: url,
+            content: inputValue,
+            parent_id: parent_id, // 默认添加顶级评论
+          },
+        })
+        .then((res) => {
+          const url = window.location.href;
+          getComments(url); // 重新获取评论列表
+          document.getElementsByTagName("textarea")[0].value = "";
+          // 发送飞书消息
+          axios({
+              method: "post",
+              url: "/api/docs/sendMsg",
+              data: {
+                content: inputValue,
+                url: url,
+              },
+            })
+            .then((res) => {
+              console.log("发送邮件成功", res.data);
+            })
+            .catch((error) => {
+              console.error("发送邮件失败", error);
+            });
+          if (parent_id !== 0 && email) {
+            // 发送邮件提醒
+            axios({
+                method: "post",
+                url: "/api/docs/replyNotify",
+                data: {
+                  email: email,
+                  url: url,
+                },
+              })
+              .then((res) => {
+                console.log("发送邮件成功", res.data);
+              })
+              .catch((error) => {
+                console.error("发送邮件失败", error);
+              });
+          }
+        })
+        .catch((error) => {
+          console.error("新增评论失败", error);
+        });
+    }
+
+    // 删除评论
+    function handleDelete(id) {
+      if (confirm("确定要删除这条评论吗？")) {
+        axios({
+            method: "delete",
+            url: `/api/docs/comment/${id}`,
+          })
+          .then((res) => {
+            console.log("删除评论成功", res.data);
+            const url = window.location.href;
+            getComments(url); // 重新获取评论列表
+          })
+          .catch((error) => {
+            console.error("删除评论失败", error);
+          });
+      }
+    }
+    // 获取用户信息
+    function getUser() {
+      if (sessionStorage.getItem("user")) {
+        const currentUser = JSON.parse(sessionStorage.getItem("user"));
+	if(!currentUser.username) return false;
+        document.querySelector(".nickname").innerHTML =
+          currentUser.nickname || currentUser.username;
+        if (currentUser.avatar) {
+          document.querySelector(
+            ".head-img"
+          ).innerHTML = `<img src="/api/user/avatar?id=${currentUser.id}" />`;
+          return;
+        } else {
+          document.querySelector(
+            ".head-img"
+          ).innerHTML = `<img src="https://cravatar.cn/avatar/${getMd5OfEmail(
+              currentUser.email
+            )}?d=retro&f=y" />`;
+        }
+        return;
+      } else {
+        axios({
+            method: "get",
+            url: "/api/user",
+          })
+          .then((res) => {
+            if (res.data && res.data.id) {
+              sessionStorage.setItem("user", JSON.stringify(res.data));
+              document.querySelector(".nickname").innerHTML =
+                res.data.nickname || res.data.username;
+              if (currentUser.avatar) {
+                document.querySelector(
+                  ".head-img"
+                ).innerHTML = `<img src="/api/user/avatar?id=${res.data.id}" />`;
+                return;
+              } else {
+                document.querySelector(
+                  ".head-img"
+                ).innerHTML = `<img src="https://cravatar.cn/avatar/${getMd5OfEmail(
+                  res.data.email
+                )}?d=retro&f=y" />`;
+              }
+            }
+
+          })
+          .catch((error) => {
+            console.error("获取用户信息失败", error);
+          });
+      }
+    }
+    //回复评论
+    function handleReply(parentId, id, nickname, email) {
+      // 删除其他输入框
+      const currentReply = document.querySelector(".current-reply");
+      if (currentReply) {
+        currentReply.remove();
+      }
+      const repliesContainer = document.getElementById(`replies-${id}`);
+      // 创建一个新的 div 元素，并设置 class 为 "input"
+      const newInputDiv = document.createElement("div");
+      newInputDiv.className = "input current-reply";
+      // 创建 head-img 元素
+      const headImgDiv = document.createElement("div");
+      headImgDiv.className = "head-img";
+      // 创建 textarea 元素
+      const textareaElement = document.createElement("textarea");
+      textareaElement.id = "current-comment";
+      textareaElement.name = "comment";
+      textareaElement.rows = 5;
+      textareaElement.cols = 5;
+      textareaElement.placeholder = "说点什么...";
+      textareaElement.required = true;
+      textareaElement.minLength = 10;
+      textareaElement.maxLength = 200;
+      textareaElement.autofocus = true;
+      textareaElement.spellcheck = true;
+      textareaElement.autocomplete = "on";
+      textareaElement.value = `回复 @${nickname}: `;
+      // 创建 button 元素
+      const submitButton = document.createElement("button");
+      submitButton.className = "submit";
+      submitButton.textContent = "评论";
+      submitButton.onclick = () => handleAdd(parentId, email); // 绑定点击事件
+      // 将 head-img、textarea 和 button 添加到 newInputDiv 中
+      newInputDiv.appendChild(headImgDiv);
+      newInputDiv.appendChild(textareaElement);
+      newInputDiv.appendChild(submitButton);
+      repliesContainer.insertAdjacentElement("beforeend", newInputDiv);
+      textareaElement.focus();
+    }
+    const handleLogin = () => {
+      const currentUser = JSON.parse(sessionStorage.getItem("user"));
+      if (currentUser && currentUser.id) {
+        return;
+      }
+      window.location.href = "/ssoLogin/?website=" + window.location.href;
+    };
+    // 页面加载时获取评论列表
+    window.onload = function () {
+      getUser();
+      const url = window.location.href;
+      timer && clearInterval(timer);
+      getComments(url);
+    };
+    window.onbeforeunload = function () {
+      alert("页面关闭");
+      timer && clearInterval(timer);
+    };
+  </script>
+</body>
+
+</html></div>
+  
+</div>
+                </footer>
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../middleware/K230_%E5%A4%9A%E5%AA%92%E4%BD%93%E4%B8%AD%E9%97%B4%E4%BB%B6_API%E5%8F%82%E8%80%83.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">K230 多媒体中间件API参考</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="K230_DPU_API%E5%8F%82%E8%80%83.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">K230 DPU API参考</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">概述</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">概述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">功能描述</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#gdma">gdma</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#sdma">sdma</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#api">API 参考</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dma">DMA 使用</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-mpi-dma-set-dev-attr">kd_mpi_dma_set_dev_attr</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-mpi-dma-get-dev-attr">kd_mpi_dma_get_dev_attr</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-mpi-dma-start-dev">kd_mpi_dma_start_dev</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-mpi-dma-stop-dev">kd_mpi_dma_stop_dev</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-mpi-dma-set-chn-attr">kd_mpi_dma_set_chn_attr</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-mpi-dma-get-chn-attr">kd_mpi_dma_get_chn_attr</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-mpi-dma-start-chn">kd_mpi_dma_start_chn</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-mpi-dma-stop-chn">kd_mpi_dma_stop_chn</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-mpi-dma-send-frame">kd_mpi_dma_send_frame</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-mpi-dma-get-frame">kd_mpi_dma_get_frame</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-mpi-dma-release-frame">kd_mpi_dma_release_frame</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">数据类型</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">公共数据类型</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#dma-max-dev-nums">DMA_MAX_DEV_NUMS</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#dma-max-chn-nums">DMA_MAX_CHN_NUMS</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-dma-mode-e">k_dma_mode_e</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-dma-dev-attr-t">k_dma_dev_attr_t</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-dma-chn-attr-u">k_dma_chn_attr_u</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-video-frame-info">k_video_frame_info</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-video-frame">k_video_frame</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">gdma 通道数据类型</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#gdma-max-chn-nums">GDMA_MAX_CHN_NUMS</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-gdma-rotation-e">k_gdma_rotation_e</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-pixel-format-dma-e">k_pixel_format_dma_e</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-gdma-chn-attr-t">k_gdma_chn_attr_t</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">sdma 通道数据类型</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#sdma-max-chn-nums">SDMA_MAX_CHN_NUMS</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-sdma-data-mode-e">k_sdma_data_mode_e</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-sdma-chn-attr-t">k_sdma_chn_attr_t</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">错误码</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">dma 错误码</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">调试信息</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">概述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">系统绑定</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">系统绑定调试信息</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#demo">demo 描述</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">非绑定模式 demo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">绑定模式 demo</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026 嘉楠 | 京ICP备2025124317号 | 京公网安备11010802045870号.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item"><style>
+    .cancat{
+        font-size: 1rem;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 1rem;
+      }
+      .canact-section a{
+       color: #ebedf0;
+       line-height: 30px;
+       font-weight: 400;
+       text-decoration: none;
+      }
+      .canact-section a:hover {
+       color: #4d8eef;
+      }
+   </style>
+   <div class="footer-center">
+    <div class="cancat">开发者资源</div>
+    <section class="canact-section"><a href="https://www.kendryte.com/zh/resource">资料下载</a></section>
+    <section class="canact-section"><a href="https://www.kendryte.com/zh/document">文档中心</a></section>
+    <section class="canact-section"><a href="https://www.kendryte.com/zh/training/start">模型训练</a></section>
+    <section class="canact-section"><a href="https://www.kendryte.com/zh/model/library">模型库</a></section>
+   </div></div>
+      
+    </div>
+  
+  
+    <div class="footer-items__center">
+      
+        <div class="footer-item"><style>
+ .cancat{
+     font-size: 1rem;
+     font-weight: 700;
+     color: #fff;
+     margin-bottom: 1rem;
+   }
+   .canact-section a{
+    color: #ebedf0;
+    line-height: 30px;
+    font-weight: 400;
+    text-decoration: none;
+   }
+   .canact-section a:hover {
+    color: #4d8eef;
+   }
+   .copy-right {
+    margin-top:30px;
+    color: #ebedf0;
+   }
+</style>
+<div class="footer-center">
+ <div class="cancat">联系我们</div>
+ <section class="canact-section"><a href="mailto:salesai@canaan-creative.com">邮箱：salesAI@canaan-creative.com</a></section>
+ <section class="canact-section"><a href="/">QQ 群： 578895334 </a></section>
+ <section class="canact-section"><a href="/">微信公众号：嘉楠开发者</a></section>
+</div></div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><style>
+    .cancat{
+        font-size: 1rem;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 1rem;
+      }
+      .canact-section a{
+       color: #ebedf0;
+       line-height: 30px;
+       font-weight: 400;
+       text-decoration: none;
+      }
+      .canact-section a:hover {
+       color: #4d8eef;
+      }
+   </style>
+   <div class="footer-center">
+    <div class="cancat">资讯和社区</div>
+    <section class="canact-section"><a href="https://www.kendryte.com">勘智开发者社区</a></section>
+    <section class="canact-section"><a href="https://www.kendryte.com/zh/products">产品中心</a></section>
+    <section class="canact-section"><a href="https://www.kendryte.com/answer">问答社区</a></section>
+    <section class="canact-section"><a href="https://www.kendryte.com/zh/blog">博客</a></section>
+   </div></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

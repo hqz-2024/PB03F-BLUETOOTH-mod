@@ -1,0 +1,4171 @@
+<!-- _templates/layout.html -->
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>K230 ISP图像调优指南 &#8212; K230 Linux+RT-Smart SDK</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/topbar.css?v=d050732f" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom-theme.css?v=e40dc788" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/auto-nums.css?v=c078078a" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../../_static/documentation_options.js?v=946197a6"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '01_software/pc/ISP_tuning/K230_ISP图像调优指南';</script>
+    <script src="../../../_static/mermaid.min.js?v=45c054c2"></script>
+    <script src="../../../_static/init_mermaid.js?v=999e7285"></script>
+    <script src="../../../_static/transform.js?v=23760c99"></script>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="K230 ISP初始化配置指南" href="K230_ISP%E5%88%9D%E5%A7%8B%E5%8C%96%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97.html" />
+    <link rel="prev" title="K230 SDK Dewarp 使用指南" href="../dewarp/K230_SDK_Dewarp%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+
+  gtag("config", "G-7J9HL06P02");
+</script>
+ <script>
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "tqhe6w0zs6");
+ </script>
+<script>
+  var _hmt = _hmt || [];
+  window._hmt = _hmt; // 修改为window 全局变量
+  (function () {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?d4832d9026d5bdd9eca72f27bb63dfb3"; //此处请替换你的站点i
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item"><a href="/" style="height: 100%; display: flex; align-items: center;"><img src="https://www.kendryte.com/uploads/branding/5rtuJdbiAZ7.png" style="height: 50%; width: auto;" alt=""></a> </div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><div class="document-navbar-nav">
+  <span class="nav-item"><a href="/zh/products">产品中心</a></span>
+  <span class="nav-item md-none sm-show"
+    ><a href="/zh/resource">资料下载</a></span
+  >
+  <span class="nav-item active"><a href="/zh/document">文档中心</a></span>
+  <span class="nav-item md-none sm-show"
+    ><a href="/zh/model/library">应用下载</a></span
+  >
+  <span class="nav-item md-none sm-show"
+    ><a href="/zh/training/start">模型训练</a></span
+  >
+  <span class="nav-item md-none lg-none sm-show"
+    ><a href="/zh/blog">博客</a></span
+  >
+  <span class="nav-item md-none sm-show"
+    ><a href="/zh/coursecenter">课程中心</a></span
+  >
+  <!-- 添加点击事件 -->
+  <span class="nav-item bbs" onclick="goBbs()"
+    >问答社区
+    <img
+      src="https://www.kendryte.com/img/hot.ebb7d69e.svg"
+      style="transform: translateY(-50%)"
+      alt=""
+  /></span>
+</div>
+<!-- 写样式 -->
+<style>
+  .document-navbar-nav .nav-item {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    margin-right: 20px;
+    cursor: pointer;
+  }
+
+  .document-navbar-nav .nav-item a {
+    color: #303133;
+  }
+
+  .document-navbar-nav .nav-item a:hover {
+    color: #66819d;
+  }
+
+  .document-navbar-nav .active a {
+    color: #002d5c;
+    font-weight: 700;
+  }
+
+  .document-navbar-nav .bbs {
+    color: #d12d26;
+  }
+
+  .document-navbar-nav .bbs:hover {
+    color: rgb(231, 100, 100);
+  }
+
+  @media screen and (max-width: 1200px) {
+    .document-navbar-nav .md-none {
+      display: none !important;
+    }
+  }
+
+  @media screen and (max-width: 960px) {
+    .document-navbar-nav .nav-item {
+      display: block !important;
+    }
+    .document-user-info {
+      display: none !important;
+    }
+  }
+  @media screen and (max-width: 1450px) {
+    .lg-none {
+      display: none !important;
+    }
+  }
+</style>
+<script>
+  function goBbs() {
+    location.href = `/answer/`;
+  }
+</script></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item"><div class="document-user-info">
+  <div class="name-info" onclick="(e) => showDropDown(e)">
+    <div class="login-con">
+      <span class="user-avatar jn_user-avt"></span>
+      <div class="jn_user-name">
+        <span></span>
+      </div>
+      <ul class="Dropdown-menu" style="display: none">
+        <li class="item-profile">
+          <a class="Button-label" href="/user">个人资料</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="login-con jn_user-btns">
+    <a class="jn_user-btn" onclick="goLogin()">登录</a>
+    <a class="jn_user-btn" onclick="goRegister()">注册</a>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  if (!window._LOGIN_LOADED) {
+    console.log("1111111111，header login.js loaded");
+    window._LOGIN_LOADED = true;
+
+    function goLogin() {
+      const currentUser = JSON.parse(sessionStorage.getItem("user"));
+      if (currentUser && currentUser.id) {
+        return;
+      }
+      location.href = "/ssoLogin/?website=" + location.href;
+    }
+
+    function goUser(event) {
+      event.stopPropagation();
+      location.href = "/zh/user";
+    }
+
+    function goRegister() {
+      const currentUser = JSON.parse(sessionStorage.getItem("user"));
+      if (currentUser && currentUser.id) {
+        return;
+      }
+      location.href = "/ssoRegister/?website=" + location.href;
+    }
+    async function getUser() {
+      const cachedUser = sessionStorage.getItem("user");
+      if (cachedUser) {
+        return JSON.parse(cachedUser);
+      }
+      // 异步请求数据
+      try {
+        const res = await axios.get("/api/user");
+	if(!res.data.username) return false;
+        sessionStorage.setItem("user", JSON.stringify(res.data));
+        return res.data;
+      } catch (error) {
+        console.error("获取用户信息失败", error);
+        return null; // 或 throw error 让调用方处理
+      }
+    }
+
+    function getMd5OfEmail(email) {
+      const emailLowercase = email.toLowerCase();
+      const md5Hash = CryptoJS.MD5(emailLowercase).toString();
+      return md5Hash;
+    }
+
+    async function loginInit() {
+      const jn_user_name = document.querySelector(".jn_user-name");
+      const user_avatar = document.querySelector(".user-avatar"); //头像
+      const jn_user_info = document.querySelector(".name-info"); //用户信息
+      const jn_user_btns = document.querySelector(".jn_user-btns"); //登录注册按钮
+      const Dropdown_menu = document.querySelector(".Dropdown-menu"); //下拉菜单
+      const userInfo = await getUser(); // 注意：需在 async 函数中使用
+      if (userInfo && userInfo.username) {
+        jn_user_info.style.display = "block";
+        jn_user_btns.style.display = "none";
+        if (userInfo.nickname) {
+          jn_user_name.innerHTML = userInfo.nickname;
+        } else if (userInfo.username) {
+          jn_user_name.innerHTML = userInfo.username;
+        }
+        let avatarUrl = userInfo.avatar;
+        if (avatarUrl) {
+          avatarUrl += `?id=${userInfo.id}&t=${userInfo.id}`; // 添加查询参数
+        } else {
+          avatarUrl = `https://cravatar.cn/avatar/${getMd5OfEmail(
+          userInfo.email
+        )}?d=retro&f=y`;
+        }
+        user_avatar.src = avatarUrl;
+        user_avatar.style.backgroundImage = `url(${avatarUrl})`;
+        user_avatar.style.backgroundSize = "cover";
+      } else {
+        jn_user_info.style.display = "none";
+        jn_user_btns.style.display = "block";
+      }
+      jn_user_info.addEventListener("click", function (event) {
+        event.stopPropagation();
+        Dropdown_menu.style.display =
+          Dropdown_menu.style.display === "none" ? "block" : "none";
+      });
+    }
+    loginInit();
+  }
+</script>
+<!-- 增加css -->
+<style>
+  .document-user-info .login-con {
+    display: flex;
+    align-items: center;
+    margin-left: 30px;
+    font-size: 15px;
+    color: #303133;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .document-user-info .jn_user-avt {
+    background: #99abbe;
+    border-radius: 30px;
+    width: 31px;
+    height: 31px;
+    position: relative;
+    margin-right: 5px;
+    overflow: hidden;
+  }
+
+  .document-user-info .jn_user-avt img {
+    width: 100%;
+  }
+
+  .document-user-info .jn_user-name {
+    max-width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+  }
+
+  .document-user-info .jn_user-name :hover {
+    opacity: 0.9;
+  }
+
+  .document-user-info .jn_user-btn {
+    padding: 0 10px;
+    cursor: pointer;
+  }
+
+  .document-user-info .jn_user-btn:hover {
+    opacity: 0.9;
+  }
+
+  .document-user-info .Dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1030;
+    min-width: 160px;
+    padding: 8px 0;
+    margin: 7px 0;
+    background: #002d5c;
+    border: 1px solid #121212;
+    border-radius: 4px;
+    box-shadow: 0 2px 6px #013972;
+    list-style: none;
+    text-align: left;
+    color: #111;
+    font-size: 15px;
+    line-height: 1.5;
+    overflow: hidden;
+  }
+
+  .document-user-info .Dropdown-menu a {
+    display: block;
+    color: #b9b9b9;
+    padding-left: 30px;
+  }
+
+  .document-user-info .Dropdown-menu:hover {
+    text-decoration: none;
+  }
+
+  .document-user-info .item-profile a {
+    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACi0lEQVRYR+2Wy3EbMQyGAc6Ie4xcQeQKIlcQ6SKuTokriFOBlQqcDixXEKuC6LbkXmRVEKWCqAOvr5oRkYGHzDDrfXDXyfhiHLlc4iPwAwTCCxu+sH+IBsiybCSEuCSiMSKOiahAxB0A7Iho4tcAYA8A6yRJVtPptGi7YBSA1nqBiNcAsOLDrbWFEOICAD7VOSCivRDifDabMWSttQIYY74CAANM/GF5nl8Q0be22/F3RDxrgmgEyLJsIoRYh85dKn4AwDAGgCORJMlZXToaAbTW7HynlOIoPJox5rYp9FVQRPQlTdNl1bdagM1mMzwcDvfW2tP5fM7C8gAsrDcxtw/2bJVSk04ALvwbpdRfkMYY6uictxdKqZM+AN/DH31UegBA+SL+jNoUOLH9klKehALqGYHuKXCC2yHicjabsfAezQnzQ5coENFNmqaLTingzVzv1tqrsIy8NjoAPFhrx6GQw39bG5G78Vsp5dSnQmu9RMTLGAhE/BxGsPxPK4ATHtcwh31hrd3ybWL6QVP9t4qwTGqM+QgA3JDeBd8e+DECgPfhGhHdEdGiLuydUlAV5jzPx4PBYB9WB68dj8cixumzAWJyH7unVQP+INcXONQjABi7dZ4FeC4Y8kzAswAi7ololyTJ9p/MA+wYEa8Qkd//n5xfdh5RBfxmLKWUN00gjRFw7/41EW29qJwYeRaIfo6bBpNaAD90hHXcZRApaYDTNK0aTCoBgm53rpRau67IcyAPIn2tkFKeltNRCaC1ZjHdlgYRrvewB/QBWSmlWEt/7AmACzOLZ+Rpe/T/WrjygPMEwBjDKr/nV9CfwgIEAO6Ez7Zye64DeLajhgPuwtRGN6L/RfQK8BqB38AuVjD+RLVIAAAAAElFTkSuQmCC") no-repeat left center;
+    background-size: auto 80%;
+  }
+
+  .document-user-info .Dropdown-menu li {
+    padding: 8px 15px;
+    display: block;
+    width: 100%;
+    color: #b9b9b9;
+    text-align: left;
+    font-size: 15px;
+    font-weight: normal;
+    text-decoration: none;
+  }
+
+  .document-user-info .Dropdown-menu li:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+
+  @media screen and (max-width: 960px) {
+    .document-user-info {
+      display: none !important;
+    }
+  }
+</style></div>
+      
+        <div class="navbar-item"><div class="document-nav-lang">
+  <div class="document-menu-lang">
+    <span tabindex="0" class="lang-txt" style="
+        background-image: url('https://kendryte.com/img/ch-flag.a61145a4.svg');
+      ">中文 | English</span>
+    <div class="jn_lan-list">
+      <a class="jn_lan-item cn">简体中文</a>
+      <a class="jn_lan-item eng">English</a>
+    </div>
+  </div>
+  <div class="document-menu-lang-mobile">
+    <span class="lang-zh cn">简体中文</span> | <span class="lang-en eng">English</span>
+  </div>
+</div>
+<style>
+  .document-menu-lang-mobile {
+    display: none;
+  }
+
+  .document-menu-lang-mobile .lang-con {
+    text-align: center;
+  }
+
+  .document-menu-lang-mobile.lang-zh,
+  .document-menu-lang-mobile.lang-en {
+    color: #2980b9;
+    cursor: pointer;
+  }
+
+  .document-menu-lang {
+    padding: 0 8px;
+    position: relative;
+    font-size: 13px;
+    border: 1px solid #c0c4cc;
+    border-radius: 10px;
+    color: #303133;
+  }
+
+  .document-menu-lang .lang-txt {
+    padding-right: 28px;
+    background: url("https://kendryte.com/img/ch-flag.a61145a4.svg") no-repeat right 50%;
+    background-size: auto 68%;
+    display: block;
+    cursor: pointer;
+  }
+
+  .document-menu-lang .jn_lan-list {
+    display: none;
+    text-align: center;
+    position: absolute;
+    background: #fff;
+    border-radius: 5px;
+    padding: 10px 20px;
+    flex-wrap: wrap;
+    top: 43px;
+    left: 50%;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    border: 1px solid #ebeef5;
+    transform: translateX(-50%);
+  }
+
+  .document-menu-lang .jn_lan-list a {
+    color: #303133;
+  }
+
+  .document-menu-lang .jn_lan-item.cn {
+    background: url("https://kendryte.com/img/ch-flag.a61145a4.svg") no-repeat 0;
+  }
+
+  .document-menu-lang .jn_lan-item {
+    font-size: 15px;
+    cursor: pointer;
+    padding-left: 32px;
+    color: #606266;
+    width: 100%;
+    line-height: 3;
+    display: block;
+    white-space: nowrap;
+    background-size: auto 40%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .document-menu-lang .jn_lan-item.eng {
+    background: url("https://kendryte.com/img/en-flag.2d05326c.svg") no-repeat 0;
+  }
+
+  .document-menu-lang .jn_lan-list::after {
+    content: "";
+    border-width: 8px;
+    border-style: solid;
+    border-color: transparent transparent #fff transparent;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translate(-50%, -100%);
+  }
+
+  .document-menu-lang-mobile {
+    display: none;
+    border: 1px solid #c0c4cc;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    padding: 0 8px;
+  }
+
+  @media screen and (max-width: 960px) {
+    .document-menu-lang-mobile {
+      display: block;
+    }
+
+    .document-menu-lang {
+      display: none;
+    }
+  }
+</style>
+<script>
+  if (!window._LANGUAGE_TOGGLE_LOADED) {
+    window._LANGUAGE_TOGGLE_LOADED = true
+    const docsUrlList = {
+      k230_docs: {
+        zh: "https://www.kendryte.com/k230/zh/dev/index.html",
+        en: "https://www.kendryte.com/k230/en/dev/index.html",
+      },
+      k230_canmv_docs: {
+        zh: "https://www.kendryte.com/k230_canmv/zh/main/index.html",
+        en: "https://www.kendryte.com/k230_canmv/en/main/index.html",
+      },
+      rtt: {
+        zh: "https://www.kendryte.com/k230/zh/rtt/dev/index_rtt_only.html",
+        en: "https://www.kendryte.com/k230/en/rtt/dev/index_rtt_only.html",
+      },
+      k230_ai_docs: {
+        zh: "https://www.kendryte.com/ai_docs/zh/main/index.html",
+        en: "https://www.kendryte.com/ai_docs/en/main/index.html",
+      },
+      rtos: {
+        zh: "https://www.kendryte.com/k230_rtos/zh/main/index.html",
+        en: "https://www.kendryte.com/k230_rtos/en/main/index.html",
+      },
+    };
+    const whichDocs = () => {
+      if (
+        location.href.includes("/k230_canmv/zh/") ||
+        location.href.includes("/k230_canmv/en/")
+      ) {
+        return "k230_canmv_docs";
+      } else if (
+        location.href.includes("/k230/k230_rtos_sdk_docs/") ||
+        location.href.includes("/k230/k230_rtos_sdk_docs/")
+      ) {
+        return "rtos";
+      } else if (
+        location.href.includes("/k230/zh/") ||
+        location.href.includes("/k230/en/")
+      ) {
+        return "k230_docs";
+      } else if (
+        location.href.includes("/ai_docs/zh/") ||
+        location.href.includes("/ai_docs/en/")
+      ) {
+        return "k230_ai_docs";
+      } else {
+        return "rtos";
+      }
+      return null;
+    };
+
+    function setupLanguageToggle() {
+      function handleLanguageSwitch(language) {
+        const langButton = document.querySelector(".lang-txt");
+        const flagUrl =
+          language === "cn" ?
+          "https://kendryte.com/img/ch-flag.a61145a4.svg" :
+          "https://kendryte.com/img/en-flag.2d05326c.svg";
+        langButton.style.backgroundImage = `url('${flagUrl}')`;
+        const docsKey = whichDocs();
+        if (docsKey && docsUrlList[docsKey]) {
+          location.href = docsUrlList[docsKey][language === "cn" ? "zh" : "en"];
+        }
+        langList.style.display = "none";
+      }
+
+      // 监听整个document的点击事件
+      document.addEventListener("click", function (event) {
+        const langList = document.querySelector(".jn_lan-list");
+        const target = event.target;
+        if (target.closest(".lang-txt")) {
+          langList.style.display =
+            langList.style.display === "flex" ? "none" : "flex";
+        }
+        if (target.closest(".cn")) {
+          console.log("点击了中文");
+          handleLanguageSwitch("cn");
+          return;
+        }
+        if (target.closest(".eng")) {
+          console.log("点击了eng");
+          handleLanguageSwitch("eng");
+          return;
+        }
+      });
+    }
+    // 初始化语言切换功能
+    document.addEventListener("DOMContentLoaded", setupLanguageToggle);
+  }
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><div class="document-navbar-nav">
+  <span class="nav-item"><a href="/zh/products">产品中心</a></span>
+  <span class="nav-item md-none sm-show"
+    ><a href="/zh/resource">资料下载</a></span
+  >
+  <span class="nav-item active"><a href="/zh/document">文档中心</a></span>
+  <span class="nav-item md-none sm-show"
+    ><a href="/zh/model/library">应用下载</a></span
+  >
+  <span class="nav-item md-none sm-show"
+    ><a href="/zh/training/start">模型训练</a></span
+  >
+  <span class="nav-item md-none lg-none sm-show"
+    ><a href="/zh/blog">博客</a></span
+  >
+  <span class="nav-item md-none sm-show"
+    ><a href="/zh/coursecenter">课程中心</a></span
+  >
+  <!-- 添加点击事件 -->
+  <span class="nav-item bbs" onclick="goBbs()"
+    >问答社区
+    <img
+      src="https://www.kendryte.com/img/hot.ebb7d69e.svg"
+      style="transform: translateY(-50%)"
+      alt=""
+  /></span>
+</div>
+<!-- 写样式 -->
+<style>
+  .document-navbar-nav .nav-item {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    margin-right: 20px;
+    cursor: pointer;
+  }
+
+  .document-navbar-nav .nav-item a {
+    color: #303133;
+  }
+
+  .document-navbar-nav .nav-item a:hover {
+    color: #66819d;
+  }
+
+  .document-navbar-nav .active a {
+    color: #002d5c;
+    font-weight: 700;
+  }
+
+  .document-navbar-nav .bbs {
+    color: #d12d26;
+  }
+
+  .document-navbar-nav .bbs:hover {
+    color: rgb(231, 100, 100);
+  }
+
+  @media screen and (max-width: 1200px) {
+    .document-navbar-nav .md-none {
+      display: none !important;
+    }
+  }
+
+  @media screen and (max-width: 960px) {
+    .document-navbar-nav .nav-item {
+      display: block !important;
+    }
+    .document-user-info {
+      display: none !important;
+    }
+  }
+  @media screen and (max-width: 1450px) {
+    .lg-none {
+      display: none !important;
+    }
+  }
+</style>
+<script>
+  function goBbs() {
+    location.href = `/answer/`;
+  }
+</script></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><div class="document-user-info">
+  <div class="name-info" onclick="(e) => showDropDown(e)">
+    <div class="login-con">
+      <span class="user-avatar jn_user-avt"></span>
+      <div class="jn_user-name">
+        <span></span>
+      </div>
+      <ul class="Dropdown-menu" style="display: none">
+        <li class="item-profile">
+          <a class="Button-label" href="/user">个人资料</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="login-con jn_user-btns">
+    <a class="jn_user-btn" onclick="goLogin()">登录</a>
+    <a class="jn_user-btn" onclick="goRegister()">注册</a>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  if (!window._LOGIN_LOADED) {
+    console.log("1111111111，header login.js loaded");
+    window._LOGIN_LOADED = true;
+
+    function goLogin() {
+      const currentUser = JSON.parse(sessionStorage.getItem("user"));
+      if (currentUser && currentUser.id) {
+        return;
+      }
+      location.href = "/ssoLogin/?website=" + location.href;
+    }
+
+    function goUser(event) {
+      event.stopPropagation();
+      location.href = "/zh/user";
+    }
+
+    function goRegister() {
+      const currentUser = JSON.parse(sessionStorage.getItem("user"));
+      if (currentUser && currentUser.id) {
+        return;
+      }
+      location.href = "/ssoRegister/?website=" + location.href;
+    }
+    async function getUser() {
+      const cachedUser = sessionStorage.getItem("user");
+      if (cachedUser) {
+        return JSON.parse(cachedUser);
+      }
+      // 异步请求数据
+      try {
+        const res = await axios.get("/api/user");
+	if(!res.data.username) return false;
+        sessionStorage.setItem("user", JSON.stringify(res.data));
+        return res.data;
+      } catch (error) {
+        console.error("获取用户信息失败", error);
+        return null; // 或 throw error 让调用方处理
+      }
+    }
+
+    function getMd5OfEmail(email) {
+      const emailLowercase = email.toLowerCase();
+      const md5Hash = CryptoJS.MD5(emailLowercase).toString();
+      return md5Hash;
+    }
+
+    async function loginInit() {
+      const jn_user_name = document.querySelector(".jn_user-name");
+      const user_avatar = document.querySelector(".user-avatar"); //头像
+      const jn_user_info = document.querySelector(".name-info"); //用户信息
+      const jn_user_btns = document.querySelector(".jn_user-btns"); //登录注册按钮
+      const Dropdown_menu = document.querySelector(".Dropdown-menu"); //下拉菜单
+      const userInfo = await getUser(); // 注意：需在 async 函数中使用
+      if (userInfo && userInfo.username) {
+        jn_user_info.style.display = "block";
+        jn_user_btns.style.display = "none";
+        if (userInfo.nickname) {
+          jn_user_name.innerHTML = userInfo.nickname;
+        } else if (userInfo.username) {
+          jn_user_name.innerHTML = userInfo.username;
+        }
+        let avatarUrl = userInfo.avatar;
+        if (avatarUrl) {
+          avatarUrl += `?id=${userInfo.id}&t=${userInfo.id}`; // 添加查询参数
+        } else {
+          avatarUrl = `https://cravatar.cn/avatar/${getMd5OfEmail(
+          userInfo.email
+        )}?d=retro&f=y`;
+        }
+        user_avatar.src = avatarUrl;
+        user_avatar.style.backgroundImage = `url(${avatarUrl})`;
+        user_avatar.style.backgroundSize = "cover";
+      } else {
+        jn_user_info.style.display = "none";
+        jn_user_btns.style.display = "block";
+      }
+      jn_user_info.addEventListener("click", function (event) {
+        event.stopPropagation();
+        Dropdown_menu.style.display =
+          Dropdown_menu.style.display === "none" ? "block" : "none";
+      });
+    }
+    loginInit();
+  }
+</script>
+<!-- 增加css -->
+<style>
+  .document-user-info .login-con {
+    display: flex;
+    align-items: center;
+    margin-left: 30px;
+    font-size: 15px;
+    color: #303133;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .document-user-info .jn_user-avt {
+    background: #99abbe;
+    border-radius: 30px;
+    width: 31px;
+    height: 31px;
+    position: relative;
+    margin-right: 5px;
+    overflow: hidden;
+  }
+
+  .document-user-info .jn_user-avt img {
+    width: 100%;
+  }
+
+  .document-user-info .jn_user-name {
+    max-width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+  }
+
+  .document-user-info .jn_user-name :hover {
+    opacity: 0.9;
+  }
+
+  .document-user-info .jn_user-btn {
+    padding: 0 10px;
+    cursor: pointer;
+  }
+
+  .document-user-info .jn_user-btn:hover {
+    opacity: 0.9;
+  }
+
+  .document-user-info .Dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1030;
+    min-width: 160px;
+    padding: 8px 0;
+    margin: 7px 0;
+    background: #002d5c;
+    border: 1px solid #121212;
+    border-radius: 4px;
+    box-shadow: 0 2px 6px #013972;
+    list-style: none;
+    text-align: left;
+    color: #111;
+    font-size: 15px;
+    line-height: 1.5;
+    overflow: hidden;
+  }
+
+  .document-user-info .Dropdown-menu a {
+    display: block;
+    color: #b9b9b9;
+    padding-left: 30px;
+  }
+
+  .document-user-info .Dropdown-menu:hover {
+    text-decoration: none;
+  }
+
+  .document-user-info .item-profile a {
+    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACi0lEQVRYR+2Wy3EbMQyGAc6Ie4xcQeQKIlcQ6SKuTokriFOBlQqcDixXEKuC6LbkXmRVEKWCqAOvr5oRkYGHzDDrfXDXyfhiHLlc4iPwAwTCCxu+sH+IBsiybCSEuCSiMSKOiahAxB0A7Iho4tcAYA8A6yRJVtPptGi7YBSA1nqBiNcAsOLDrbWFEOICAD7VOSCivRDifDabMWSttQIYY74CAANM/GF5nl8Q0be22/F3RDxrgmgEyLJsIoRYh85dKn4AwDAGgCORJMlZXToaAbTW7HynlOIoPJox5rYp9FVQRPQlTdNl1bdagM1mMzwcDvfW2tP5fM7C8gAsrDcxtw/2bJVSk04ALvwbpdRfkMYY6uictxdKqZM+AN/DH31UegBA+SL+jNoUOLH9klKehALqGYHuKXCC2yHicjabsfAezQnzQ5coENFNmqaLTingzVzv1tqrsIy8NjoAPFhrx6GQw39bG5G78Vsp5dSnQmu9RMTLGAhE/BxGsPxPK4ATHtcwh31hrd3ybWL6QVP9t4qwTGqM+QgA3JDeBd8e+DECgPfhGhHdEdGiLuydUlAV5jzPx4PBYB9WB68dj8cixumzAWJyH7unVQP+INcXONQjABi7dZ4FeC4Y8kzAswAi7ololyTJ9p/MA+wYEa8Qkd//n5xfdh5RBfxmLKWUN00gjRFw7/41EW29qJwYeRaIfo6bBpNaAD90hHXcZRApaYDTNK0aTCoBgm53rpRau67IcyAPIn2tkFKeltNRCaC1ZjHdlgYRrvewB/QBWSmlWEt/7AmACzOLZ+Rpe/T/WrjygPMEwBjDKr/nV9CfwgIEAO6Ez7Zye64DeLajhgPuwtRGN6L/RfQK8BqB38AuVjD+RLVIAAAAAElFTkSuQmCC") no-repeat left center;
+    background-size: auto 80%;
+  }
+
+  .document-user-info .Dropdown-menu li {
+    padding: 8px 15px;
+    display: block;
+    width: 100%;
+    color: #b9b9b9;
+    text-align: left;
+    font-size: 15px;
+    font-weight: normal;
+    text-decoration: none;
+  }
+
+  .document-user-info .Dropdown-menu li:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+
+  @media screen and (max-width: 960px) {
+    .document-user-info {
+      display: none !important;
+    }
+  }
+</style></div>
+        
+          <div class="navbar-item"><div class="document-nav-lang">
+  <div class="document-menu-lang">
+    <span tabindex="0" class="lang-txt" style="
+        background-image: url('https://kendryte.com/img/ch-flag.a61145a4.svg');
+      ">中文 | English</span>
+    <div class="jn_lan-list">
+      <a class="jn_lan-item cn">简体中文</a>
+      <a class="jn_lan-item eng">English</a>
+    </div>
+  </div>
+  <div class="document-menu-lang-mobile">
+    <span class="lang-zh cn">简体中文</span> | <span class="lang-en eng">English</span>
+  </div>
+</div>
+<style>
+  .document-menu-lang-mobile {
+    display: none;
+  }
+
+  .document-menu-lang-mobile .lang-con {
+    text-align: center;
+  }
+
+  .document-menu-lang-mobile.lang-zh,
+  .document-menu-lang-mobile.lang-en {
+    color: #2980b9;
+    cursor: pointer;
+  }
+
+  .document-menu-lang {
+    padding: 0 8px;
+    position: relative;
+    font-size: 13px;
+    border: 1px solid #c0c4cc;
+    border-radius: 10px;
+    color: #303133;
+  }
+
+  .document-menu-lang .lang-txt {
+    padding-right: 28px;
+    background: url("https://kendryte.com/img/ch-flag.a61145a4.svg") no-repeat right 50%;
+    background-size: auto 68%;
+    display: block;
+    cursor: pointer;
+  }
+
+  .document-menu-lang .jn_lan-list {
+    display: none;
+    text-align: center;
+    position: absolute;
+    background: #fff;
+    border-radius: 5px;
+    padding: 10px 20px;
+    flex-wrap: wrap;
+    top: 43px;
+    left: 50%;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    border: 1px solid #ebeef5;
+    transform: translateX(-50%);
+  }
+
+  .document-menu-lang .jn_lan-list a {
+    color: #303133;
+  }
+
+  .document-menu-lang .jn_lan-item.cn {
+    background: url("https://kendryte.com/img/ch-flag.a61145a4.svg") no-repeat 0;
+  }
+
+  .document-menu-lang .jn_lan-item {
+    font-size: 15px;
+    cursor: pointer;
+    padding-left: 32px;
+    color: #606266;
+    width: 100%;
+    line-height: 3;
+    display: block;
+    white-space: nowrap;
+    background-size: auto 40%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .document-menu-lang .jn_lan-item.eng {
+    background: url("https://kendryte.com/img/en-flag.2d05326c.svg") no-repeat 0;
+  }
+
+  .document-menu-lang .jn_lan-list::after {
+    content: "";
+    border-width: 8px;
+    border-style: solid;
+    border-color: transparent transparent #fff transparent;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translate(-50%, -100%);
+  }
+
+  .document-menu-lang-mobile {
+    display: none;
+    border: 1px solid #c0c4cc;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    padding: 0 8px;
+  }
+
+  @media screen and (max-width: 960px) {
+    .document-menu-lang-mobile {
+      display: block;
+    }
+
+    .document-menu-lang {
+      display: none;
+    }
+  }
+</style>
+<script>
+  if (!window._LANGUAGE_TOGGLE_LOADED) {
+    window._LANGUAGE_TOGGLE_LOADED = true
+    const docsUrlList = {
+      k230_docs: {
+        zh: "https://www.kendryte.com/k230/zh/dev/index.html",
+        en: "https://www.kendryte.com/k230/en/dev/index.html",
+      },
+      k230_canmv_docs: {
+        zh: "https://www.kendryte.com/k230_canmv/zh/main/index.html",
+        en: "https://www.kendryte.com/k230_canmv/en/main/index.html",
+      },
+      rtt: {
+        zh: "https://www.kendryte.com/k230/zh/rtt/dev/index_rtt_only.html",
+        en: "https://www.kendryte.com/k230/en/rtt/dev/index_rtt_only.html",
+      },
+      k230_ai_docs: {
+        zh: "https://www.kendryte.com/ai_docs/zh/main/index.html",
+        en: "https://www.kendryte.com/ai_docs/en/main/index.html",
+      },
+      rtos: {
+        zh: "https://www.kendryte.com/k230_rtos/zh/main/index.html",
+        en: "https://www.kendryte.com/k230_rtos/en/main/index.html",
+      },
+    };
+    const whichDocs = () => {
+      if (
+        location.href.includes("/k230_canmv/zh/") ||
+        location.href.includes("/k230_canmv/en/")
+      ) {
+        return "k230_canmv_docs";
+      } else if (
+        location.href.includes("/k230/k230_rtos_sdk_docs/") ||
+        location.href.includes("/k230/k230_rtos_sdk_docs/")
+      ) {
+        return "rtos";
+      } else if (
+        location.href.includes("/k230/zh/") ||
+        location.href.includes("/k230/en/")
+      ) {
+        return "k230_docs";
+      } else if (
+        location.href.includes("/ai_docs/zh/") ||
+        location.href.includes("/ai_docs/en/")
+      ) {
+        return "k230_ai_docs";
+      } else {
+        return "rtos";
+      }
+      return null;
+    };
+
+    function setupLanguageToggle() {
+      function handleLanguageSwitch(language) {
+        const langButton = document.querySelector(".lang-txt");
+        const flagUrl =
+          language === "cn" ?
+          "https://kendryte.com/img/ch-flag.a61145a4.svg" :
+          "https://kendryte.com/img/en-flag.2d05326c.svg";
+        langButton.style.backgroundImage = `url('${flagUrl}')`;
+        const docsKey = whichDocs();
+        if (docsKey && docsUrlList[docsKey]) {
+          location.href = docsUrlList[docsKey][language === "cn" ? "zh" : "en"];
+        }
+        langList.style.display = "none";
+      }
+
+      // 监听整个document的点击事件
+      document.addEventListener("click", function (event) {
+        const langList = document.querySelector(".jn_lan-list");
+        const target = event.target;
+        if (target.closest(".lang-txt")) {
+          langList.style.display =
+            langList.style.display === "flex" ? "none" : "flex";
+        }
+        if (target.closest(".cn")) {
+          console.log("点击了中文");
+          handleLanguageSwitch("cn");
+          return;
+        }
+        if (target.closest(".eng")) {
+          console.log("点击了eng");
+          handleLanguageSwitch("eng");
+          return;
+        }
+      });
+    }
+    // 初始化语言切换功能
+    document.addEventListener("DOMContentLoaded", setupLanguageToggle);
+  }
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">K230 Linux+RT-Smart SDK</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">搜索</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../CanMV_K230_%E6%95%99%E7%A8%8B.html">CanMV K230 教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../board/K230_SDK_%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E.html">K230 SDK使用说明</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../index_normal_tutorial.html">K230 SDK 实用教程</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_%E5%AE%9E%E6%88%98%E5%9F%BA%E7%A1%80%E7%AF%87_hello_world.html">K230 实战基础篇 - hello world</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_AI%E5%AE%9E%E6%88%98_HHB%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E5%B7%A5%E5%85%B7.html">K230 AI实战 - HHB神经网络模型部署工具</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_GPU%E5%BA%94%E7%94%A8%E5%AE%9E%E6%88%98.html">K230 GPU 应用实战 - VGLite 绘制酷炫图形</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_GUI%E5%AE%9E%E6%88%98_LVGL%E7%A7%BB%E6%A4%8D%E6%95%99%E7%A8%8B.html">K230 GUI实战 - LVGL移植教程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_RVV%E5%AE%9E%E6%88%98.html">K230 RVV实战</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_USB%E5%BA%94%E7%94%A8%E5%AE%9E%E6%88%98_UVC%E4%BC%A0%E8%BE%93YUV%E5%8F%8A%E7%BC%96%E7%A0%81%E7%A0%81%E6%B5%81.html">K230 USB应用实战-UVC传输YUV及编码码流</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_%E5%9B%BE%E5%83%8F%E5%AE%9E%E6%88%98_%E5%BC%80%E6%9C%BA%E8%A7%86%E9%A2%91%E5%92%8C%E5%BC%80%E6%9C%BAlogo.html">K230 图像实战 - 开机视频和开机logo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_%E7%BC%96%E7%A0%81%E5%AE%9E%E6%88%98_rtsp_server%E6%90%AD%E5%BB%BA%E5%92%8C%E6%8E%A8%E6%B5%81.html">K230 编码实战 - rtsp sever搭建和推流</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_%E9%9F%B3%E9%A2%91%E5%AE%9E%E6%88%98_%E9%9F%B3%E9%A2%91%E9%87%87%E9%9B%86_%E6%92%AD%E6%94%BE%E5%92%8C%E7%BC%96%E8%A7%A3%E7%A0%81.html">K230 音频实战 - 音频采集、播放和编解码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/business_poc/K230_%E5%9C%BA%E6%99%AF%E5%AE%9E%E6%88%98_%E6%99%BA%E8%83%BD%E9%97%A8%E9%94%81.html">K230 场景实战-智能门锁POC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/business_poc/K230_%E5%9C%BA%E6%99%AF%E5%AE%9E%E6%88%98_%E6%99%BA%E8%83%BD%E9%97%A8%E9%94%81_OV9286.html">K230 场景实战-智能门锁POC-3D结构光</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/business_poc/K230_%E5%9C%BA%E6%99%AF%E5%AE%9E%E6%88%98_%E7%8C%AB%E7%9C%BC.html">K230 场景实战-猫眼POC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/business_poc/K230_%E5%9C%BA%E6%99%AF%E5%AE%9E%E6%88%98_%E8%AF%8D%E5%85%B8%E7%AC%94.html">K230 场景实战-词典笔POC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/business_poc/K230_%E5%9C%BA%E6%99%AF%E5%AE%9E%E6%88%98_dpu%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA.html">K230 场景实战-dpu深度相机POC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/business_poc/k230_%E5%9C%BA%E6%99%AF%E5%AE%9E%E6%88%98_ahd_sensor%E7%A7%BB%E6%A4%8D.html">K230 ahd sensor 移植参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/ai_demos/K230_AI_Demo%E4%BB%8B%E7%BB%8D.html">K230 AI Demo介绍</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/fancy_poc/K230_Fancy_Poc%E4%BB%8B%E7%BB%8D.html">K230 Fancy POC介绍</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../board/examples/K230_SDK_CanMV_Board_Demo%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 SDK CanMV Board Demo使用指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../board/examples/K230_SDK_EVB_Board_Demo%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 SDK EVB Board Demo使用指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../board/examples/K230D_SDK_Zero_Board_Demo%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 SDK CanMV Board Demo使用指南</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../../../index_dev_guide.html">K230 SDK 开发指南</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_RVV%E4%BC%98%E5%8C%96%E6%80%A7%E8%83%BD%E8%AF%B4%E6%98%8E.html">K230 RVV优化性能说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_%E5%86%85%E5%AD%98%E4%BC%98%E5%8C%96%E6%8C%87%E5%8D%97.html">K230 内存优化指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_%E5%86%85%E5%AD%98%E5%8D%A0%E7%94%A8%E5%88%86%E6%9E%90%E6%8C%87%E5%8D%97.html">K230 内存分析指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_%E5%90%AF%E5%8A%A8%E4%BC%98%E5%8C%96%E6%8C%87%E5%8D%97.html">K230 启动优化指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_%E5%A4%A7%E5%B0%8F%E6%A0%B8%E9%80%9A%E8%AE%AF_sharefs%E7%94%A8%E6%B3%95%E4%BB%8B%E7%BB%8D.html">K230大小核通讯Sharefs使用简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../board/middleware/K230_openblas_%E5%BC%80%E5%8F%91%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 OpenBLAS开发指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../board/middleware/K230_opencv_%E5%BC%80%E5%8F%91%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 OpenCV开发指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../board/mpp/K230_Camera_Sensor%E9%80%82%E9%85%8D%E6%8C%87%E5%8D%97.html">K230 Camera Sensor适配指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../board/mpp/K230_PM%E6%A1%86%E6%9E%B6%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230_功耗管理适配指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../board/mpp/K230_VICAP_SENSOR_%E5%8F%82%E6%95%B0%E5%88%86%E5%8C%BA%E5%8F%82%E8%80%83.html">K230 VICAP SENSOR 参数分区参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../board/mpp/K230_LCD%E9%80%82%E9%85%8D%E6%8C%87%E5%8D%97.html">K230 LCD适配指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../board/osdrv/K230_PMU_%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 PMU使用指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../board/osdrv/K230_lpddr4_lpddr3%E9%A9%B1%E5%8A%A8%E9%80%82%E9%85%8D%E6%8C%87%E5%8D%97.html">K230 lpddr3/lpddr4驱动适配指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../board/osdrv/K230_SDK_IoT_WiFi_AiW4211LV10_%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 SDK IoT WiFi AiW4211LV10使用指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../board/osdrv/K230_SDK_IoT_WiFi_AiW4211LV10_%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97.html">K230 SDK IoT WiFi AiW4211LV10驱动开发指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../board/ai/K230_nncase_%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97.html">K230 nncase开发指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../03_other/K230_SDK%E6%9B%B4%E6%96%B0nncase%E8%BF%90%E8%A1%8C%E6%97%B6%E5%BA%93%E6%8C%87%E5%8D%97.html">K230 SDK 更新nncase运行时库指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../03_other/K230_debian_ubuntu%E8%AF%B4%E6%98%8E.html">K230 debian ubuntu 说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../burntool/K230_SDK_Burntool%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 SDK Burntool使用指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dewarp/K230_SDK_Dewarp%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 SDK Dewarp 使用指南</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">K230 ISP图像调优指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="K230_ISP%E5%88%9D%E5%A7%8B%E5%8C%96%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97.html">K230 ISP初始化配置指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pqtools/K230_ISP_Tuning_Tool%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 ISP Tuning Tool使用指南</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../00_hardware/index.html">硬件</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../00_hardware/K230_DEMO_BOARD%E8%B5%84%E6%BA%90%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 DEMO BOARD 资源使用说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../00_hardware/K230_%E7%A1%AC%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%8C%87%E5%8D%97.html">K230 硬件设计指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../00_hardware/K230_datasheet.html">K230 Product Full Datasheet</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../index_api.html">K230 SDK API 参考</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../board/cdk/K230_%E6%A0%B8%E9%97%B4%E9%80%9A%E8%AE%AF_API%E5%8F%82%E8%80%83.html">K230核间通讯API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../board/cdk/K230_%E7%B3%BB%E7%BB%9F%E6%8E%A7%E5%88%B6_MAPI%E5%8F%82%E8%80%83.html">K230系统控制MAPI参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../board/middleware/K230_%E5%A4%9A%E5%AA%92%E4%BD%93%E4%B8%AD%E9%97%B4%E4%BB%B6_API%E5%8F%82%E8%80%83.html">K230 多媒体中间件API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../board/mpp/K230_DMA_API%E5%8F%82%E8%80%83.html">K230 DMA API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../board/mpp/K230_DPU_API%E5%8F%82%E8%80%83.html">K230 DPU API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../board/mpp/K230_FFT_API%E5%8F%82%E8%80%83.html">K230 FFT API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../board/mpp/K230_GPU_API%E5%8F%82%E8%80%83.html">K230 GPU API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../board/mpp/K230_SHA256_API%E5%8F%82%E8%80%83.html">K230 SHA256 API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../board/mpp/K230_VICAP_API%E5%8F%82%E8%80%83.html">K230 VICAP API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../board/mpp/K230_VICAP_SENSOR_%E5%8F%82%E6%95%B0%E5%88%86%E5%8C%BA%E5%8F%82%E8%80%83.html">K230 VICAP SENSOR 参数分区参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../board/mpp/K230_%E7%B3%BB%E7%BB%9F%E6%8E%A7%E5%88%B6_API%E5%8F%82%E8%80%83.html">K230系统控制API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../board/mpp/K230_%E8%A7%86%E9%A2%91%E7%BC%96%E8%A7%A3%E7%A0%81_API%E5%8F%82%E8%80%83.html">K230视频编解码API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../board/mpp/K230_%E8%A7%86%E9%A2%91%E8%BE%93%E5%87%BA_API%E5%8F%82%E8%80%83.html">K230视频输出API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../board/mpp/K230_%E9%9F%B3%E9%A2%91_API%E5%8F%82%E8%80%83.html">K230音频API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../board/osdrv/K230_DRM_API%E5%8F%82%E8%80%83.html">K230 DRM使用指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../board/osdrv/K230_%E5%A4%A7%E6%A0%B8%E4%BD%8E%E9%80%9F%E9%A9%B1%E5%8A%A8_API%E5%8F%82%E8%80%83.html">K230大核低速驱动API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../board/osdrv/K230_%E5%B0%8F%E6%A0%B8Linux%E9%A9%B1%E5%8A%A8_API%E5%8F%82%E8%80%83.html">K230小核Linux驱动API参考</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../index_faq.html">K230 常见问题解答</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../03_other/K230_SDK%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E8%A7%A3%E7%AD%94_C.html">K230 SDK 常见问题解答（C）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../03_other/K230_nncase%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E8%A7%A3%E7%AD%94.html">K230 nncase 常见问题解答</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../03_other/K230_AI_demo%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E8%A7%A3%E7%AD%94_C%2B%2B.html">K230 AI demo 常见问题解答（C++）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../03_other/K230_AI_Cube%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98.html">AI Cube常见问题解答</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../03_other/index.html">版本说明文档</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../03_other/K230_SDK_%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E.html">K230 SDK版本说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../03_other/K230_SDK_nncase%E7%89%88%E6%9C%AC%E5%AF%B9%E5%BA%94%E5%85%B3%E7%B3%BB.html">K230 SDK nncase版本对应关系</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item"><style>
+  .rst-versions {
+    color: #100e0e;
+    background: #eaebec;
+    font-family: Lato, proxima-nova, Helvetica Neue, Arial, sans-serif;
+    z-index: 400;
+    width: 100%;
+  }
+  .rst-versions.shift-up {
+    height: auto;
+    max-height: 100%;
+    overflow-y: scroll;
+  }
+  .rst-versions .rst-current-version {
+    padding: 12px;
+    background-color: #f3f4f5;
+    display: block;
+    text-align: right;
+    padding-left: 10px;
+    font-size: 90%;
+    cursor: pointer;
+    color: #27ae60;
+  }
+
+  .rst-versions .rst-other-versions dd {
+    display: inline-block;
+    margin: 0;
+  }
+  .rst-versions .rst-other-versions dd a {
+    display: inline-block;
+    padding: 6px;
+    color: #201919;
+    font-size: 12px;
+    text-decoration: none;
+  }
+  .rst-versions .rst-other-versions dd a:hover {
+    text-decoration-thickness: inherit;
+    color: #0d6efd;
+  }
+  .rst-versions .rst-other-versions {
+    font-size: 90%;
+    padding: 12px;
+    display: none;
+  }
+  .shift-up .rst-other-versions {
+    display: block;
+  }
+  .lang-con {
+    text-align: center;
+  }
+  .lang-zh,
+  .lang-en {
+    color: #2980b9;
+    cursor: pointer;
+  }
+</style>
+<div
+  class="rst-versions"
+  style="overflow: unset"
+  data-toggle="rst-versions"
+  role="note"
+  aria-label="versions"
+>
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    dev
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dt>Versions</dt>
+        <dd><a href="../../../../v1.0.1/index.html">v1.0.1</a></dd>
+        <dd><a href="../../../../v1.1/index.html">v1.1</a></dd>
+        <dd><a href="../../../../v1.2/index.html">v1.2</a></dd>
+        <dd><a href="../../../../v1.3/index.html">v1.3</a></dd>
+        <dd><a href="../../../../v1.4/index.html">v1.4</a></dd>
+        <dd><a href="../../../../v1.5/index.html">v1.5</a></dd>
+        <dd><a href="../../../../v1.6/01_software/pc/ISP_tuning/K230_ISP图像调优指南.html">v1.6</a></dd>
+        <dd><a href="../../../../v1.7/01_software/pc/ISP_tuning/K230_ISP图像调优指南.html">v1.7</a></dd>
+        <dd><a href="../../../../v1.8/01_software/pc/ISP_tuning/K230_ISP图像调优指南.html">v1.8</a></dd>
+        <dd><a href="../../../../v1.9/01_software/pc/ISP_tuning/K230_ISP图像调优指南.html">v1.9</a></dd>
+        <dd><a href="../../../../v2.0/01_software/pc/ISP_tuning/K230_ISP图像调优指南.html">v2.0</a></dd>
+        <dd><a href="K230_ISP图像调优指南.html">dev</a></dd>
+        <dd><a href="../../../../main/01_software/pc/ISP_tuning/K230_ISP图像调优指南.html">main</a></dd>
+    </dl>
+  </div>
+</div>
+<script>
+    document.querySelector('.rst-versions').addEventListener('click', function() {
+          var details = document.querySelector('.rst-versions');
+          details.classList.toggle('shift-up');
+      });
+</script></div>
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/kendryte/k230_docs" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="源码库"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/01_software/pc/ISP_tuning/K230_ISP图像调优指南.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+    
+    <div class="admonition warning">
+      <p class="admonition-title">
+        
+          注意
+        
+      </p>
+      <p>
+        
+          这是最新开发分支配套的文档，可能包含已发布版本中尚未提供的功能。如果您要查看特定版本的文档，请使用左侧的下拉菜单并选择所需要的版本。
+        
+      </p>
+    </div>
+    
+
+    
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>K230 ISP图像调优指南</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">K230 ISP图像调优概述</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">标定</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">概述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#black-level-correction">Black level correction</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">黑电平标定的原理及意义</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#raw">黑电平标定采集RAW图</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">使用标定工具开始标定</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lens-shading-correction">Lens shading Correction</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lsc">LSC标定的基本原理及意义</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lscraw">LSC标定采集RAW图</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">使用标定工具开始标定</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#color-correction">Color Correction</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ccm">CCM标定原理</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ccraw">CC标定采集RAW图</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">使用标定工具开始标定</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#auto-white-balance">Auto White Balance</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#awb">AWB标定的基本原理及意义</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">使用标定工具开始标定</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#awbk-factor">AWB参数K_Factor的标定</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#noise-calibration">Noise Calibration</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#noise-profile">Noise Profile标定的原理及意义</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#noise-profileraw">Noise Profile标定采集RAW图</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">使用标定工具开始标定</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#chromatic-aberration-correction">Chromatic Aberration Correction</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#cac">CAC标定的原理及意义</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#cacraw">CAC标定采集RAW图</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">使用标定工具开始标定</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">模块介绍</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bls">BLS</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">功能描述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">主要参数</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">调试策略</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">LSC</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">功能描述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">主要参数</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dgain">Dgain</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">功能描述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">主要参数</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ae">AE</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">功能描述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">主要参数</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">AWB</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">功能描述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">主要参数</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kfactor">参数kFactor标定说明</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#wdr">WDR</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">功能描述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id26">主要参数</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id27">调试策略</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ge">GE</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id28">功能描述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id29">主要参数</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dpcc">DPCC</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id30">功能描述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id31">主要参数</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dpf">DPF</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id32">功能描述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id33">主要参数</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dnr">DNR</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id34">功能描述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id35">主要参数</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id36">调试策略</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demosaic">Demosaic</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id37">功能描述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id38">主要参数</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id39">调试策略</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#manualwb">ManualWB</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id40">功能描述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id41">主要参数</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id42">CCM</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id43">功能描述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id44">主要参数</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gamma">Gamma</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id45">功能描述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id46">主要参数</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id47">调试策略</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ee">EE</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id48">功能描述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id49">主要参数</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ca">CA</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id50">功能描述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id51">主要参数</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dci">DCI</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id52">功能描述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id53">主要参数</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cprocess-color-processing">CProcess(Color Processing)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id54">功能描述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id55">主要参数</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compand">Compand</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id56">功能描述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id57">主要参数</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cac-chromatic-aberration-correction">CAC (Chromatic Aberration Correction)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id58">功能描述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id59">主要参数</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="k230-isp">
+<h1>K230 ISP图像调优指南<a class="headerlink" href="#k230-isp" title="Link to this heading">#</a></h1>
+<section id="id1">
+<h2>K230 ISP图像调优概述<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<p>在进行图像调优时，亮度、色彩、对比度、清晰度这几个方面是我们的主要关注点。通过对sensor和镜头的标定以及ISP子模块的联合调优做到图像的整体亮度合理，图像中的色彩还原准确，图像的清晰度好，没有明显噪声，图像的对比度高，整体看上去要比较通透。</p>
+<p>总体图像调优流程如下图所示：</p>
+<p><img alt="flow" src="../../../_images/01.png" /></p>
+<p>K230 ISP pipeline如下图所示：
+<img alt="flow" src="../../../_images/K230_isp-pipe-line.jpg" /></p>
+<p>请注意：</p>
+<ul class="simple">
+<li><p>K230 HDR模式下，K230 CSI（Camera serial interface）模块不支持Hsync在Vsync之前的sensor数据模式，且各帧（L/S/VS）Vsync拉高(有效数据输出)时不能有交叠。</p></li>
+<li><p>使能3DNR中的TNR时，ISP的要求sensor Hblank不能小于180 pixel clocks（推荐设置为不小于256 pixel clocks），建议：Frame length – Active lines &gt;=92 lines。</p></li>
+</ul>
+</section>
+<section id="id2">
+<h2>标定<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<section id="id3">
+<h3>概述<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<p>使用标定工具(K230ISPCalibrationTool.exe)完成对BLC、LSC、CC、AWB、Noise Profile、CAC这6个ISP模块的参数标定功能。</p>
+<p>模块的标定顺序如下：</p>
+<p><img alt="flow" src="../../../_images/02.png" /></p>
+<p>在使用标定工具(K230ISPCalibrationTool.exe)前，需要用户预先安装MATLAB Runtime(R2023a)。下载地址：<a class="reference external" href="https://ssd.mathworks.com/supportfiles/downloads/R2023a/Release/0/deployment_files/installer/complete/win64/MATLAB_Runtime_R2023a_win64.zip">https://ssd.mathworks.com/supportfiles/downloads/R2023a/Release/0/deployment_files/installer/complete/win64/MATLAB_Runtime_R2023a_win64.zip</a></p>
+<p>标定工具的主界面如下图所示。</p>
+<p><img alt="image-20230821114715137" src="../../../_images/03.png" /></p>
+<p>点击相应的模块按钮即可直接跳转至各模块的标定界面开始标定。</p>
+</section>
+<section id="black-level-correction">
+<h3>Black level correction<a class="headerlink" href="#black-level-correction" title="Link to this heading">#</a></h3>
+<section id="id4">
+<h4>黑电平标定的原理及意义<a class="headerlink" href="#id4" title="Link to this heading">#</a></h4>
+<p>模拟信号很微弱时，有可能不被A/D转换出来，导致光线很暗时，图像细节丢失。因此，Sesnor 会在A/D转换前，给模拟信号一个固定的偏移量，保证输出的数字信号保留更多的图像细节。黑电平校正模块就是通过标定的方式，确定这个偏移量的具体值。后续的ISP处理模
+块，需要先减掉该偏移值，才能保证数据的线性一致性。如果事先未获取到sensor的黑电平参数，或者需要获得更精确的黑电平数值，就进行黑电平标定。</p>
+</section>
+<section id="raw">
+<h4>黑电平标定采集RAW图<a class="headerlink" href="#raw" title="Link to this heading">#</a></h4>
+<p>在进行黑电平标定时，采集RAW图的步骤如下：</p>
+<ol class="arabic simple">
+<li><p>模组在一个全黑的环境下（如看用黑布盖住镜头），确保没有光进入sensor；</p></li>
+<li><p>将sensor的曝光模式设置为手动模式；</p></li>
+<li><p>在不同Gain值（1x，2x，3x，4x）与不同积分时间（0.01ms，0.02ms，0.03ms）组合下采集12张RAW图；</p></li>
+<li><p>并按照命名规则保存至文件夹下，文件夹的命名形式：Gain_4_T_0.03（Gain_4_T_0.03 表示 exposure gain = 4，exposure time = 0.03s），其他的曝光时间和Gain的命名形式依次类推。</p></li>
+</ol>
+</section>
+<section id="id5">
+<h4>使用标定工具开始标定<a class="headerlink" href="#id5" title="Link to this heading">#</a></h4>
+<p>当点击了主界面的“Black level correction”后，工具将弹出如图所示对话框。</p>
+<p><img alt="image-20230821145452924" src="../../../_images/04.png" /></p>
+<p>操作步骤：</p>
+<ol class="arabic simple">
+<li><p>点击“Select”按钮选择保存的RAW图文件夹；</p></li>
+<li><p>“Align Pos”文本框：填写RAW图的bayer pattern；</p></li>
+<li><p>设置输入输出的Bit Width；</p></li>
+<li><p>设置分辨率：图像的宽高；</p></li>
+<li><p>点击“OK”按钮，进行标定。</p></li>
+</ol>
+<p>其中：</p>
+<ol class="arabic simple">
+<li><p>Combine Channel文本框：如果勾选，表示用户得到的BLC是R、Gr、Gb、B四通道合并后的测量值。</p></li>
+<li><p>Normal File Out / Extended File Outy：如果勾选 Normal File Out，表示输出的是blc_para.txt；如果勾选Extended File Out，表示R、Gr、Gb、B通道的BLC将按不同的曝光时间和Gain分别输出。</p></li>
+</ol>
+<p>标定完成后，Black Level vs Integration Time的图表如下图所示。</p>
+<p><img alt="image-20230821152200148" src="../../../_images/05.png" /></p>
+</section>
+</section>
+<section id="lens-shading-correction">
+<h3>Lens shading Correction<a class="headerlink" href="#lens-shading-correction" title="Link to this heading">#</a></h3>
+<section id="lsc">
+<h4>LSC标定的基本原理及意义<a class="headerlink" href="#lsc" title="Link to this heading">#</a></h4>
+<p>LSC标定目的就是为了消除由镜头光学折射不均匀导致的画面暗角。在Lens shading现象中，中心目标点亮度到边角的亮度衰减符合余弦四次方定律，通过标定结果可以有效反应出亮度衰减趋势，使用32x16的网格存储标定结果，再把图像各区域的亮度恢复至目标点亮度。LSC标定包括luma shading和color shading的标定。因为不同色温下的 color shading特征曲线是不相同的，所以为满足在不同色温下的 color shading 的校正要求，需要在不同色温下对 LSC 进行标定校准。</p>
+</section>
+<section id="lscraw">
+<h4>LSC标定采集RAW图<a class="headerlink" href="#lscraw" title="Link to this heading">#</a></h4>
+<p>采集RAW图前需要注意的事项：</p>
+<ul class="simple">
+<li><p>调节AE目标亮度设置，让图像的中心亮度平均值为最大值（如8bit：255）的80%左右</p></li>
+<li><p>LSC采集对象的光源环境要求必须是亮度分布平坦且均匀的光源，同时采集对象必须保持平滑无纹理，所以可选择DNP灯箱作为 LSC 标定采集RAW图的场景。</p></li>
+</ul>
+<p>在进行LSC标定时，采集RAW图的步骤如下：</p>
+<ol class="arabic simple">
+<li><p>控制设备的镜头对准DNP灯箱目标区域，并保证环境不被干扰；</p></li>
+<li><p>打开DNP灯箱，色温光源切到D65下，灯箱照度合适；</p></li>
+<li><p>采集一张RAW图；</p></li>
+<li><p>切换DNP灯箱的光源（D50、TL84、F12、A），重复步骤2-3。</p></li>
+</ol>
+</section>
+<section id="id6">
+<h4>使用标定工具开始标定<a class="headerlink" href="#id6" title="Link to this heading">#</a></h4>
+<p>当点击了主界面的“Lens Shade correction”后，工具将弹出如图所示对话框。</p>
+<p><img alt="image-20230821163641202" src="../../../_images/06.png" /></p>
+<p>具体操作步骤：</p>
+<ol class="arabic simple">
+<li><p>在区域2中，选择RAW图的bayer pattern排序、填入图像宽高和bit位宽，选择所需lsc校正的类型（Color Shading或是Luma&amp;Color Shading），在CCT下拉栏中选择对应的色温光源，并在offset Subtration栏中填入各通道Black Level Offset值；</p></li>
+<li><p>点击区域1的“load image”按钮导入待标定的RAW图；</p></li>
+<li><p>区域3为lsc网格结点设置。先确定网格的数量，K230 ISP LSC硬件统计为32x16网格，因此可选择“33Full x 17Symm knots”进行标定；若准备使用ISP ALSC功能，则勾选“ALSC uniform…”；若勾选”Automatic initial knot positioning”，则在auto.json中不能使能ALSC功能。</p></li>
+<li><p>区域4可选择中心/边角的最大校准比率；</p></li>
+<li><p>区域5可设置边角的补偿比率（如设置为80%，则表示需要校准的边角校准后的亮度为中心亮度的80%就行。）；</p></li>
+<li><p>其他设置保持默认配置即可；</p></li>
+<li><p>点击“Start”开始标定，并保存LSC数据；</p></li>
+<li><p>区域6可选择标定好的LSC数据应用至图像，预览标定效果，并点击“save image to file”保存每个光源下的Png图片。</p></li>
+</ol>
+<p>注意：在步骤5中设置补偿比率时，应当根据镜头的shading严重情况来定。当镜头shading很严重的时候，画面四个角补偿的增益很大，容易导致四角噪声变大。这时就要减小补偿比率，来达到优化四角噪声的目的。</p>
+</section>
+</section>
+<section id="color-correction">
+<h3>Color Correction<a class="headerlink" href="#color-correction" title="Link to this heading">#</a></h3>
+<section id="ccm">
+<h4>CCM标定原理<a class="headerlink" href="#ccm" title="Link to this heading">#</a></h4>
+<p>CCM 标定的原理是用sensor采集的24 色卡色块的实际颜色信息与其期望值对比，计算出3x3的CCM 矩阵。CCM 的 3x3 矩阵将 sensor 的 色彩空间转换到 sRGB 标准的色彩空间。</p>
+</section>
+<section id="ccraw">
+<h4>CC标定采集RAW图<a class="headerlink" href="#ccraw" title="Link to this heading">#</a></h4>
+<p>在进行CC标定时，采集RAW图的步骤如下：</p>
+<ol class="arabic simple">
+<li><p>可将24色卡放置标准灯箱内壁（镜头正对色卡采集RAW图）或将24色卡放置灯箱的底部（镜头与24色卡成45度角采集RAW图）；</p></li>
+<li><p>打开标准灯箱，选择D65光源，调节灯箱照度；</p></li>
+<li><p>调整镜头到24色卡的距离和位置，保证24色卡占图像范围的2/3左右；</p></li>
+<li><p>调节AE目标亮度设置，保证RAW图平均亮度在50左右；</p></li>
+<li><p>采集一张RAW图；</p></li>
+<li><p>切换光源（D50、TL84、F12、A），重复步骤5；</p></li>
+<li><p>保持镜头位置不动，将24色卡移开，再采集5种光源下的灯箱内侧灰壁背景RAW图。</p></li>
+</ol>
+</section>
+<section id="id7">
+<h4>使用标定工具开始标定<a class="headerlink" href="#id7" title="Link to this heading">#</a></h4>
+<p>当点击了主界面的“Color Correction”后，工具将弹出如图所示对话框。</p>
+<p><img alt="image-20230822111931692" src="../../../_images/07.png" /></p>
+<p>具体操作步骤如下：</p>
+<ol class="arabic simple">
+<li><p>在区域1设置好RAW图的宽高、bit位宽、Black level Offset、bayer pattern；</p></li>
+<li><p>点击“Load”菜单，依次导入色板颜色参考文件CC_Standard.cxf(Load sRGB References, 该文件位于calibration tool的Canaan.Calibration.Samples\Data\目录下)、24色卡RAW图(Load Color Checker Image)、灰壁背景RAW图(Load Background Image)；
+<br/>导入参考色板，除了通过“Load sRGB References”导入CC_Standard.cxf之外，还可以通过“Load”菜单下的“Load Lab-Customer References”来获取客户自定义的参考色板Lab值；或是通过“Load”菜单下的“Load References Image”,调入参考色板图像，然后在“Function”菜单下选择“Select Reference Color Check”，通过移动鼠标控制十字线，让其分别依次位于给出色板的上下左右四角四个色块的中心位置，依次点击鼠标后即可完成参考色板区域的指定。</p></li>
+<li><p>点击“LSC”按钮，导入标定好的LSC参数文件；</p></li>
+<li><p>配置标定参数；</p>
+<ul class="simple">
+<li><p>设置gamma</p></li>
+<li><p>勾选CIELAB参考</p></li>
+<li><p>配置24色块权重</p></li>
+<li><p>设置偏好光源</p></li>
+<li><p>设置输出饱和度，默认为1</p></li>
+</ul>
+</li>
+<li><p>在区域3的下拉键选择选取24色块的方式（有自动、半自动、手动三种模式）；
+<br/>在半自动模式下，可通过移动鼠标控制十字线，让其分别依次位于色板图的上下左右四角四个色块的中心位置，依次点击鼠标后即可完成参考色板区域的指定。</p></li>
+<li><p>点击“Caibrate”开始标定。</p></li>
+</ol>
+</section>
+</section>
+<section id="auto-white-balance">
+<h3>Auto White Balance<a class="headerlink" href="#auto-white-balance" title="Link to this heading">#</a></h3>
+<section id="awb">
+<h4>AWB标定的基本原理及意义<a class="headerlink" href="#awb" title="Link to this heading">#</a></h4>
+<p>AWB 标定，即根据sensor在数个标准光源下的白点特征(R/G, B/G)，计算最佳普朗克拟合曲线和色温拟合曲线。AWB标定的目的是使相机能够自动识别和适应各种色温光源条件，以保证白色和其他颜色在图像中的准确再现。</p>
+</section>
+<section id="id8">
+<h4>使用标定工具开始标定<a class="headerlink" href="#id8" title="Link to this heading">#</a></h4>
+<p>当点击了主界面的“Auto White Balance”后，工具将弹出如图所示对话框。</p>
+<p><img alt="image-20230822142135073" src="../../../_images/08.png" /></p>
+<p>具体操作步骤如下：</p>
+<ol class="arabic">
+<li><p>点击“file”按钮，导入sensor光谱灵敏度文件，如下图所示；</p>
+<p><img alt="image-20230822152530065" src="../../../_images/09.png" /></p>
+<p>注：若用户手上没有自己使用的sensor光谱灵敏度文件，用工具包里默认的OV2775_sensitivity.txt(该文件位于calibration tool的Canaan.Calibration.Samples\Data\目录下)即可。因为现在AWB标定已经不依赖于sensor光谱灵敏度文件，但为了不影响后面操作，所以导入任意一个sensor光谱灵敏度文件就可以。</p>
+</li>
+<li><p>点击“illuination”按钮，导入光源文件CIE_Illuminants.cxf(该文件位于calibration tool的Canaan.Calibration.Samples\Data\目录下)，并选择需要标定的光源（至少3个），如图所示。点击“确定”按钮，各光源的光谱发布将在如图所示的左边展示，并通过下拉键把各光源分为室内光源和室外光源。</p>
+<p><img alt="image-20230822152740591" src="../../../_images/10.png" /></p>
+<p><img alt="image-20230822154937933" src="../../../_images/11.png" /></p>
+</li>
+<li><p>点击“AWB V2+ Calibration”按钮（在旧版本的calibration tool中，请点击“Start Calibration”按钮），根据如图红框中的所示，选择CC标定生成的各光源的参数文件；</p>
+<p><img alt="image-20230822155713505" src="../../../_images/12.png" /></p>
+</li>
+<li><p>勾选“White Points Evalute”框，选择一张图片用于白点预估；</p></li>
+<li><p>点击“Gain Region Modifier”按钮，选择在LSC标定中保存的各光源的png图片，如图所示，点击“OK”进入下一步；</p>
+<p><img alt="image-20230822162343131" src="../../../_images/13.png" /></p>
+</li>
+<li><p>定义增益多边形的起点范围大小，如图所示，点击“确定”按钮，进入下一步；</p>
+<p><img alt="image-20230822162723170" src="../../../_images/14.png" /></p>
+</li>
+<li><p>通过红框区域的按钮手动调整橙色框（近白区）和黑色框（落在黑色框里的全部识别为白点）的范围，调整黑色框的范围包含选的所有光源白点，如图所示。保存数据，如果测试不通过，再来重新调整多边形的范围。</p>
+<p><img alt="image-20230822164058879" src="../../../_images/15.png" /></p>
+</li>
+</ol>
+</section>
+<section id="awbk-factor">
+<h4>AWB参数K_Factor的标定<a class="headerlink" href="#awbk-factor" title="Link to this heading">#</a></h4>
+<p>在AWB算法中，环境为outdoor的判别为: Exp*K_Factor &lt;=0.12（Exp为曝光量）。</p>
+<p>比如以2000 lux为outdoor与transition的环境照度分割点，获取对应该照度的曝光值(ET * gain)， 则可计算：K_Factor = 0.12 / (ET*gain)。</p>
+</section>
+</section>
+<section id="noise-calibration">
+<h3>Noise Calibration<a class="headerlink" href="#noise-calibration" title="Link to this heading">#</a></h3>
+<section id="noise-profile">
+<h4>Noise Profile标定的原理及意义<a class="headerlink" href="#noise-profile" title="Link to this heading">#</a></h4>
+<p>Noise Profile 标定涉及到对sensor在不同条件下产生的噪声特性进行定量测量和描述。这是因为，当sensor在不同的光线、温度或ISO设置下工作时，它们会产生不同类型和量级的噪声。了解这些噪声的特性是进行有效噪声降低或修正的关键。</p>
+</section>
+<section id="noise-profileraw">
+<h4>Noise Profile标定采集RAW图<a class="headerlink" href="#noise-profileraw" title="Link to this heading">#</a></h4>
+<p>在进行CC标定时，采集RAW图的步骤如下：</p>
+<ol class="arabic simple">
+<li><p>将黑白渐变测试卡放置标准灯箱内壁，打开灯箱选择D50色温光源；</p></li>
+<li><p>关闭AE，改为手动曝光模式，采集两组RAW图，每组30张；</p>
+<ul class="simple">
+<li><p>亮组：调节灯箱亮度，保持曝光时间，保持gain 1x不变，让渐变卡黑区域处于中间灰度值；</p></li>
+<li><p>暗组：调节灯箱亮度，保持曝光时间，保持gain 1x不变，让渐变卡白区域处于中间灰度值。</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="id9">
+<h4>使用标定工具开始标定<a class="headerlink" href="#id9" title="Link to this heading">#</a></h4>
+<p>当点击了主界面的“Noise Calibration”后，工具将弹出如图所示对话框。</p>
+<p><img alt="image-20230822170824745" src="../../../_images/16.png" /></p>
+<p>具体操作步骤如下：</p>
+<ol class="arabic simple">
+<li><p>设置RAW图的宽高、bit位宽、Black level Offset；</p></li>
+<li><p>点击“flie”按钮，导入亮暗两组RAW图系列；</p></li>
+<li><p>点击“ROI”按钮，可设置图片的ROI；</p></li>
+<li><p>调整参数。对于Lowlight直方图，取Lower range到Split point的直方图区域；对于Highlight直方图，取Split point到Higher ranger的直方图，两者叠加区域，应可基本涵盖0~255的所有值区间（8bit位宽）。对于Split point和high range值点的选取，应该让hightlight和lowlight的保留区域符合泊松分布。若设置了black level offset，则Lower range &gt;= black level；</p></li>
+<li><p>Gamma correction和Model Fitting无需设置；</p></li>
+<li><p>点击“Evaluate Measures”；</p></li>
+<li><p>再点击“Fit to Model”，完成Noise标定，保存结果。</p></li>
+</ol>
+</section>
+</section>
+<section id="chromatic-aberration-correction">
+<h3>Chromatic Aberration Correction<a class="headerlink" href="#chromatic-aberration-correction" title="Link to this heading">#</a></h3>
+<section id="cac">
+<h4>CAC标定的原理及意义<a class="headerlink" href="#cac" title="Link to this heading">#</a></h4>
+<p>色差是一种常见的光学缺陷，出现在镜头无法使所有颜色的光线都汇聚在相同的焦点上。这通常导致图像边缘出现红绿或蓝紫的色彩偏移。为了纠正这种偏移，我们需要进行 CAC 校正。通过分析捕获的图像数据，可以建立一个数学模型来描述色差。一旦模型建立，可以确定纠正参数，这些参数将用于纠正色差。</p>
+</section>
+<section id="cacraw">
+<h4>CAC标定采集RAW图<a class="headerlink" href="#cacraw" title="Link to this heading">#</a></h4>
+<p>在进行CAC标定时，采集RAW图的步骤如下：</p>
+<ol class="arabic simple">
+<li><p>将棋盘格或点阵图放置标准灯箱内壁，打开灯箱选择D50色温光源；</p></li>
+<li><p>调整AE设置，让黑块点的最小值需要大于BLC值，白区最大值不要超过208；</p></li>
+<li><p>采集一张RAW图保存。</p></li>
+</ol>
+</section>
+<section id="id10">
+<h4>使用标定工具开始标定<a class="headerlink" href="#id10" title="Link to this heading">#</a></h4>
+<p>当点击了主界面的“Chromatic Aberration Correction”后，工具将弹出如图所示对话框。</p>
+<p><img alt="image-20230822192525126" src="../../../_images/17.png" /></p>
+<p>具体操作步骤如下：</p>
+<ol class="arabic">
+<li><p>点击“Demosaic&amp;Filter”按钮，设置好bayer pattern格式；</p></li>
+<li><p>点击”load image“按钮，加载RAW图，在预览窗口即可显示图像；</p></li>
+<li><p>设置“Demosaic&amp;Filter”界面下的参数；</p>
+<p>因为CAC模块在demosaic之后，所以工具先在这里实现了一个简单的demosaic功能。</p>
+<ul class="simple">
+<li><p>ISP_demosaic_threshold：阈值的默认值设为4。设置值越高，边缘检测算法检测到的边缘越少，较低的值会导致检测到更多的边缘，值255表示边缘检测被完全禁用。</p></li>
+<li><p>Simulate 2 additional Line Buffers：允许用户扩展垂直偏移。这允许将垂直矢量剪裁设置为+-3。在这种情况下，不执行降低色度的滤波，默认不勾选。</p></li>
+<li><p>Filter stage1 select：</p></li>
+<li><p>Sharpen Level：</p></li>
+<li><p>Denoise Level：</p></li>
+<li><p>Lum_weight Off：允许停用过滤器算法的一个特殊功能。该特征有助于抑制暗区域中比亮区域中更强的噪声。由于非线性伽马校正，在处理链中，对比度和噪声在暗区域被强调，而在亮区域被衰减。为了补偿这一点，在将纹理参数与阈值进行比较之前，使用从5x5内核的平均亮度导出的函数对纹理参数进行加权。默认不勾选，图像预览效果噪声小。</p></li>
+</ul>
+</li>
+<li><p>点击”Color Correction“按钮，设置该界面下的参数；</p>
+<ul class="simple">
+<li><p>勾选”ISP_bls_enable”，设置正确的BLC；</p></li>
+<li><p>勾选”Auto White-Balance”；</p></li>
+<li><p>设置CCM；</p></li>
+<li><p>global gain默认设置为1.0。</p></li>
+</ul>
+</li>
+<li><p>点击”Gamma“按钮，设置gamma曲线，默认设置为gamma 2.2；</p></li>
+<li><p>点击”LSC“按钮，然后再点击”Load parameters“，加载对应光源D50下的LSC标定参数，并勾选”Enable”；</p></li>
+<li><p>点击”CA Estimate“按钮，勾选”CA_Estimate”框，点击”Process”运行；</p></li>
+<li><p>点击”CAC“按钮，可从该界面下看到标定结果。</p></li>
+</ol>
+</section>
+</section>
+</section>
+<section id="id11">
+<h2>模块介绍<a class="headerlink" href="#id11" title="Link to this heading">#</a></h2>
+<section id="bls">
+<h3>BLS<a class="headerlink" href="#bls" title="Link to this heading">#</a></h3>
+<section id="id12">
+<h4>功能描述<a class="headerlink" href="#id12" title="Link to this heading">#</a></h4>
+<p>减去黑电平的偏移值，才能保证数据的线性一致性。</p>
+</section>
+<section id="id13">
+<h4>主要参数<a class="headerlink" href="#id13" title="Link to this heading">#</a></h4>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数</p></th>
+<th class="head"><p>类型及取值范围</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>bls_enable</p></td>
+<td><p>bool</p></td>
+<td><p>BLS使能开关</p></td>
+</tr>
+<tr class="row-odd"><td><p>bls</p></td>
+<td><p>int bls[4] 0~4095</p></td>
+<td><p>四通道的黑电平补偿值，设置数值基于ISP 12bits</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id14">
+<h4>调试策略<a class="headerlink" href="#id14" title="Link to this heading">#</a></h4>
+<p>虽然支持四通道单独的黑电平补偿值，但还是建议使用相同的值。</p>
+</section>
+</section>
+<section id="id15">
+<h3>LSC<a class="headerlink" href="#id15" title="Link to this heading">#</a></h3>
+<section id="id16">
+<h4>功能描述<a class="headerlink" href="#id16" title="Link to this heading">#</a></h4>
+<p>在K230中LSC算法使用32x16网格的方式对图像进行校准。在RAW图数据处理过程中，LSC算法将图像分成32x16个子块并对RAW图的四个通道进行处理。</p>
+</section>
+<section id="id17">
+<h4>主要参数<a class="headerlink" href="#id17" title="Link to this heading">#</a></h4>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数</p></th>
+<th class="head"><p>类型及取值范围</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>enable</p></td>
+<td><p>bool</p></td>
+<td><p>LSC使能开关</p></td>
+</tr>
+<tr class="row-odd"><td><p>matrix</p></td>
+<td><p>matrix[4][1089]</p></td>
+<td><p>R、Gr、Gb、B四通道的Lens shading校准参数，从标定文件获得</p></td>
+</tr>
+<tr class="row-even"><td><p>x_size</p></td>
+<td><p>xSize[32]</p></td>
+<td><p>x轴每两个网格结点的距离，从标定文件获得</p></td>
+</tr>
+<tr class="row-odd"><td><p>y_size</p></td>
+<td><p>ySize[16]</p></td>
+<td><p>y轴每两个网格结点的距离，从标定文件获得</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="dgain">
+<h3>Dgain<a class="headerlink" href="#dgain" title="Link to this heading">#</a></h3>
+<section id="id18">
+<h4>功能描述<a class="headerlink" href="#id18" title="Link to this heading">#</a></h4>
+<p>ISP的数字增益主要用于提升图像的亮度。</p>
+</section>
+<section id="id19">
+<h4>主要参数<a class="headerlink" href="#id19" title="Link to this heading">#</a></h4>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数</p></th>
+<th class="head"><p>类型及取值范围</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>enable</p></td>
+<td><p>bool</p></td>
+<td><p>ISP数字增益的使能开关</p></td>
+</tr>
+<tr class="row-odd"><td><p>digital_gain_r</p></td>
+<td><p>float 1.0~255.99</p></td>
+<td><p>R通道的数字增益</p></td>
+</tr>
+<tr class="row-even"><td><p>digital_gain_gr</p></td>
+<td><p>float 1.0~255.99</p></td>
+<td><p>Gr通道的数字增益</p></td>
+</tr>
+<tr class="row-odd"><td><p>digital_gain_gb</p></td>
+<td><p>float 1.0~255.99</p></td>
+<td><p>Gb通道的数字增益</p></td>
+</tr>
+<tr class="row-even"><td><p>digital_gain_b</p></td>
+<td><p>float 1.0~255.99</p></td>
+<td><p>B通道的数字增益</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="ae">
+<h3>AE<a class="headerlink" href="#ae" title="Link to this heading">#</a></h3>
+<section id="id20">
+<h4>功能描述<a class="headerlink" href="#id20" title="Link to this heading">#</a></h4>
+<p>AE自动曝光控制图像的亮度。AE模块主要的调试有对AE目标值亮度的调整、对AE收敛速度和平滑性的调整。</p>
+</section>
+<section id="id21">
+<h4>主要参数<a class="headerlink" href="#id21" title="Link to this heading">#</a></h4>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数</p></th>
+<th class="head"><p>类型及取值范围</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>enable</p></td>
+<td><p>bool</p></td>
+<td><p>自动曝光使能开关。<br/>false: 关闭自动曝光 <br/>true : 使能自动曝光</p></td>
+</tr>
+<tr class="row-odd"><td><p>antiFlickerMode</p></td>
+<td><p>Int 0~3</p></td>
+<td><p>抗工频干扰工作模式 <br/>0: Off<br/>1: 50Hz<br/>2: 60Hz<br/>3: User defined</p></td>
+</tr>
+<tr class="row-even"><td><p>autoHdrEnable</p></td>
+<td><p>bool</p></td>
+<td><p>true: HDR mode下，自动计算当前帧HDR ratio<br/>false: HDR mode下，使用固定的HDR ratio</p></td>
+</tr>
+<tr class="row-odd"><td><p>dampOver</p></td>
+<td><p>float 0~1.0</p></td>
+<td><p>阻尼因子，用于平滑过曝时的AE收敛</p></td>
+</tr>
+<tr class="row-even"><td><p>dampOverGain</p></td>
+<td><p>float 0~128.0</p></td>
+<td><p>AE过曝时clip范围外的收敛加速增益因子，值越大，收敛越快</p></td>
+</tr>
+<tr class="row-odd"><td><p>dampOverRatio</p></td>
+<td><p>float 1.0~4.0</p></td>
+<td><p>AE过曝时clip范围外比例因子，值越小，收敛越快</p></td>
+</tr>
+<tr class="row-even"><td><p>dampUnder</p></td>
+<td><p>float 0~1.0</p></td>
+<td><p>阻尼因子，用于平滑欠曝时的AE收敛</p></td>
+</tr>
+<tr class="row-odd"><td><p>dampUnderGain</p></td>
+<td><p>float 0~16.0</p></td>
+<td><p>AE欠曝时clip范围外的收敛加速增益因子，值越大，收敛越快</p></td>
+</tr>
+<tr class="row-even"><td><p>dampUnderRatio</p></td>
+<td><p>float 0~1.0</p></td>
+<td><p>AE欠曝时clip范围比例因子，值越大，收敛越快</p></td>
+</tr>
+<tr class="row-odd"><td><p>expV2WindowWeight</p></td>
+<td><p>float[32x32] 0~255</p></td>
+<td><p>各子块曝光权重</p></td>
+</tr>
+<tr class="row-even"><td><p>frameCalEnable</p></td>
+<td><p>bool</p></td>
+<td><p>曝光设置帧间隔使能开关。<br/>true : 使能曝光设置帧间隔功能 <br/>false: 关闭曝光设置帧间隔功能</p></td>
+</tr>
+<tr class="row-odd"><td><p>lowLightHdrGain</p></td>
+<td><p>float[20] 0~255.0</p></td>
+<td><p>宽动态模式下，当前增益阶数对应的增益值</p></td>
+</tr>
+<tr class="row-even"><td><p>lowLightHdrLevel</p></td>
+<td><p>int 0~16</p></td>
+<td><p>宽动态模式下总的增益阶数</p></td>
+</tr>
+<tr class="row-odd"><td><p>lowLightHdrRepress</p></td>
+<td><p>float[20] 0~1.0</p></td>
+<td><p>宽动态模式下，当前增益阶数对应的目标亮度压制比例</p></td>
+</tr>
+<tr class="row-even"><td><p>lowLightLinearGain</p></td>
+<td><p>float[20] 0~255.0</p></td>
+<td><p>线性模式下，当前增益阶数对应的增益值</p></td>
+</tr>
+<tr class="row-odd"><td><p>lowLightLinearLevel</p></td>
+<td><p>int 0~19</p></td>
+<td><p>线性模式下总的增益阶数</p></td>
+</tr>
+<tr class="row-even"><td><p>lowLightLinearRepress</p></td>
+<td><p>float[20] 0~1.0</p></td>
+<td><p>线性模式下，当前增益阶数对应的目标亮度压制比例</p></td>
+</tr>
+<tr class="row-odd"><td><p>motionFilter</p></td>
+<td><p>float 0~1.0</p></td>
+<td><p>运动变化平滑参数，用于计算AE场景评估自适应模式下的运动因子</p></td>
+</tr>
+<tr class="row-even"><td><p>motionThreshold</p></td>
+<td><p>float 0~1.0</p></td>
+<td><p>运动判别阈值</p></td>
+</tr>
+<tr class="row-odd"><td><p>roiNumber</p></td>
+<td><p>int</p></td>
+<td><p>当前ROI窗口序号</p></td>
+</tr>
+<tr class="row-even"><td><p>roiWeight</p></td>
+<td><p>float</p></td>
+<td><p>当前ROI窗口的亮度计算权重</p></td>
+</tr>
+<tr class="row-odd"><td><p>roiWindow</p></td>
+<td><p>float (fx,fy,fw, fh)</p></td>
+<td><p>当前ROI窗口的起始点坐标(x,y)和宽高</p></td>
+</tr>
+<tr class="row-even"><td><p>semMode</p></td>
+<td><p>int 0~2</p></td>
+<td><p>场景模式 <br/>0: 场景评估关闭模式 <br/>1: 场景评估固定模式 <br/>2: 场景评估动态模式</p></td>
+</tr>
+<tr class="row-odd"><td><p>setPoint</p></td>
+<td><p>float 0~255.0</p></td>
+<td><p>设置AE的亮度目标值</p></td>
+</tr>
+<tr class="row-even"><td><p>targetFilter</p></td>
+<td><p>float 0~1.0</p></td>
+<td><p>AE的亮度目标值变化平滑系数，值越大变化越快</p></td>
+</tr>
+<tr class="row-odd"><td><p>tolerance</p></td>
+<td><p>float 0~100.0</p></td>
+<td><p>设置AE的亮度目标值百分比锁定范围</p></td>
+</tr>
+<tr class="row-even"><td><p>wdrContrast.max</p></td>
+<td><p>float 0~255.0</p></td>
+<td><p>AE场景评估自适应模式下计算AE setpoint的最大对比度值</p></td>
+</tr>
+<tr class="row-odd"><td><p>wdrContrast.min</p></td>
+<td><p>float 0~255.0</p></td>
+<td><p>AE场景评估自适应模式下计算AE setpoint的最小对比度值</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="id22">
+<h3>AWB<a class="headerlink" href="#id22" title="Link to this heading">#</a></h3>
+<section id="id23">
+<h4>功能描述<a class="headerlink" href="#id23" title="Link to this heading">#</a></h4>
+<p>在不同的光源环境下，物体呈现的颜色会有所不同。人眼睛有恒常性的特性，在不同的色温光源下都能识别出物体的真实颜色，但sensor在不同光源的反应与人眼的反应不同，就会导致偏色。AWB就是能降低外界光源对物体真实颜色的影响，使得偏色的物体转变为在理想日光光源下无偏色的物体。</p>
+</section>
+<section id="id24">
+<h4>主要参数<a class="headerlink" href="#id24" title="Link to this heading">#</a></h4>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数</p></th>
+<th class="head"><p>类型及取值范围</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>enable</p></td>
+<td><p>bool</p></td>
+<td><p>true : 使能AWB <br/> false: 关闭AWB</p></td>
+</tr>
+<tr class="row-odd"><td><p>awbTempWeight</p></td>
+<td><p>float 0.0~1.0</p></td>
+<td><p>AWB色温光源权重</p></td>
+</tr>
+<tr class="row-even"><td><p>mode</p></td>
+<td><p>int 0,1</p></td>
+<td><p>0: AWB <br/> 1: AWB METEDATA</p></td>
+</tr>
+<tr class="row-odd"><td><p>roiNumber</p></td>
+<td><p>int</p></td>
+<td><p>当前ROI窗口序号</p></td>
+</tr>
+<tr class="row-even"><td><p>roiWeight</p></td>
+<td><p>float</p></td>
+<td><p>当前ROI窗口的AWB计算权重</p></td>
+</tr>
+<tr class="row-odd"><td><p>roiWindow</p></td>
+<td><p>float (fx,fy,fw,fh)</p></td>
+<td><p>当前ROI窗口的起始点坐标(x,y)和宽高</p></td>
+</tr>
+<tr class="row-even"><td><p>useCcMatrix</p></td>
+<td><p>bool</p></td>
+<td><p>true : 使能CCM 自适应 <br/>false: 关闭CCM自适应</p></td>
+</tr>
+<tr class="row-odd"><td><p>useCcOffset</p></td>
+<td><p>bool</p></td>
+<td><p>true : 使能CCM offset自适应 <br/> false: 关闭CCM offset自适应</p></td>
+</tr>
+<tr class="row-even"><td><p>useDamping</p></td>
+<td><p>bool</p></td>
+<td><p>true : 使能AWB阻尼变化 <br/> false: 关闭AWB阻尼变化</p></td>
+</tr>
+<tr class="row-odd"><td><p>kFactor</p></td>
+<td><p>float</p></td>
+<td><p>用于识别室外(outdoor)和过渡区间(transition)的光敏系数</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="kfactor">
+<h4>参数kFactor标定说明<a class="headerlink" href="#kfactor" title="Link to this heading">#</a></h4>
+<p>AWB算法中，环境为outdoor的判别为: Exp*kFactor &lt;=0.12（Exp为曝光量）。</p>
+<p>比如以2000 lux为outdoor与transition的环境照度分割点，获取对应该照度的曝光值(ET * gain)， 则可计算：kFactor=0.12/(ET*gain)。</p>
+<p>kFactor越大，说明sensor的sensitivity越强；kFactor越小，说明sensor的sensitivity越弱。</p>
+<p>kFactor这个参数位于xml文件的AWB参数中，需要用以上方法计算后填入。</p>
+</section>
+</section>
+<section id="wdr">
+<h3>WDR<a class="headerlink" href="#wdr" title="Link to this heading">#</a></h3>
+<section id="id25">
+<h4>功能描述<a class="headerlink" href="#id25" title="Link to this heading">#</a></h4>
+<p>在图像处理过程中，极容易发现图像的对比度不足，并且有可能出现亮区和暗区的细节丢失，WDR模块借助直方图统计均衡的方法提升图像的对比度，同时提升亮区和暗区细节信息。</p>
+</section>
+<section id="id26">
+<h4>主要参数<a class="headerlink" href="#id26" title="Link to this heading">#</a></h4>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数</p></th>
+<th class="head"><p>类型及取值范围</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>enable</p></td>
+<td><p>bool</p></td>
+<td><p>WDR的使能开关</p></td>
+</tr>
+<tr class="row-odd"><td><p>contrast</p></td>
+<td><p>int -1023~1023</p></td>
+<td><p>值越大，局部对比度越强</p></td>
+</tr>
+<tr class="row-even"><td><p>entropy</p></td>
+<td><p>int[20]</p></td>
+<td><p>local weight</p></td>
+</tr>
+<tr class="row-odd"><td><p>entropy_base</p></td>
+<td><p>int</p></td>
+<td><p>亮度因子参数。base越大，slope越小，局部对比度越强</p></td>
+</tr>
+<tr class="row-even"><td><p>entropy_slope</p></td>
+<td><p>int</p></td>
+<td><p>亮度因子参数。base越大，slope越小，局部对比度越强</p></td>
+</tr>
+<tr class="row-odd"><td><p>flat_strength</p></td>
+<td><p>int 0~19</p></td>
+<td><p>平坦区域拉伸强度</p></td>
+</tr>
+<tr class="row-even"><td><p>flat_thr</p></td>
+<td><p>int 0~20</p></td>
+<td><p>平坦区域阈值。值越大，判别图像越平坦，小于阈值判别为平坦区，大于阈值判别为纹理区</p></td>
+</tr>
+<tr class="row-odd"><td><p>gamma_down</p></td>
+<td><p>int[20]</p></td>
+<td><p>local weight</p></td>
+</tr>
+<tr class="row-even"><td><p>gamma_pre</p></td>
+<td><p>int[20]</p></td>
+<td><p>local weight</p></td>
+</tr>
+<tr class="row-odd"><td><p>gamma_up</p></td>
+<td><p>int[20]</p></td>
+<td><p>global curve</p></td>
+</tr>
+<tr class="row-even"><td><p>global_strength</p></td>
+<td><p>int 0~128</p></td>
+<td><p>全局对比度强度</p></td>
+</tr>
+<tr class="row-odd"><td><p>high_strength</p></td>
+<td><p>int 0~128</p></td>
+<td><p>对图像亮区信息的保护强度。值越大，对图像中亮区信息保护越强</p></td>
+</tr>
+<tr class="row-even"><td><p>low_strength</p></td>
+<td><p>int 0~255</p></td>
+<td><p>对图像暗区信息的保护强度。值越大，对图像中暗区信息保护越强</p></td>
+</tr>
+<tr class="row-odd"><td><p>strength</p></td>
+<td><p>int 0~128</p></td>
+<td><p>总强度</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id27">
+<h4>调试策略<a class="headerlink" href="#id27" title="Link to this heading">#</a></h4>
+<p>在线性模式下，Stength设置固定在128。Low Strength实际上是最大增益，它与High Strength一起用于调整图像亮度。当图像的暗区需要变亮时，可以增加Low Strength。当图像的高亮区域曝光过度并且需要抑制时，可以增加High Strength。为了避免噪声的过度增强，随着增益的增加，Low Strength应逐渐降低，而High Strength可以保持不变或逐渐增加。Global Strength用于控制整体对比度。当图像的整体对比度较弱时，可以适当地增加该参数。Contrast, Flat Strength and Flat Threshold用于调整局部对比度。可以先使用默认参数，如果局部对比度不好，可以适当增加Contrast。增加对比度可以使平坦区域的灰色阴影更加明显。目前，调整Flat Threshold以识别纹理区域和平面区域，并增加Flat Strength以平滑平面区域以减少灰色阴影。</p>
+</section>
+</section>
+<section id="ge">
+<h3>GE<a class="headerlink" href="#ge" title="Link to this heading">#</a></h3>
+<section id="id28">
+<h4>功能描述<a class="headerlink" href="#id28" title="Link to this heading">#</a></h4>
+<p>绿平衡的主要功能是为了平衡RAW数据中邻近像素Gr与Gb的差异，防止后续在demosaic插值算法中产生方格、迷宫格等类似纹路。该模块位于DPCC之前。</p>
+</section>
+<section id="id29">
+<h4>主要参数<a class="headerlink" href="#id29" title="Link to this heading">#</a></h4>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数</p></th>
+<th class="head"><p>类型及取值范围</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>enable</p></td>
+<td><p>bool</p></td>
+<td><p>绿平衡的使能开关</p></td>
+</tr>
+<tr class="row-odd"><td><p>threshold</p></td>
+<td><p>float 0~511.0</p></td>
+<td><p>绿平衡强度阈值。</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="dpcc">
+<h3>DPCC<a class="headerlink" href="#dpcc" title="Link to this heading">#</a></h3>
+<section id="id30">
+<h4>功能描述<a class="headerlink" href="#id30" title="Link to this heading">#</a></h4>
+<p>受到sensor制造工艺的限制，对于几百万像素的sensor来说，不可能做到所有的像素都是完好的，特别是对于那种成本较低的sensor来说，坏点数可能更多。若sensor中的坏像素点不尽早处理掉，在后续的demosaic插值算法中就有可能被放大扩散。因此该模块就是在demosaic模块之前完成对坏像素的校准。固定坏点表最大能容纳2048个坏点。提供7组设置值可供选择。</p>
+</section>
+<section id="id31">
+<h4>主要参数<a class="headerlink" href="#id31" title="Link to this heading">#</a></h4>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数</p></th>
+<th class="head"><p>类型及取值范围</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>enable</p></td>
+<td><p>bool</p></td>
+<td><p>DPCC使能开关。<br/> false: 关闭DPCC (Default); <br/> true: 使能DPCC</p></td>
+</tr>
+<tr class="row-odd"><td><p>bpt_Enable</p></td>
+<td><p>bool</p></td>
+<td><p>坏点表使能开关</p></td>
+</tr>
+<tr class="row-even"><td><p>bpt_Num</p></td>
+<td><p>int 0~1024</p></td>
+<td><p>坏点表中当前坏点的序号</p></td>
+</tr>
+<tr class="row-odd"><td><p>bpt_out_mode</p></td>
+<td><p>int 0~14</p></td>
+<td><p>坏点表中坏点的校正输出中值模式选择</p></td>
+</tr>
+<tr class="row-even"><td><p>bpt_pos_X</p></td>
+<td><p>int</p></td>
+<td><p>坏点的水平地址</p></td>
+</tr>
+<tr class="row-odd"><td><p>bpt_pos_Y</p></td>
+<td><p>int</p></td>
+<td><p>坏点的垂直地址</p></td>
+</tr>
+<tr class="row-even"><td><p>bypass</p></td>
+<td><p>bool</p></td>
+<td><p>DPCC bypass使能开关。<br/>false: 经过DPCC <br/>true : 绕过DPCC</p></td>
+</tr>
+<tr class="row-odd"><td><p>line_mad_fac</p></td>
+<td><p>int lineMadFac[2][3] 0~63</p></td>
+<td><p>平均绝对差系数</p></td>
+</tr>
+<tr class="row-even"><td><p>line_thresh</p></td>
+<td><p>int lineThresh[2][3] 0~255</p></td>
+<td><p>设置R&amp;B&amp;G的行阈值</p></td>
+</tr>
+<tr class="row-odd"><td><p>methods_set</p></td>
+<td><p>int methodsSet[3] 0~8191</p></td>
+<td><p>每个通道启用的坏点校正方法选择。坏点校正有两种方法，根据设置可分为包括中心点的中值滤波和无中心点的中位数滤波。</p></td>
+</tr>
+<tr class="row-even"><td><p>out_mode</p></td>
+<td><p>int 0~15</p></td>
+<td><p>校准单元的插值模式</p></td>
+</tr>
+<tr class="row-odd"><td><p>pg_fac</p></td>
+<td><p>int pgFac[2][3] 0~63</p></td>
+<td><p>峰值梯度因子</p></td>
+</tr>
+<tr class="row-even"><td><p>rg_fac</p></td>
+<td><p>int rgFac[2][3] 0~63</p></td>
+<td><p>等级梯度因子</p></td>
+</tr>
+<tr class="row-odd"><td><p>rnd_offs</p></td>
+<td><p>int rndOffs[2][3] 0~3</p></td>
+<td><p>秩邻差差分秩偏移</p></td>
+</tr>
+<tr class="row-even"><td><p>rnd_thresh</p></td>
+<td><p>int rndThresh[2][3] 0~63</p></td>
+<td><p>秩邻差阈值</p></td>
+</tr>
+<tr class="row-odd"><td><p>ro_limits</p></td>
+<td><p>int roLimits[2][3] 0~3</p></td>
+<td><p>秩偏移限制</p></td>
+</tr>
+<tr class="row-even"><td><p>set_use</p></td>
+<td><p>int 1~7</p></td>
+<td><p>选择哪组校准设置值</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="dpf">
+<h3>DPF<a class="headerlink" href="#dpf" title="Link to this heading">#</a></h3>
+<section id="id32">
+<h4>功能描述<a class="headerlink" href="#id32" title="Link to this heading">#</a></h4>
+<p>双边滤波降噪。</p>
+</section>
+<section id="id33">
+<h4>主要参数<a class="headerlink" href="#id33" title="Link to this heading">#</a></h4>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数</p></th>
+<th class="head"><p>类型及取值范围</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>enable</p></td>
+<td><p>bool</p></td>
+<td><p>使能开关。</p></td>
+</tr>
+<tr class="row-odd"><td><p>gain</p></td>
+<td><p>float 1.0~1000.0</p></td>
+<td><p>sensor gain</p></td>
+</tr>
+<tr class="row-even"><td><p>gradient</p></td>
+<td><p>float 0.1~128</p></td>
+<td><p>梯度</p></td>
+</tr>
+<tr class="row-odd"><td><p>min</p></td>
+<td><p>float 1.0~128.0</p></td>
+<td><p>strength clip</p></td>
+</tr>
+<tr class="row-even"><td><p>offset</p></td>
+<td><p>float 0~128.0</p></td>
+<td><p>值越大，降噪强度越大</p></td>
+</tr>
+<tr class="row-odd"><td><p>div</p></td>
+<td><p>float 0~64.0</p></td>
+<td><p>值越大，降噪强度越小</p></td>
+</tr>
+<tr class="row-even"><td><p>sigma_g</p></td>
+<td><p>float 1.0~128.0</p></td>
+<td><p>G通道的空域滤波，值越大，权重越大</p></td>
+</tr>
+<tr class="row-odd"><td><p>sigma_rb</p></td>
+<td><p>float 1.0~128.0</p></td>
+<td><p>R&amp;B通道的空域滤波，值越大，权重越大</p></td>
+</tr>
+<tr class="row-even"><td><p>noise_curve</p></td>
+<td><p>float 0~4095.0</p></td>
+<td><p>17个点的曲线，从标定文件中得到</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="dnr">
+<h3>DNR<a class="headerlink" href="#dnr" title="Link to this heading">#</a></h3>
+<section id="id34">
+<h4>功能描述<a class="headerlink" href="#id34" title="Link to this heading">#</a></h4>
+<p>图像去噪是数字图像处理中的重要环节和步骤，去噪效果将对后续图像处理产生影响。3DNR结合时间域信息和空间域信息，从而能够更有效地识别并降低噪声，并有运动检测，确保降噪过程不会影响移动对象的细节和清晰度。</p>
+</section>
+<section id="id35">
+<h4>主要参数<a class="headerlink" href="#id35" title="Link to this heading">#</a></h4>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数</p></th>
+<th class="head"><p>类型及取值范围</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>enable</p></td>
+<td><p>bool</p></td>
+<td><p>2DNR和3DNR总使能开关</p></td>
+</tr>
+<tr class="row-odd"><td><p>tnr_en</p></td>
+<td><p>bool</p></td>
+<td><p>3DNR使能开关</p></td>
+</tr>
+<tr class="row-even"><td><p>nlm_en</p></td>
+<td><p>bool</p></td>
+<td><p>2DNR使能开关</p></td>
+</tr>
+<tr class="row-odd"><td><p>sigma</p></td>
+<td><p>float [0.1~16.0]</p></td>
+<td><p>2DNR强度，值越大，降噪强度越大</p></td>
+</tr>
+<tr class="row-even"><td><p>strength</p></td>
+<td><p>float 0~128.0</p></td>
+<td><p>2DNR强度，值越大，降噪强度越大</p></td>
+</tr>
+<tr class="row-odd"><td><p>blend_motion</p></td>
+<td><p>float 0~100.0</p></td>
+<td><p>代表 2DNR处理过的帧与tnr输出帧的权重。改变它会影响去噪强度，但运动估计是不变的</p></td>
+</tr>
+<tr class="row-even"><td><p>blend_slope</p></td>
+<td><p>float 0.1~32.0</p></td>
+<td><p>合并坡度；该值越大，NLM图像的权重就越大。2DNR混合的权重斜率。值越小，静态混合权重高；值越大，运动混合权重高。</p></td>
+</tr>
+<tr class="row-odd"><td><p>blend_static</p></td>
+<td><p>float 0~100.0</p></td>
+<td><p>代表的是静止区域2DNR处理过的帧与tnr输出帧的权重</p></td>
+</tr>
+<tr class="row-even"><td><p>dialte_h</p></td>
+<td><p>float</p></td>
+<td><p>3DNR motion dilation的窗口宽度</p></td>
+</tr>
+<tr class="row-odd"><td><p>filter_len</p></td>
+<td><p>float 0~1024</p></td>
+<td><p>时域滤波窗口长度，表示参考了多少帧的信息</p></td>
+</tr>
+<tr class="row-even"><td><p>filter_len2</p></td>
+<td><p>float 0~100</p></td>
+<td><p>运动历史帧的长度</p></td>
+</tr>
+<tr class="row-odd"><td><p>motion_dilate_en</p></td>
+<td><p>bool</p></td>
+<td><p>motion_dilate使能开关</p></td>
+</tr>
+<tr class="row-even"><td><p>motion_erode_en</p></td>
+<td><p>bool</p></td>
+<td><p>motion_erode使能开关</p></td>
+</tr>
+<tr class="row-odd"><td><p>noise_level</p></td>
+<td><p>float 0~1024</p></td>
+<td><p>运动检测阈值，大于这个值的判断为运动区</p></td>
+</tr>
+<tr class="row-even"><td><p>noisemodel_a</p></td>
+<td><p>float</p></td>
+<td><p>自定义pregamma曲线的斜率</p></td>
+</tr>
+<tr class="row-odd"><td><p>noisemodel_b</p></td>
+<td><p>float</p></td>
+<td><p>自定义pregamma曲线的offset值</p></td>
+</tr>
+<tr class="row-even"><td><p>pregamma_en</p></td>
+<td><p>bool</p></td>
+<td><p>pregamma transform的使能开关</p></td>
+</tr>
+<tr class="row-odd"><td><p>preweight</p></td>
+<td><p>float</p></td>
+<td><p>前一帧运动信息的权重</p></td>
+</tr>
+<tr class="row-even"><td><p>range_h</p></td>
+<td><p>float</p></td>
+<td><p>水平方向上运动检测窗口的半径，7代表采用15x15的</p></td>
+</tr>
+<tr class="row-odd"><td><p>range_v</p></td>
+<td><p>float</p></td>
+<td><p>垂直方向上运动检测窗口的半径，7代表采用15x15的</p></td>
+</tr>
+<tr class="row-even"><td><p>sadweight</p></td>
+<td><p>float</p></td>
+<td><p>设置运动差类型a的权重，最终运动检测是两种类型的运动差的加权和，计算block diff的参数</p></td>
+</tr>
+<tr class="row-odd"><td><p>thr_motion_slope</p></td>
+<td><p>float</p></td>
+<td><p>过渡段，过了slope就是百分百的运动区域</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id36">
+<h4>调试策略<a class="headerlink" href="#id36" title="Link to this heading">#</a></h4>
+<ol class="arabic simple">
+<li><p>先打开tnr，nlm，dilate，erode，pregamma；</p></li>
+<li><p>设置filter_len控制参考帧的damping ratio；</p></li>
+<li><p>设置filter_len2控制运动帧的damping ratio；</p></li>
+<li><p>用noise_level来区分前景与背景；</p></li>
+<li><p>设置thr_motion_slope，sad weight，preweight来计算运动区域。</p></li>
+</ol>
+<p>请注意：使能TNR时，ISP的要求sensor/ISP Hblank不能小于180 pixel clocks（推荐 设置为256 pixel clocks），Vblank最小不要小于 60 sensor ET lines。</p>
+</section>
+</section>
+<section id="demosaic">
+<h3>Demosaic<a class="headerlink" href="#demosaic" title="Link to this heading">#</a></h3>
+<section id="id37">
+<h4>功能描述<a class="headerlink" href="#id37" title="Link to this heading">#</a></h4>
+<p>Demosaic模块实现的功能主要是通过插值算法将输入的bayer格式数据转换成RGB格式数据，同时支持降噪、锐化、去摩尔纹、去紫边功能。</p>
+</section>
+<section id="id38">
+<h4>主要参数<a class="headerlink" href="#id38" title="Link to this heading">#</a></h4>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数</p></th>
+<th class="head"><p>类型及取值范围</p></th>
+<th class="head text-left"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>demosaic_enable</p></td>
+<td><p>bool</p></td>
+<td class="text-left"><p>demosaic使能开关</p></td>
+</tr>
+<tr class="row-odd"><td><p>demosaic_thr</p></td>
+<td><p>int 0~255</p></td>
+<td class="text-left"><p>r和b通道的插值阈值，小于这个值做无方向的插值</p></td>
+</tr>
+<tr class="row-even"><td><p>dmsc_dir_thr_min</p></td>
+<td><p>int 0~4095</p></td>
+<td class="text-left"><p>暗区G通道插值</p></td>
+</tr>
+<tr class="row-odd"><td><p>dmsc_dir_thr_max</p></td>
+<td><p>int 0~4095</p></td>
+<td class="text-left"><p>亮区G通道插值</p></td>
+</tr>
+<tr class="row-even"><td><p>dmsc_denoise_strength</p></td>
+<td><p>int 0~31</p></td>
+<td class="text-left"><p>低频滤波降噪强度</p></td>
+</tr>
+<tr class="row-odd"><td><p>dmsc_sharpen_enable</p></td>
+<td><p>bool</p></td>
+<td class="text-left"><p>sharpen的使能开关</p></td>
+</tr>
+<tr class="row-even"><td><p>dmsc_sharpen_clip_black</p></td>
+<td><p>int 0~2047</p></td>
+<td class="text-left"><p>黑边锐化限制参数</p></td>
+</tr>
+<tr class="row-odd"><td><p>dmsc_sharpen_clip_white</p></td>
+<td><p>int 0~2047</p></td>
+<td class="text-left"><p>白边锐化限制参数</p></td>
+</tr>
+<tr class="row-even"><td><p>dmsc_sharpen_factor_black</p></td>
+<td><p>int 0~511</p></td>
+<td class="text-left"><p>针对黑边的锐化增强，值越大，锐化增强效果越明显</p></td>
+</tr>
+<tr class="row-odd"><td><p>dmsc_sharpen_factor_white</p></td>
+<td><p>int 0~511</p></td>
+<td class="text-left"><p>针对边边的锐化增强，值越大，锐化增强效果越明显</p></td>
+</tr>
+<tr class="row-even"><td><p>dmsc_sharpen_line_enable</p></td>
+<td><p>bool</p></td>
+<td class="text-left"><p>连续线锐化增强使能开关</p></td>
+</tr>
+<tr class="row-odd"><td><p>dmsc_sharpen_line_r1</p></td>
+<td><p>int 0~255</p></td>
+<td class="text-left"><p>r1是小于thr的值点对应的锐化强度</p></td>
+</tr>
+<tr class="row-even"><td><p>dmsc_sharpen_line_r2</p></td>
+<td><p>int 0~255</p></td>
+<td class="text-left"><p>r2是大于(thr + (1&lt;&lt;thr_shift1))的值点对应的锐化强度</p></td>
+</tr>
+<tr class="row-odd"><td><p>dmsc_sharpen_line_strength</p></td>
+<td><p>int 0~4095</p></td>
+<td class="text-left"><p>值越大，线条锐化强度越大</p></td>
+</tr>
+<tr class="row-even"><td><p>dmsc_sharpen_line_thr</p></td>
+<td><p>int</p></td>
+<td class="text-left"><p>线条锐化阈值</p></td>
+</tr>
+<tr class="row-odd"><td><p>dmsc_sharpen_line_thr_shift1</p></td>
+<td><p>int 0~10</p></td>
+<td class="text-left"><p>/</p></td>
+</tr>
+<tr class="row-even"><td><p>dmsc_sharpen_r1</p></td>
+<td><p>int 0~256</p></td>
+<td class="text-left"><p>锐化曲线参数</p></td>
+</tr>
+<tr class="row-odd"><td><p>dmsc_sharpen_r2</p></td>
+<td><p>int 0~256</p></td>
+<td class="text-left"><p>锐化曲线参数</p></td>
+</tr>
+<tr class="row-even"><td><p>dmsc_sharpen_r3</p></td>
+<td><p>int 0~256</p></td>
+<td class="text-left"><p>锐化曲线参数</p></td>
+</tr>
+<tr class="row-odd"><td><p>dmsc_sharpen_size</p></td>
+<td><p>int 0~16</p></td>
+<td class="text-left"><p>表示高频信号的呈现情况。值越小，表示锐化区域中的细节越多，更多的小细节会被锐化</p></td>
+</tr>
+<tr class="row-even"><td><p>dmsc_sharpen_t1</p></td>
+<td><p>int 0~2047</p></td>
+<td class="text-left"><p>锐化曲线参数, 值点t1</p></td>
+</tr>
+<tr class="row-odd"><td><p>dmsc_sharpen_t2_shift</p></td>
+<td><p>int 0~11</p></td>
+<td class="text-left"><p>锐化曲线参数, 值点(t1+(1&lt;&lt;t2_shift))</p></td>
+</tr>
+<tr class="row-even"><td><p>dmsc_sharpen_t3</p></td>
+<td><p>int 0~2047</p></td>
+<td class="text-left"><p>锐化曲线参数, 值点t3</p></td>
+</tr>
+<tr class="row-odd"><td><p>dmsc_sharpen_t4_shift</p></td>
+<td><p>int 0~11</p></td>
+<td class="text-left"><p>锐化曲线参数, 值点(t3+(1&lt;&lt;t4_shift))</p></td>
+</tr>
+<tr class="row-even"><td><p>dmsc_demoire_area_thr</p></td>
+<td><p>int 0~32</p></td>
+<td class="text-left"><p>去摩尔纹面积阈值，大于阈值的才进行去摩尔纹处理</p></td>
+</tr>
+<tr class="row-odd"><td><p>dmsc_demoire_enable</p></td>
+<td><p>bool</p></td>
+<td class="text-left"><p>去摩尔纹使能开关</p></td>
+</tr>
+<tr class="row-even"><td><p>dmsc_demoire_r1</p></td>
+<td><p>int 0~255</p></td>
+<td class="text-left"><p>摩尔纹消除强度曲线参数, r1是小于t1的值点对应的矫正强度</p></td>
+</tr>
+<tr class="row-odd"><td><p>dmsc_demoire_r2</p></td>
+<td><p>int 0~255</p></td>
+<td class="text-left"><p>摩尔纹消除强度曲线参数, r2是大于(t1 + (1&lt;&lt;t2_shift))的值点对应的矫正强度</p></td>
+</tr>
+<tr class="row-even"><td><p>dmsc_demoire_t1</p></td>
+<td><p>int 0~255</p></td>
+<td class="text-left"><p>摩尔纹消除强度曲线参数, 值点t1</p></td>
+</tr>
+<tr class="row-odd"><td><p>dmsc_demoire_t2_shift</p></td>
+<td><p>int 0~8</p></td>
+<td class="text-left"><p>摩尔纹消除强度曲线参数, 值点(t1 + (1&lt;&lt;t2_shift))</p></td>
+</tr>
+<tr class="row-even"><td><p>demoire_edge_r1</p></td>
+<td><p>int 0~255</p></td>
+<td class="text-left"><p>摩尔纹转换曲线参数, r1是小于t1的值点对应的摩尔率</p></td>
+</tr>
+<tr class="row-odd"><td><p>demoire_edge_r2</p></td>
+<td><p>int 0~255</p></td>
+<td class="text-left"><p>摩尔纹转换曲线参数，r2是大于(t1 + (1&lt;&lt;t2_shift))的值点对应的摩尔率</p></td>
+</tr>
+<tr class="row-even"><td><p>demoire_edge_t1</p></td>
+<td><p>int 0~511</p></td>
+<td class="text-left"><p>摩尔纹转换曲线参数，值点t1</p></td>
+</tr>
+<tr class="row-odd"><td><p>demoire_edge_t2_shift</p></td>
+<td><p>int 0~9</p></td>
+<td class="text-left"><p>摩尔纹转换曲线参数, 值点(t1 + (1&lt;&lt;t2_shift))</p></td>
+</tr>
+<tr class="row-even"><td><p>dmsc_demoire_sat_shrink</p></td>
+<td><p>int 0~32</p></td>
+<td class="text-left"><p>值越大，摩尔纹区域饱和度消减越强</p></td>
+</tr>
+<tr class="row-odd"><td><p>dmsc_depurple_cbcr_mode</p></td>
+<td><p>int [0,1,2,3]</p></td>
+<td class="text-left"><p>depurple通道模式。0：关闭depurple，1：R通道depurple，2：B通道depurple，3：R&amp;B通道depurple</p></td>
+</tr>
+<tr class="row-even"><td><p>dmsc_depurple_enable</p></td>
+<td><p>bool</p></td>
+<td class="text-left"><p>depurple使能开关</p></td>
+</tr>
+<tr class="row-odd"><td><p>dmsc_depurple_sat_shrink</p></td>
+<td><p>int 0~8</p></td>
+<td class="text-left"><p>紫边区域饱和度缩减值。值越大，饱和度缩减越强</p></td>
+</tr>
+<tr class="row-even"><td><p>dmsc_depurple_thr</p></td>
+<td><p>int 8~255</p></td>
+<td class="text-left"><p>检测紫边的强度阈值。值越小，被视为紫色条纹的像素就越多</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id39">
+<h4>调试策略<a class="headerlink" href="#id39" title="Link to this heading">#</a></h4>
+<ol class="arabic">
+<li><p>插值</p>
+<p>对于12bit raw，值0对应的插值Threshold为dir_thr_min，值4095对于的插值Threshold为dir_thr_max，处于中间的值对应的Threshold为dir_thr_min和dir_thr_max所决定线段上的对应值点。</p>
+<p><img alt="image-20230828143338539" src="../../../_images/18.png" /></p>
+<p>demosaic_thr的设置：梯度差异&gt;阈值，方向插值；梯度差异&lt;阈值，平均值插值。较小的值意味着在高频区域出现更多的伪彩。</p>
+</li>
+<li><p>锐化及降噪</p>
+<p>denoise_strength表示低频噪声滤波强度，当设置为0时，相当于关闭降噪功能。一般情况下在demosaic模块里都将降噪功能关闭，只有当图像的噪声特别大的时候，才在这里使用降噪。</p>
+<p>锐化曲线参数的设置：曲线越陡峭，锐化强度越大。</p>
+<p><img alt="image-20230828145740677" src="../../../_images/19.png" /></p>
+<p>sharpen_line的设置：当图像的噪声比较大的时候，想让边缘平滑连续一些，就可以打开sharpen_line。sharpen_line的基本效果就是在垂直或水平方向上平滑线条或纹理。纵轴sharpen_line_r1、sharpen_line_r2越大，锐化结果就越接近定向（水平或垂直）增强。此外，更多的点被错误连接，这可能导致高频细节中的错误。</p>
+<p>sharpen_factor&amp;clip设置：factor值越大，锐化效果越强；clip值越大，表示截断效果越弱，保留的细节越多。应该尽量避免factor&gt;clip的设置情况，这样黑白细节保持少，而锐化强度高，会导致没有层次感。</p>
+</li>
+<li><p>去摩尔纹</p>
+<p>摩尔纹转换曲线：</p>
+<p><img alt="image-20230904094148683" src="../../../_images/20.png" /></p>
+<p>摩尔纹校准曲线：</p>
+<p><img alt="image-20230904094333522" src="../../../_images/21.png" /></p>
+</li>
+</ol>
+</section>
+</section>
+<section id="manualwb">
+<h3>ManualWB<a class="headerlink" href="#manualwb" title="Link to this heading">#</a></h3>
+<section id="id40">
+<h4>功能描述<a class="headerlink" href="#id40" title="Link to this heading">#</a></h4>
+<p>手动设置白平衡的gain值。</p>
+</section>
+<section id="id41">
+<h4>主要参数<a class="headerlink" href="#id41" title="Link to this heading">#</a></h4>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数</p></th>
+<th class="head"><p>类型及取值范围</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>driver_load</p></td>
+<td><p>bool</p></td>
+<td><p>表示是否加载该模块下的参数</p></td>
+</tr>
+<tr class="row-odd"><td><p>gain</p></td>
+<td><p>float [4] 1.0~3.999</p></td>
+<td><p>四通道的白平衡gain值</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="id42">
+<h3>CCM<a class="headerlink" href="#id42" title="Link to this heading">#</a></h3>
+<section id="id43">
+<h4>功能描述<a class="headerlink" href="#id43" title="Link to this heading">#</a></h4>
+<p>通过标准3×3的矩阵和矢量偏移量完成颜色空间的线性校正。CCM 的 3x3 矩阵将 sensor 的 色彩空间转换到 sRGB 标准的色彩空间。</p>
+</section>
+<section id="id44">
+<h4>主要参数<a class="headerlink" href="#id44" title="Link to this heading">#</a></h4>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数</p></th>
+<th class="head"><p>类型及取值范围</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>enable</p></td>
+<td><p>bool</p></td>
+<td><p>CCM开关</p></td>
+</tr>
+<tr class="row-odd"><td><p>ccmatrix</p></td>
+<td><p>float ccMatrix[9] -8.0~7.996</p></td>
+<td><p>色彩校准矩阵</p></td>
+</tr>
+<tr class="row-even"><td><p>ccoffset</p></td>
+<td><p>ccOffset[3] -2048~2047(12bit)</p></td>
+<td><p>偏移量</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="gamma">
+<h3>Gamma<a class="headerlink" href="#gamma" title="Link to this heading">#</a></h3>
+<section id="id45">
+<h4>功能描述<a class="headerlink" href="#id45" title="Link to this heading">#</a></h4>
+<p>Gamma模块主要是对亮度空间进行非线性转化以适应一般的输出设备。</p>
+</section>
+<section id="id46">
+<h4>主要参数<a class="headerlink" href="#id46" title="Link to this heading">#</a></h4>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数</p></th>
+<th class="head"><p>类型及取值范围</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>enable</p></td>
+<td><p>bool</p></td>
+<td><p>gamma使能开关</p></td>
+</tr>
+<tr class="row-odd"><td><p>standard</p></td>
+<td><p>bool</p></td>
+<td><p>标准gamma使能开关</p></td>
+</tr>
+<tr class="row-even"><td><p>standard_val</p></td>
+<td><p>float</p></td>
+<td><p>gamma值的大小，默认2.2</p></td>
+</tr>
+<tr class="row-odd"><td><p>curve</p></td>
+<td><p>int [64]</p></td>
+<td><p>64个点的gamma曲线</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id47">
+<h4>调试策略<a class="headerlink" href="#id47" title="Link to this heading">#</a></h4>
+<p>默认使用gamma2.2的值，用户可根据需要自定义gamma曲线。</p>
+</section>
+</section>
+<section id="ee">
+<h3>EE<a class="headerlink" href="#ee" title="Link to this heading">#</a></h3>
+<section id="id48">
+<h4>功能描述<a class="headerlink" href="#id48" title="Link to this heading">#</a></h4>
+<p>EE模块用于对图像细节纹理的锐化增强，实现图像清晰度的提升。对图像边缘锐化的同时，控制相关参数，还能抑制图像的黑白边。</p>
+</section>
+<section id="id49">
+<h4>主要参数<a class="headerlink" href="#id49" title="Link to this heading">#</a></h4>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>参数</p></th>
+<th class="head text-left"><p>类型及取值范围</p></th>
+<th class="head text-left"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>enable</p></td>
+<td class="text-left"><p>bool</p></td>
+<td class="text-left"><p>EE功能的使能控制</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>ee_strength</p></td>
+<td class="text-left"><p>int 0~128</p></td>
+<td class="text-left"><p>EE强度</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>ee_src_strength</p></td>
+<td class="text-left"><p>int 0~255</p></td>
+<td class="text-left"><p>值越大，降噪强度越大。默认设为1</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>ee_y_up_gain</p></td>
+<td class="text-left"><p>int 0~10000</p></td>
+<td class="text-left"><p>亮边的gain强度</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>ee_y_down_gain</p></td>
+<td class="text-left"><p>int 0~10000</p></td>
+<td class="text-left"><p>暗边的gain强度</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>ee_uv_gain</p></td>
+<td class="text-left"><p>int 0~1024</p></td>
+<td class="text-left"><p>对边缘色彩饱和度的控制，值越大，饱和度下降越明显</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>ee_edge_gain</p></td>
+<td class="text-left"><p>int 0~10000</p></td>
+<td class="text-left"><p>对边缘细节的检测强度。gain值越大，检测到的边缘细节越多</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="ca">
+<h3>CA<a class="headerlink" href="#ca" title="Link to this heading">#</a></h3>
+<section id="id50">
+<h4>功能描述<a class="headerlink" href="#id50" title="Link to this heading">#</a></h4>
+<p>CA模块是基于UV gain曲线去调节图像饱和度，它主要的功能是消除暗区域或低饱和度区域的彩色噪声。实际应用时可以帮助消除高亮过曝区域由于R/G/B三通道的非线性造成的伪彩色和低饱和度区域的白平衡偏差。</p>
+</section>
+<section id="id51">
+<h4>主要参数<a class="headerlink" href="#id51" title="Link to this heading">#</a></h4>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数</p></th>
+<th class="head"><p>类型及取值范围</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ca_en</p></td>
+<td><p>bool</p></td>
+<td><p>CA模块的使能开关</p></td>
+</tr>
+<tr class="row-odd"><td><p>curve_en</p></td>
+<td><p>bool</p></td>
+<td><p>ca_curve和dci_curve的使能开关</p></td>
+</tr>
+<tr class="row-even"><td><p>ca_mode</p></td>
+<td><p>int [0,1,2]</p></td>
+<td><p>0：根据亮度调节饱和度；1：根据原饱和度调节饱和度；2：根据亮度和原饱和度调节饱和度</p></td>
+</tr>
+<tr class="row-odd"><td><p>ca_curve</p></td>
+<td><p>flaot</p></td>
+<td><p>64个点的ca曲线</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="dci">
+<h3>DCI<a class="headerlink" href="#dci" title="Link to this heading">#</a></h3>
+<section id="id52">
+<h4>功能描述<a class="headerlink" href="#id52" title="Link to this heading">#</a></h4>
+<p>Dynamic Contrast Improve用于调整图像的全局对比度。</p>
+</section>
+<section id="id53">
+<h4>主要参数<a class="headerlink" href="#id53" title="Link to this heading">#</a></h4>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数</p></th>
+<th class="head"><p>类型及取值范围</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>dci_en</p></td>
+<td><p>bool</p></td>
+<td><p>dci使能开关</p></td>
+</tr>
+<tr class="row-odd"><td><p>dci_curve</p></td>
+<td><p>float</p></td>
+<td><p>64个点的dci曲线</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="cprocess-color-processing">
+<h3>CProcess(Color Processing)<a class="headerlink" href="#cprocess-color-processing" title="Link to this heading">#</a></h3>
+<section id="id54">
+<h4>功能描述<a class="headerlink" href="#id54" title="Link to this heading">#</a></h4>
+<p>在YUV域对图像的颜色进行处理。</p>
+</section>
+<section id="id55">
+<h4>主要参数<a class="headerlink" href="#id55" title="Link to this heading">#</a></h4>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数</p></th>
+<th class="head"><p>类型及取值范围</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>enable</p></td>
+<td><p>bool</p></td>
+<td><p>CProcess使能开关</p></td>
+</tr>
+<tr class="row-odd"><td><p>luma_in</p></td>
+<td><p>int</p></td>
+<td><p>luminance input range。0: Y_in range [64..940]，1: Y_in full range [0..1023]</p></td>
+</tr>
+<tr class="row-even"><td><p>luma_out</p></td>
+<td><p>int</p></td>
+<td><p>luminance output clipping range。0: Y_out clipping range [16..235]，1: Y_out clipping range [0..255]</p></td>
+</tr>
+<tr class="row-odd"><td><p>chroma_out</p></td>
+<td><p>int</p></td>
+<td><p>chrominance pixel clipping range at output。0: CbCr_out clipping range [16..240]，1: Full UV_out clipping range [0..255]</p></td>
+</tr>
+<tr class="row-even"><td><p>bright</p></td>
+<td><p>float -128~127</p></td>
+<td><p>亮度调整值</p></td>
+</tr>
+<tr class="row-odd"><td><p>contrast</p></td>
+<td><p>float 0.3~1.9921875</p></td>
+<td><p>对比度调整值</p></td>
+</tr>
+<tr class="row-even"><td><p>hue</p></td>
+<td><p>float -90~89</p></td>
+<td><p>色调调整值</p></td>
+</tr>
+<tr class="row-odd"><td><p>saturation</p></td>
+<td><p>float 0~1.9921875</p></td>
+<td><p>饱和度调整值</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="compand">
+<h3>Compand<a class="headerlink" href="#compand" title="Link to this heading">#</a></h3>
+<section id="id56">
+<h4>功能描述<a class="headerlink" href="#id56" title="Link to this heading">#</a></h4>
+<p>数据压缩、拉伸模块。可用于对数据的压缩和拉伸处理。</p>
+</section>
+<section id="id57">
+<h4>主要参数<a class="headerlink" href="#id57" title="Link to this heading">#</a></h4>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数</p></th>
+<th class="head"><p>类型及取值范围</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>enable</p></td>
+<td><p>bool</p></td>
+<td><p>数据压缩扩展使能开关</p></td>
+</tr>
+<tr class="row-odd"><td><p>compress_enable</p></td>
+<td><p>bool</p></td>
+<td><p>数据压缩使能开关</p></td>
+</tr>
+<tr class="row-even"><td><p>compress_curve_x</p></td>
+<td><p>int[64] 0~31</p></td>
+<td><p>数据压缩x轴距离曲线</p></td>
+</tr>
+<tr class="row-odd"><td><p>compress_use_out_y_curve</p></td>
+<td><p>bool</p></td>
+<td><p>数据压缩输出Y轴曲线使能开关</p></td>
+</tr>
+<tr class="row-even"><td><p>compress_curve_y</p></td>
+<td><p>int[64] 0~16777216</p></td>
+<td><p>数据压缩y轴数值曲线</p></td>
+</tr>
+<tr class="row-odd"><td><p>expand_enable</p></td>
+<td><p>bool</p></td>
+<td><p>数据扩展使能开关</p></td>
+</tr>
+<tr class="row-even"><td><p>expand_curve_x</p></td>
+<td><p>int[64] 0~31</p></td>
+<td><p>数据扩展x轴距离曲线</p></td>
+</tr>
+<tr class="row-odd"><td><p>expand_use_out_y_curve</p></td>
+<td><p>bool</p></td>
+<td><p>数据扩展输出Y轴曲线使能开关</p></td>
+</tr>
+<tr class="row-even"><td><p>expand_curve_y</p></td>
+<td><p>int[64] 0~16777216</p></td>
+<td><p>数据扩展y轴数值曲线</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="cac-chromatic-aberration-correction">
+<h3>CAC (Chromatic Aberration Correction)<a class="headerlink" href="#cac-chromatic-aberration-correction" title="Link to this heading">#</a></h3>
+<section id="id58">
+<h4>功能描述<a class="headerlink" href="#id58" title="Link to this heading">#</a></h4>
+<p>该模块用于色差校正。</p>
+</section>
+<section id="id59">
+<h4>主要参数<a class="headerlink" href="#id59" title="Link to this heading">#</a></h4>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数</p></th>
+<th class="head"><p>类型及取值范围</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>a_blue</p></td>
+<td><p>float -16~15.9375</p></td>
+<td><p>径向蓝移计算参数，根据公式 (a_blue * r + b_blue * r^2 + c_clue * r^3)计算</p></td>
+</tr>
+<tr class="row-odd"><td><p>a_red</p></td>
+<td><p>float -16~15.9375</p></td>
+<td><p>径向红移计算参数，根据公式 (a_red * r + b_red * r^2 + c_red * r^3)计算</p></td>
+</tr>
+<tr class="row-even"><td><p>b_blue</p></td>
+<td><p>float -16~15.9375</p></td>
+<td><p>径向蓝移计算参数，根据公式 (a_blue * r + b_blue * r^2 + c_clue * r^3)计算</p></td>
+</tr>
+<tr class="row-odd"><td><p>b_red</p></td>
+<td><p>float -16~15.9375</p></td>
+<td><p>径向红移计算参数，根据公式 (a_red * r + b_red * r^2 + c_red * r^3)计算</p></td>
+</tr>
+<tr class="row-even"><td><p>c_blue</p></td>
+<td><p>float -16~15.9375</p></td>
+<td><p>径向蓝移计算参数，根据公式 (a_blue * r + b_blue * r^2 + c_clue * r^3)计算</p></td>
+</tr>
+<tr class="row-odd"><td><p>c_red</p></td>
+<td><p>float -16~15.9375</p></td>
+<td><p>径向红移计算参数，根据公式 (a_red * r + b_red * r^2 + c_red * r^3)计算</p></td>
+</tr>
+<tr class="row-even"><td><p>cac_enable</p></td>
+<td><p>bool</p></td>
+<td><p>CAC使能开关</p></td>
+</tr>
+<tr class="row-odd"><td><p>center_h_offs</p></td>
+<td><p>int</p></td>
+<td><p>图像中心和光学中心之间的水平距离</p></td>
+</tr>
+<tr class="row-even"><td><p>center_v_offs</p></td>
+<td><p>int</p></td>
+<td><p>图像中心和光学中心之间的垂直距离</p></td>
+</tr>
+</tbody>
+</table>
+<p>a_blue、b_blue、c_blue可从xml文件中CAC字段的blue_parameters中获得，a_red、b_red、c_red可从xml文件中CAC字段的red_parameters中获得，center_h_offs可从xml文件中CAC字段的x_offset获得，center_v_offs可从xml文件中CAC字段的y_offset获得。</p>
+</section>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+
+              
+              
+                <footer class="bd-footer-article">
+                  <div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+  <title>评论列表</title>
+  <style>
+    /* 评论顶部 */
+    .docs-comment .head {
+      display: flex;
+      justify-content: space-between;
+      padding-bottom: 1em;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .docs-comment .nickname {
+      cursor: pointer;
+    }
+
+    /* 评论输入框 */
+    .docs-comment .input {
+      display: flex;
+      margin-top: 20px;
+      position: relative;
+    }
+
+    .docs-comment .head-img {
+      border-radius: 3px;
+      width: 50px;
+      height: 50px;
+    }
+
+    .docs-comment .head-img img {
+      height: 50px;
+      width: 50px;
+    }
+
+    .docs-comment textarea,
+    .docs-comment .comment-content {
+      width: 100%;
+      margin-left: 10px;
+      border-radius: 5px;
+      padding: 0.75em;
+      display: block;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      width: 100%;
+      min-height: 5.125em;
+      /* max-height: 15em; */
+      border-radius: 5px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      font-size: 12px;
+      word-wrap: break-word;
+      resize: vertical;
+      background-color: #f6f6f6;
+      outline: none;
+    }
+
+    .docs-comment .replies .comment-content {
+      border: none;
+    }
+
+    .docs-comment .submit {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+    }
+
+    .docs-comment button {
+      padding: 0.75em 1.25em;
+      display: inline-block;
+      line-height: 1;
+      text-decoration: none;
+      white-space: nowrap;
+      cursor: pointer;
+      border: 1px solid #2962ff;
+      border-radius: 5px;
+      background-color: #2962ff;
+      color: #fff;
+      outline: none;
+      font-size: 0.75em;
+    }
+
+    .docs-comment .button .login {
+      margin-left: 20px;
+      background-color: #fff;
+      color: #2962ff;
+    }
+
+    .docs-comment .action {
+      text-align: right;
+
+      svg {
+        height: 16px;
+        width: 16px;
+        cursor: pointer;
+      }
+    }
+
+    .docs-comment .secondary {
+      color: #666;
+    }
+
+    /* 评论列表 */
+    #comment-list {
+      margin-top: 20px;
+    }
+
+    .docs-comment .comment-item,
+    .docs-comment .reply-item {
+      display: flex;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    .docs-comment .reply-icon {
+      margin-left: 10px;
+    }
+
+    .docs-comment .primary {
+      color: #2962ff;
+    }
+
+    .docs-comment .content {
+      margin-top: 0.5em;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="docs-comment">
+    <div class="head">
+      <div class="count primary">条评论</div>
+      <div class="nickname primary" onclick="handleLogin()">登录</div>
+    </div>
+    <div class="input">
+      <div class="head-img"></div>
+      <textarea id="comment" name="comment" rows="5" cols="5" placeholder="说点什么..." required minlength="10"
+        maxlength="200" spellcheck="true" autocomplete="on"></textarea>
+      <button class="submit" onclick="handleAdd()">评论</button>
+    </div>
+    <!-- 评论列表 -->
+    <div id="comment-list"></div>
+  </div>
+
+  <script>
+    let timer = null;
+    const deleteIcon = `<svg
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="#6190e8"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+  <line x1="10" y1="11" x2="10" y2="17" />
+  <line x1="14" y1="11" x2="14" y2="17" />
+</svg>`;
+    const replyIcon = `<svg
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="#6190e8"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10z" />
+</svg>`;
+
+    function getMd5OfEmail(email) {
+      const emailLowercase = email.toLowerCase();
+      const md5Hash = CryptoJS.MD5(emailLowercase).toString();
+      return md5Hash;
+    }
+
+    function formatTimestamp(timestamp) {
+      const now = Date.now(); // 当前时间的时间戳
+      const diff = now - timestamp; // 时间差（毫秒）
+
+      // 转换为秒、分钟、小时
+      const seconds = Math.floor(diff / 1000);
+      const minutes = Math.floor(seconds / 60);
+      const hours = Math.floor(minutes / 60);
+      if (seconds < 60) {
+        return ` 刚刚`;
+      } else if (minutes < 60) {
+        return `${minutes}分钟前`;
+      } else if (hours < 24) {
+        return `${hours}小时前`;
+      } else {
+        // 大于24小时，显示月份和日期
+        const date = new Date(timestamp);
+        const month = date.getMonth() + 1; // 月份从0开始，需要加1
+        const day = date.getDate();
+        return `${month}月${day}日`;
+      }
+    }
+    // 获取评论列表并渲染到页面
+    function getComments(url) {
+      axios({
+          method: "get",
+          url: "/api/docs/comments",
+          params: {
+            pageNo: 1,
+            pageSize: 20,
+            url: url,
+          },
+        })
+        .then((res) => {
+          renderComments(res.data.rows); // 渲染评论列表
+          const count = document.querySelector(".count");
+          count.innerHTML = `${res.data.count}条评论`;
+          clearInterval(timer);
+          timer = setInterval(() => {
+            document.querySelectorAll(".time").forEach((item) => {
+              item.innerHTML = formatTimestamp(
+                item.getAttribute("value") * 1
+              );
+            });
+          }, 10000);
+        })
+        .catch((error) => {
+          console.error("获取评论列表失败", error);
+        });
+    }
+    // 渲染评论列表
+    function renderComments(comments) {
+      const currentUser = JSON.parse(sessionStorage.getItem("user")) || {};
+      const commentList = document.getElementById("comment-list");
+      commentList.innerHTML = ""; // 清空当前列表
+
+      // 找到所有顶级评论（parent_id = 0）
+      const topLevelComments = comments.filter(
+        (comment) => comment.parent_id === 0
+      );
+
+      // 渲染每条评论及其回复
+      topLevelComments.forEach((comment) => {
+        const commentItem = document.createElement("div");
+        commentItem.className = "comment-item";
+        commentItem.innerHTML = `
+            <div class="head-img"><img src="${
+              comment.user.avatar
+                ? `/api/user/avatar?id=${comment.user.id}`
+                : `https://cravatar.cn/avatar/${getMd5OfEmail(
+                    comment.user.email
+                  )}?d=retro&f=y`
+            }" /></div>
+            <div class="comment-content">
+               <span class="nickname primary">${
+                 comment.user?.nickname || comment.user?.username
+               }</span><span>发表于</span><span class="secondary time" value="${
+            comment.createdAt
+          }"> ${formatTimestamp(comment.createdAt)}</span>
+<div class="content">${comment.content}</div>
+<div class="action">
+${
+  currentUser.role === "admin" || currentUser.id === comment.user.id
+    ? `<span onclick="handleDelete(${comment.id})">${deleteIcon}</span>`
+    : ""
+}
+  <span onclick="handleReply(${comment.id}, ${comment.id}, '${
+            comment.user.nickname || comment.user.username
+          }', '${comment.user.email}')" class="reply-icon">${replyIcon}</span>
+  </div>
+ <div class="replies" id="replies-${comment.id}"></div>
+              </div>
+           
+          `;
+        // <button onclick="handleDelete(${comment.id})">删除</button>
+        commentList.appendChild(commentItem);
+
+        // 找到当前评论的所有回复
+        const replies = comments.filter(
+          (reply) => reply.parent_id === comment.id
+        );
+        renderReplies(comment.id, replies); // 渲染回复
+      });
+    }
+
+    // 渲染回复
+    function renderReplies(parentId, replies) {
+      const currentUser = JSON.parse(sessionStorage.getItem("user")) || {};
+      const repliesContainer = document.getElementById(`replies-${parentId}`);
+      repliesContainer.innerHTML = ""; // 清空当前回复
+
+      replies.forEach((reply) => {
+        const replyItem = document.createElement("div");
+        replyItem.className = "reply-item";
+        replyItem.innerHTML = `
+            <div class="head-img"><img src="${
+              reply.user.avatar
+                ? `/api/user/avatar?id=${reply.user.id}`
+                : `https://cravatar.cn/avatar/${getMd5OfEmail(
+                    reply.user.email
+                  )}?d=retro&f=y`
+            }" /></div>
+            <div class="comment-content">
+               <span class="nickname primary">${
+                 reply.user?.nickname || reply.user?.username
+               }</span><span>回复于</span><span class="secondary time" value="${
+            reply.createdAt
+          }">  ${formatTimestamp(reply.createdAt)}</span>
+<div class="content">${reply.content}</div>
+              <div class="action">
+                ${
+                  currentUser.role === "admin" ||
+                  currentUser.id === reply.user.id
+                    ? `<span onclick="handleDelete(${reply.id})">${deleteIcon}</span>`
+                    : ""
+                }
+                 <span onclick="handleReply(${reply.parent_id}, ${reply.id}, '${
+            reply.user.nickname || reply.user.username
+          }', '${reply.user.email}')" class="reply-icon">${replyIcon}</span>
+                </div>
+                <div class="replies" id="replies-${reply.id}">
+                  
+                  </div>
+              </div>
+            
+          `;
+        repliesContainer.appendChild(replyItem);
+      });
+    }
+
+    // 新增评论
+    function handleAdd(parent_id = 0, email) {
+      const isLogin = sessionStorage.getItem("user");
+      if (isLogin) {
+        const currentUser = JSON.parse(isLogin);
+        if (!currentUser.id) {
+          alert("请先登录");
+          return;
+        }
+      } else {
+        alert("请先登录");
+        return;
+      }
+      let inputValue = document.getElementsByTagName("textarea")[0].value;
+      const url = window.location.href;
+      if (parent_id !== 0 && email) {
+        inputValue = document.getElementById("current-comment").value;
+      }
+      if (!inputValue) {
+        return false;
+      }
+      axios({
+          method: "post",
+          url: "/api/docs/comment",
+          data: {
+            url: url,
+            content: inputValue,
+            parent_id: parent_id, // 默认添加顶级评论
+          },
+        })
+        .then((res) => {
+          const url = window.location.href;
+          getComments(url); // 重新获取评论列表
+          document.getElementsByTagName("textarea")[0].value = "";
+          // 发送飞书消息
+          axios({
+              method: "post",
+              url: "/api/docs/sendMsg",
+              data: {
+                content: inputValue,
+                url: url,
+              },
+            })
+            .then((res) => {
+              console.log("发送邮件成功", res.data);
+            })
+            .catch((error) => {
+              console.error("发送邮件失败", error);
+            });
+          if (parent_id !== 0 && email) {
+            // 发送邮件提醒
+            axios({
+                method: "post",
+                url: "/api/docs/replyNotify",
+                data: {
+                  email: email,
+                  url: url,
+                },
+              })
+              .then((res) => {
+                console.log("发送邮件成功", res.data);
+              })
+              .catch((error) => {
+                console.error("发送邮件失败", error);
+              });
+          }
+        })
+        .catch((error) => {
+          console.error("新增评论失败", error);
+        });
+    }
+
+    // 删除评论
+    function handleDelete(id) {
+      if (confirm("确定要删除这条评论吗？")) {
+        axios({
+            method: "delete",
+            url: `/api/docs/comment/${id}`,
+          })
+          .then((res) => {
+            console.log("删除评论成功", res.data);
+            const url = window.location.href;
+            getComments(url); // 重新获取评论列表
+          })
+          .catch((error) => {
+            console.error("删除评论失败", error);
+          });
+      }
+    }
+    // 获取用户信息
+    function getUser() {
+      if (sessionStorage.getItem("user")) {
+        const currentUser = JSON.parse(sessionStorage.getItem("user"));
+	if(!currentUser.username) return false;
+        document.querySelector(".nickname").innerHTML =
+          currentUser.nickname || currentUser.username;
+        if (currentUser.avatar) {
+          document.querySelector(
+            ".head-img"
+          ).innerHTML = `<img src="/api/user/avatar?id=${currentUser.id}" />`;
+          return;
+        } else {
+          document.querySelector(
+            ".head-img"
+          ).innerHTML = `<img src="https://cravatar.cn/avatar/${getMd5OfEmail(
+              currentUser.email
+            )}?d=retro&f=y" />`;
+        }
+        return;
+      } else {
+        axios({
+            method: "get",
+            url: "/api/user",
+          })
+          .then((res) => {
+            if (res.data && res.data.id) {
+              sessionStorage.setItem("user", JSON.stringify(res.data));
+              document.querySelector(".nickname").innerHTML =
+                res.data.nickname || res.data.username;
+              if (currentUser.avatar) {
+                document.querySelector(
+                  ".head-img"
+                ).innerHTML = `<img src="/api/user/avatar?id=${res.data.id}" />`;
+                return;
+              } else {
+                document.querySelector(
+                  ".head-img"
+                ).innerHTML = `<img src="https://cravatar.cn/avatar/${getMd5OfEmail(
+                  res.data.email
+                )}?d=retro&f=y" />`;
+              }
+            }
+
+          })
+          .catch((error) => {
+            console.error("获取用户信息失败", error);
+          });
+      }
+    }
+    //回复评论
+    function handleReply(parentId, id, nickname, email) {
+      // 删除其他输入框
+      const currentReply = document.querySelector(".current-reply");
+      if (currentReply) {
+        currentReply.remove();
+      }
+      const repliesContainer = document.getElementById(`replies-${id}`);
+      // 创建一个新的 div 元素，并设置 class 为 "input"
+      const newInputDiv = document.createElement("div");
+      newInputDiv.className = "input current-reply";
+      // 创建 head-img 元素
+      const headImgDiv = document.createElement("div");
+      headImgDiv.className = "head-img";
+      // 创建 textarea 元素
+      const textareaElement = document.createElement("textarea");
+      textareaElement.id = "current-comment";
+      textareaElement.name = "comment";
+      textareaElement.rows = 5;
+      textareaElement.cols = 5;
+      textareaElement.placeholder = "说点什么...";
+      textareaElement.required = true;
+      textareaElement.minLength = 10;
+      textareaElement.maxLength = 200;
+      textareaElement.autofocus = true;
+      textareaElement.spellcheck = true;
+      textareaElement.autocomplete = "on";
+      textareaElement.value = `回复 @${nickname}: `;
+      // 创建 button 元素
+      const submitButton = document.createElement("button");
+      submitButton.className = "submit";
+      submitButton.textContent = "评论";
+      submitButton.onclick = () => handleAdd(parentId, email); // 绑定点击事件
+      // 将 head-img、textarea 和 button 添加到 newInputDiv 中
+      newInputDiv.appendChild(headImgDiv);
+      newInputDiv.appendChild(textareaElement);
+      newInputDiv.appendChild(submitButton);
+      repliesContainer.insertAdjacentElement("beforeend", newInputDiv);
+      textareaElement.focus();
+    }
+    const handleLogin = () => {
+      const currentUser = JSON.parse(sessionStorage.getItem("user"));
+      if (currentUser && currentUser.id) {
+        return;
+      }
+      window.location.href = "/ssoLogin/?website=" + window.location.href;
+    };
+    // 页面加载时获取评论列表
+    window.onload = function () {
+      getUser();
+      const url = window.location.href;
+      timer && clearInterval(timer);
+      getComments(url);
+    };
+    window.onbeforeunload = function () {
+      alert("页面关闭");
+      timer && clearInterval(timer);
+    };
+  </script>
+</body>
+
+</html></div>
+  
+</div>
+                </footer>
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../dewarp/K230_SDK_Dewarp%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">K230 SDK Dewarp 使用指南</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="K230_ISP%E5%88%9D%E5%A7%8B%E5%8C%96%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">K230 ISP初始化配置指南</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">K230 ISP图像调优概述</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">标定</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">概述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#black-level-correction">Black level correction</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">黑电平标定的原理及意义</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#raw">黑电平标定采集RAW图</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">使用标定工具开始标定</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lens-shading-correction">Lens shading Correction</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lsc">LSC标定的基本原理及意义</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lscraw">LSC标定采集RAW图</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">使用标定工具开始标定</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#color-correction">Color Correction</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ccm">CCM标定原理</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ccraw">CC标定采集RAW图</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">使用标定工具开始标定</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#auto-white-balance">Auto White Balance</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#awb">AWB标定的基本原理及意义</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">使用标定工具开始标定</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#awbk-factor">AWB参数K_Factor的标定</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#noise-calibration">Noise Calibration</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#noise-profile">Noise Profile标定的原理及意义</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#noise-profileraw">Noise Profile标定采集RAW图</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">使用标定工具开始标定</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#chromatic-aberration-correction">Chromatic Aberration Correction</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#cac">CAC标定的原理及意义</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#cacraw">CAC标定采集RAW图</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">使用标定工具开始标定</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">模块介绍</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bls">BLS</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">功能描述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">主要参数</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">调试策略</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">LSC</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">功能描述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">主要参数</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dgain">Dgain</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">功能描述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">主要参数</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ae">AE</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">功能描述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">主要参数</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">AWB</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">功能描述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">主要参数</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kfactor">参数kFactor标定说明</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#wdr">WDR</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">功能描述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id26">主要参数</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id27">调试策略</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ge">GE</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id28">功能描述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id29">主要参数</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dpcc">DPCC</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id30">功能描述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id31">主要参数</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dpf">DPF</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id32">功能描述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id33">主要参数</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dnr">DNR</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id34">功能描述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id35">主要参数</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id36">调试策略</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demosaic">Demosaic</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id37">功能描述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id38">主要参数</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id39">调试策略</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#manualwb">ManualWB</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id40">功能描述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id41">主要参数</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id42">CCM</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id43">功能描述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id44">主要参数</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gamma">Gamma</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id45">功能描述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id46">主要参数</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id47">调试策略</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ee">EE</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id48">功能描述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id49">主要参数</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ca">CA</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id50">功能描述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id51">主要参数</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dci">DCI</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id52">功能描述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id53">主要参数</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cprocess-color-processing">CProcess(Color Processing)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id54">功能描述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id55">主要参数</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compand">Compand</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id56">功能描述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id57">主要参数</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cac-chromatic-aberration-correction">CAC (Chromatic Aberration Correction)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id58">功能描述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id59">主要参数</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026 嘉楠 | 京ICP备2025124317号 | 京公网安备11010802045870号.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item"><style>
+    .cancat{
+        font-size: 1rem;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 1rem;
+      }
+      .canact-section a{
+       color: #ebedf0;
+       line-height: 30px;
+       font-weight: 400;
+       text-decoration: none;
+      }
+      .canact-section a:hover {
+       color: #4d8eef;
+      }
+   </style>
+   <div class="footer-center">
+    <div class="cancat">开发者资源</div>
+    <section class="canact-section"><a href="https://www.kendryte.com/zh/resource">资料下载</a></section>
+    <section class="canact-section"><a href="https://www.kendryte.com/zh/document">文档中心</a></section>
+    <section class="canact-section"><a href="https://www.kendryte.com/zh/training/start">模型训练</a></section>
+    <section class="canact-section"><a href="https://www.kendryte.com/zh/model/library">模型库</a></section>
+   </div></div>
+      
+    </div>
+  
+  
+    <div class="footer-items__center">
+      
+        <div class="footer-item"><style>
+ .cancat{
+     font-size: 1rem;
+     font-weight: 700;
+     color: #fff;
+     margin-bottom: 1rem;
+   }
+   .canact-section a{
+    color: #ebedf0;
+    line-height: 30px;
+    font-weight: 400;
+    text-decoration: none;
+   }
+   .canact-section a:hover {
+    color: #4d8eef;
+   }
+   .copy-right {
+    margin-top:30px;
+    color: #ebedf0;
+   }
+</style>
+<div class="footer-center">
+ <div class="cancat">联系我们</div>
+ <section class="canact-section"><a href="mailto:salesai@canaan-creative.com">邮箱：salesAI@canaan-creative.com</a></section>
+ <section class="canact-section"><a href="/">QQ 群： 578895334 </a></section>
+ <section class="canact-section"><a href="/">微信公众号：嘉楠开发者</a></section>
+</div></div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><style>
+    .cancat{
+        font-size: 1rem;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 1rem;
+      }
+      .canact-section a{
+       color: #ebedf0;
+       line-height: 30px;
+       font-weight: 400;
+       text-decoration: none;
+      }
+      .canact-section a:hover {
+       color: #4d8eef;
+      }
+   </style>
+   <div class="footer-center">
+    <div class="cancat">资讯和社区</div>
+    <section class="canact-section"><a href="https://www.kendryte.com">勘智开发者社区</a></section>
+    <section class="canact-section"><a href="https://www.kendryte.com/zh/products">产品中心</a></section>
+    <section class="canact-section"><a href="https://www.kendryte.com/answer">问答社区</a></section>
+    <section class="canact-section"><a href="https://www.kendryte.com/zh/blog">博客</a></section>
+   </div></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

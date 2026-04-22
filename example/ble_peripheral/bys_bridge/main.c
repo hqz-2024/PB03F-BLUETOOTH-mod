@@ -54,8 +54,8 @@ static void hal_low_power_io_init(void)
         {GPIO_P03, GPIO_FLOATING},  /* SWD */
         {GPIO_P09, GPIO_PULL_UP},   /* UART0 TX (DEBUG) */
         {GPIO_P10, GPIO_PULL_UP},   /* UART0 RX (DEBUG) */
-        {GPIO_P23, GPIO_PULL_UP},   /* UART1 TX (下位机) */
-        {GPIO_P24, GPIO_PULL_UP},   /* UART1 RX (下位机) */
+        {GPIO_P23, GPIO_PULL_UP},   /* UART1 RX (下位机) */
+        {GPIO_P24, GPIO_PULL_UP},   /* UART1 TX (下位机) */
         {GPIO_P11, GPIO_PULL_DOWN},
         {GPIO_P16, GPIO_FLOATING},  /* XTAL */
         {GPIO_P18, GPIO_PULL_DOWN},

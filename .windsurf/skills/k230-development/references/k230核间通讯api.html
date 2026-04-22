@@ -1,0 +1,4229 @@
+<!-- _templates/layout.html -->
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>K230核间通讯API参考 &#8212; K230 Linux+RT-Smart SDK</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/topbar.css?v=d050732f" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom-theme.css?v=e40dc788" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/auto-nums.css?v=c078078a" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../../_static/documentation_options.js?v=946197a6"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '01_software/board/cdk/K230_核间通讯_API参考';</script>
+    <script src="../../../_static/mermaid.min.js?v=45c054c2"></script>
+    <script src="../../../_static/init_mermaid.js?v=999e7285"></script>
+    <script src="../../../_static/transform.js?v=23760c99"></script>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="K230系统控制MAPI参考" href="K230_%E7%B3%BB%E7%BB%9F%E6%8E%A7%E5%88%B6_MAPI%E5%8F%82%E8%80%83.html" />
+    <link rel="prev" title="K230 SDK API 参考" href="../../../index_api.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+
+  gtag("config", "G-7J9HL06P02");
+</script>
+ <script>
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "tqhe6w0zs6");
+ </script>
+<script>
+  var _hmt = _hmt || [];
+  window._hmt = _hmt; // 修改为window 全局变量
+  (function () {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?d4832d9026d5bdd9eca72f27bb63dfb3"; //此处请替换你的站点i
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item"><a href="/" style="height: 100%; display: flex; align-items: center;"><img src="https://www.kendryte.com/uploads/branding/5rtuJdbiAZ7.png" style="height: 50%; width: auto;" alt=""></a> </div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><div class="document-navbar-nav">
+  <span class="nav-item"><a href="/zh/products">产品中心</a></span>
+  <span class="nav-item md-none sm-show"
+    ><a href="/zh/resource">资料下载</a></span
+  >
+  <span class="nav-item active"><a href="/zh/document">文档中心</a></span>
+  <span class="nav-item md-none sm-show"
+    ><a href="/zh/model/library">应用下载</a></span
+  >
+  <span class="nav-item md-none sm-show"
+    ><a href="/zh/training/start">模型训练</a></span
+  >
+  <span class="nav-item md-none lg-none sm-show"
+    ><a href="/zh/blog">博客</a></span
+  >
+  <span class="nav-item md-none sm-show"
+    ><a href="/zh/coursecenter">课程中心</a></span
+  >
+  <!-- 添加点击事件 -->
+  <span class="nav-item bbs" onclick="goBbs()"
+    >问答社区
+    <img
+      src="https://www.kendryte.com/img/hot.ebb7d69e.svg"
+      style="transform: translateY(-50%)"
+      alt=""
+  /></span>
+</div>
+<!-- 写样式 -->
+<style>
+  .document-navbar-nav .nav-item {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    margin-right: 20px;
+    cursor: pointer;
+  }
+
+  .document-navbar-nav .nav-item a {
+    color: #303133;
+  }
+
+  .document-navbar-nav .nav-item a:hover {
+    color: #66819d;
+  }
+
+  .document-navbar-nav .active a {
+    color: #002d5c;
+    font-weight: 700;
+  }
+
+  .document-navbar-nav .bbs {
+    color: #d12d26;
+  }
+
+  .document-navbar-nav .bbs:hover {
+    color: rgb(231, 100, 100);
+  }
+
+  @media screen and (max-width: 1200px) {
+    .document-navbar-nav .md-none {
+      display: none !important;
+    }
+  }
+
+  @media screen and (max-width: 960px) {
+    .document-navbar-nav .nav-item {
+      display: block !important;
+    }
+    .document-user-info {
+      display: none !important;
+    }
+  }
+  @media screen and (max-width: 1450px) {
+    .lg-none {
+      display: none !important;
+    }
+  }
+</style>
+<script>
+  function goBbs() {
+    location.href = `/answer/`;
+  }
+</script></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item"><div class="document-user-info">
+  <div class="name-info" onclick="(e) => showDropDown(e)">
+    <div class="login-con">
+      <span class="user-avatar jn_user-avt"></span>
+      <div class="jn_user-name">
+        <span></span>
+      </div>
+      <ul class="Dropdown-menu" style="display: none">
+        <li class="item-profile">
+          <a class="Button-label" href="/user">个人资料</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="login-con jn_user-btns">
+    <a class="jn_user-btn" onclick="goLogin()">登录</a>
+    <a class="jn_user-btn" onclick="goRegister()">注册</a>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  if (!window._LOGIN_LOADED) {
+    console.log("1111111111，header login.js loaded");
+    window._LOGIN_LOADED = true;
+
+    function goLogin() {
+      const currentUser = JSON.parse(sessionStorage.getItem("user"));
+      if (currentUser && currentUser.id) {
+        return;
+      }
+      location.href = "/ssoLogin/?website=" + location.href;
+    }
+
+    function goUser(event) {
+      event.stopPropagation();
+      location.href = "/zh/user";
+    }
+
+    function goRegister() {
+      const currentUser = JSON.parse(sessionStorage.getItem("user"));
+      if (currentUser && currentUser.id) {
+        return;
+      }
+      location.href = "/ssoRegister/?website=" + location.href;
+    }
+    async function getUser() {
+      const cachedUser = sessionStorage.getItem("user");
+      if (cachedUser) {
+        return JSON.parse(cachedUser);
+      }
+      // 异步请求数据
+      try {
+        const res = await axios.get("/api/user");
+	if(!res.data.username) return false;
+        sessionStorage.setItem("user", JSON.stringify(res.data));
+        return res.data;
+      } catch (error) {
+        console.error("获取用户信息失败", error);
+        return null; // 或 throw error 让调用方处理
+      }
+    }
+
+    function getMd5OfEmail(email) {
+      const emailLowercase = email.toLowerCase();
+      const md5Hash = CryptoJS.MD5(emailLowercase).toString();
+      return md5Hash;
+    }
+
+    async function loginInit() {
+      const jn_user_name = document.querySelector(".jn_user-name");
+      const user_avatar = document.querySelector(".user-avatar"); //头像
+      const jn_user_info = document.querySelector(".name-info"); //用户信息
+      const jn_user_btns = document.querySelector(".jn_user-btns"); //登录注册按钮
+      const Dropdown_menu = document.querySelector(".Dropdown-menu"); //下拉菜单
+      const userInfo = await getUser(); // 注意：需在 async 函数中使用
+      if (userInfo && userInfo.username) {
+        jn_user_info.style.display = "block";
+        jn_user_btns.style.display = "none";
+        if (userInfo.nickname) {
+          jn_user_name.innerHTML = userInfo.nickname;
+        } else if (userInfo.username) {
+          jn_user_name.innerHTML = userInfo.username;
+        }
+        let avatarUrl = userInfo.avatar;
+        if (avatarUrl) {
+          avatarUrl += `?id=${userInfo.id}&t=${userInfo.id}`; // 添加查询参数
+        } else {
+          avatarUrl = `https://cravatar.cn/avatar/${getMd5OfEmail(
+          userInfo.email
+        )}?d=retro&f=y`;
+        }
+        user_avatar.src = avatarUrl;
+        user_avatar.style.backgroundImage = `url(${avatarUrl})`;
+        user_avatar.style.backgroundSize = "cover";
+      } else {
+        jn_user_info.style.display = "none";
+        jn_user_btns.style.display = "block";
+      }
+      jn_user_info.addEventListener("click", function (event) {
+        event.stopPropagation();
+        Dropdown_menu.style.display =
+          Dropdown_menu.style.display === "none" ? "block" : "none";
+      });
+    }
+    loginInit();
+  }
+</script>
+<!-- 增加css -->
+<style>
+  .document-user-info .login-con {
+    display: flex;
+    align-items: center;
+    margin-left: 30px;
+    font-size: 15px;
+    color: #303133;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .document-user-info .jn_user-avt {
+    background: #99abbe;
+    border-radius: 30px;
+    width: 31px;
+    height: 31px;
+    position: relative;
+    margin-right: 5px;
+    overflow: hidden;
+  }
+
+  .document-user-info .jn_user-avt img {
+    width: 100%;
+  }
+
+  .document-user-info .jn_user-name {
+    max-width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+  }
+
+  .document-user-info .jn_user-name :hover {
+    opacity: 0.9;
+  }
+
+  .document-user-info .jn_user-btn {
+    padding: 0 10px;
+    cursor: pointer;
+  }
+
+  .document-user-info .jn_user-btn:hover {
+    opacity: 0.9;
+  }
+
+  .document-user-info .Dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1030;
+    min-width: 160px;
+    padding: 8px 0;
+    margin: 7px 0;
+    background: #002d5c;
+    border: 1px solid #121212;
+    border-radius: 4px;
+    box-shadow: 0 2px 6px #013972;
+    list-style: none;
+    text-align: left;
+    color: #111;
+    font-size: 15px;
+    line-height: 1.5;
+    overflow: hidden;
+  }
+
+  .document-user-info .Dropdown-menu a {
+    display: block;
+    color: #b9b9b9;
+    padding-left: 30px;
+  }
+
+  .document-user-info .Dropdown-menu:hover {
+    text-decoration: none;
+  }
+
+  .document-user-info .item-profile a {
+    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACi0lEQVRYR+2Wy3EbMQyGAc6Ie4xcQeQKIlcQ6SKuTokriFOBlQqcDixXEKuC6LbkXmRVEKWCqAOvr5oRkYGHzDDrfXDXyfhiHLlc4iPwAwTCCxu+sH+IBsiybCSEuCSiMSKOiahAxB0A7Iho4tcAYA8A6yRJVtPptGi7YBSA1nqBiNcAsOLDrbWFEOICAD7VOSCivRDifDabMWSttQIYY74CAANM/GF5nl8Q0be22/F3RDxrgmgEyLJsIoRYh85dKn4AwDAGgCORJMlZXToaAbTW7HynlOIoPJox5rYp9FVQRPQlTdNl1bdagM1mMzwcDvfW2tP5fM7C8gAsrDcxtw/2bJVSk04ALvwbpdRfkMYY6uictxdKqZM+AN/DH31UegBA+SL+jNoUOLH9klKehALqGYHuKXCC2yHicjabsfAezQnzQ5coENFNmqaLTingzVzv1tqrsIy8NjoAPFhrx6GQw39bG5G78Vsp5dSnQmu9RMTLGAhE/BxGsPxPK4ATHtcwh31hrd3ybWL6QVP9t4qwTGqM+QgA3JDeBd8e+DECgPfhGhHdEdGiLuydUlAV5jzPx4PBYB9WB68dj8cixumzAWJyH7unVQP+INcXONQjABi7dZ4FeC4Y8kzAswAi7ololyTJ9p/MA+wYEa8Qkd//n5xfdh5RBfxmLKWUN00gjRFw7/41EW29qJwYeRaIfo6bBpNaAD90hHXcZRApaYDTNK0aTCoBgm53rpRau67IcyAPIn2tkFKeltNRCaC1ZjHdlgYRrvewB/QBWSmlWEt/7AmACzOLZ+Rpe/T/WrjygPMEwBjDKr/nV9CfwgIEAO6Ez7Zye64DeLajhgPuwtRGN6L/RfQK8BqB38AuVjD+RLVIAAAAAElFTkSuQmCC") no-repeat left center;
+    background-size: auto 80%;
+  }
+
+  .document-user-info .Dropdown-menu li {
+    padding: 8px 15px;
+    display: block;
+    width: 100%;
+    color: #b9b9b9;
+    text-align: left;
+    font-size: 15px;
+    font-weight: normal;
+    text-decoration: none;
+  }
+
+  .document-user-info .Dropdown-menu li:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+
+  @media screen and (max-width: 960px) {
+    .document-user-info {
+      display: none !important;
+    }
+  }
+</style></div>
+      
+        <div class="navbar-item"><div class="document-nav-lang">
+  <div class="document-menu-lang">
+    <span tabindex="0" class="lang-txt" style="
+        background-image: url('https://kendryte.com/img/ch-flag.a61145a4.svg');
+      ">中文 | English</span>
+    <div class="jn_lan-list">
+      <a class="jn_lan-item cn">简体中文</a>
+      <a class="jn_lan-item eng">English</a>
+    </div>
+  </div>
+  <div class="document-menu-lang-mobile">
+    <span class="lang-zh cn">简体中文</span> | <span class="lang-en eng">English</span>
+  </div>
+</div>
+<style>
+  .document-menu-lang-mobile {
+    display: none;
+  }
+
+  .document-menu-lang-mobile .lang-con {
+    text-align: center;
+  }
+
+  .document-menu-lang-mobile.lang-zh,
+  .document-menu-lang-mobile.lang-en {
+    color: #2980b9;
+    cursor: pointer;
+  }
+
+  .document-menu-lang {
+    padding: 0 8px;
+    position: relative;
+    font-size: 13px;
+    border: 1px solid #c0c4cc;
+    border-radius: 10px;
+    color: #303133;
+  }
+
+  .document-menu-lang .lang-txt {
+    padding-right: 28px;
+    background: url("https://kendryte.com/img/ch-flag.a61145a4.svg") no-repeat right 50%;
+    background-size: auto 68%;
+    display: block;
+    cursor: pointer;
+  }
+
+  .document-menu-lang .jn_lan-list {
+    display: none;
+    text-align: center;
+    position: absolute;
+    background: #fff;
+    border-radius: 5px;
+    padding: 10px 20px;
+    flex-wrap: wrap;
+    top: 43px;
+    left: 50%;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    border: 1px solid #ebeef5;
+    transform: translateX(-50%);
+  }
+
+  .document-menu-lang .jn_lan-list a {
+    color: #303133;
+  }
+
+  .document-menu-lang .jn_lan-item.cn {
+    background: url("https://kendryte.com/img/ch-flag.a61145a4.svg") no-repeat 0;
+  }
+
+  .document-menu-lang .jn_lan-item {
+    font-size: 15px;
+    cursor: pointer;
+    padding-left: 32px;
+    color: #606266;
+    width: 100%;
+    line-height: 3;
+    display: block;
+    white-space: nowrap;
+    background-size: auto 40%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .document-menu-lang .jn_lan-item.eng {
+    background: url("https://kendryte.com/img/en-flag.2d05326c.svg") no-repeat 0;
+  }
+
+  .document-menu-lang .jn_lan-list::after {
+    content: "";
+    border-width: 8px;
+    border-style: solid;
+    border-color: transparent transparent #fff transparent;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translate(-50%, -100%);
+  }
+
+  .document-menu-lang-mobile {
+    display: none;
+    border: 1px solid #c0c4cc;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    padding: 0 8px;
+  }
+
+  @media screen and (max-width: 960px) {
+    .document-menu-lang-mobile {
+      display: block;
+    }
+
+    .document-menu-lang {
+      display: none;
+    }
+  }
+</style>
+<script>
+  if (!window._LANGUAGE_TOGGLE_LOADED) {
+    window._LANGUAGE_TOGGLE_LOADED = true
+    const docsUrlList = {
+      k230_docs: {
+        zh: "https://www.kendryte.com/k230/zh/dev/index.html",
+        en: "https://www.kendryte.com/k230/en/dev/index.html",
+      },
+      k230_canmv_docs: {
+        zh: "https://www.kendryte.com/k230_canmv/zh/main/index.html",
+        en: "https://www.kendryte.com/k230_canmv/en/main/index.html",
+      },
+      rtt: {
+        zh: "https://www.kendryte.com/k230/zh/rtt/dev/index_rtt_only.html",
+        en: "https://www.kendryte.com/k230/en/rtt/dev/index_rtt_only.html",
+      },
+      k230_ai_docs: {
+        zh: "https://www.kendryte.com/ai_docs/zh/main/index.html",
+        en: "https://www.kendryte.com/ai_docs/en/main/index.html",
+      },
+      rtos: {
+        zh: "https://www.kendryte.com/k230_rtos/zh/main/index.html",
+        en: "https://www.kendryte.com/k230_rtos/en/main/index.html",
+      },
+    };
+    const whichDocs = () => {
+      if (
+        location.href.includes("/k230_canmv/zh/") ||
+        location.href.includes("/k230_canmv/en/")
+      ) {
+        return "k230_canmv_docs";
+      } else if (
+        location.href.includes("/k230/k230_rtos_sdk_docs/") ||
+        location.href.includes("/k230/k230_rtos_sdk_docs/")
+      ) {
+        return "rtos";
+      } else if (
+        location.href.includes("/k230/zh/") ||
+        location.href.includes("/k230/en/")
+      ) {
+        return "k230_docs";
+      } else if (
+        location.href.includes("/ai_docs/zh/") ||
+        location.href.includes("/ai_docs/en/")
+      ) {
+        return "k230_ai_docs";
+      } else {
+        return "rtos";
+      }
+      return null;
+    };
+
+    function setupLanguageToggle() {
+      function handleLanguageSwitch(language) {
+        const langButton = document.querySelector(".lang-txt");
+        const flagUrl =
+          language === "cn" ?
+          "https://kendryte.com/img/ch-flag.a61145a4.svg" :
+          "https://kendryte.com/img/en-flag.2d05326c.svg";
+        langButton.style.backgroundImage = `url('${flagUrl}')`;
+        const docsKey = whichDocs();
+        if (docsKey && docsUrlList[docsKey]) {
+          location.href = docsUrlList[docsKey][language === "cn" ? "zh" : "en"];
+        }
+        langList.style.display = "none";
+      }
+
+      // 监听整个document的点击事件
+      document.addEventListener("click", function (event) {
+        const langList = document.querySelector(".jn_lan-list");
+        const target = event.target;
+        if (target.closest(".lang-txt")) {
+          langList.style.display =
+            langList.style.display === "flex" ? "none" : "flex";
+        }
+        if (target.closest(".cn")) {
+          console.log("点击了中文");
+          handleLanguageSwitch("cn");
+          return;
+        }
+        if (target.closest(".eng")) {
+          console.log("点击了eng");
+          handleLanguageSwitch("eng");
+          return;
+        }
+      });
+    }
+    // 初始化语言切换功能
+    document.addEventListener("DOMContentLoaded", setupLanguageToggle);
+  }
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><div class="document-navbar-nav">
+  <span class="nav-item"><a href="/zh/products">产品中心</a></span>
+  <span class="nav-item md-none sm-show"
+    ><a href="/zh/resource">资料下载</a></span
+  >
+  <span class="nav-item active"><a href="/zh/document">文档中心</a></span>
+  <span class="nav-item md-none sm-show"
+    ><a href="/zh/model/library">应用下载</a></span
+  >
+  <span class="nav-item md-none sm-show"
+    ><a href="/zh/training/start">模型训练</a></span
+  >
+  <span class="nav-item md-none lg-none sm-show"
+    ><a href="/zh/blog">博客</a></span
+  >
+  <span class="nav-item md-none sm-show"
+    ><a href="/zh/coursecenter">课程中心</a></span
+  >
+  <!-- 添加点击事件 -->
+  <span class="nav-item bbs" onclick="goBbs()"
+    >问答社区
+    <img
+      src="https://www.kendryte.com/img/hot.ebb7d69e.svg"
+      style="transform: translateY(-50%)"
+      alt=""
+  /></span>
+</div>
+<!-- 写样式 -->
+<style>
+  .document-navbar-nav .nav-item {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    margin-right: 20px;
+    cursor: pointer;
+  }
+
+  .document-navbar-nav .nav-item a {
+    color: #303133;
+  }
+
+  .document-navbar-nav .nav-item a:hover {
+    color: #66819d;
+  }
+
+  .document-navbar-nav .active a {
+    color: #002d5c;
+    font-weight: 700;
+  }
+
+  .document-navbar-nav .bbs {
+    color: #d12d26;
+  }
+
+  .document-navbar-nav .bbs:hover {
+    color: rgb(231, 100, 100);
+  }
+
+  @media screen and (max-width: 1200px) {
+    .document-navbar-nav .md-none {
+      display: none !important;
+    }
+  }
+
+  @media screen and (max-width: 960px) {
+    .document-navbar-nav .nav-item {
+      display: block !important;
+    }
+    .document-user-info {
+      display: none !important;
+    }
+  }
+  @media screen and (max-width: 1450px) {
+    .lg-none {
+      display: none !important;
+    }
+  }
+</style>
+<script>
+  function goBbs() {
+    location.href = `/answer/`;
+  }
+</script></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><div class="document-user-info">
+  <div class="name-info" onclick="(e) => showDropDown(e)">
+    <div class="login-con">
+      <span class="user-avatar jn_user-avt"></span>
+      <div class="jn_user-name">
+        <span></span>
+      </div>
+      <ul class="Dropdown-menu" style="display: none">
+        <li class="item-profile">
+          <a class="Button-label" href="/user">个人资料</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="login-con jn_user-btns">
+    <a class="jn_user-btn" onclick="goLogin()">登录</a>
+    <a class="jn_user-btn" onclick="goRegister()">注册</a>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  if (!window._LOGIN_LOADED) {
+    console.log("1111111111，header login.js loaded");
+    window._LOGIN_LOADED = true;
+
+    function goLogin() {
+      const currentUser = JSON.parse(sessionStorage.getItem("user"));
+      if (currentUser && currentUser.id) {
+        return;
+      }
+      location.href = "/ssoLogin/?website=" + location.href;
+    }
+
+    function goUser(event) {
+      event.stopPropagation();
+      location.href = "/zh/user";
+    }
+
+    function goRegister() {
+      const currentUser = JSON.parse(sessionStorage.getItem("user"));
+      if (currentUser && currentUser.id) {
+        return;
+      }
+      location.href = "/ssoRegister/?website=" + location.href;
+    }
+    async function getUser() {
+      const cachedUser = sessionStorage.getItem("user");
+      if (cachedUser) {
+        return JSON.parse(cachedUser);
+      }
+      // 异步请求数据
+      try {
+        const res = await axios.get("/api/user");
+	if(!res.data.username) return false;
+        sessionStorage.setItem("user", JSON.stringify(res.data));
+        return res.data;
+      } catch (error) {
+        console.error("获取用户信息失败", error);
+        return null; // 或 throw error 让调用方处理
+      }
+    }
+
+    function getMd5OfEmail(email) {
+      const emailLowercase = email.toLowerCase();
+      const md5Hash = CryptoJS.MD5(emailLowercase).toString();
+      return md5Hash;
+    }
+
+    async function loginInit() {
+      const jn_user_name = document.querySelector(".jn_user-name");
+      const user_avatar = document.querySelector(".user-avatar"); //头像
+      const jn_user_info = document.querySelector(".name-info"); //用户信息
+      const jn_user_btns = document.querySelector(".jn_user-btns"); //登录注册按钮
+      const Dropdown_menu = document.querySelector(".Dropdown-menu"); //下拉菜单
+      const userInfo = await getUser(); // 注意：需在 async 函数中使用
+      if (userInfo && userInfo.username) {
+        jn_user_info.style.display = "block";
+        jn_user_btns.style.display = "none";
+        if (userInfo.nickname) {
+          jn_user_name.innerHTML = userInfo.nickname;
+        } else if (userInfo.username) {
+          jn_user_name.innerHTML = userInfo.username;
+        }
+        let avatarUrl = userInfo.avatar;
+        if (avatarUrl) {
+          avatarUrl += `?id=${userInfo.id}&t=${userInfo.id}`; // 添加查询参数
+        } else {
+          avatarUrl = `https://cravatar.cn/avatar/${getMd5OfEmail(
+          userInfo.email
+        )}?d=retro&f=y`;
+        }
+        user_avatar.src = avatarUrl;
+        user_avatar.style.backgroundImage = `url(${avatarUrl})`;
+        user_avatar.style.backgroundSize = "cover";
+      } else {
+        jn_user_info.style.display = "none";
+        jn_user_btns.style.display = "block";
+      }
+      jn_user_info.addEventListener("click", function (event) {
+        event.stopPropagation();
+        Dropdown_menu.style.display =
+          Dropdown_menu.style.display === "none" ? "block" : "none";
+      });
+    }
+    loginInit();
+  }
+</script>
+<!-- 增加css -->
+<style>
+  .document-user-info .login-con {
+    display: flex;
+    align-items: center;
+    margin-left: 30px;
+    font-size: 15px;
+    color: #303133;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .document-user-info .jn_user-avt {
+    background: #99abbe;
+    border-radius: 30px;
+    width: 31px;
+    height: 31px;
+    position: relative;
+    margin-right: 5px;
+    overflow: hidden;
+  }
+
+  .document-user-info .jn_user-avt img {
+    width: 100%;
+  }
+
+  .document-user-info .jn_user-name {
+    max-width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+  }
+
+  .document-user-info .jn_user-name :hover {
+    opacity: 0.9;
+  }
+
+  .document-user-info .jn_user-btn {
+    padding: 0 10px;
+    cursor: pointer;
+  }
+
+  .document-user-info .jn_user-btn:hover {
+    opacity: 0.9;
+  }
+
+  .document-user-info .Dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1030;
+    min-width: 160px;
+    padding: 8px 0;
+    margin: 7px 0;
+    background: #002d5c;
+    border: 1px solid #121212;
+    border-radius: 4px;
+    box-shadow: 0 2px 6px #013972;
+    list-style: none;
+    text-align: left;
+    color: #111;
+    font-size: 15px;
+    line-height: 1.5;
+    overflow: hidden;
+  }
+
+  .document-user-info .Dropdown-menu a {
+    display: block;
+    color: #b9b9b9;
+    padding-left: 30px;
+  }
+
+  .document-user-info .Dropdown-menu:hover {
+    text-decoration: none;
+  }
+
+  .document-user-info .item-profile a {
+    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACi0lEQVRYR+2Wy3EbMQyGAc6Ie4xcQeQKIlcQ6SKuTokriFOBlQqcDixXEKuC6LbkXmRVEKWCqAOvr5oRkYGHzDDrfXDXyfhiHLlc4iPwAwTCCxu+sH+IBsiybCSEuCSiMSKOiahAxB0A7Iho4tcAYA8A6yRJVtPptGi7YBSA1nqBiNcAsOLDrbWFEOICAD7VOSCivRDifDabMWSttQIYY74CAANM/GF5nl8Q0be22/F3RDxrgmgEyLJsIoRYh85dKn4AwDAGgCORJMlZXToaAbTW7HynlOIoPJox5rYp9FVQRPQlTdNl1bdagM1mMzwcDvfW2tP5fM7C8gAsrDcxtw/2bJVSk04ALvwbpdRfkMYY6uictxdKqZM+AN/DH31UegBA+SL+jNoUOLH9klKehALqGYHuKXCC2yHicjabsfAezQnzQ5coENFNmqaLTingzVzv1tqrsIy8NjoAPFhrx6GQw39bG5G78Vsp5dSnQmu9RMTLGAhE/BxGsPxPK4ATHtcwh31hrd3ybWL6QVP9t4qwTGqM+QgA3JDeBd8e+DECgPfhGhHdEdGiLuydUlAV5jzPx4PBYB9WB68dj8cixumzAWJyH7unVQP+INcXONQjABi7dZ4FeC4Y8kzAswAi7ololyTJ9p/MA+wYEa8Qkd//n5xfdh5RBfxmLKWUN00gjRFw7/41EW29qJwYeRaIfo6bBpNaAD90hHXcZRApaYDTNK0aTCoBgm53rpRau67IcyAPIn2tkFKeltNRCaC1ZjHdlgYRrvewB/QBWSmlWEt/7AmACzOLZ+Rpe/T/WrjygPMEwBjDKr/nV9CfwgIEAO6Ez7Zye64DeLajhgPuwtRGN6L/RfQK8BqB38AuVjD+RLVIAAAAAElFTkSuQmCC") no-repeat left center;
+    background-size: auto 80%;
+  }
+
+  .document-user-info .Dropdown-menu li {
+    padding: 8px 15px;
+    display: block;
+    width: 100%;
+    color: #b9b9b9;
+    text-align: left;
+    font-size: 15px;
+    font-weight: normal;
+    text-decoration: none;
+  }
+
+  .document-user-info .Dropdown-menu li:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+
+  @media screen and (max-width: 960px) {
+    .document-user-info {
+      display: none !important;
+    }
+  }
+</style></div>
+        
+          <div class="navbar-item"><div class="document-nav-lang">
+  <div class="document-menu-lang">
+    <span tabindex="0" class="lang-txt" style="
+        background-image: url('https://kendryte.com/img/ch-flag.a61145a4.svg');
+      ">中文 | English</span>
+    <div class="jn_lan-list">
+      <a class="jn_lan-item cn">简体中文</a>
+      <a class="jn_lan-item eng">English</a>
+    </div>
+  </div>
+  <div class="document-menu-lang-mobile">
+    <span class="lang-zh cn">简体中文</span> | <span class="lang-en eng">English</span>
+  </div>
+</div>
+<style>
+  .document-menu-lang-mobile {
+    display: none;
+  }
+
+  .document-menu-lang-mobile .lang-con {
+    text-align: center;
+  }
+
+  .document-menu-lang-mobile.lang-zh,
+  .document-menu-lang-mobile.lang-en {
+    color: #2980b9;
+    cursor: pointer;
+  }
+
+  .document-menu-lang {
+    padding: 0 8px;
+    position: relative;
+    font-size: 13px;
+    border: 1px solid #c0c4cc;
+    border-radius: 10px;
+    color: #303133;
+  }
+
+  .document-menu-lang .lang-txt {
+    padding-right: 28px;
+    background: url("https://kendryte.com/img/ch-flag.a61145a4.svg") no-repeat right 50%;
+    background-size: auto 68%;
+    display: block;
+    cursor: pointer;
+  }
+
+  .document-menu-lang .jn_lan-list {
+    display: none;
+    text-align: center;
+    position: absolute;
+    background: #fff;
+    border-radius: 5px;
+    padding: 10px 20px;
+    flex-wrap: wrap;
+    top: 43px;
+    left: 50%;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    border: 1px solid #ebeef5;
+    transform: translateX(-50%);
+  }
+
+  .document-menu-lang .jn_lan-list a {
+    color: #303133;
+  }
+
+  .document-menu-lang .jn_lan-item.cn {
+    background: url("https://kendryte.com/img/ch-flag.a61145a4.svg") no-repeat 0;
+  }
+
+  .document-menu-lang .jn_lan-item {
+    font-size: 15px;
+    cursor: pointer;
+    padding-left: 32px;
+    color: #606266;
+    width: 100%;
+    line-height: 3;
+    display: block;
+    white-space: nowrap;
+    background-size: auto 40%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .document-menu-lang .jn_lan-item.eng {
+    background: url("https://kendryte.com/img/en-flag.2d05326c.svg") no-repeat 0;
+  }
+
+  .document-menu-lang .jn_lan-list::after {
+    content: "";
+    border-width: 8px;
+    border-style: solid;
+    border-color: transparent transparent #fff transparent;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translate(-50%, -100%);
+  }
+
+  .document-menu-lang-mobile {
+    display: none;
+    border: 1px solid #c0c4cc;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    padding: 0 8px;
+  }
+
+  @media screen and (max-width: 960px) {
+    .document-menu-lang-mobile {
+      display: block;
+    }
+
+    .document-menu-lang {
+      display: none;
+    }
+  }
+</style>
+<script>
+  if (!window._LANGUAGE_TOGGLE_LOADED) {
+    window._LANGUAGE_TOGGLE_LOADED = true
+    const docsUrlList = {
+      k230_docs: {
+        zh: "https://www.kendryte.com/k230/zh/dev/index.html",
+        en: "https://www.kendryte.com/k230/en/dev/index.html",
+      },
+      k230_canmv_docs: {
+        zh: "https://www.kendryte.com/k230_canmv/zh/main/index.html",
+        en: "https://www.kendryte.com/k230_canmv/en/main/index.html",
+      },
+      rtt: {
+        zh: "https://www.kendryte.com/k230/zh/rtt/dev/index_rtt_only.html",
+        en: "https://www.kendryte.com/k230/en/rtt/dev/index_rtt_only.html",
+      },
+      k230_ai_docs: {
+        zh: "https://www.kendryte.com/ai_docs/zh/main/index.html",
+        en: "https://www.kendryte.com/ai_docs/en/main/index.html",
+      },
+      rtos: {
+        zh: "https://www.kendryte.com/k230_rtos/zh/main/index.html",
+        en: "https://www.kendryte.com/k230_rtos/en/main/index.html",
+      },
+    };
+    const whichDocs = () => {
+      if (
+        location.href.includes("/k230_canmv/zh/") ||
+        location.href.includes("/k230_canmv/en/")
+      ) {
+        return "k230_canmv_docs";
+      } else if (
+        location.href.includes("/k230/k230_rtos_sdk_docs/") ||
+        location.href.includes("/k230/k230_rtos_sdk_docs/")
+      ) {
+        return "rtos";
+      } else if (
+        location.href.includes("/k230/zh/") ||
+        location.href.includes("/k230/en/")
+      ) {
+        return "k230_docs";
+      } else if (
+        location.href.includes("/ai_docs/zh/") ||
+        location.href.includes("/ai_docs/en/")
+      ) {
+        return "k230_ai_docs";
+      } else {
+        return "rtos";
+      }
+      return null;
+    };
+
+    function setupLanguageToggle() {
+      function handleLanguageSwitch(language) {
+        const langButton = document.querySelector(".lang-txt");
+        const flagUrl =
+          language === "cn" ?
+          "https://kendryte.com/img/ch-flag.a61145a4.svg" :
+          "https://kendryte.com/img/en-flag.2d05326c.svg";
+        langButton.style.backgroundImage = `url('${flagUrl}')`;
+        const docsKey = whichDocs();
+        if (docsKey && docsUrlList[docsKey]) {
+          location.href = docsUrlList[docsKey][language === "cn" ? "zh" : "en"];
+        }
+        langList.style.display = "none";
+      }
+
+      // 监听整个document的点击事件
+      document.addEventListener("click", function (event) {
+        const langList = document.querySelector(".jn_lan-list");
+        const target = event.target;
+        if (target.closest(".lang-txt")) {
+          langList.style.display =
+            langList.style.display === "flex" ? "none" : "flex";
+        }
+        if (target.closest(".cn")) {
+          console.log("点击了中文");
+          handleLanguageSwitch("cn");
+          return;
+        }
+        if (target.closest(".eng")) {
+          console.log("点击了eng");
+          handleLanguageSwitch("eng");
+          return;
+        }
+      });
+    }
+    // 初始化语言切换功能
+    document.addEventListener("DOMContentLoaded", setupLanguageToggle);
+  }
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">K230 Linux+RT-Smart SDK</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">搜索</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../CanMV_K230_%E6%95%99%E7%A8%8B.html">CanMV K230 教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../K230_SDK_%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E.html">K230 SDK使用说明</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../index_normal_tutorial.html">K230 SDK 实用教程</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_%E5%AE%9E%E6%88%98%E5%9F%BA%E7%A1%80%E7%AF%87_hello_world.html">K230 实战基础篇 - hello world</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_AI%E5%AE%9E%E6%88%98_HHB%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E5%B7%A5%E5%85%B7.html">K230 AI实战 - HHB神经网络模型部署工具</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_GPU%E5%BA%94%E7%94%A8%E5%AE%9E%E6%88%98.html">K230 GPU 应用实战 - VGLite 绘制酷炫图形</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_GUI%E5%AE%9E%E6%88%98_LVGL%E7%A7%BB%E6%A4%8D%E6%95%99%E7%A8%8B.html">K230 GUI实战 - LVGL移植教程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_RVV%E5%AE%9E%E6%88%98.html">K230 RVV实战</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_USB%E5%BA%94%E7%94%A8%E5%AE%9E%E6%88%98_UVC%E4%BC%A0%E8%BE%93YUV%E5%8F%8A%E7%BC%96%E7%A0%81%E7%A0%81%E6%B5%81.html">K230 USB应用实战-UVC传输YUV及编码码流</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_%E5%9B%BE%E5%83%8F%E5%AE%9E%E6%88%98_%E5%BC%80%E6%9C%BA%E8%A7%86%E9%A2%91%E5%92%8C%E5%BC%80%E6%9C%BAlogo.html">K230 图像实战 - 开机视频和开机logo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_%E7%BC%96%E7%A0%81%E5%AE%9E%E6%88%98_rtsp_server%E6%90%AD%E5%BB%BA%E5%92%8C%E6%8E%A8%E6%B5%81.html">K230 编码实战 - rtsp sever搭建和推流</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_%E9%9F%B3%E9%A2%91%E5%AE%9E%E6%88%98_%E9%9F%B3%E9%A2%91%E9%87%87%E9%9B%86_%E6%92%AD%E6%94%BE%E5%92%8C%E7%BC%96%E8%A7%A3%E7%A0%81.html">K230 音频实战 - 音频采集、播放和编解码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/business_poc/K230_%E5%9C%BA%E6%99%AF%E5%AE%9E%E6%88%98_%E6%99%BA%E8%83%BD%E9%97%A8%E9%94%81.html">K230 场景实战-智能门锁POC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/business_poc/K230_%E5%9C%BA%E6%99%AF%E5%AE%9E%E6%88%98_%E6%99%BA%E8%83%BD%E9%97%A8%E9%94%81_OV9286.html">K230 场景实战-智能门锁POC-3D结构光</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/business_poc/K230_%E5%9C%BA%E6%99%AF%E5%AE%9E%E6%88%98_%E7%8C%AB%E7%9C%BC.html">K230 场景实战-猫眼POC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/business_poc/K230_%E5%9C%BA%E6%99%AF%E5%AE%9E%E6%88%98_%E8%AF%8D%E5%85%B8%E7%AC%94.html">K230 场景实战-词典笔POC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/business_poc/K230_%E5%9C%BA%E6%99%AF%E5%AE%9E%E6%88%98_dpu%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA.html">K230 场景实战-dpu深度相机POC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/business_poc/k230_%E5%9C%BA%E6%99%AF%E5%AE%9E%E6%88%98_ahd_sensor%E7%A7%BB%E6%A4%8D.html">K230 ahd sensor 移植参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/ai_demos/K230_AI_Demo%E4%BB%8B%E7%BB%8D.html">K230 AI Demo介绍</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/fancy_poc/K230_Fancy_Poc%E4%BB%8B%E7%BB%8D.html">K230 Fancy POC介绍</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/K230_SDK_CanMV_Board_Demo%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 SDK CanMV Board Demo使用指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/K230_SDK_EVB_Board_Demo%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 SDK EVB Board Demo使用指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/K230D_SDK_Zero_Board_Demo%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 SDK CanMV Board Demo使用指南</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../index_dev_guide.html">K230 SDK 开发指南</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_RVV%E4%BC%98%E5%8C%96%E6%80%A7%E8%83%BD%E8%AF%B4%E6%98%8E.html">K230 RVV优化性能说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_%E5%86%85%E5%AD%98%E4%BC%98%E5%8C%96%E6%8C%87%E5%8D%97.html">K230 内存优化指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_%E5%86%85%E5%AD%98%E5%8D%A0%E7%94%A8%E5%88%86%E6%9E%90%E6%8C%87%E5%8D%97.html">K230 内存分析指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_%E5%90%AF%E5%8A%A8%E4%BC%98%E5%8C%96%E6%8C%87%E5%8D%97.html">K230 启动优化指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_%E5%A4%A7%E5%B0%8F%E6%A0%B8%E9%80%9A%E8%AE%AF_sharefs%E7%94%A8%E6%B3%95%E4%BB%8B%E7%BB%8D.html">K230大小核通讯Sharefs使用简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../middleware/K230_openblas_%E5%BC%80%E5%8F%91%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 OpenBLAS开发指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../middleware/K230_opencv_%E5%BC%80%E5%8F%91%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 OpenCV开发指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mpp/K230_Camera_Sensor%E9%80%82%E9%85%8D%E6%8C%87%E5%8D%97.html">K230 Camera Sensor适配指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mpp/K230_PM%E6%A1%86%E6%9E%B6%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230_功耗管理适配指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mpp/K230_VICAP_SENSOR_%E5%8F%82%E6%95%B0%E5%88%86%E5%8C%BA%E5%8F%82%E8%80%83.html">K230 VICAP SENSOR 参数分区参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mpp/K230_LCD%E9%80%82%E9%85%8D%E6%8C%87%E5%8D%97.html">K230 LCD适配指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../osdrv/K230_PMU_%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 PMU使用指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../osdrv/K230_lpddr4_lpddr3%E9%A9%B1%E5%8A%A8%E9%80%82%E9%85%8D%E6%8C%87%E5%8D%97.html">K230 lpddr3/lpddr4驱动适配指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../osdrv/K230_SDK_IoT_WiFi_AiW4211LV10_%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 SDK IoT WiFi AiW4211LV10使用指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../osdrv/K230_SDK_IoT_WiFi_AiW4211LV10_%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97.html">K230 SDK IoT WiFi AiW4211LV10驱动开发指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ai/K230_nncase_%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97.html">K230 nncase开发指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../03_other/K230_SDK%E6%9B%B4%E6%96%B0nncase%E8%BF%90%E8%A1%8C%E6%97%B6%E5%BA%93%E6%8C%87%E5%8D%97.html">K230 SDK 更新nncase运行时库指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../03_other/K230_debian_ubuntu%E8%AF%B4%E6%98%8E.html">K230 debian ubuntu 说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pc/burntool/K230_SDK_Burntool%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 SDK Burntool使用指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pc/dewarp/K230_SDK_Dewarp%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 SDK Dewarp 使用指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pc/ISP_tuning/K230_ISP%E5%9B%BE%E5%83%8F%E8%B0%83%E4%BC%98%E6%8C%87%E5%8D%97.html">K230 ISP图像调优指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pc/ISP_tuning/K230_ISP%E5%88%9D%E5%A7%8B%E5%8C%96%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97.html">K230 ISP初始化配置指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pc/pqtools/K230_ISP_Tuning_Tool%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 ISP Tuning Tool使用指南</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../00_hardware/index.html">硬件</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../00_hardware/K230_DEMO_BOARD%E8%B5%84%E6%BA%90%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 DEMO BOARD 资源使用说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../00_hardware/K230_%E7%A1%AC%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%8C%87%E5%8D%97.html">K230 硬件设计指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../00_hardware/K230_datasheet.html">K230 Product Full Datasheet</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../../../index_api.html">K230 SDK API 参考</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">K230核间通讯API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="K230_%E7%B3%BB%E7%BB%9F%E6%8E%A7%E5%88%B6_MAPI%E5%8F%82%E8%80%83.html">K230系统控制MAPI参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../middleware/K230_%E5%A4%9A%E5%AA%92%E4%BD%93%E4%B8%AD%E9%97%B4%E4%BB%B6_API%E5%8F%82%E8%80%83.html">K230 多媒体中间件API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mpp/K230_DMA_API%E5%8F%82%E8%80%83.html">K230 DMA API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mpp/K230_DPU_API%E5%8F%82%E8%80%83.html">K230 DPU API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mpp/K230_FFT_API%E5%8F%82%E8%80%83.html">K230 FFT API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mpp/K230_GPU_API%E5%8F%82%E8%80%83.html">K230 GPU API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mpp/K230_SHA256_API%E5%8F%82%E8%80%83.html">K230 SHA256 API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mpp/K230_VICAP_API%E5%8F%82%E8%80%83.html">K230 VICAP API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mpp/K230_VICAP_SENSOR_%E5%8F%82%E6%95%B0%E5%88%86%E5%8C%BA%E5%8F%82%E8%80%83.html">K230 VICAP SENSOR 参数分区参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mpp/K230_%E7%B3%BB%E7%BB%9F%E6%8E%A7%E5%88%B6_API%E5%8F%82%E8%80%83.html">K230系统控制API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mpp/K230_%E8%A7%86%E9%A2%91%E7%BC%96%E8%A7%A3%E7%A0%81_API%E5%8F%82%E8%80%83.html">K230视频编解码API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mpp/K230_%E8%A7%86%E9%A2%91%E8%BE%93%E5%87%BA_API%E5%8F%82%E8%80%83.html">K230视频输出API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mpp/K230_%E9%9F%B3%E9%A2%91_API%E5%8F%82%E8%80%83.html">K230音频API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../osdrv/K230_DRM_API%E5%8F%82%E8%80%83.html">K230 DRM使用指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../osdrv/K230_%E5%A4%A7%E6%A0%B8%E4%BD%8E%E9%80%9F%E9%A9%B1%E5%8A%A8_API%E5%8F%82%E8%80%83.html">K230大核低速驱动API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../osdrv/K230_%E5%B0%8F%E6%A0%B8Linux%E9%A9%B1%E5%8A%A8_API%E5%8F%82%E8%80%83.html">K230小核Linux驱动API参考</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../index_faq.html">K230 常见问题解答</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../03_other/K230_SDK%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E8%A7%A3%E7%AD%94_C.html">K230 SDK 常见问题解答（C）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../03_other/K230_nncase%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E8%A7%A3%E7%AD%94.html">K230 nncase 常见问题解答</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../03_other/K230_AI_demo%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E8%A7%A3%E7%AD%94_C%2B%2B.html">K230 AI demo 常见问题解答（C++）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../03_other/K230_AI_Cube%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98.html">AI Cube常见问题解答</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../03_other/index.html">版本说明文档</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../03_other/K230_SDK_%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E.html">K230 SDK版本说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../03_other/K230_SDK_nncase%E7%89%88%E6%9C%AC%E5%AF%B9%E5%BA%94%E5%85%B3%E7%B3%BB.html">K230 SDK nncase版本对应关系</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item"><style>
+  .rst-versions {
+    color: #100e0e;
+    background: #eaebec;
+    font-family: Lato, proxima-nova, Helvetica Neue, Arial, sans-serif;
+    z-index: 400;
+    width: 100%;
+  }
+  .rst-versions.shift-up {
+    height: auto;
+    max-height: 100%;
+    overflow-y: scroll;
+  }
+  .rst-versions .rst-current-version {
+    padding: 12px;
+    background-color: #f3f4f5;
+    display: block;
+    text-align: right;
+    padding-left: 10px;
+    font-size: 90%;
+    cursor: pointer;
+    color: #27ae60;
+  }
+
+  .rst-versions .rst-other-versions dd {
+    display: inline-block;
+    margin: 0;
+  }
+  .rst-versions .rst-other-versions dd a {
+    display: inline-block;
+    padding: 6px;
+    color: #201919;
+    font-size: 12px;
+    text-decoration: none;
+  }
+  .rst-versions .rst-other-versions dd a:hover {
+    text-decoration-thickness: inherit;
+    color: #0d6efd;
+  }
+  .rst-versions .rst-other-versions {
+    font-size: 90%;
+    padding: 12px;
+    display: none;
+  }
+  .shift-up .rst-other-versions {
+    display: block;
+  }
+  .lang-con {
+    text-align: center;
+  }
+  .lang-zh,
+  .lang-en {
+    color: #2980b9;
+    cursor: pointer;
+  }
+</style>
+<div
+  class="rst-versions"
+  style="overflow: unset"
+  data-toggle="rst-versions"
+  role="note"
+  aria-label="versions"
+>
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    dev
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dt>Versions</dt>
+        <dd><a href="../../../../v1.0.1/index.html">v1.0.1</a></dd>
+        <dd><a href="../../../../v1.1/index.html">v1.1</a></dd>
+        <dd><a href="../../../../v1.2/index.html">v1.2</a></dd>
+        <dd><a href="../../../../v1.3/index.html">v1.3</a></dd>
+        <dd><a href="../../../../v1.4/index.html">v1.4</a></dd>
+        <dd><a href="../../../../v1.5/index.html">v1.5</a></dd>
+        <dd><a href="../../../../v1.6/01_software/board/cdk/K230_核间通讯_API参考.html">v1.6</a></dd>
+        <dd><a href="../../../../v1.7/01_software/board/cdk/K230_核间通讯_API参考.html">v1.7</a></dd>
+        <dd><a href="../../../../v1.8/01_software/board/cdk/K230_核间通讯_API参考.html">v1.8</a></dd>
+        <dd><a href="../../../../v1.9/01_software/board/cdk/K230_核间通讯_API参考.html">v1.9</a></dd>
+        <dd><a href="../../../../v2.0/01_software/board/cdk/K230_核间通讯_API参考.html">v2.0</a></dd>
+        <dd><a href="K230_核间通讯_API参考.html">dev</a></dd>
+        <dd><a href="../../../../main/01_software/board/cdk/K230_核间通讯_API参考.html">main</a></dd>
+    </dl>
+  </div>
+</div>
+<script>
+    document.querySelector('.rst-versions').addEventListener('click', function() {
+          var details = document.querySelector('.rst-versions');
+          details.classList.toggle('shift-up');
+      });
+</script></div>
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/kendryte/k230_docs" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="源码库"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/01_software/board/cdk/K230_核间通讯_API参考.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+    
+    <div class="admonition warning">
+      <p class="admonition-title">
+        
+          注意
+        
+      </p>
+      <p>
+        
+          这是最新开发分支配套的文档，可能包含已发布版本中尚未提供的功能。如果您要查看特定版本的文档，请使用左侧的下拉菜单并选择所需要的版本。
+        
+      </p>
+    </div>
+    
+
+    
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>K230核间通讯API参考</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">概述</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">概述</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">核间通讯实现原理</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">内存空间使用</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">功能描述</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ipcmsg">IPCMSG</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#datafifo">DATAFIFO</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#api">API 参考</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">IPCMSG</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-ipcmsg-add-service">kd_ipcmsg_add_service</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-ipcmsg-del-service">kd_ipcmsg_del_service</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-ipcmsg-try-connect">kd_ipcmsg_try_connect</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-ipcmsg-connect">kd_ipcmsg_connect</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-ipcmsg-disconnect">kd_ipcmsg_disconnect</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-ipcmsg-is-connect">kd_ipcmsg_is_connect</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-ipcmsg-send-only">kd_ipcmsg_send_only</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-ipcmsg-send-async">kd_ipcmsg_send_async</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-ipcmsg-send-sync">kd_ipcmsg_send_sync</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-ipcmsg-run">kd_ipcmsg_run</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-ipcmsg-create-message">kd_ipcmsg_create_message</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-ipcmsg-create-resp-message">kd_ipcmsg_create_resp_message</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-ipcmsg-destroy-message">kd_ipcmsg_destroy_message</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">DATAFIFO</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-datafifo-open">kd_datafifo_open</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-datafifo-open-by-addr">kd_datafifo_open_by_addr</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-datafifo-close">kd_datafifo_close</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-datafifo-read">kd_datafifo_read</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-datafifo-write">kd_datafifo_write</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-datafifo-cmd">kd_datafifo_cmd</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">数据类型</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">IPCMSG</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-ipcmsg-max-content-len">K_IPCMSG_MAX_CONTENT_LEN</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-ipcmsg-privdata-num">K_IPCMSG_PRIVDATA_NUM</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-ipcmsg-invalid-msgid">K_IPCMSG_INVALID_MSGID</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-ipcmsg-connect-s">k_ipcmsg_connect_s</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-ipcmsg-messsage-s">k_ipcmsg_messsage_s</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-ipcmsg-handle-fn-ptr">k_ipcmsg_handle_fn_ptr</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">DATAFIFO</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-datafifo-handle">k_datafifo_handle</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-datafifo-invalid-handle">K_DATAFIFO_INVALID_HANDLE</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-datafifo-releasestream-fn-ptr">K_DATAFIFO_RELEASESTREAM_FN_PTR</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-datafifo-open-mode-e">K_DATAFIFO_OPEN_MODE_E</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-datafifo-params-s">k_datafifo_params_s</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-datafifo-cmd-e">k_datafifo_cmd_e</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">错误码</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">IPCMSG</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">DATAFIFO</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">调试信息</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ipcm">ipcm</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="k230api">
+<h1>K230核间通讯API参考<a class="headerlink" href="#k230api" title="Link to this heading">#</a></h1>
+<section id="id1">
+<h2>概述<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<section id="id2">
+<h3>概述<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<p>该文档描述了K230异构核间通讯的相关内容。</p>
+<section id="id3">
+<h4>核间通讯实现原理<a class="headerlink" href="#id3" title="Link to this heading">#</a></h4>
+<p><img alt="日程表 低可信度描述已自动生成" src="../../../_images/91c0f5a20c9460bd6c865a704f7b9404.png" /></p>
+<ul class="simple">
+<li><p>共享内存用于大小核发送通信消息的具体内容</p></li>
+<li><p>共享内存管理用于标识通信消息的属性例如地址，大小，端口号等</p></li>
+<li><p>Mailbox通过中断方式实现大小核发送消息后的通知机制</p></li>
+</ul>
+</section>
+<section id="id4">
+<h4>内存空间使用<a class="headerlink" href="#id4" title="Link to this heading">#</a></h4>
+<p>目前大小核使用的数据共享内存区域设计共1M空间，对于参与通讯的一方来说发送和接收各占512KB的空间大小。用于维护各个核状态的共享内存区域为4KB。</p>
+</section>
+</section>
+<section id="id5">
+<h3>功能描述<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<section id="ipcmsg">
+<h4>IPCMSG<a class="headerlink" href="#ipcmsg" title="Link to this heading">#</a></h4>
+<p>IPCMSG是K230大小核在用户态进行通讯的组件，主要用于发送控制类消息。该模块包括服务添加删除，消息创建删除，断开连接，发送消息等功能。支持三种消息发送方式，发送异步消息，发送同步消息，以及发送不需要对方回复的消息。其中同步消息支持超时机制，用户调用API时可自定义设置超时时间。需要得到回复的消息，在发出60秒之后才收到回复消息的话，该回复消息会被丢弃。</p>
+</section>
+<section id="datafifo">
+<h4>DATAFIFO<a class="headerlink" href="#datafifo" title="Link to this heading">#</a></h4>
+<p>DATAFIFO是K230大小核在用户态进行大量数据交互(例如编码数据)时，使用的核间通讯组件。内部主要使用共享内存来完成数据的交互，数据传递的是指针，不会拷贝数据的内容，数据的收发通知依靠线程轮询来实现。</p>
+<p>DATAFIFO 主要包含通路的打开、关闭、数据的写入和读出，以及其他控制命令</p>
+</section>
+</section>
+</section>
+<section id="api">
+<h2>API 参考<a class="headerlink" href="#api" title="Link to this heading">#</a></h2>
+<section id="id6">
+<h3>IPCMSG<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<p>该功能模块提供以下API：</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#kd-ipcmsg-add-service">kd_ipcmsg_add_service</a></p></li>
+<li><p><a class="reference internal" href="#kd-ipcmsg-del-service">kd_ipcmsg_del_service</a></p></li>
+<li><p><a class="reference internal" href="#kd-ipcmsg-try-connect">kd_ipcmsg_try_connect</a></p></li>
+<li><p><a class="reference internal" href="#kd-ipcmsg-connect">kd_ipcmsg_connect</a></p></li>
+<li><p><a class="reference internal" href="#kd-ipcmsg-disconnect">kd_ipcmsg_disconnect</a></p></li>
+<li><p><a class="reference internal" href="#kd-ipcmsg-is-connect">kd_ipcmsg_is_connect</a></p></li>
+<li><p><a class="reference internal" href="#kd-ipcmsg-send-only">kd_ipcmsg_send_only</a></p></li>
+<li><p><a class="reference internal" href="#kd-ipcmsg-send-async">kd_ipcmsg_send_async</a></p></li>
+<li><p><a class="reference internal" href="#kd-ipcmsg-send-sync">kd_ipcmsg_send_sync</a></p></li>
+<li><p><a class="reference internal" href="#kd-ipcmsg-run">kd_ipcmsg_run</a></p></li>
+<li><p><a class="reference internal" href="#kd-ipcmsg-create-message">kd_ipcmsg_create_message</a></p></li>
+<li><p><a class="reference internal" href="#kd-ipcmsg-create-resp-message">kd_ipcmsg_create_resp_message</a></p></li>
+<li><p><a class="reference internal" href="#kd-ipcmsg-destroy-message">kd_ipcmsg_destory_message</a></p></li>
+</ul>
+<section id="kd-ipcmsg-add-service">
+<h4>kd_ipcmsg_add_service<a class="headerlink" href="#kd-ipcmsg-add-service" title="Link to this heading">#</a></h4>
+<p>【描述】</p>
+<p>添加服务</p>
+<p>【语法】</p>
+<p>k_s32 kd_ipcmsg_add_service(const k_char* pszServiceName, const <a class="reference internal" href="#k-ipcmsg-connect-s">k_ipcmsg_connect_s</a>* pstConnectAttr);</p>
+<p>【参数】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>参数名称</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+<th class="head"><p><strong>输入/输出</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>pszServiceName</p></td>
+<td><p>服务的名称指针。。</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>pstConnectAttr</p></td>
+<td><p>连接对端服务器的属性结构体。</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>返回值</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>成功。</p></td>
+</tr>
+<tr class="row-odd"><td><p>非 0</p></td>
+<td><p>失败，其值为<a class="reference internal" href="#ipcmsg">错误码</a></p></td>
+</tr>
+</tbody>
+</table>
+<p>【芯片差异】</p>
+<p>无</p>
+<p>【需求】</p>
+<ul class="simple">
+<li><p>头文件：k_comm_ipcmsg.h k_ipcmsg.h</p></li>
+<li><p>库文件：libipcmsg.a</p></li>
+</ul>
+<p>【注意】</p>
+<p>Service 可以添加多个，但不同的 service 不能使用相同的端口号，client 跟 service 是通</p>
+<p>过相同的端口号来通信的，因此一个 service能对应一个 client</p>
+<p>【举例】</p>
+<p>无</p>
+<p>【相关主题】</p>
+<p><a class="reference internal" href="#kd-ipcmsg-del-service">kd_ipcmsg_del_service</a></p>
+</section>
+<section id="kd-ipcmsg-del-service">
+<h4>kd_ipcmsg_del_service<a class="headerlink" href="#kd-ipcmsg-del-service" title="Link to this heading">#</a></h4>
+<p>【描述】</p>
+<p>删除服务</p>
+<p>【语法】</p>
+<p>k_s32 kd_ipcmsg_del_service(const k_char* pszServiceName);</p>
+<p>【参数】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>参数名称</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+<th class="head"><p><strong>输入/输出</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>pszServiceName</p></td>
+<td><p>服务的名称指针。服务名称最大长度： K_IPCMSG_MAX_SERVICENAME_LEN。</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>返回值</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>成功。</p></td>
+</tr>
+<tr class="row-odd"><td><p>非 0</p></td>
+<td><p>失败，其值为<a class="reference internal" href="#ipcmsg">错误码</a></p></td>
+</tr>
+</tbody>
+</table>
+<p>【芯片差异】</p>
+<p>无</p>
+<p>【需求】</p>
+<ul class="simple">
+<li><p>头文件：k_comm_ipcmsg.h k_ipcmsg.h</p></li>
+<li><p>库文件：libipcmsg.a</p></li>
+</ul>
+<p>【注意】</p>
+<p>无</p>
+<p>【举例】</p>
+<p>无</p>
+<p>【相关主题】</p>
+<p><a class="reference internal" href="#kd-ipcmsg-create-resp-message">kd_ipcmsg_create_resp_message</a></p>
+</section>
+<section id="kd-ipcmsg-try-connect">
+<h4>kd_ipcmsg_try_connect<a class="headerlink" href="#kd-ipcmsg-try-connect" title="Link to this heading">#</a></h4>
+<p>【描述】</p>
+<p>非阻塞方式建立连接</p>
+<p>【语法】</p>
+<p>k_s32 kd_ipcmsg_try_connect(k_s32* ps32Id, const k_char* pszServiceName, <a class="reference internal" href="#k-ipcmsg-handle-fn-ptr">k_ipcmsg_handle_fn_ptr</a> pfnMessageHandle);</p>
+<p>【参数】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>参数名称</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+<th class="head"><p><strong>输入/输出</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ps32Id</p></td>
+<td><p>消息通信 ID 指针。</p></td>
+<td><p>输出</p></td>
+</tr>
+<tr class="row-odd"><td><p>pszServiceName</p></td>
+<td><p>服务名称指针。</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-even"><td><p>pfnMessageHandle</p></td>
+<td><p>消息处理回调函数。</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>返回值</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>成功。</p></td>
+</tr>
+<tr class="row-odd"><td><p>非 0</p></td>
+<td><p>失败，其值为<a class="reference internal" href="#ipcmsg">错误码</a></p></td>
+</tr>
+</tbody>
+</table>
+<p>【芯片差异】</p>
+<p>无</p>
+<p>【需求】</p>
+<ul class="simple">
+<li><p>头文件：k_comm_ipcmsg.h k_ipcmsg.h</p></li>
+<li><p>库文件：libipcmsg.a</p></li>
+</ul>
+<p>【注意】</p>
+<p>无</p>
+<p>【举例】</p>
+<p>无</p>
+<p>【相关主题】</p>
+<p><a class="reference internal" href="#kd-ipcmsg-connect">kd_ipcmsg_connect</a></p>
+<p><a class="reference internal" href="#kd-ipcmsg-disconnect">kd_ipcmsg_disconnect</a></p>
+</section>
+<section id="kd-ipcmsg-connect">
+<h4>kd_ipcmsg_connect<a class="headerlink" href="#kd-ipcmsg-connect" title="Link to this heading">#</a></h4>
+<p>【描述】</p>
+<p>阻塞方式建立连接</p>
+<p>【语法】</p>
+<p>k_s32 kd_ipcmsg_connect(k_s32* ps32Id, const k_char* pszServiceName, <a class="reference internal" href="#k-ipcmsg-handle-fn-ptr">k_ipcmsg_handle_fn_ptr</a> pfnMessageHandle);</p>
+<p>【参数】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>参数名称</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+<th class="head"><p><strong>输入/输出</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ps32Id</p></td>
+<td><p>消息通信 ID 指针。</p></td>
+<td><p>输出</p></td>
+</tr>
+<tr class="row-odd"><td><p>pszServiceName</p></td>
+<td><p>服务名称指针。</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-even"><td><p>pfnMessageHandle</p></td>
+<td><p>消息处理函数。</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>返回值</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>成功。</p></td>
+</tr>
+<tr class="row-odd"><td><p>非 0</p></td>
+<td><p>失败，其值为<a class="reference internal" href="#ipcmsg">错误码</a></p></td>
+</tr>
+</tbody>
+</table>
+<p>【芯片差异】</p>
+<p>无</p>
+<p>【需求】</p>
+<ul class="simple">
+<li><p>头文件：k_comm_ipcmsg.h k_ipcmsg.h</p></li>
+<li><p>库文件：libipcmsg.a</p></li>
+</ul>
+<p>【注意】</p>
+<p>无</p>
+<p>【举例】</p>
+<p>无</p>
+<p>【相关主题】</p>
+<p><a class="reference internal" href="#kd-ipcmsg-try-connect">kd_ipcmsg_try_connect</a></p>
+<p><a class="reference internal" href="#kd-ipcmsg-disconnect">kd_ipcmsg_disconnect</a></p>
+</section>
+<section id="kd-ipcmsg-disconnect">
+<h4>kd_ipcmsg_disconnect<a class="headerlink" href="#kd-ipcmsg-disconnect" title="Link to this heading">#</a></h4>
+<p>【描述】</p>
+<p>断开连接</p>
+<p>【语法】</p>
+<p>k_s32 kd_ipcmsg_disconnect(k_s32 s32Id);</p>
+<p>【参数】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>参数名称</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+<th class="head"><p><strong>输入/输出</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>s32Id</p></td>
+<td><p>消息通信 ID。</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>返回值</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>成功。</p></td>
+</tr>
+<tr class="row-odd"><td><p>非 0</p></td>
+<td><p>失败，其值为<a class="reference internal" href="#ipcmsg">错误码</a></p></td>
+</tr>
+</tbody>
+</table>
+<p>【芯片差异】</p>
+<p>无</p>
+<p>【需求】</p>
+<ul class="simple">
+<li><p>头文件：k_comm_ipcmsg.h k_ipcmsg.h</p></li>
+<li><p>库文件：libipcmsg.a</p></li>
+</ul>
+<p>【注意】</p>
+<p>无</p>
+<p>【举例】</p>
+<p>无</p>
+<p>【相关主题】</p>
+<p><a class="reference internal" href="#kd-ipcmsg-try-connect">kd_ipcmsg_try_connect</a></p>
+<p><a class="reference internal" href="#kd-ipcmsg-connect">kd_ipcmsg_connect</a></p>
+</section>
+<section id="kd-ipcmsg-is-connect">
+<h4>kd_ipcmsg_is_connect<a class="headerlink" href="#kd-ipcmsg-is-connect" title="Link to this heading">#</a></h4>
+<p>【描述】</p>
+<p>消息通信是否连接状态。</p>
+<p>【语法】</p>
+<p>k_bool kd_ipcmsg_is_connect(k_s32 s32Id);</p>
+<p>【参数】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>参数名称</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+<th class="head"><p><strong>输入/输出</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>s32Id</p></td>
+<td><p>消息通信 ID。</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>返回值</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>K_TRUE</p></td>
+<td><p>连接状态。</p></td>
+</tr>
+<tr class="row-odd"><td><p>K_FALSE</p></td>
+<td><p>非连接状态。</p></td>
+</tr>
+</tbody>
+</table>
+<p>【芯片差异】</p>
+<p>无</p>
+<p>【需求】</p>
+<ul class="simple">
+<li><p>头文件：k_comm_ipcmsg.h k_ipcmsg.h</p></li>
+<li><p>库文件：libipcmsg.a</p></li>
+</ul>
+<p>【注意】</p>
+<p>无</p>
+<p>【举例】</p>
+<p>无</p>
+<p>【相关主题】</p>
+</section>
+<section id="kd-ipcmsg-send-only">
+<h4>kd_ipcmsg_send_only<a class="headerlink" href="#kd-ipcmsg-send-only" title="Link to this heading">#</a></h4>
+<p>【描述】</p>
+<p>仅发送消息给对端，不接收对端的返回值</p>
+<p>【语法】</p>
+<p>k_s32 kd_ipcmsg_send_only(k_s32 s32Id, <a class="reference internal" href="#k-ipcmsg-messsage-s">k_ipcmsg_message_s</a> *pstRequest);</p>
+<p>【参数】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>参数名称</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+<th class="head"><p><strong>输入/输出</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>s32Id</p></td>
+<td><p>消息服务 ID。</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>pstRequest</p></td>
+<td><p>消息结构体的指针。</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>返回值</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>成功。</p></td>
+</tr>
+<tr class="row-odd"><td><p>非 0</p></td>
+<td><p>失败，其值为<a class="reference internal" href="#ipcmsg">错误码</a></p></td>
+</tr>
+</tbody>
+</table>
+<p>【芯片差异】</p>
+<p>无</p>
+<p>【需求】</p>
+<ul class="simple">
+<li><p>头文件：k_comm_ipcmsg.h k_ipcmsg.h</p></li>
+<li><p>库文件：libipcmsg.a</p></li>
+</ul>
+<p>【注意】</p>
+<p>无</p>
+<p>【举例】</p>
+<p>无</p>
+<p>【相关主题】</p>
+</section>
+<section id="kd-ipcmsg-send-async">
+<h4>kd_ipcmsg_send_async<a class="headerlink" href="#kd-ipcmsg-send-async" title="Link to this heading">#</a></h4>
+<p>【描述】</p>
+<p>发送异步消息。这个接口是非阻塞接口，发送消息到对端后就返回了，不会等待消息命令的处理过程。</p>
+<p>如果调用此接口发送回复消息，则不需要对端回复，否则对端必须回复</p>
+<p>【语法】</p>
+<p>k_s32 kd_ipcmsg_send_async(k_s32 s32Id, <a class="reference internal" href="#k-ipcmsg-messsage-s">k_ipcmsg_message_s</a>* pstMsg, k_ipcmsg_resphandle_fn_ptr pfnRespHandle);</p>
+<p>【参数】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>参数名称</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+<th class="head"><p><strong>输入/输出</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>s32Id</p></td>
+<td><p>消息服务 ID。</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>pstMsg</p></td>
+<td><p>消息指针。</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-even"><td><p>pfnRespHandle</p></td>
+<td><p>消息回复处理函数。在发送回复消息时可以为 NULL，其他情况不允许为 NULL。</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>返回值</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>成功。</p></td>
+</tr>
+<tr class="row-odd"><td><p>非 0</p></td>
+<td><p>失败，其值为<a class="reference internal" href="#ipcmsg">错误码</a></p></td>
+</tr>
+</tbody>
+</table>
+<p>【芯片差异】</p>
+<p>无</p>
+<p>【需求】</p>
+<ul class="simple">
+<li><p>头文件：k_comm_ipcmsg.h k_ipcmsg.h</p></li>
+<li><p>库文件：libipcmsg.a</p></li>
+</ul>
+<p>【注意】</p>
+<p>无</p>
+<p>【举例】</p>
+<p>无</p>
+<p>【相关主题】</p>
+</section>
+<section id="kd-ipcmsg-send-sync">
+<h4>kd_ipcmsg_send_sync<a class="headerlink" href="#kd-ipcmsg-send-sync" title="Link to this heading">#</a></h4>
+<p>【描述】</p>
+<p>发送同步消息。这个接口会阻塞等待对端消息命令处理完成后再返回。</p>
+<p>【语法】</p>
+<p>k_s32 kd_ipcmsg_send_sync(k_s32 s32Id, <a class="reference internal" href="#k-ipcmsg-messsage-s">k_ipcmsg_message_s</a>* pstMsg, <a class="reference internal" href="#k-ipcmsg-messsage-s">k_ipcmsg_message_s</a>** ppstMsg, k_s32 s32TimeoutMs);</p>
+<p>【参数】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>参数名称</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+<th class="head"><p><strong>输入/输出</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>s32Id</p></td>
+<td><p>消息服务 ID。</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>pstMsg</p></td>
+<td><p>消息指针。</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-even"><td><p>ppstMsg</p></td>
+<td><p>回复消息的指针的指针。</p></td>
+<td><p>输出</p></td>
+</tr>
+<tr class="row-odd"><td><p>s32TimeoutMs</p></td>
+<td><p>超时时间。单位：ms。</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>返回值</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>成功。</p></td>
+</tr>
+<tr class="row-odd"><td><p>非 0</p></td>
+<td><p>失败，其值为<a class="reference internal" href="#ipcmsg">错误码</a></p></td>
+</tr>
+</tbody>
+</table>
+<p>【芯片差异】</p>
+<p>无</p>
+<p>【需求】</p>
+<ul class="simple">
+<li><p>头文件：k_comm_ipcmsg.h k_ipcmsg.h</p></li>
+<li><p>库文件：libipcmsg.a</p></li>
+</ul>
+<p>【注意】</p>
+<p>本接口超时的情况下，内部会调用 <a class="reference internal" href="#kd-ipcmsg-destroy-message">kd_ipcmsg_destory_message</a>将*ppstMsg（回复消</p>
+<p>息）销毁一次，由于同一个消息不能重复销毁，所以本接口超时退出后不必再做销毁</p>
+<p>回复消息的处理</p>
+<p>【举例】</p>
+<p>无</p>
+<p>【相关主题】</p>
+</section>
+<section id="kd-ipcmsg-run">
+<h4>kd_ipcmsg_run<a class="headerlink" href="#kd-ipcmsg-run" title="Link to this heading">#</a></h4>
+<p>【描述】</p>
+<p>消息处理函数</p>
+<p>【语法】</p>
+<p>k_void kd_ipcmsg_run(k_s32 s32Id);</p>
+<p>【参数】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>参数名称</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+<th class="head"><p><strong>输入/输出</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>s32Id</p></td>
+<td><p>消息服务 ID。</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>返回值</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>void</p></td>
+<td><p>无</p></td>
+</tr>
+</tbody>
+</table>
+<p>【芯片差异】</p>
+<p>无</p>
+<p>【需求】</p>
+<ul class="simple">
+<li><p>头文件：k_comm_ipcmsg.h k_ipcmsg.h</p></li>
+<li><p>库文件：libipcmsg.a</p></li>
+</ul>
+<p>【注意】</p>
+<p>无</p>
+<p>【举例】</p>
+<p>无</p>
+<p>【相关主题】</p>
+</section>
+<section id="kd-ipcmsg-create-message">
+<h4>kd_ipcmsg_create_message<a class="headerlink" href="#kd-ipcmsg-create-message" title="Link to this heading">#</a></h4>
+<p>【描述】</p>
+<p>创建消息</p>
+<p>【语法】</p>
+<p><a class="reference internal" href="#k-ipcmsg-messsage-s">k_ipcmsg_message_s *</a>kd_ipcmsg_create_message(k_u32 u32Module, k_u32 u32CMD, k_void*
+pBody, k_u32 u32BodyLen);</p>
+<p>【参数】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>参数名称</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+<th class="head"><p><strong>输入/输出</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>u32Module</p></td>
+<td><p>模块 ID。由用户创建，用于区分不同模块的不同消息。</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>u32CMD</p></td>
+<td><p>u32CMD 命令 ID。由用户创建，用于区分同一模块下的不同命令。</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-even"><td><p>pBody</p></td>
+<td><p>消息体指针</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>u32BodyLen</p></td>
+<td><p>消息体大小</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>返回值</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>k_ipcmsg_message_s*</p></td>
+<td><p>消息结构体指针。</p></td>
+</tr>
+<tr class="row-odd"><td><p>null</p></td>
+<td><p>消息创建失败</p></td>
+</tr>
+</tbody>
+</table>
+<p>【芯片差异】</p>
+<p>无</p>
+<p>【需求】</p>
+<ul class="simple">
+<li><p>头文件：k_comm_ipcmsg.h k_ipcmsg.h</p></li>
+<li><p>库文件：libipcmsg.a</p></li>
+</ul>
+<p>【注意】</p>
+<p>无</p>
+<p>【举例】</p>
+<p>无</p>
+<p>【相关主题】</p>
+<p><a class="reference internal" href="#kd-ipcmsg-destroy-message">kd_ipcmsg_destory_message</a></p>
+</section>
+<section id="kd-ipcmsg-create-resp-message">
+<h4>kd_ipcmsg_create_resp_message<a class="headerlink" href="#kd-ipcmsg-create-resp-message" title="Link to this heading">#</a></h4>
+<p>【描述】</p>
+<p>创建回复消息</p>
+<p>【语法】</p>
+<p><a class="reference internal" href="#k-ipcmsg-messsage-s">k_ipcmsg_message_s</a>* kd_ipcmsg_create_resp_message(<a class="reference internal" href="#k-ipcmsg-messsage-s">k_ipcmsg_message_s</a>* pstRequest, k_s32 s32RetVal, k_void* pBody, k_u32 u32BodyLen);</p>
+<p>【参数】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>参数名称</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+<th class="head"><p><strong>输入/输出</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>pstRequest</p></td>
+<td><p>请求消息的指针。</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>s32RetVal</p></td>
+<td><p>回复返回值。</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-even"><td><p>pBody</p></td>
+<td><p>回复消息的消息体指针。</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>u32BodyLen</p></td>
+<td><p>回复消息的消息体大小。</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>返回值</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>k_ipcmsg_message_s*</p></td>
+<td><p>消息结构体指针。</p></td>
+</tr>
+<tr class="row-odd"><td><p>null</p></td>
+<td><p>消息创建失败</p></td>
+</tr>
+</tbody>
+</table>
+<p>【芯片差异】</p>
+<p>无</p>
+<p>【需求】</p>
+<ul class="simple">
+<li><p>头文件：k_comm_ipcmsg.h k_ipcmsg.h</p></li>
+<li><p>库文件：libipcmsg.a</p></li>
+</ul>
+<p>【注意】</p>
+<p>无</p>
+<p>【举例】</p>
+<p>无</p>
+<p>【相关主题】</p>
+<p><a class="reference internal" href="#kd-ipcmsg-destroy-message">kd_ipcmsg_destory_message</a></p>
+</section>
+<section id="kd-ipcmsg-destroy-message">
+<h4>kd_ipcmsg_destroy_message<a class="headerlink" href="#kd-ipcmsg-destroy-message" title="Link to this heading">#</a></h4>
+<p>【描述】</p>
+<p>销毁消息</p>
+<p>【语法】</p>
+<p>k_void kd_ipcmsg_destroy_message(<a class="reference internal" href="#k-ipcmsg-messsage-s">k_ipcmsg_message_s</a>* pstMsg);</p>
+<p>【参数】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>参数名称</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+<th class="head"><p><strong>输入/输出</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>pstMsg</p></td>
+<td><p>消息指针。</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>返回值</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>k_void</p></td>
+<td><p>无</p></td>
+</tr>
+</tbody>
+</table>
+<p>【芯片差异】</p>
+<p>无</p>
+<p>【需求】</p>
+<ul class="simple">
+<li><p>头文件：k_comm_ipcmsg.h k_ipcmsg.h</p></li>
+<li><p>库文件：libipcmsg.a</p></li>
+</ul>
+<p>【注意】</p>
+<p>不支持同一个消息重复销毁，否则会导致系统异常。</p>
+<p>【举例】</p>
+<p>无</p>
+<p>【相关主题】</p>
+<p><a class="reference internal" href="#kd-ipcmsg-create-message">kd_ipcmsg_create_message</a></p>
+<p><a class="reference internal" href="#kd-ipcmsg-create-resp-message">kd_ipcmsg_create_resp_message</a></p>
+</section>
+</section>
+<section id="id7">
+<h3>DATAFIFO<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<p>该功能模块提供以下API：</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#kd-datafifo-open">kd_datafifo_open</a></p></li>
+<li><p><a class="reference internal" href="#kd-datafifo-open-by-addr">kd_datafifo_open_by_addr</a></p></li>
+<li><p><a class="reference internal" href="#kd-datafifo-close">kd_datafifo_close</a></p></li>
+<li><p><a class="reference internal" href="#kd-datafifo-read">kd_datafifo_read</a></p></li>
+<li><p><a class="reference internal" href="#kd-datafifo-write">kd_datafifo_write</a></p></li>
+<li><p><a class="reference internal" href="#kd-datafifo-cmd">kd_datafifo_cmd</a></p></li>
+</ul>
+<section id="kd-datafifo-open">
+<h4>kd_datafifo_open<a class="headerlink" href="#kd-datafifo-open" title="Link to this heading">#</a></h4>
+<p>【描述】</p>
+<p>打开数据通路。</p>
+<p>【语法】</p>
+<p>k_s32 kd_datafifo_open(<a class="reference internal" href="#k-datafifo-handle">k_datafifo_handle</a>* Handle, <a class="reference internal" href="#k-datafifo-params-s">k_datafifo_params_s</a>* pstParams)</p>
+<p>【参数】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>参数名称</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+<th class="head"><p><strong>输入/输出</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Handle</p></td>
+<td><p>数据通路句柄。</p></td>
+<td><p>输出</p></td>
+</tr>
+<tr class="row-odd"><td><p>pstParams</p></td>
+<td><p>数据通路参数指针。</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>返回值</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>成功。</p></td>
+</tr>
+<tr class="row-odd"><td><p>非 0</p></td>
+<td><p>失败，其值为<a class="reference internal" href="#datafifo">错误码</a>。</p></td>
+</tr>
+</tbody>
+</table>
+<p>【芯片差异】</p>
+<p>无</p>
+<p>【需求】</p>
+<ul class="simple">
+<li><p>头文件：k_datafifo.h</p></li>
+<li><p>库文件：libdatafifo.a</p></li>
+</ul>
+<p>【注意】</p>
+<p>无</p>
+<p>【举例】</p>
+<p>无</p>
+</section>
+<section id="kd-datafifo-open-by-addr">
+<h4>kd_datafifo_open_by_addr<a class="headerlink" href="#kd-datafifo-open-by-addr" title="Link to this heading">#</a></h4>
+<p>【描述】</p>
+<p>通过物理地址打开数据通路。</p>
+<p>【语法】</p>
+<p>k_s32 kd_datafifo_open_by_addr(<a class="reference internal" href="#k-datafifo-handle">k_datafifo_handle</a> *Handle, <a class="reference internal" href="#k-datafifo-params-s">k_datafifo_params_s</a> *pstParams, k_u64 u64Phyaddr)</p>
+<p>【参数】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>参数名称</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+<th class="head"><p><strong>输入/输出</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Handle</p></td>
+<td><p>数据通路句柄。</p></td>
+<td><p>输出</p></td>
+</tr>
+<tr class="row-odd"><td><p>pstParams</p></td>
+<td><p>数据通路参数指针。</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-even"><td><p>u32PhyAddr</p></td>
+<td><p>数据缓存的物理地址。</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>返回值</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>成功。</p></td>
+</tr>
+<tr class="row-odd"><td><p>非 0</p></td>
+<td><p>失败，其值为<a class="reference internal" href="#datafifo">错误码</a>。</p></td>
+</tr>
+</tbody>
+</table>
+<p>【芯片差异】</p>
+<p>无</p>
+<p>【需求】</p>
+<ul class="simple">
+<li><p>头文件：k_datafifo.h</p></li>
+<li><p>库文件：libdatafifo.a</p></li>
+</ul>
+<p>【注意】</p>
+<p>无</p>
+<p>【举例】</p>
+<p>无</p>
+</section>
+<section id="kd-datafifo-close">
+<h4>kd_datafifo_close<a class="headerlink" href="#kd-datafifo-close" title="Link to this heading">#</a></h4>
+<p>【描述】</p>
+<p>关闭数据通路。</p>
+<p>【语法】</p>
+<p>k_s32 kd_datafifo_close(<a class="reference internal" href="#k-datafifo-handle">k_datafifo_handle</a> Handle)</p>
+<p>【参数】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>参数名称</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+<th class="head"><p><strong>输入/输出</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Handle</p></td>
+<td><p>数据通路句柄。</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>返回值</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>成功。</p></td>
+</tr>
+<tr class="row-odd"><td><p>非 0</p></td>
+<td><p>失败，其值为<a class="reference internal" href="#datafifo">错误码</a>。</p></td>
+</tr>
+</tbody>
+</table>
+<p>【芯片差异】</p>
+<p>无</p>
+<p>【需求】</p>
+<ul class="simple">
+<li><p>头文件：k_datafifo.h</p></li>
+<li><p>库文件：libdatafifo.a</p></li>
+</ul>
+<p>【注意】</p>
+<p>关闭 DataFifo 的时候为了保证读写两端数据正常的释放，用户需要保证读端要读完DataFifo 中存在的数据，写端写完数据后需要额外调用一次<a class="reference internal" href="#kd-datafifo-write">kd_datafifo_write</a> (Handle, NULL) 触发写端的数据释放和读指针更新</p>
+<p>【举例】</p>
+<p>无</p>
+</section>
+<section id="kd-datafifo-read">
+<h4>kd_datafifo_read<a class="headerlink" href="#kd-datafifo-read" title="Link to this heading">#</a></h4>
+<p>【描述】</p>
+<p>读取数据。</p>
+<p>【语法】</p>
+<p>k_s32 kd_datafifo_read(<a class="reference internal" href="#k-datafifo-handle">k_datafifo_handle</a> Handle, void** ppData)</p>
+<p>【参数】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>参数名称</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+<th class="head"><p><strong>输入/输出</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Handle</p></td>
+<td><p>数据通路句柄。</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>ppData</p></td>
+<td><p>读取的数据指针的指针。</p></td>
+<td><p>输出</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>返回值</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>成功。</p></td>
+</tr>
+<tr class="row-odd"><td><p>非 0</p></td>
+<td><p>失败，其值为<a class="reference internal" href="#datafifo">错误码</a>。</p></td>
+</tr>
+</tbody>
+</table>
+<p>【芯片差异】</p>
+<p>无</p>
+<p>【需求】</p>
+<ul class="simple">
+<li><p>头文件：k_datafifo.h</p></li>
+<li><p>库文件：libdatafifo.a</p></li>
+</ul>
+<p>【注意】</p>
+<p>无</p>
+<p>【举例】</p>
+<p>无</p>
+</section>
+<section id="kd-datafifo-write">
+<h4>kd_datafifo_write<a class="headerlink" href="#kd-datafifo-write" title="Link to this heading">#</a></h4>
+<p>【描述】</p>
+<p>写入数据。</p>
+<p>【语法】</p>
+<p>k_s32 kd_datafifo_write(<a class="reference internal" href="#k-datafifo-handle">k_datafifo_handle</a> Handle, void* pData)</p>
+<p>【参数】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>参数名称</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+<th class="head"><p><strong>输入/输出</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Handle</p></td>
+<td><p>数据通路句柄。</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>pData</p></td>
+<td><p>写入的数据。</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>返回值</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>成功。</p></td>
+</tr>
+<tr class="row-odd"><td><p>非 0</p></td>
+<td><p>失败，其值为<a class="reference internal" href="#datafifo">错误码</a>。</p></td>
+</tr>
+</tbody>
+</table>
+<p>【芯片差异】</p>
+<p>无</p>
+<p>【需求】</p>
+<ul class="simple">
+<li><p>头文件：k_datafifo.h</p></li>
+<li><p>库文件：libdatafifo.a</p></li>
+</ul>
+<p>【注意】
+当 pData 为 NULL 时，触发写端的数据释放回调函数，同时更新写端的读尾指针。</p>
+<p>【举例】</p>
+<p>无</p>
+</section>
+<section id="kd-datafifo-cmd">
+<h4>kd_datafifo_cmd<a class="headerlink" href="#kd-datafifo-cmd" title="Link to this heading">#</a></h4>
+<p>【描述】</p>
+<p>其他操作。</p>
+<p>【语法】</p>
+<p>k_s32 kd_datafifo_cmd(<a class="reference internal" href="#k-datafifo-handle">k_datafifo_handle</a> Handle, <a class="reference internal" href="#k-datafifo-cmd-e">k_datafifo_cmd_e</a> enCMD, void* pArg)</p>
+<p>【参数】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>参数名称</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+<th class="head"><p><strong>输入/输出</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Handle</p></td>
+<td><p>数据通路句柄。</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>enCMD</p></td>
+<td><p>操作命令。</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-even"><td><p>pArg</p></td>
+<td><p>参数，详见【注意】。</p></td>
+<td><p><strong>输入/输出</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>【返回值】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>返回值</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>成功。</p></td>
+</tr>
+<tr class="row-odd"><td><p>非 0</p></td>
+<td><p>失败，其值为<a class="reference internal" href="#datafifo">错误码</a>。</p></td>
+</tr>
+</tbody>
+</table>
+<p>【芯片差异】</p>
+<p>无</p>
+<p>【需求】</p>
+<ul class="simple">
+<li><p>头文件：k_datafifo.h</p></li>
+<li><p>库文件：libdatafifo.a</p></li>
+</ul>
+<p>【注意】
+控制命令和对应参数：</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>命令</p></th>
+<th class="head"><p>参数以及说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>DATAFIFO_CMD_GET_PHY_ADDR</p></td>
+<td><p>返回 DATAFIFO 的物理地址，k_u64类型。</p></td>
+</tr>
+<tr class="row-odd"><td><p>DATAFIFO_CMD_READ_DONE</p></td>
+<td><p>读端使用完数据后，需要调用这个更新读端的头尾指针。。</p></td>
+</tr>
+<tr class="row-even"><td><p>DATAFIFO_CMD_WRITE_DONE</p></td>
+<td><p>写端写完数据后，需要调用这个更新写端的写尾指针。无返回值，参数可以为 NULL。</p></td>
+</tr>
+<tr class="row-odd"><td><p>DATAFIFO_CMD_SET_DATA_RELEASE _CALLBACK</p></td>
+<td><p>数据释放回调函数。</p></td>
+</tr>
+<tr class="row-even"><td><p>DATAFIFO_CMD_GET_AVAIL_WRITE_ LEN</p></td>
+<td><p>返回可写入的数据个数，k_u32 类型。 注意：由于需要保留一个数据项辅助buffer 管理，实际可用于缓存数据的长度比配置的 DATAFIFO 的长度u32EntriesNum* u32CacheLineSize）少一个数据项的长度（u32CacheLineSize）。</p></td>
+</tr>
+<tr class="row-odd"><td><p>DATAFIFO_CMD_GET_AVAIL_READ_L EN</p></td>
+<td><p>返回可读取的数据个数，k_u32 类型</p></td>
+</tr>
+</tbody>
+</table>
+<p>【举例】</p>
+<p>无</p>
+</section>
+</section>
+</section>
+<section id="id8">
+<h2>数据类型<a class="headerlink" href="#id8" title="Link to this heading">#</a></h2>
+<section id="id9">
+<h3>IPCMSG<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<p>该模块有如下数据类型</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#k-ipcmsg-max-content-len">K_IPCMSG_MAX_CONTENT_LEN</a></p></li>
+<li><p><a class="reference internal" href="#k-ipcmsg-privdata-num">K_IPCMSG_PRIVDATA_NUM</a></p></li>
+<li><p><a class="reference internal" href="#k-ipcmsg-invalid-msgid">K_IPCMSG_INVALID_MSGID</a></p></li>
+<li><p><a class="reference internal" href="#k-ipcmsg-connect-s">k_ipcmsg_connect_s</a></p></li>
+<li><p><a class="reference internal" href="#k-ipcmsg-messsage-s">k_ipcmsg_message_s</a></p></li>
+<li><p><a class="reference internal" href="#k-ipcmsg-handle-fn-ptr">k_ipcmsg_handle_fn_ptr</a></p></li>
+</ul>
+<section id="k-ipcmsg-max-content-len">
+<h4>K_IPCMSG_MAX_CONTENT_LEN<a class="headerlink" href="#k-ipcmsg-max-content-len" title="Link to this heading">#</a></h4>
+<p>【说明】</p>
+<p>定义消息体最长度。</p>
+<p>【定义】</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cp">#define K_IPCMSG_MAX_CONTENT_LEN (1024)</span>
+</pre></div>
+</div>
+<p>【注意事项】</p>
+<p>无</p>
+<p>【相关数据类型及接口】</p>
+<p>无</p>
+<p>该模块有如下数据类型</p>
+</section>
+<section id="k-ipcmsg-privdata-num">
+<h4>K_IPCMSG_PRIVDATA_NUM<a class="headerlink" href="#k-ipcmsg-privdata-num" title="Link to this heading">#</a></h4>
+<p>【说明】</p>
+<p>定义消息体中私有数据最大个数。</p>
+<p>【定义】</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cp">#define K_IPCMSG_MAX\_ PRIVDATA_NUM (8)</span>
+</pre></div>
+</div>
+<p>【注意事项】</p>
+<p>无</p>
+<p>【相关数据类型及接口】</p>
+<p>无</p>
+</section>
+<section id="k-ipcmsg-invalid-msgid">
+<h4>K_IPCMSG_INVALID_MSGID<a class="headerlink" href="#k-ipcmsg-invalid-msgid" title="Link to this heading">#</a></h4>
+<p>【说明】</p>
+<p>定义无效消息 ID。</p>
+<p>【定义】</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cp">#define K_IPCMSG_INVALID_MSGID (0xFFFFFFFFFFFFFFFF)</span>
+</pre></div>
+</div>
+<p>【注意事项】</p>
+<p>无</p>
+<p>【相关数据类型及接口】</p>
+<p>无</p>
+</section>
+<section id="k-ipcmsg-connect-s">
+<h4>k_ipcmsg_connect_s<a class="headerlink" href="#k-ipcmsg-connect-s" title="Link to this heading">#</a></h4>
+<p>【说明】</p>
+<p>定义模块 ID 枚举类型。</p>
+<p>【定义】</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">IPCMSG_CONNECT_S</span>
+
+<span class="p">{</span>
+
+<span class="n">k_u32</span><span class="w"> </span><span class="n">u32RemoteId</span><span class="p">;</span>
+
+<span class="n">k_u32</span><span class="w"> </span><span class="n">u32Port</span><span class="p">;</span>
+
+<span class="n">k_u32</span><span class="w"> </span><span class="n">u32Priority</span><span class="p">;</span>
+
+<span class="p">}</span><span class="w"> </span><span class="n">k_ipcmsg_connect_s</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>【成员】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>成员名称</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>u32RemoteId</p></td>
+<td><p>标示连接远端 CPU 的枚举值。 0：小核； 1：大核</p></td>
+</tr>
+<tr class="row-odd"><td><p>u32Port</p></td>
+<td><p>消息通信用的自定义 port 号 取值范围：[0, 512]</p></td>
+</tr>
+<tr class="row-even"><td><p>u32Priority</p></td>
+<td><p>消息传递的优先级。 取值范围： 0：普通优先级； 1：高优先级。 默认为 0</p></td>
+</tr>
+</tbody>
+</table>
+<p>【注意事项】</p>
+<p>无</p>
+<p>【相关数据类型及接口】</p>
+<p><a class="reference internal" href="#kd-ipcmsg-add-service">kd_ipcmsg_add_service</a></p>
+</section>
+<section id="k-ipcmsg-messsage-s">
+<h4>k_ipcmsg_messsage_s<a class="headerlink" href="#k-ipcmsg-messsage-s" title="Link to this heading">#</a></h4>
+<p>【说明】</p>
+<p>定义消息结构体。</p>
+<p>【定义】</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">IPCMSG_MESSAGE_S</span>
+
+<span class="p">{</span>
+
+<span class="n">k_bool</span><span class="w"> </span><span class="n">bIsResp</span><span class="p">;</span><span class="w"> </span><span class="cm">/**&lt;Identify the response messgae*/</span>
+
+<span class="n">k_u64</span><span class="w"> </span><span class="n">u64Id</span><span class="p">;</span><span class="w"> </span><span class="cm">/**&lt;Message ID*/</span>
+
+<span class="n">k_u32</span><span class="w"> </span><span class="n">u32Module</span><span class="p">;</span><span class="w"> </span><span class="cm">/**&lt;Module ID, user-defined*/</span>
+
+<span class="n">k_u32</span><span class="w"> </span><span class="n">u32CMD</span><span class="p">;</span><span class="w"> </span><span class="cm">/**&lt;CMD ID, user-defined*/</span>
+
+<span class="n">k_s32</span><span class="w"> </span><span class="n">s32RetVal</span><span class="p">;</span><span class="w"> </span><span class="cm">/**&lt;Retrun Value in response message*/</span>
+
+<span class="n">k_s32</span><span class="w"> </span><span class="n">as32PrivData</span><span class="p">[</span><span class="n">K_IPCMSG_PRIVDATA_NUM</span><span class="p">];</span><span class="w"> </span><span class="cm">/**&lt;Private data, can be modify directly after ::kd_ipcmsg_create_message or ::kd_ipcmsg_create_resp_message*/</span>
+
+<span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">pBody</span><span class="p">;</span><span class="w"> </span><span class="cm">/**&lt;Message body*/</span>
+
+<span class="n">k_u32</span><span class="w"> </span><span class="n">u32BodyLen</span><span class="p">;</span><span class="w"> </span><span class="cm">/**&lt;Length of pBody*/</span>
+
+<span class="p">}</span><span class="w"> </span><span class="n">k_ipcmsg_message_t</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>【成员】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>成员名称</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>bIsResp</p></td>
+<td><p>标示该消息是否回复消息： K_TURE：回复； K_FALSE：不回复。</p></td>
+</tr>
+<tr class="row-odd"><td><p>u64Id</p></td>
+<td><p>消息 ID。</p></td>
+</tr>
+<tr class="row-even"><td><p>u32Module</p></td>
+<td><p>模块 ID。</p></td>
+</tr>
+<tr class="row-odd"><td><p>u32CMD</p></td>
+<td><p>CMD ID。</p></td>
+</tr>
+<tr class="row-even"><td><p>s32RetVal</p></td>
+<td><p>返回值。</p></td>
+</tr>
+<tr class="row-odd"><td><p>as32PrivData</p></td>
+<td><p>私有数据。</p></td>
+</tr>
+<tr class="row-even"><td><p>pBody</p></td>
+<td><p>消息体指针。</p></td>
+</tr>
+<tr class="row-odd"><td><p>u32BodyLen</p></td>
+<td><p>消息体长度，单位字节</p></td>
+</tr>
+</tbody>
+</table>
+<p>【注意事项】</p>
+<p>无</p>
+<p>【相关数据类型及接口】</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#kd-ipcmsg-send-only">kd_ipcmsg_send_only</a></p></li>
+<li><p><a class="reference internal" href="#kd-ipcmsg-send-async">kd_ipcmsg_send_async</a></p></li>
+<li><p><a class="reference internal" href="#kd-ipcmsg-send-sync">kd_ipcmsg_send_sync</a></p></li>
+<li><p><a class="reference internal" href="#kd-ipcmsg-create-message">kd_ipcmsg_create_message</a></p></li>
+<li><p><a class="reference internal" href="#kd-ipcmsg-create-resp-message">kd_ipcmsg_create_resp_message</a></p></li>
+<li><p><a class="reference internal" href="#kd-ipcmsg-destroy-message">kd_ipcmsg_destory_message</a></p></li>
+</ul>
+</section>
+<section id="k-ipcmsg-handle-fn-ptr">
+<h4>k_ipcmsg_handle_fn_ptr<a class="headerlink" href="#k-ipcmsg-handle-fn-ptr" title="Link to this heading">#</a></h4>
+<p>【说明】</p>
+<p>定义消息回复处理函数</p>
+<p>【定义】</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">k_ipcmsg_handle_fn_ptr</span><span class="p">)(</span><span class="n">k_s32</span><span class="w"> </span><span class="n">s32Id</span><span class="p">,</span><span class="w"> </span><span class="n">k_ipcmsg_message_s</span><span class="o">*</span><span class="w"> </span><span class="n">pstMsg</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>【成员】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>成员名称</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>s32Id</p></td>
+<td><p>消息服务ID</p></td>
+</tr>
+<tr class="row-odd"><td><p>pstMsg</p></td>
+<td><p>消息体指针</p></td>
+</tr>
+</tbody>
+</table>
+<p>【注意事项】</p>
+<p>无</p>
+<p>【相关数据类型及接口】</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#kd-ipcmsg-try-connect">kd_ipcmsg_try_connect</a></p></li>
+<li><p><a class="reference internal" href="#kd-ipcmsg-connect">kd_ipcmsg_connect</a></p></li>
+</ul>
+</section>
+</section>
+<section id="id10">
+<h3>DATAFIFO<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<p>本模块有以下数据结构</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#k-datafifo-handle">k_datafifo_handle</a></p></li>
+<li><p><a class="reference internal" href="#k-datafifo-invalid-handle">K_DATAFIFO_INVALID_HANDLE</a></p></li>
+<li><p><a class="reference internal" href="#k-datafifo-releasestream-fn-ptr">K_DATAFIFO_RELEASESTREAM_FN_PTR</a></p></li>
+<li><p><a class="reference internal" href="#k-datafifo-open-mode-e">K_DATAFIFO_OPEN_MODE_E</a></p></li>
+<li><p><a class="reference internal" href="#k-datafifo-params-s">k_datafifo_params_s</a></p></li>
+<li><p><a class="reference internal" href="#k-datafifo-cmd-e">k_datafifo_cmd_e</a></p></li>
+</ul>
+<section id="k-datafifo-handle">
+<h4>k_datafifo_handle<a class="headerlink" href="#k-datafifo-handle" title="Link to this heading">#</a></h4>
+<p>【说明】</p>
+<p>定义DATAFIFO句柄</p>
+<p>【定义】</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="n">K_U32</span><span class="w"> </span><span class="n">K_DATAFIFO_HANDLE</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>【成员】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>成员名称</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>s32Id</p></td>
+<td><p>消息服务ID</p></td>
+</tr>
+<tr class="row-odd"><td><p>pstMsg</p></td>
+<td><p>消息体指针</p></td>
+</tr>
+</tbody>
+</table>
+<p>【注意事项】</p>
+<p>无</p>
+<p>【相关数据类型及接口】</p>
+<p>无</p>
+</section>
+<section id="k-datafifo-invalid-handle">
+<h4>K_DATAFIFO_INVALID_HANDLE<a class="headerlink" href="#k-datafifo-invalid-handle" title="Link to this heading">#</a></h4>
+<p>【说明】</p>
+<p>定义数据通路无效句柄。</p>
+<p>【定义】</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cp">#define K_DATAFIFO_INVALID_HANDLE (-1)</span>
+</pre></div>
+</div>
+<p>【注意事项】</p>
+<p>无</p>
+<p>【相关数据类型及接口】</p>
+<p>无</p>
+</section>
+<section id="k-datafifo-releasestream-fn-ptr">
+<h4>K_DATAFIFO_RELEASESTREAM_FN_PTR<a class="headerlink" href="#k-datafifo-releasestream-fn-ptr" title="Link to this heading">#</a></h4>
+<p>【说明】</p>
+<p>定义数据通路码流释放函数。。</p>
+<p>【定义】</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">K_DATAFIFO_RELEASESTREAM_FN_PTR</span><span class="p">)(</span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">pStream</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>【注意事项】</p>
+<p>无</p>
+<p>【相关数据类型及接口】</p>
+<p>无</p>
+</section>
+<section id="k-datafifo-open-mode-e">
+<h4>K_DATAFIFO_OPEN_MODE_E<a class="headerlink" href="#k-datafifo-open-mode-e" title="Link to this heading">#</a></h4>
+<p>【说明】</p>
+<p>定义数据通路打开模式。</p>
+<p>【定义】</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">k_DATAFIFO_PARAMS_S</span>
+
+<span class="p">{</span>
+
+<span class="n">k_u32</span><span class="w"> </span><span class="n">u32EntriesNum</span><span class="p">;</span><span class="w"> </span><span class="cm">/**&lt; The number of items in the ring buffer*/</span>
+
+<span class="n">k_u32</span><span class="w"> </span><span class="n">u32CacheLineSize</span><span class="p">;</span><span class="w"> </span><span class="cm">/**&lt; Item size*/</span>
+
+<span class="n">k_bool</span><span class="w"> </span><span class="n">bDataReleaseByWriter</span><span class="p">;</span><span class="w"> </span><span class="cm">/**&lt;Whether the data buffer release by writer*/</span>
+
+<span class="n">K_DATAFIFO_OPEN_MODE_E</span><span class="w"> </span><span class="n">enOpenMode</span><span class="p">;</span><span class="w"> </span><span class="cm">/**&lt;READER or WRITER*/</span>
+
+<span class="p">}</span><span class="w"> </span><span class="n">k_datafifo_params_s</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>【成员】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>成员名称</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>DATAFIFO_READER</p></td>
+<td><p>读出角色，只读取数据</p></td>
+</tr>
+<tr class="row-odd"><td><p>DATAFIFO_WRITER</p></td>
+<td><p>写入角色，只写入数据</p></td>
+</tr>
+</tbody>
+</table>
+<p>【注意事项】</p>
+<p>无</p>
+<p>【相关数据类型及接口】</p>
+<p>无</p>
+</section>
+<section id="k-datafifo-params-s">
+<h4>k_datafifo_params_s<a class="headerlink" href="#k-datafifo-params-s" title="Link to this heading">#</a></h4>
+<p>【说明】</p>
+<p>定义数据通路配置参数</p>
+<p>【定义】</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">k_DATAFIFO_PARAMS_S</span>
+
+<span class="p">{</span>
+
+<span class="n">k_u32</span><span class="w"> </span><span class="n">u32EntriesNum</span><span class="p">;</span><span class="w"> </span><span class="cm">/**&lt; The number of items in the ring buffer*/</span>
+
+<span class="n">k_u32</span><span class="w"> </span><span class="n">u32CacheLineSize</span><span class="p">;</span><span class="w"> </span><span class="cm">/**&lt; Item size*/</span>
+
+<span class="n">k_bool</span><span class="w"> </span><span class="n">bDataReleaseByWriter</span><span class="p">;</span><span class="w"> </span><span class="cm">/**&lt;Whether the data buffer release by writer*/</span>
+
+<span class="n">K_DATAFIFO_OPEN_MODE_E</span><span class="w"> </span><span class="n">enOpenMode</span><span class="p">;</span><span class="w"> </span><span class="cm">/**&lt;READER or WRITER*/</span>
+
+<span class="p">}</span><span class="w"> </span><span class="n">k_datafifo_params_s</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>【成员】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>成员名称</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>u32EntriesNum</p></td>
+<td><p>循环 Buffer 的数据个数。</p></td>
+</tr>
+<tr class="row-odd"><td><p>u32CacheLineSize</p></td>
+<td><p>每个数据项的大小。</p></td>
+</tr>
+<tr class="row-even"><td><p>bDataReleaseByWriter</p></td>
+<td><p>是否需要写入者释放数据。</p></td>
+</tr>
+<tr class="row-odd"><td><p>enOpenMode</p></td>
+<td><p>打开通路的角色。</p></td>
+</tr>
+</tbody>
+</table>
+<p>【注意事项】</p>
+<p>u32EntriesNum 和 u32CacheLineSize 并没有做取值范围做限制，只要 MMZ 内存足够大，DATAFIFO 就可以创建成功。因此，需要用户保证这 2 个参数在合理的范围之内。</p>
+<p>【相关数据类型及接口】</p>
+<p>无</p>
+</section>
+<section id="k-datafifo-cmd-e">
+<h4>k_datafifo_cmd_e<a class="headerlink" href="#k-datafifo-cmd-e" title="Link to this heading">#</a></h4>
+<p>【说明】</p>
+<p>定义数据通路的控制类型</p>
+<p>【定义】</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="n">k_DATAFIFO_CMD_E</span>
+
+<span class="p">{</span>
+
+<span class="n">DATAFIFO_CMD_GET_PHY_ADDR</span><span class="p">,</span><span class="w"> </span><span class="cm">/**&lt;Get the physic address of ring buffer*/</span>
+
+<span class="n">DATAFIFO_CMD_READ_DONE</span><span class="p">,</span><span class="w"> </span><span class="cm">/**&lt;When the read buffer read over, the reader should call this function to notify the writer*/</span>
+
+<span class="n">DATAFIFO_CMD_WRITE_DONE</span><span class="p">,</span><span class="w"> </span><span class="cm">/**&lt;When the writer buffer is write done, the writer should call this function*/</span>
+
+<span class="n">DATAFIFO_CMD_SET_DATA_RELEASE_CALLBACK</span><span class="p">,</span><span class="w"> </span><span class="cm">/**&lt;When bDataReleaseByWriter is K_TRUE, the writer should call this to register release callback*/</span>
+
+<span class="n">DATAFIFO_CMD_GET_AVAIL_WRITE_LEN</span><span class="p">,</span><span class="w"> </span><span class="cm">/**&lt;Get available write length*/</span>
+
+<span class="n">DATAFIFO_CMD_GET_AVAIL_READ_LEN</span><span class="w"> </span><span class="cm">/**&lt;Get available read length*/</span>
+
+<span class="p">}</span><span class="w"> </span><span class="n">k_datafifo_cmd_e</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>【成员】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>成员名称</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>DATAFIFO_CMD_GET_PHY_ADDR</p></td>
+<td><p>返回 DATAFIFO 的物理地址，k_u64类型。</p></td>
+</tr>
+<tr class="row-odd"><td><p>DATAFIFO_CMD_READ_DONE</p></td>
+<td><p>读端使用完数据后，需要调用这个更新读端的头尾指针。。</p></td>
+</tr>
+<tr class="row-even"><td><p>DATAFIFO_CMD_WRITE_DONE</p></td>
+<td><p>写端写完数据后，需要调用这个更新写端的写尾指针。无返回值，参数可以为 NULL。</p></td>
+</tr>
+<tr class="row-odd"><td><p>DATAFIFO_CMD_SET_DATA_RELEASE _CALLBACK</p></td>
+<td><p>数据释放回调函数。</p></td>
+</tr>
+<tr class="row-even"><td><p>DATAFIFO_CMD_GET_AVAIL_WRITE_ LEN</p></td>
+<td><p>返回可写入的数据个数，k_u32 类型。 注意：由于需要保留一个数据项辅助buffer 管理，实际可用于缓存数据的长度比配置的 DATAFIFO 的长度u32EntriesNum* u32CacheLineSize） 少一个数据项的长度（u32CacheLineSize）。</p></td>
+</tr>
+<tr class="row-odd"><td><p>DATAFIFO_CMD_GET_AVAIL_READ_L EN</p></td>
+<td><p>返回可读取的数据个数，k_u32 类型</p></td>
+</tr>
+</tbody>
+</table>
+<p>【注意事项】</p>
+<p>无</p>
+<p>【相关数据类型及接口】</p>
+<p>无</p>
+</section>
+</section>
+</section>
+<section id="id11">
+<h2>错误码<a class="headerlink" href="#id11" title="Link to this heading">#</a></h2>
+<section id="id12">
+<h3>IPCMSG<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<p>表 41</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>错误代码</p></th>
+<th class="head"><p>宏定义</p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x1901</p></td>
+<td><p>K_IPCMSG_EINVAL</p></td>
+<td><p>配置参数无效</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x1902</p></td>
+<td><p>K_IPCMSG_ETIMEOUT</p></td>
+<td><p>超时错误</p></td>
+</tr>
+<tr class="row-even"><td><p>0x1903</p></td>
+<td><p>K_IPCMSG_ENOOP</p></td>
+<td><p>驱动打开失败</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x1904</p></td>
+<td><p>K_IPCMSG_EINTER</p></td>
+<td><p>内部错误</p></td>
+</tr>
+<tr class="row-even"><td><p>0x1905</p></td>
+<td><p>K_IPCMSG_ENULL_PTR</p></td>
+<td><p>空指针错误</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x00000000</p></td>
+<td><p>K_SUCCESS</p></td>
+<td><p>成功</p></td>
+</tr>
+<tr class="row-even"><td><p>0xFFFFFFFF</p></td>
+<td><p>K_FAILURE</p></td>
+<td><p>失败</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x1901</p></td>
+<td><p>K_IPCMSG_EINVAL</p></td>
+<td><p>配置参数无效</p></td>
+</tr>
+<tr class="row-even"><td><p>0x1902</p></td>
+<td><p>K_IPCMSG_ETIMEOUT</p></td>
+<td><p>超时错误</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id13">
+<h3>DATAFIFO<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
+<p>表 42</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>错误代码</p></th>
+<th class="head"><p>宏定义</p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x1A01</p></td>
+<td><p>K_DATAFIFO_ERR_EINVAL_PARAM ETER</p></td>
+<td><p>配置参数无效</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x1A02</p></td>
+<td><p>K_DATAFIFO_ERR_NULL_PTR</p></td>
+<td><p>空指针错误</p></td>
+</tr>
+<tr class="row-even"><td><p>0x1A03</p></td>
+<td><p>K_DATAFIFO_ERR_NOMEM</p></td>
+<td><p>分配内存失败</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x1A04</p></td>
+<td><p>K_DATAFIFO_ERR_DEV_OPT</p></td>
+<td><p>设备操作失败</p></td>
+</tr>
+<tr class="row-even"><td><p>0x1A05</p></td>
+<td><p>K_DATAFIFO_ERR_NOT_PERM</p></td>
+<td><p>操作不允许</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x1A06</p></td>
+<td><p>K_DATAFIFO_ERR_NO_DATA</p></td>
+<td><p>无可读取数据</p></td>
+</tr>
+<tr class="row-even"><td><p>0x1A07</p></td>
+<td><p>K_DATAFIFO_ERR_NO_SPACE</p></td>
+<td><p>无可写入空间</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x1A08</p></td>
+<td><p>K_DATAFIFO_ERR_READ</p></td>
+<td><p>读错误</p></td>
+</tr>
+<tr class="row-even"><td><p>0x1A09</p></td>
+<td><p>K_DATAFIFO_ERR_WRITE</p></td>
+<td><p>写错误</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x00000000</p></td>
+<td><p>K_SUCCESS</p></td>
+<td><p>成功</p></td>
+</tr>
+<tr class="row-even"><td><p>0xFFFFFFFF</p></td>
+<td><p>K_FAILURE</p></td>
+<td><p>失败</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="id14">
+<h2>调试信息<a class="headerlink" href="#id14" title="Link to this heading">#</a></h2>
+<section id="ipcm">
+<h3>ipcm<a class="headerlink" href="#ipcm" title="Link to this heading">#</a></h3>
+<p>【调试信息】</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>msh /bin\&gt;cat /proc/ipcm
+
+*---REMOTE NODE: ID=0, STATE: READY
+
+\|-RECV BUFFER, PHYS\&lt;0x0000000000180000, 0x00079000\&gt;
+
+\|-SEND BUFFER, PHYS\&lt;0x0000000000100000, 0x00080000\&gt;
+
+\|-Port \| State \| Send Count \| Recv Count \| Max Send Len \| Max Recv Len
+
+1 Connected 15 15 320 608
+
+*---LOCAL NODE: ID=1, STATE: ALIVE
+</pre></div>
+</div>
+<p>【调试信息分析】</p>
+<p>记录当前ipcm模块的使用情况</p>
+<p>【参数说明】</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>参数</strong></p></th>
+<th class="head"><p><strong>描述</strong></p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>REMOTE NODE</p></td>
+<td><p>ID</p></td>
+<td><p>远端处理器的ID号</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p>STATE</p></td>
+<td><p>远端处理器的状态。</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p>RECV BUFFER</p></td>
+<td><p>接收buffer的物理地址区间</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p>SEND BUFFER</p></td>
+<td><p>发送buffer的物理地址区间。</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p>Port</p></td>
+<td><p>端口号</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p>State</p></td>
+<td><p>端口连接状态</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p>Send Count</p></td>
+<td><p>发送次数</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p>Recv Count</p></td>
+<td><p>接收次数</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p>Max Send len</p></td>
+<td><p>最大发送的数据长度</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p>Max Recv len</p></td>
+<td><p>最大接收的数据长度</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+
+              
+              
+                <footer class="bd-footer-article">
+                  <div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+  <title>评论列表</title>
+  <style>
+    /* 评论顶部 */
+    .docs-comment .head {
+      display: flex;
+      justify-content: space-between;
+      padding-bottom: 1em;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .docs-comment .nickname {
+      cursor: pointer;
+    }
+
+    /* 评论输入框 */
+    .docs-comment .input {
+      display: flex;
+      margin-top: 20px;
+      position: relative;
+    }
+
+    .docs-comment .head-img {
+      border-radius: 3px;
+      width: 50px;
+      height: 50px;
+    }
+
+    .docs-comment .head-img img {
+      height: 50px;
+      width: 50px;
+    }
+
+    .docs-comment textarea,
+    .docs-comment .comment-content {
+      width: 100%;
+      margin-left: 10px;
+      border-radius: 5px;
+      padding: 0.75em;
+      display: block;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      width: 100%;
+      min-height: 5.125em;
+      /* max-height: 15em; */
+      border-radius: 5px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      font-size: 12px;
+      word-wrap: break-word;
+      resize: vertical;
+      background-color: #f6f6f6;
+      outline: none;
+    }
+
+    .docs-comment .replies .comment-content {
+      border: none;
+    }
+
+    .docs-comment .submit {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+    }
+
+    .docs-comment button {
+      padding: 0.75em 1.25em;
+      display: inline-block;
+      line-height: 1;
+      text-decoration: none;
+      white-space: nowrap;
+      cursor: pointer;
+      border: 1px solid #2962ff;
+      border-radius: 5px;
+      background-color: #2962ff;
+      color: #fff;
+      outline: none;
+      font-size: 0.75em;
+    }
+
+    .docs-comment .button .login {
+      margin-left: 20px;
+      background-color: #fff;
+      color: #2962ff;
+    }
+
+    .docs-comment .action {
+      text-align: right;
+
+      svg {
+        height: 16px;
+        width: 16px;
+        cursor: pointer;
+      }
+    }
+
+    .docs-comment .secondary {
+      color: #666;
+    }
+
+    /* 评论列表 */
+    #comment-list {
+      margin-top: 20px;
+    }
+
+    .docs-comment .comment-item,
+    .docs-comment .reply-item {
+      display: flex;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    .docs-comment .reply-icon {
+      margin-left: 10px;
+    }
+
+    .docs-comment .primary {
+      color: #2962ff;
+    }
+
+    .docs-comment .content {
+      margin-top: 0.5em;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="docs-comment">
+    <div class="head">
+      <div class="count primary">条评论</div>
+      <div class="nickname primary" onclick="handleLogin()">登录</div>
+    </div>
+    <div class="input">
+      <div class="head-img"></div>
+      <textarea id="comment" name="comment" rows="5" cols="5" placeholder="说点什么..." required minlength="10"
+        maxlength="200" spellcheck="true" autocomplete="on"></textarea>
+      <button class="submit" onclick="handleAdd()">评论</button>
+    </div>
+    <!-- 评论列表 -->
+    <div id="comment-list"></div>
+  </div>
+
+  <script>
+    let timer = null;
+    const deleteIcon = `<svg
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="#6190e8"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+  <line x1="10" y1="11" x2="10" y2="17" />
+  <line x1="14" y1="11" x2="14" y2="17" />
+</svg>`;
+    const replyIcon = `<svg
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="#6190e8"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10z" />
+</svg>`;
+
+    function getMd5OfEmail(email) {
+      const emailLowercase = email.toLowerCase();
+      const md5Hash = CryptoJS.MD5(emailLowercase).toString();
+      return md5Hash;
+    }
+
+    function formatTimestamp(timestamp) {
+      const now = Date.now(); // 当前时间的时间戳
+      const diff = now - timestamp; // 时间差（毫秒）
+
+      // 转换为秒、分钟、小时
+      const seconds = Math.floor(diff / 1000);
+      const minutes = Math.floor(seconds / 60);
+      const hours = Math.floor(minutes / 60);
+      if (seconds < 60) {
+        return ` 刚刚`;
+      } else if (minutes < 60) {
+        return `${minutes}分钟前`;
+      } else if (hours < 24) {
+        return `${hours}小时前`;
+      } else {
+        // 大于24小时，显示月份和日期
+        const date = new Date(timestamp);
+        const month = date.getMonth() + 1; // 月份从0开始，需要加1
+        const day = date.getDate();
+        return `${month}月${day}日`;
+      }
+    }
+    // 获取评论列表并渲染到页面
+    function getComments(url) {
+      axios({
+          method: "get",
+          url: "/api/docs/comments",
+          params: {
+            pageNo: 1,
+            pageSize: 20,
+            url: url,
+          },
+        })
+        .then((res) => {
+          renderComments(res.data.rows); // 渲染评论列表
+          const count = document.querySelector(".count");
+          count.innerHTML = `${res.data.count}条评论`;
+          clearInterval(timer);
+          timer = setInterval(() => {
+            document.querySelectorAll(".time").forEach((item) => {
+              item.innerHTML = formatTimestamp(
+                item.getAttribute("value") * 1
+              );
+            });
+          }, 10000);
+        })
+        .catch((error) => {
+          console.error("获取评论列表失败", error);
+        });
+    }
+    // 渲染评论列表
+    function renderComments(comments) {
+      const currentUser = JSON.parse(sessionStorage.getItem("user")) || {};
+      const commentList = document.getElementById("comment-list");
+      commentList.innerHTML = ""; // 清空当前列表
+
+      // 找到所有顶级评论（parent_id = 0）
+      const topLevelComments = comments.filter(
+        (comment) => comment.parent_id === 0
+      );
+
+      // 渲染每条评论及其回复
+      topLevelComments.forEach((comment) => {
+        const commentItem = document.createElement("div");
+        commentItem.className = "comment-item";
+        commentItem.innerHTML = `
+            <div class="head-img"><img src="${
+              comment.user.avatar
+                ? `/api/user/avatar?id=${comment.user.id}`
+                : `https://cravatar.cn/avatar/${getMd5OfEmail(
+                    comment.user.email
+                  )}?d=retro&f=y`
+            }" /></div>
+            <div class="comment-content">
+               <span class="nickname primary">${
+                 comment.user?.nickname || comment.user?.username
+               }</span><span>发表于</span><span class="secondary time" value="${
+            comment.createdAt
+          }"> ${formatTimestamp(comment.createdAt)}</span>
+<div class="content">${comment.content}</div>
+<div class="action">
+${
+  currentUser.role === "admin" || currentUser.id === comment.user.id
+    ? `<span onclick="handleDelete(${comment.id})">${deleteIcon}</span>`
+    : ""
+}
+  <span onclick="handleReply(${comment.id}, ${comment.id}, '${
+            comment.user.nickname || comment.user.username
+          }', '${comment.user.email}')" class="reply-icon">${replyIcon}</span>
+  </div>
+ <div class="replies" id="replies-${comment.id}"></div>
+              </div>
+           
+          `;
+        // <button onclick="handleDelete(${comment.id})">删除</button>
+        commentList.appendChild(commentItem);
+
+        // 找到当前评论的所有回复
+        const replies = comments.filter(
+          (reply) => reply.parent_id === comment.id
+        );
+        renderReplies(comment.id, replies); // 渲染回复
+      });
+    }
+
+    // 渲染回复
+    function renderReplies(parentId, replies) {
+      const currentUser = JSON.parse(sessionStorage.getItem("user")) || {};
+      const repliesContainer = document.getElementById(`replies-${parentId}`);
+      repliesContainer.innerHTML = ""; // 清空当前回复
+
+      replies.forEach((reply) => {
+        const replyItem = document.createElement("div");
+        replyItem.className = "reply-item";
+        replyItem.innerHTML = `
+            <div class="head-img"><img src="${
+              reply.user.avatar
+                ? `/api/user/avatar?id=${reply.user.id}`
+                : `https://cravatar.cn/avatar/${getMd5OfEmail(
+                    reply.user.email
+                  )}?d=retro&f=y`
+            }" /></div>
+            <div class="comment-content">
+               <span class="nickname primary">${
+                 reply.user?.nickname || reply.user?.username
+               }</span><span>回复于</span><span class="secondary time" value="${
+            reply.createdAt
+          }">  ${formatTimestamp(reply.createdAt)}</span>
+<div class="content">${reply.content}</div>
+              <div class="action">
+                ${
+                  currentUser.role === "admin" ||
+                  currentUser.id === reply.user.id
+                    ? `<span onclick="handleDelete(${reply.id})">${deleteIcon}</span>`
+                    : ""
+                }
+                 <span onclick="handleReply(${reply.parent_id}, ${reply.id}, '${
+            reply.user.nickname || reply.user.username
+          }', '${reply.user.email}')" class="reply-icon">${replyIcon}</span>
+                </div>
+                <div class="replies" id="replies-${reply.id}">
+                  
+                  </div>
+              </div>
+            
+          `;
+        repliesContainer.appendChild(replyItem);
+      });
+    }
+
+    // 新增评论
+    function handleAdd(parent_id = 0, email) {
+      const isLogin = sessionStorage.getItem("user");
+      if (isLogin) {
+        const currentUser = JSON.parse(isLogin);
+        if (!currentUser.id) {
+          alert("请先登录");
+          return;
+        }
+      } else {
+        alert("请先登录");
+        return;
+      }
+      let inputValue = document.getElementsByTagName("textarea")[0].value;
+      const url = window.location.href;
+      if (parent_id !== 0 && email) {
+        inputValue = document.getElementById("current-comment").value;
+      }
+      if (!inputValue) {
+        return false;
+      }
+      axios({
+          method: "post",
+          url: "/api/docs/comment",
+          data: {
+            url: url,
+            content: inputValue,
+            parent_id: parent_id, // 默认添加顶级评论
+          },
+        })
+        .then((res) => {
+          const url = window.location.href;
+          getComments(url); // 重新获取评论列表
+          document.getElementsByTagName("textarea")[0].value = "";
+          // 发送飞书消息
+          axios({
+              method: "post",
+              url: "/api/docs/sendMsg",
+              data: {
+                content: inputValue,
+                url: url,
+              },
+            })
+            .then((res) => {
+              console.log("发送邮件成功", res.data);
+            })
+            .catch((error) => {
+              console.error("发送邮件失败", error);
+            });
+          if (parent_id !== 0 && email) {
+            // 发送邮件提醒
+            axios({
+                method: "post",
+                url: "/api/docs/replyNotify",
+                data: {
+                  email: email,
+                  url: url,
+                },
+              })
+              .then((res) => {
+                console.log("发送邮件成功", res.data);
+              })
+              .catch((error) => {
+                console.error("发送邮件失败", error);
+              });
+          }
+        })
+        .catch((error) => {
+          console.error("新增评论失败", error);
+        });
+    }
+
+    // 删除评论
+    function handleDelete(id) {
+      if (confirm("确定要删除这条评论吗？")) {
+        axios({
+            method: "delete",
+            url: `/api/docs/comment/${id}`,
+          })
+          .then((res) => {
+            console.log("删除评论成功", res.data);
+            const url = window.location.href;
+            getComments(url); // 重新获取评论列表
+          })
+          .catch((error) => {
+            console.error("删除评论失败", error);
+          });
+      }
+    }
+    // 获取用户信息
+    function getUser() {
+      if (sessionStorage.getItem("user")) {
+        const currentUser = JSON.parse(sessionStorage.getItem("user"));
+	if(!currentUser.username) return false;
+        document.querySelector(".nickname").innerHTML =
+          currentUser.nickname || currentUser.username;
+        if (currentUser.avatar) {
+          document.querySelector(
+            ".head-img"
+          ).innerHTML = `<img src="/api/user/avatar?id=${currentUser.id}" />`;
+          return;
+        } else {
+          document.querySelector(
+            ".head-img"
+          ).innerHTML = `<img src="https://cravatar.cn/avatar/${getMd5OfEmail(
+              currentUser.email
+            )}?d=retro&f=y" />`;
+        }
+        return;
+      } else {
+        axios({
+            method: "get",
+            url: "/api/user",
+          })
+          .then((res) => {
+            if (res.data && res.data.id) {
+              sessionStorage.setItem("user", JSON.stringify(res.data));
+              document.querySelector(".nickname").innerHTML =
+                res.data.nickname || res.data.username;
+              if (currentUser.avatar) {
+                document.querySelector(
+                  ".head-img"
+                ).innerHTML = `<img src="/api/user/avatar?id=${res.data.id}" />`;
+                return;
+              } else {
+                document.querySelector(
+                  ".head-img"
+                ).innerHTML = `<img src="https://cravatar.cn/avatar/${getMd5OfEmail(
+                  res.data.email
+                )}?d=retro&f=y" />`;
+              }
+            }
+
+          })
+          .catch((error) => {
+            console.error("获取用户信息失败", error);
+          });
+      }
+    }
+    //回复评论
+    function handleReply(parentId, id, nickname, email) {
+      // 删除其他输入框
+      const currentReply = document.querySelector(".current-reply");
+      if (currentReply) {
+        currentReply.remove();
+      }
+      const repliesContainer = document.getElementById(`replies-${id}`);
+      // 创建一个新的 div 元素，并设置 class 为 "input"
+      const newInputDiv = document.createElement("div");
+      newInputDiv.className = "input current-reply";
+      // 创建 head-img 元素
+      const headImgDiv = document.createElement("div");
+      headImgDiv.className = "head-img";
+      // 创建 textarea 元素
+      const textareaElement = document.createElement("textarea");
+      textareaElement.id = "current-comment";
+      textareaElement.name = "comment";
+      textareaElement.rows = 5;
+      textareaElement.cols = 5;
+      textareaElement.placeholder = "说点什么...";
+      textareaElement.required = true;
+      textareaElement.minLength = 10;
+      textareaElement.maxLength = 200;
+      textareaElement.autofocus = true;
+      textareaElement.spellcheck = true;
+      textareaElement.autocomplete = "on";
+      textareaElement.value = `回复 @${nickname}: `;
+      // 创建 button 元素
+      const submitButton = document.createElement("button");
+      submitButton.className = "submit";
+      submitButton.textContent = "评论";
+      submitButton.onclick = () => handleAdd(parentId, email); // 绑定点击事件
+      // 将 head-img、textarea 和 button 添加到 newInputDiv 中
+      newInputDiv.appendChild(headImgDiv);
+      newInputDiv.appendChild(textareaElement);
+      newInputDiv.appendChild(submitButton);
+      repliesContainer.insertAdjacentElement("beforeend", newInputDiv);
+      textareaElement.focus();
+    }
+    const handleLogin = () => {
+      const currentUser = JSON.parse(sessionStorage.getItem("user"));
+      if (currentUser && currentUser.id) {
+        return;
+      }
+      window.location.href = "/ssoLogin/?website=" + window.location.href;
+    };
+    // 页面加载时获取评论列表
+    window.onload = function () {
+      getUser();
+      const url = window.location.href;
+      timer && clearInterval(timer);
+      getComments(url);
+    };
+    window.onbeforeunload = function () {
+      alert("页面关闭");
+      timer && clearInterval(timer);
+    };
+  </script>
+</body>
+
+</html></div>
+  
+</div>
+                </footer>
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../../../index_api.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">K230 SDK API 参考</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="K230_%E7%B3%BB%E7%BB%9F%E6%8E%A7%E5%88%B6_MAPI%E5%8F%82%E8%80%83.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">K230系统控制MAPI参考</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">概述</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">概述</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">核间通讯实现原理</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">内存空间使用</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">功能描述</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ipcmsg">IPCMSG</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#datafifo">DATAFIFO</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#api">API 参考</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">IPCMSG</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-ipcmsg-add-service">kd_ipcmsg_add_service</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-ipcmsg-del-service">kd_ipcmsg_del_service</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-ipcmsg-try-connect">kd_ipcmsg_try_connect</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-ipcmsg-connect">kd_ipcmsg_connect</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-ipcmsg-disconnect">kd_ipcmsg_disconnect</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-ipcmsg-is-connect">kd_ipcmsg_is_connect</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-ipcmsg-send-only">kd_ipcmsg_send_only</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-ipcmsg-send-async">kd_ipcmsg_send_async</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-ipcmsg-send-sync">kd_ipcmsg_send_sync</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-ipcmsg-run">kd_ipcmsg_run</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-ipcmsg-create-message">kd_ipcmsg_create_message</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-ipcmsg-create-resp-message">kd_ipcmsg_create_resp_message</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-ipcmsg-destroy-message">kd_ipcmsg_destroy_message</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">DATAFIFO</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-datafifo-open">kd_datafifo_open</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-datafifo-open-by-addr">kd_datafifo_open_by_addr</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-datafifo-close">kd_datafifo_close</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-datafifo-read">kd_datafifo_read</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-datafifo-write">kd_datafifo_write</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kd-datafifo-cmd">kd_datafifo_cmd</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">数据类型</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">IPCMSG</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-ipcmsg-max-content-len">K_IPCMSG_MAX_CONTENT_LEN</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-ipcmsg-privdata-num">K_IPCMSG_PRIVDATA_NUM</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-ipcmsg-invalid-msgid">K_IPCMSG_INVALID_MSGID</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-ipcmsg-connect-s">k_ipcmsg_connect_s</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-ipcmsg-messsage-s">k_ipcmsg_messsage_s</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-ipcmsg-handle-fn-ptr">k_ipcmsg_handle_fn_ptr</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">DATAFIFO</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-datafifo-handle">k_datafifo_handle</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-datafifo-invalid-handle">K_DATAFIFO_INVALID_HANDLE</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-datafifo-releasestream-fn-ptr">K_DATAFIFO_RELEASESTREAM_FN_PTR</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-datafifo-open-mode-e">K_DATAFIFO_OPEN_MODE_E</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-datafifo-params-s">k_datafifo_params_s</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-datafifo-cmd-e">k_datafifo_cmd_e</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">错误码</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">IPCMSG</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">DATAFIFO</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">调试信息</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ipcm">ipcm</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026 嘉楠 | 京ICP备2025124317号 | 京公网安备11010802045870号.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item"><style>
+    .cancat{
+        font-size: 1rem;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 1rem;
+      }
+      .canact-section a{
+       color: #ebedf0;
+       line-height: 30px;
+       font-weight: 400;
+       text-decoration: none;
+      }
+      .canact-section a:hover {
+       color: #4d8eef;
+      }
+   </style>
+   <div class="footer-center">
+    <div class="cancat">开发者资源</div>
+    <section class="canact-section"><a href="https://www.kendryte.com/zh/resource">资料下载</a></section>
+    <section class="canact-section"><a href="https://www.kendryte.com/zh/document">文档中心</a></section>
+    <section class="canact-section"><a href="https://www.kendryte.com/zh/training/start">模型训练</a></section>
+    <section class="canact-section"><a href="https://www.kendryte.com/zh/model/library">模型库</a></section>
+   </div></div>
+      
+    </div>
+  
+  
+    <div class="footer-items__center">
+      
+        <div class="footer-item"><style>
+ .cancat{
+     font-size: 1rem;
+     font-weight: 700;
+     color: #fff;
+     margin-bottom: 1rem;
+   }
+   .canact-section a{
+    color: #ebedf0;
+    line-height: 30px;
+    font-weight: 400;
+    text-decoration: none;
+   }
+   .canact-section a:hover {
+    color: #4d8eef;
+   }
+   .copy-right {
+    margin-top:30px;
+    color: #ebedf0;
+   }
+</style>
+<div class="footer-center">
+ <div class="cancat">联系我们</div>
+ <section class="canact-section"><a href="mailto:salesai@canaan-creative.com">邮箱：salesAI@canaan-creative.com</a></section>
+ <section class="canact-section"><a href="/">QQ 群： 578895334 </a></section>
+ <section class="canact-section"><a href="/">微信公众号：嘉楠开发者</a></section>
+</div></div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><style>
+    .cancat{
+        font-size: 1rem;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 1rem;
+      }
+      .canact-section a{
+       color: #ebedf0;
+       line-height: 30px;
+       font-weight: 400;
+       text-decoration: none;
+      }
+      .canact-section a:hover {
+       color: #4d8eef;
+      }
+   </style>
+   <div class="footer-center">
+    <div class="cancat">资讯和社区</div>
+    <section class="canact-section"><a href="https://www.kendryte.com">勘智开发者社区</a></section>
+    <section class="canact-section"><a href="https://www.kendryte.com/zh/products">产品中心</a></section>
+    <section class="canact-section"><a href="https://www.kendryte.com/answer">问答社区</a></section>
+    <section class="canact-section"><a href="https://www.kendryte.com/zh/blog">博客</a></section>
+   </div></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

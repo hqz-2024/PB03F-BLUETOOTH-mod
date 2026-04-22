@@ -1,0 +1,4347 @@
+<!-- _templates/layout.html -->
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>K230 GPU API参考 &#8212; K230 Linux+RT-Smart SDK</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/topbar.css?v=d050732f" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom-theme.css?v=e40dc788" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/auto-nums.css?v=c078078a" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../../_static/documentation_options.js?v=946197a6"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '01_software/board/mpp/K230_GPU_API参考';</script>
+    <script src="../../../_static/mermaid.min.js?v=45c054c2"></script>
+    <script src="../../../_static/init_mermaid.js?v=999e7285"></script>
+    <script src="../../../_static/transform.js?v=23760c99"></script>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="K230 SHA256 API参考" href="K230_SHA256_API%E5%8F%82%E8%80%83.html" />
+    <link rel="prev" title="K230 FFT API参考" href="K230_FFT_API%E5%8F%82%E8%80%83.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+
+  gtag("config", "G-7J9HL06P02");
+</script>
+ <script>
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "tqhe6w0zs6");
+ </script>
+<script>
+  var _hmt = _hmt || [];
+  window._hmt = _hmt; // 修改为window 全局变量
+  (function () {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?d4832d9026d5bdd9eca72f27bb63dfb3"; //此处请替换你的站点i
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item"><a href="/" style="height: 100%; display: flex; align-items: center;"><img src="https://www.kendryte.com/uploads/branding/5rtuJdbiAZ7.png" style="height: 50%; width: auto;" alt=""></a> </div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><div class="document-navbar-nav">
+  <span class="nav-item"><a href="/zh/products">产品中心</a></span>
+  <span class="nav-item md-none sm-show"
+    ><a href="/zh/resource">资料下载</a></span
+  >
+  <span class="nav-item active"><a href="/zh/document">文档中心</a></span>
+  <span class="nav-item md-none sm-show"
+    ><a href="/zh/model/library">应用下载</a></span
+  >
+  <span class="nav-item md-none sm-show"
+    ><a href="/zh/training/start">模型训练</a></span
+  >
+  <span class="nav-item md-none lg-none sm-show"
+    ><a href="/zh/blog">博客</a></span
+  >
+  <span class="nav-item md-none sm-show"
+    ><a href="/zh/coursecenter">课程中心</a></span
+  >
+  <!-- 添加点击事件 -->
+  <span class="nav-item bbs" onclick="goBbs()"
+    >问答社区
+    <img
+      src="https://www.kendryte.com/img/hot.ebb7d69e.svg"
+      style="transform: translateY(-50%)"
+      alt=""
+  /></span>
+</div>
+<!-- 写样式 -->
+<style>
+  .document-navbar-nav .nav-item {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    margin-right: 20px;
+    cursor: pointer;
+  }
+
+  .document-navbar-nav .nav-item a {
+    color: #303133;
+  }
+
+  .document-navbar-nav .nav-item a:hover {
+    color: #66819d;
+  }
+
+  .document-navbar-nav .active a {
+    color: #002d5c;
+    font-weight: 700;
+  }
+
+  .document-navbar-nav .bbs {
+    color: #d12d26;
+  }
+
+  .document-navbar-nav .bbs:hover {
+    color: rgb(231, 100, 100);
+  }
+
+  @media screen and (max-width: 1200px) {
+    .document-navbar-nav .md-none {
+      display: none !important;
+    }
+  }
+
+  @media screen and (max-width: 960px) {
+    .document-navbar-nav .nav-item {
+      display: block !important;
+    }
+    .document-user-info {
+      display: none !important;
+    }
+  }
+  @media screen and (max-width: 1450px) {
+    .lg-none {
+      display: none !important;
+    }
+  }
+</style>
+<script>
+  function goBbs() {
+    location.href = `/answer/`;
+  }
+</script></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item"><div class="document-user-info">
+  <div class="name-info" onclick="(e) => showDropDown(e)">
+    <div class="login-con">
+      <span class="user-avatar jn_user-avt"></span>
+      <div class="jn_user-name">
+        <span></span>
+      </div>
+      <ul class="Dropdown-menu" style="display: none">
+        <li class="item-profile">
+          <a class="Button-label" href="/user">个人资料</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="login-con jn_user-btns">
+    <a class="jn_user-btn" onclick="goLogin()">登录</a>
+    <a class="jn_user-btn" onclick="goRegister()">注册</a>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  if (!window._LOGIN_LOADED) {
+    console.log("1111111111，header login.js loaded");
+    window._LOGIN_LOADED = true;
+
+    function goLogin() {
+      const currentUser = JSON.parse(sessionStorage.getItem("user"));
+      if (currentUser && currentUser.id) {
+        return;
+      }
+      location.href = "/ssoLogin/?website=" + location.href;
+    }
+
+    function goUser(event) {
+      event.stopPropagation();
+      location.href = "/zh/user";
+    }
+
+    function goRegister() {
+      const currentUser = JSON.parse(sessionStorage.getItem("user"));
+      if (currentUser && currentUser.id) {
+        return;
+      }
+      location.href = "/ssoRegister/?website=" + location.href;
+    }
+    async function getUser() {
+      const cachedUser = sessionStorage.getItem("user");
+      if (cachedUser) {
+        return JSON.parse(cachedUser);
+      }
+      // 异步请求数据
+      try {
+        const res = await axios.get("/api/user");
+	if(!res.data.username) return false;
+        sessionStorage.setItem("user", JSON.stringify(res.data));
+        return res.data;
+      } catch (error) {
+        console.error("获取用户信息失败", error);
+        return null; // 或 throw error 让调用方处理
+      }
+    }
+
+    function getMd5OfEmail(email) {
+      const emailLowercase = email.toLowerCase();
+      const md5Hash = CryptoJS.MD5(emailLowercase).toString();
+      return md5Hash;
+    }
+
+    async function loginInit() {
+      const jn_user_name = document.querySelector(".jn_user-name");
+      const user_avatar = document.querySelector(".user-avatar"); //头像
+      const jn_user_info = document.querySelector(".name-info"); //用户信息
+      const jn_user_btns = document.querySelector(".jn_user-btns"); //登录注册按钮
+      const Dropdown_menu = document.querySelector(".Dropdown-menu"); //下拉菜单
+      const userInfo = await getUser(); // 注意：需在 async 函数中使用
+      if (userInfo && userInfo.username) {
+        jn_user_info.style.display = "block";
+        jn_user_btns.style.display = "none";
+        if (userInfo.nickname) {
+          jn_user_name.innerHTML = userInfo.nickname;
+        } else if (userInfo.username) {
+          jn_user_name.innerHTML = userInfo.username;
+        }
+        let avatarUrl = userInfo.avatar;
+        if (avatarUrl) {
+          avatarUrl += `?id=${userInfo.id}&t=${userInfo.id}`; // 添加查询参数
+        } else {
+          avatarUrl = `https://cravatar.cn/avatar/${getMd5OfEmail(
+          userInfo.email
+        )}?d=retro&f=y`;
+        }
+        user_avatar.src = avatarUrl;
+        user_avatar.style.backgroundImage = `url(${avatarUrl})`;
+        user_avatar.style.backgroundSize = "cover";
+      } else {
+        jn_user_info.style.display = "none";
+        jn_user_btns.style.display = "block";
+      }
+      jn_user_info.addEventListener("click", function (event) {
+        event.stopPropagation();
+        Dropdown_menu.style.display =
+          Dropdown_menu.style.display === "none" ? "block" : "none";
+      });
+    }
+    loginInit();
+  }
+</script>
+<!-- 增加css -->
+<style>
+  .document-user-info .login-con {
+    display: flex;
+    align-items: center;
+    margin-left: 30px;
+    font-size: 15px;
+    color: #303133;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .document-user-info .jn_user-avt {
+    background: #99abbe;
+    border-radius: 30px;
+    width: 31px;
+    height: 31px;
+    position: relative;
+    margin-right: 5px;
+    overflow: hidden;
+  }
+
+  .document-user-info .jn_user-avt img {
+    width: 100%;
+  }
+
+  .document-user-info .jn_user-name {
+    max-width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+  }
+
+  .document-user-info .jn_user-name :hover {
+    opacity: 0.9;
+  }
+
+  .document-user-info .jn_user-btn {
+    padding: 0 10px;
+    cursor: pointer;
+  }
+
+  .document-user-info .jn_user-btn:hover {
+    opacity: 0.9;
+  }
+
+  .document-user-info .Dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1030;
+    min-width: 160px;
+    padding: 8px 0;
+    margin: 7px 0;
+    background: #002d5c;
+    border: 1px solid #121212;
+    border-radius: 4px;
+    box-shadow: 0 2px 6px #013972;
+    list-style: none;
+    text-align: left;
+    color: #111;
+    font-size: 15px;
+    line-height: 1.5;
+    overflow: hidden;
+  }
+
+  .document-user-info .Dropdown-menu a {
+    display: block;
+    color: #b9b9b9;
+    padding-left: 30px;
+  }
+
+  .document-user-info .Dropdown-menu:hover {
+    text-decoration: none;
+  }
+
+  .document-user-info .item-profile a {
+    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACi0lEQVRYR+2Wy3EbMQyGAc6Ie4xcQeQKIlcQ6SKuTokriFOBlQqcDixXEKuC6LbkXmRVEKWCqAOvr5oRkYGHzDDrfXDXyfhiHLlc4iPwAwTCCxu+sH+IBsiybCSEuCSiMSKOiahAxB0A7Iho4tcAYA8A6yRJVtPptGi7YBSA1nqBiNcAsOLDrbWFEOICAD7VOSCivRDifDabMWSttQIYY74CAANM/GF5nl8Q0be22/F3RDxrgmgEyLJsIoRYh85dKn4AwDAGgCORJMlZXToaAbTW7HynlOIoPJox5rYp9FVQRPQlTdNl1bdagM1mMzwcDvfW2tP5fM7C8gAsrDcxtw/2bJVSk04ALvwbpdRfkMYY6uictxdKqZM+AN/DH31UegBA+SL+jNoUOLH9klKehALqGYHuKXCC2yHicjabsfAezQnzQ5coENFNmqaLTingzVzv1tqrsIy8NjoAPFhrx6GQw39bG5G78Vsp5dSnQmu9RMTLGAhE/BxGsPxPK4ATHtcwh31hrd3ybWL6QVP9t4qwTGqM+QgA3JDeBd8e+DECgPfhGhHdEdGiLuydUlAV5jzPx4PBYB9WB68dj8cixumzAWJyH7unVQP+INcXONQjABi7dZ4FeC4Y8kzAswAi7ololyTJ9p/MA+wYEa8Qkd//n5xfdh5RBfxmLKWUN00gjRFw7/41EW29qJwYeRaIfo6bBpNaAD90hHXcZRApaYDTNK0aTCoBgm53rpRau67IcyAPIn2tkFKeltNRCaC1ZjHdlgYRrvewB/QBWSmlWEt/7AmACzOLZ+Rpe/T/WrjygPMEwBjDKr/nV9CfwgIEAO6Ez7Zye64DeLajhgPuwtRGN6L/RfQK8BqB38AuVjD+RLVIAAAAAElFTkSuQmCC") no-repeat left center;
+    background-size: auto 80%;
+  }
+
+  .document-user-info .Dropdown-menu li {
+    padding: 8px 15px;
+    display: block;
+    width: 100%;
+    color: #b9b9b9;
+    text-align: left;
+    font-size: 15px;
+    font-weight: normal;
+    text-decoration: none;
+  }
+
+  .document-user-info .Dropdown-menu li:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+
+  @media screen and (max-width: 960px) {
+    .document-user-info {
+      display: none !important;
+    }
+  }
+</style></div>
+      
+        <div class="navbar-item"><div class="document-nav-lang">
+  <div class="document-menu-lang">
+    <span tabindex="0" class="lang-txt" style="
+        background-image: url('https://kendryte.com/img/ch-flag.a61145a4.svg');
+      ">中文 | English</span>
+    <div class="jn_lan-list">
+      <a class="jn_lan-item cn">简体中文</a>
+      <a class="jn_lan-item eng">English</a>
+    </div>
+  </div>
+  <div class="document-menu-lang-mobile">
+    <span class="lang-zh cn">简体中文</span> | <span class="lang-en eng">English</span>
+  </div>
+</div>
+<style>
+  .document-menu-lang-mobile {
+    display: none;
+  }
+
+  .document-menu-lang-mobile .lang-con {
+    text-align: center;
+  }
+
+  .document-menu-lang-mobile.lang-zh,
+  .document-menu-lang-mobile.lang-en {
+    color: #2980b9;
+    cursor: pointer;
+  }
+
+  .document-menu-lang {
+    padding: 0 8px;
+    position: relative;
+    font-size: 13px;
+    border: 1px solid #c0c4cc;
+    border-radius: 10px;
+    color: #303133;
+  }
+
+  .document-menu-lang .lang-txt {
+    padding-right: 28px;
+    background: url("https://kendryte.com/img/ch-flag.a61145a4.svg") no-repeat right 50%;
+    background-size: auto 68%;
+    display: block;
+    cursor: pointer;
+  }
+
+  .document-menu-lang .jn_lan-list {
+    display: none;
+    text-align: center;
+    position: absolute;
+    background: #fff;
+    border-radius: 5px;
+    padding: 10px 20px;
+    flex-wrap: wrap;
+    top: 43px;
+    left: 50%;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    border: 1px solid #ebeef5;
+    transform: translateX(-50%);
+  }
+
+  .document-menu-lang .jn_lan-list a {
+    color: #303133;
+  }
+
+  .document-menu-lang .jn_lan-item.cn {
+    background: url("https://kendryte.com/img/ch-flag.a61145a4.svg") no-repeat 0;
+  }
+
+  .document-menu-lang .jn_lan-item {
+    font-size: 15px;
+    cursor: pointer;
+    padding-left: 32px;
+    color: #606266;
+    width: 100%;
+    line-height: 3;
+    display: block;
+    white-space: nowrap;
+    background-size: auto 40%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .document-menu-lang .jn_lan-item.eng {
+    background: url("https://kendryte.com/img/en-flag.2d05326c.svg") no-repeat 0;
+  }
+
+  .document-menu-lang .jn_lan-list::after {
+    content: "";
+    border-width: 8px;
+    border-style: solid;
+    border-color: transparent transparent #fff transparent;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translate(-50%, -100%);
+  }
+
+  .document-menu-lang-mobile {
+    display: none;
+    border: 1px solid #c0c4cc;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    padding: 0 8px;
+  }
+
+  @media screen and (max-width: 960px) {
+    .document-menu-lang-mobile {
+      display: block;
+    }
+
+    .document-menu-lang {
+      display: none;
+    }
+  }
+</style>
+<script>
+  if (!window._LANGUAGE_TOGGLE_LOADED) {
+    window._LANGUAGE_TOGGLE_LOADED = true
+    const docsUrlList = {
+      k230_docs: {
+        zh: "https://www.kendryte.com/k230/zh/dev/index.html",
+        en: "https://www.kendryte.com/k230/en/dev/index.html",
+      },
+      k230_canmv_docs: {
+        zh: "https://www.kendryte.com/k230_canmv/zh/main/index.html",
+        en: "https://www.kendryte.com/k230_canmv/en/main/index.html",
+      },
+      rtt: {
+        zh: "https://www.kendryte.com/k230/zh/rtt/dev/index_rtt_only.html",
+        en: "https://www.kendryte.com/k230/en/rtt/dev/index_rtt_only.html",
+      },
+      k230_ai_docs: {
+        zh: "https://www.kendryte.com/ai_docs/zh/main/index.html",
+        en: "https://www.kendryte.com/ai_docs/en/main/index.html",
+      },
+      rtos: {
+        zh: "https://www.kendryte.com/k230_rtos/zh/main/index.html",
+        en: "https://www.kendryte.com/k230_rtos/en/main/index.html",
+      },
+    };
+    const whichDocs = () => {
+      if (
+        location.href.includes("/k230_canmv/zh/") ||
+        location.href.includes("/k230_canmv/en/")
+      ) {
+        return "k230_canmv_docs";
+      } else if (
+        location.href.includes("/k230/k230_rtos_sdk_docs/") ||
+        location.href.includes("/k230/k230_rtos_sdk_docs/")
+      ) {
+        return "rtos";
+      } else if (
+        location.href.includes("/k230/zh/") ||
+        location.href.includes("/k230/en/")
+      ) {
+        return "k230_docs";
+      } else if (
+        location.href.includes("/ai_docs/zh/") ||
+        location.href.includes("/ai_docs/en/")
+      ) {
+        return "k230_ai_docs";
+      } else {
+        return "rtos";
+      }
+      return null;
+    };
+
+    function setupLanguageToggle() {
+      function handleLanguageSwitch(language) {
+        const langButton = document.querySelector(".lang-txt");
+        const flagUrl =
+          language === "cn" ?
+          "https://kendryte.com/img/ch-flag.a61145a4.svg" :
+          "https://kendryte.com/img/en-flag.2d05326c.svg";
+        langButton.style.backgroundImage = `url('${flagUrl}')`;
+        const docsKey = whichDocs();
+        if (docsKey && docsUrlList[docsKey]) {
+          location.href = docsUrlList[docsKey][language === "cn" ? "zh" : "en"];
+        }
+        langList.style.display = "none";
+      }
+
+      // 监听整个document的点击事件
+      document.addEventListener("click", function (event) {
+        const langList = document.querySelector(".jn_lan-list");
+        const target = event.target;
+        if (target.closest(".lang-txt")) {
+          langList.style.display =
+            langList.style.display === "flex" ? "none" : "flex";
+        }
+        if (target.closest(".cn")) {
+          console.log("点击了中文");
+          handleLanguageSwitch("cn");
+          return;
+        }
+        if (target.closest(".eng")) {
+          console.log("点击了eng");
+          handleLanguageSwitch("eng");
+          return;
+        }
+      });
+    }
+    // 初始化语言切换功能
+    document.addEventListener("DOMContentLoaded", setupLanguageToggle);
+  }
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><div class="document-navbar-nav">
+  <span class="nav-item"><a href="/zh/products">产品中心</a></span>
+  <span class="nav-item md-none sm-show"
+    ><a href="/zh/resource">资料下载</a></span
+  >
+  <span class="nav-item active"><a href="/zh/document">文档中心</a></span>
+  <span class="nav-item md-none sm-show"
+    ><a href="/zh/model/library">应用下载</a></span
+  >
+  <span class="nav-item md-none sm-show"
+    ><a href="/zh/training/start">模型训练</a></span
+  >
+  <span class="nav-item md-none lg-none sm-show"
+    ><a href="/zh/blog">博客</a></span
+  >
+  <span class="nav-item md-none sm-show"
+    ><a href="/zh/coursecenter">课程中心</a></span
+  >
+  <!-- 添加点击事件 -->
+  <span class="nav-item bbs" onclick="goBbs()"
+    >问答社区
+    <img
+      src="https://www.kendryte.com/img/hot.ebb7d69e.svg"
+      style="transform: translateY(-50%)"
+      alt=""
+  /></span>
+</div>
+<!-- 写样式 -->
+<style>
+  .document-navbar-nav .nav-item {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    margin-right: 20px;
+    cursor: pointer;
+  }
+
+  .document-navbar-nav .nav-item a {
+    color: #303133;
+  }
+
+  .document-navbar-nav .nav-item a:hover {
+    color: #66819d;
+  }
+
+  .document-navbar-nav .active a {
+    color: #002d5c;
+    font-weight: 700;
+  }
+
+  .document-navbar-nav .bbs {
+    color: #d12d26;
+  }
+
+  .document-navbar-nav .bbs:hover {
+    color: rgb(231, 100, 100);
+  }
+
+  @media screen and (max-width: 1200px) {
+    .document-navbar-nav .md-none {
+      display: none !important;
+    }
+  }
+
+  @media screen and (max-width: 960px) {
+    .document-navbar-nav .nav-item {
+      display: block !important;
+    }
+    .document-user-info {
+      display: none !important;
+    }
+  }
+  @media screen and (max-width: 1450px) {
+    .lg-none {
+      display: none !important;
+    }
+  }
+</style>
+<script>
+  function goBbs() {
+    location.href = `/answer/`;
+  }
+</script></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><div class="document-user-info">
+  <div class="name-info" onclick="(e) => showDropDown(e)">
+    <div class="login-con">
+      <span class="user-avatar jn_user-avt"></span>
+      <div class="jn_user-name">
+        <span></span>
+      </div>
+      <ul class="Dropdown-menu" style="display: none">
+        <li class="item-profile">
+          <a class="Button-label" href="/user">个人资料</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="login-con jn_user-btns">
+    <a class="jn_user-btn" onclick="goLogin()">登录</a>
+    <a class="jn_user-btn" onclick="goRegister()">注册</a>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  if (!window._LOGIN_LOADED) {
+    console.log("1111111111，header login.js loaded");
+    window._LOGIN_LOADED = true;
+
+    function goLogin() {
+      const currentUser = JSON.parse(sessionStorage.getItem("user"));
+      if (currentUser && currentUser.id) {
+        return;
+      }
+      location.href = "/ssoLogin/?website=" + location.href;
+    }
+
+    function goUser(event) {
+      event.stopPropagation();
+      location.href = "/zh/user";
+    }
+
+    function goRegister() {
+      const currentUser = JSON.parse(sessionStorage.getItem("user"));
+      if (currentUser && currentUser.id) {
+        return;
+      }
+      location.href = "/ssoRegister/?website=" + location.href;
+    }
+    async function getUser() {
+      const cachedUser = sessionStorage.getItem("user");
+      if (cachedUser) {
+        return JSON.parse(cachedUser);
+      }
+      // 异步请求数据
+      try {
+        const res = await axios.get("/api/user");
+	if(!res.data.username) return false;
+        sessionStorage.setItem("user", JSON.stringify(res.data));
+        return res.data;
+      } catch (error) {
+        console.error("获取用户信息失败", error);
+        return null; // 或 throw error 让调用方处理
+      }
+    }
+
+    function getMd5OfEmail(email) {
+      const emailLowercase = email.toLowerCase();
+      const md5Hash = CryptoJS.MD5(emailLowercase).toString();
+      return md5Hash;
+    }
+
+    async function loginInit() {
+      const jn_user_name = document.querySelector(".jn_user-name");
+      const user_avatar = document.querySelector(".user-avatar"); //头像
+      const jn_user_info = document.querySelector(".name-info"); //用户信息
+      const jn_user_btns = document.querySelector(".jn_user-btns"); //登录注册按钮
+      const Dropdown_menu = document.querySelector(".Dropdown-menu"); //下拉菜单
+      const userInfo = await getUser(); // 注意：需在 async 函数中使用
+      if (userInfo && userInfo.username) {
+        jn_user_info.style.display = "block";
+        jn_user_btns.style.display = "none";
+        if (userInfo.nickname) {
+          jn_user_name.innerHTML = userInfo.nickname;
+        } else if (userInfo.username) {
+          jn_user_name.innerHTML = userInfo.username;
+        }
+        let avatarUrl = userInfo.avatar;
+        if (avatarUrl) {
+          avatarUrl += `?id=${userInfo.id}&t=${userInfo.id}`; // 添加查询参数
+        } else {
+          avatarUrl = `https://cravatar.cn/avatar/${getMd5OfEmail(
+          userInfo.email
+        )}?d=retro&f=y`;
+        }
+        user_avatar.src = avatarUrl;
+        user_avatar.style.backgroundImage = `url(${avatarUrl})`;
+        user_avatar.style.backgroundSize = "cover";
+      } else {
+        jn_user_info.style.display = "none";
+        jn_user_btns.style.display = "block";
+      }
+      jn_user_info.addEventListener("click", function (event) {
+        event.stopPropagation();
+        Dropdown_menu.style.display =
+          Dropdown_menu.style.display === "none" ? "block" : "none";
+      });
+    }
+    loginInit();
+  }
+</script>
+<!-- 增加css -->
+<style>
+  .document-user-info .login-con {
+    display: flex;
+    align-items: center;
+    margin-left: 30px;
+    font-size: 15px;
+    color: #303133;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .document-user-info .jn_user-avt {
+    background: #99abbe;
+    border-radius: 30px;
+    width: 31px;
+    height: 31px;
+    position: relative;
+    margin-right: 5px;
+    overflow: hidden;
+  }
+
+  .document-user-info .jn_user-avt img {
+    width: 100%;
+  }
+
+  .document-user-info .jn_user-name {
+    max-width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+  }
+
+  .document-user-info .jn_user-name :hover {
+    opacity: 0.9;
+  }
+
+  .document-user-info .jn_user-btn {
+    padding: 0 10px;
+    cursor: pointer;
+  }
+
+  .document-user-info .jn_user-btn:hover {
+    opacity: 0.9;
+  }
+
+  .document-user-info .Dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1030;
+    min-width: 160px;
+    padding: 8px 0;
+    margin: 7px 0;
+    background: #002d5c;
+    border: 1px solid #121212;
+    border-radius: 4px;
+    box-shadow: 0 2px 6px #013972;
+    list-style: none;
+    text-align: left;
+    color: #111;
+    font-size: 15px;
+    line-height: 1.5;
+    overflow: hidden;
+  }
+
+  .document-user-info .Dropdown-menu a {
+    display: block;
+    color: #b9b9b9;
+    padding-left: 30px;
+  }
+
+  .document-user-info .Dropdown-menu:hover {
+    text-decoration: none;
+  }
+
+  .document-user-info .item-profile a {
+    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACi0lEQVRYR+2Wy3EbMQyGAc6Ie4xcQeQKIlcQ6SKuTokriFOBlQqcDixXEKuC6LbkXmRVEKWCqAOvr5oRkYGHzDDrfXDXyfhiHLlc4iPwAwTCCxu+sH+IBsiybCSEuCSiMSKOiahAxB0A7Iho4tcAYA8A6yRJVtPptGi7YBSA1nqBiNcAsOLDrbWFEOICAD7VOSCivRDifDabMWSttQIYY74CAANM/GF5nl8Q0be22/F3RDxrgmgEyLJsIoRYh85dKn4AwDAGgCORJMlZXToaAbTW7HynlOIoPJox5rYp9FVQRPQlTdNl1bdagM1mMzwcDvfW2tP5fM7C8gAsrDcxtw/2bJVSk04ALvwbpdRfkMYY6uictxdKqZM+AN/DH31UegBA+SL+jNoUOLH9klKehALqGYHuKXCC2yHicjabsfAezQnzQ5coENFNmqaLTingzVzv1tqrsIy8NjoAPFhrx6GQw39bG5G78Vsp5dSnQmu9RMTLGAhE/BxGsPxPK4ATHtcwh31hrd3ybWL6QVP9t4qwTGqM+QgA3JDeBd8e+DECgPfhGhHdEdGiLuydUlAV5jzPx4PBYB9WB68dj8cixumzAWJyH7unVQP+INcXONQjABi7dZ4FeC4Y8kzAswAi7ololyTJ9p/MA+wYEa8Qkd//n5xfdh5RBfxmLKWUN00gjRFw7/41EW29qJwYeRaIfo6bBpNaAD90hHXcZRApaYDTNK0aTCoBgm53rpRau67IcyAPIn2tkFKeltNRCaC1ZjHdlgYRrvewB/QBWSmlWEt/7AmACzOLZ+Rpe/T/WrjygPMEwBjDKr/nV9CfwgIEAO6Ez7Zye64DeLajhgPuwtRGN6L/RfQK8BqB38AuVjD+RLVIAAAAAElFTkSuQmCC") no-repeat left center;
+    background-size: auto 80%;
+  }
+
+  .document-user-info .Dropdown-menu li {
+    padding: 8px 15px;
+    display: block;
+    width: 100%;
+    color: #b9b9b9;
+    text-align: left;
+    font-size: 15px;
+    font-weight: normal;
+    text-decoration: none;
+  }
+
+  .document-user-info .Dropdown-menu li:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+
+  @media screen and (max-width: 960px) {
+    .document-user-info {
+      display: none !important;
+    }
+  }
+</style></div>
+        
+          <div class="navbar-item"><div class="document-nav-lang">
+  <div class="document-menu-lang">
+    <span tabindex="0" class="lang-txt" style="
+        background-image: url('https://kendryte.com/img/ch-flag.a61145a4.svg');
+      ">中文 | English</span>
+    <div class="jn_lan-list">
+      <a class="jn_lan-item cn">简体中文</a>
+      <a class="jn_lan-item eng">English</a>
+    </div>
+  </div>
+  <div class="document-menu-lang-mobile">
+    <span class="lang-zh cn">简体中文</span> | <span class="lang-en eng">English</span>
+  </div>
+</div>
+<style>
+  .document-menu-lang-mobile {
+    display: none;
+  }
+
+  .document-menu-lang-mobile .lang-con {
+    text-align: center;
+  }
+
+  .document-menu-lang-mobile.lang-zh,
+  .document-menu-lang-mobile.lang-en {
+    color: #2980b9;
+    cursor: pointer;
+  }
+
+  .document-menu-lang {
+    padding: 0 8px;
+    position: relative;
+    font-size: 13px;
+    border: 1px solid #c0c4cc;
+    border-radius: 10px;
+    color: #303133;
+  }
+
+  .document-menu-lang .lang-txt {
+    padding-right: 28px;
+    background: url("https://kendryte.com/img/ch-flag.a61145a4.svg") no-repeat right 50%;
+    background-size: auto 68%;
+    display: block;
+    cursor: pointer;
+  }
+
+  .document-menu-lang .jn_lan-list {
+    display: none;
+    text-align: center;
+    position: absolute;
+    background: #fff;
+    border-radius: 5px;
+    padding: 10px 20px;
+    flex-wrap: wrap;
+    top: 43px;
+    left: 50%;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    border: 1px solid #ebeef5;
+    transform: translateX(-50%);
+  }
+
+  .document-menu-lang .jn_lan-list a {
+    color: #303133;
+  }
+
+  .document-menu-lang .jn_lan-item.cn {
+    background: url("https://kendryte.com/img/ch-flag.a61145a4.svg") no-repeat 0;
+  }
+
+  .document-menu-lang .jn_lan-item {
+    font-size: 15px;
+    cursor: pointer;
+    padding-left: 32px;
+    color: #606266;
+    width: 100%;
+    line-height: 3;
+    display: block;
+    white-space: nowrap;
+    background-size: auto 40%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .document-menu-lang .jn_lan-item.eng {
+    background: url("https://kendryte.com/img/en-flag.2d05326c.svg") no-repeat 0;
+  }
+
+  .document-menu-lang .jn_lan-list::after {
+    content: "";
+    border-width: 8px;
+    border-style: solid;
+    border-color: transparent transparent #fff transparent;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translate(-50%, -100%);
+  }
+
+  .document-menu-lang-mobile {
+    display: none;
+    border: 1px solid #c0c4cc;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    padding: 0 8px;
+  }
+
+  @media screen and (max-width: 960px) {
+    .document-menu-lang-mobile {
+      display: block;
+    }
+
+    .document-menu-lang {
+      display: none;
+    }
+  }
+</style>
+<script>
+  if (!window._LANGUAGE_TOGGLE_LOADED) {
+    window._LANGUAGE_TOGGLE_LOADED = true
+    const docsUrlList = {
+      k230_docs: {
+        zh: "https://www.kendryte.com/k230/zh/dev/index.html",
+        en: "https://www.kendryte.com/k230/en/dev/index.html",
+      },
+      k230_canmv_docs: {
+        zh: "https://www.kendryte.com/k230_canmv/zh/main/index.html",
+        en: "https://www.kendryte.com/k230_canmv/en/main/index.html",
+      },
+      rtt: {
+        zh: "https://www.kendryte.com/k230/zh/rtt/dev/index_rtt_only.html",
+        en: "https://www.kendryte.com/k230/en/rtt/dev/index_rtt_only.html",
+      },
+      k230_ai_docs: {
+        zh: "https://www.kendryte.com/ai_docs/zh/main/index.html",
+        en: "https://www.kendryte.com/ai_docs/en/main/index.html",
+      },
+      rtos: {
+        zh: "https://www.kendryte.com/k230_rtos/zh/main/index.html",
+        en: "https://www.kendryte.com/k230_rtos/en/main/index.html",
+      },
+    };
+    const whichDocs = () => {
+      if (
+        location.href.includes("/k230_canmv/zh/") ||
+        location.href.includes("/k230_canmv/en/")
+      ) {
+        return "k230_canmv_docs";
+      } else if (
+        location.href.includes("/k230/k230_rtos_sdk_docs/") ||
+        location.href.includes("/k230/k230_rtos_sdk_docs/")
+      ) {
+        return "rtos";
+      } else if (
+        location.href.includes("/k230/zh/") ||
+        location.href.includes("/k230/en/")
+      ) {
+        return "k230_docs";
+      } else if (
+        location.href.includes("/ai_docs/zh/") ||
+        location.href.includes("/ai_docs/en/")
+      ) {
+        return "k230_ai_docs";
+      } else {
+        return "rtos";
+      }
+      return null;
+    };
+
+    function setupLanguageToggle() {
+      function handleLanguageSwitch(language) {
+        const langButton = document.querySelector(".lang-txt");
+        const flagUrl =
+          language === "cn" ?
+          "https://kendryte.com/img/ch-flag.a61145a4.svg" :
+          "https://kendryte.com/img/en-flag.2d05326c.svg";
+        langButton.style.backgroundImage = `url('${flagUrl}')`;
+        const docsKey = whichDocs();
+        if (docsKey && docsUrlList[docsKey]) {
+          location.href = docsUrlList[docsKey][language === "cn" ? "zh" : "en"];
+        }
+        langList.style.display = "none";
+      }
+
+      // 监听整个document的点击事件
+      document.addEventListener("click", function (event) {
+        const langList = document.querySelector(".jn_lan-list");
+        const target = event.target;
+        if (target.closest(".lang-txt")) {
+          langList.style.display =
+            langList.style.display === "flex" ? "none" : "flex";
+        }
+        if (target.closest(".cn")) {
+          console.log("点击了中文");
+          handleLanguageSwitch("cn");
+          return;
+        }
+        if (target.closest(".eng")) {
+          console.log("点击了eng");
+          handleLanguageSwitch("eng");
+          return;
+        }
+      });
+    }
+    // 初始化语言切换功能
+    document.addEventListener("DOMContentLoaded", setupLanguageToggle);
+  }
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">K230 Linux+RT-Smart SDK</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">搜索</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../CanMV_K230_%E6%95%99%E7%A8%8B.html">CanMV K230 教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../K230_SDK_%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E.html">K230 SDK使用说明</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../index_normal_tutorial.html">K230 SDK 实用教程</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_%E5%AE%9E%E6%88%98%E5%9F%BA%E7%A1%80%E7%AF%87_hello_world.html">K230 实战基础篇 - hello world</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_AI%E5%AE%9E%E6%88%98_HHB%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E5%B7%A5%E5%85%B7.html">K230 AI实战 - HHB神经网络模型部署工具</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_GPU%E5%BA%94%E7%94%A8%E5%AE%9E%E6%88%98.html">K230 GPU 应用实战 - VGLite 绘制酷炫图形</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_GUI%E5%AE%9E%E6%88%98_LVGL%E7%A7%BB%E6%A4%8D%E6%95%99%E7%A8%8B.html">K230 GUI实战 - LVGL移植教程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_RVV%E5%AE%9E%E6%88%98.html">K230 RVV实战</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_USB%E5%BA%94%E7%94%A8%E5%AE%9E%E6%88%98_UVC%E4%BC%A0%E8%BE%93YUV%E5%8F%8A%E7%BC%96%E7%A0%81%E7%A0%81%E6%B5%81.html">K230 USB应用实战-UVC传输YUV及编码码流</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_%E5%9B%BE%E5%83%8F%E5%AE%9E%E6%88%98_%E5%BC%80%E6%9C%BA%E8%A7%86%E9%A2%91%E5%92%8C%E5%BC%80%E6%9C%BAlogo.html">K230 图像实战 - 开机视频和开机logo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_%E7%BC%96%E7%A0%81%E5%AE%9E%E6%88%98_rtsp_server%E6%90%AD%E5%BB%BA%E5%92%8C%E6%8E%A8%E6%B5%81.html">K230 编码实战 - rtsp sever搭建和推流</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_%E9%9F%B3%E9%A2%91%E5%AE%9E%E6%88%98_%E9%9F%B3%E9%A2%91%E9%87%87%E9%9B%86_%E6%92%AD%E6%94%BE%E5%92%8C%E7%BC%96%E8%A7%A3%E7%A0%81.html">K230 音频实战 - 音频采集、播放和编解码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/business_poc/K230_%E5%9C%BA%E6%99%AF%E5%AE%9E%E6%88%98_%E6%99%BA%E8%83%BD%E9%97%A8%E9%94%81.html">K230 场景实战-智能门锁POC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/business_poc/K230_%E5%9C%BA%E6%99%AF%E5%AE%9E%E6%88%98_%E6%99%BA%E8%83%BD%E9%97%A8%E9%94%81_OV9286.html">K230 场景实战-智能门锁POC-3D结构光</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/business_poc/K230_%E5%9C%BA%E6%99%AF%E5%AE%9E%E6%88%98_%E7%8C%AB%E7%9C%BC.html">K230 场景实战-猫眼POC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/business_poc/K230_%E5%9C%BA%E6%99%AF%E5%AE%9E%E6%88%98_%E8%AF%8D%E5%85%B8%E7%AC%94.html">K230 场景实战-词典笔POC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/business_poc/K230_%E5%9C%BA%E6%99%AF%E5%AE%9E%E6%88%98_dpu%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA.html">K230 场景实战-dpu深度相机POC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/business_poc/k230_%E5%9C%BA%E6%99%AF%E5%AE%9E%E6%88%98_ahd_sensor%E7%A7%BB%E6%A4%8D.html">K230 ahd sensor 移植参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/ai_demos/K230_AI_Demo%E4%BB%8B%E7%BB%8D.html">K230 AI Demo介绍</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/fancy_poc/K230_Fancy_Poc%E4%BB%8B%E7%BB%8D.html">K230 Fancy POC介绍</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/K230_SDK_CanMV_Board_Demo%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 SDK CanMV Board Demo使用指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/K230_SDK_EVB_Board_Demo%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 SDK EVB Board Demo使用指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/K230D_SDK_Zero_Board_Demo%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 SDK CanMV Board Demo使用指南</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../index_dev_guide.html">K230 SDK 开发指南</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_RVV%E4%BC%98%E5%8C%96%E6%80%A7%E8%83%BD%E8%AF%B4%E6%98%8E.html">K230 RVV优化性能说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_%E5%86%85%E5%AD%98%E4%BC%98%E5%8C%96%E6%8C%87%E5%8D%97.html">K230 内存优化指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_%E5%86%85%E5%AD%98%E5%8D%A0%E7%94%A8%E5%88%86%E6%9E%90%E6%8C%87%E5%8D%97.html">K230 内存分析指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_%E5%90%AF%E5%8A%A8%E4%BC%98%E5%8C%96%E6%8C%87%E5%8D%97.html">K230 启动优化指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../02_applications/tutorials/K230_%E5%A4%A7%E5%B0%8F%E6%A0%B8%E9%80%9A%E8%AE%AF_sharefs%E7%94%A8%E6%B3%95%E4%BB%8B%E7%BB%8D.html">K230大小核通讯Sharefs使用简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../middleware/K230_openblas_%E5%BC%80%E5%8F%91%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 OpenBLAS开发指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../middleware/K230_opencv_%E5%BC%80%E5%8F%91%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 OpenCV开发指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="K230_Camera_Sensor%E9%80%82%E9%85%8D%E6%8C%87%E5%8D%97.html">K230 Camera Sensor适配指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="K230_PM%E6%A1%86%E6%9E%B6%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230_功耗管理适配指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="K230_VICAP_SENSOR_%E5%8F%82%E6%95%B0%E5%88%86%E5%8C%BA%E5%8F%82%E8%80%83.html">K230 VICAP SENSOR 参数分区参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="K230_LCD%E9%80%82%E9%85%8D%E6%8C%87%E5%8D%97.html">K230 LCD适配指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../osdrv/K230_PMU_%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 PMU使用指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../osdrv/K230_lpddr4_lpddr3%E9%A9%B1%E5%8A%A8%E9%80%82%E9%85%8D%E6%8C%87%E5%8D%97.html">K230 lpddr3/lpddr4驱动适配指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../osdrv/K230_SDK_IoT_WiFi_AiW4211LV10_%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 SDK IoT WiFi AiW4211LV10使用指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../osdrv/K230_SDK_IoT_WiFi_AiW4211LV10_%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97.html">K230 SDK IoT WiFi AiW4211LV10驱动开发指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ai/K230_nncase_%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97.html">K230 nncase开发指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../03_other/K230_SDK%E6%9B%B4%E6%96%B0nncase%E8%BF%90%E8%A1%8C%E6%97%B6%E5%BA%93%E6%8C%87%E5%8D%97.html">K230 SDK 更新nncase运行时库指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../03_other/K230_debian_ubuntu%E8%AF%B4%E6%98%8E.html">K230 debian ubuntu 说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pc/burntool/K230_SDK_Burntool%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 SDK Burntool使用指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pc/dewarp/K230_SDK_Dewarp%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 SDK Dewarp 使用指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pc/ISP_tuning/K230_ISP%E5%9B%BE%E5%83%8F%E8%B0%83%E4%BC%98%E6%8C%87%E5%8D%97.html">K230 ISP图像调优指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pc/ISP_tuning/K230_ISP%E5%88%9D%E5%A7%8B%E5%8C%96%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97.html">K230 ISP初始化配置指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pc/pqtools/K230_ISP_Tuning_Tool%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 ISP Tuning Tool使用指南</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../00_hardware/index.html">硬件</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../00_hardware/K230_DEMO_BOARD%E8%B5%84%E6%BA%90%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.html">K230 DEMO BOARD 资源使用说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../00_hardware/K230_%E7%A1%AC%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%8C%87%E5%8D%97.html">K230 硬件设计指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../00_hardware/K230_datasheet.html">K230 Product Full Datasheet</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../../../index_api.html">K230 SDK API 参考</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../cdk/K230_%E6%A0%B8%E9%97%B4%E9%80%9A%E8%AE%AF_API%E5%8F%82%E8%80%83.html">K230核间通讯API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cdk/K230_%E7%B3%BB%E7%BB%9F%E6%8E%A7%E5%88%B6_MAPI%E5%8F%82%E8%80%83.html">K230系统控制MAPI参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../middleware/K230_%E5%A4%9A%E5%AA%92%E4%BD%93%E4%B8%AD%E9%97%B4%E4%BB%B6_API%E5%8F%82%E8%80%83.html">K230 多媒体中间件API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="K230_DMA_API%E5%8F%82%E8%80%83.html">K230 DMA API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="K230_DPU_API%E5%8F%82%E8%80%83.html">K230 DPU API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="K230_FFT_API%E5%8F%82%E8%80%83.html">K230 FFT API参考</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">K230 GPU API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="K230_SHA256_API%E5%8F%82%E8%80%83.html">K230 SHA256 API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="K230_VICAP_API%E5%8F%82%E8%80%83.html">K230 VICAP API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="K230_VICAP_SENSOR_%E5%8F%82%E6%95%B0%E5%88%86%E5%8C%BA%E5%8F%82%E8%80%83.html">K230 VICAP SENSOR 参数分区参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="K230_%E7%B3%BB%E7%BB%9F%E6%8E%A7%E5%88%B6_API%E5%8F%82%E8%80%83.html">K230系统控制API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="K230_%E8%A7%86%E9%A2%91%E7%BC%96%E8%A7%A3%E7%A0%81_API%E5%8F%82%E8%80%83.html">K230视频编解码API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="K230_%E8%A7%86%E9%A2%91%E8%BE%93%E5%87%BA_API%E5%8F%82%E8%80%83.html">K230视频输出API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="K230_%E9%9F%B3%E9%A2%91_API%E5%8F%82%E8%80%83.html">K230音频API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../osdrv/K230_DRM_API%E5%8F%82%E8%80%83.html">K230 DRM使用指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../osdrv/K230_%E5%A4%A7%E6%A0%B8%E4%BD%8E%E9%80%9F%E9%A9%B1%E5%8A%A8_API%E5%8F%82%E8%80%83.html">K230大核低速驱动API参考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../osdrv/K230_%E5%B0%8F%E6%A0%B8Linux%E9%A9%B1%E5%8A%A8_API%E5%8F%82%E8%80%83.html">K230小核Linux驱动API参考</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../index_faq.html">K230 常见问题解答</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../03_other/K230_SDK%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E8%A7%A3%E7%AD%94_C.html">K230 SDK 常见问题解答（C）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../03_other/K230_nncase%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E8%A7%A3%E7%AD%94.html">K230 nncase 常见问题解答</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../03_other/K230_AI_demo%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E8%A7%A3%E7%AD%94_C%2B%2B.html">K230 AI demo 常见问题解答（C++）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../03_other/K230_AI_Cube%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98.html">AI Cube常见问题解答</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../03_other/index.html">版本说明文档</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../03_other/K230_SDK_%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E.html">K230 SDK版本说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../03_other/K230_SDK_nncase%E7%89%88%E6%9C%AC%E5%AF%B9%E5%BA%94%E5%85%B3%E7%B3%BB.html">K230 SDK nncase版本对应关系</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item"><style>
+  .rst-versions {
+    color: #100e0e;
+    background: #eaebec;
+    font-family: Lato, proxima-nova, Helvetica Neue, Arial, sans-serif;
+    z-index: 400;
+    width: 100%;
+  }
+  .rst-versions.shift-up {
+    height: auto;
+    max-height: 100%;
+    overflow-y: scroll;
+  }
+  .rst-versions .rst-current-version {
+    padding: 12px;
+    background-color: #f3f4f5;
+    display: block;
+    text-align: right;
+    padding-left: 10px;
+    font-size: 90%;
+    cursor: pointer;
+    color: #27ae60;
+  }
+
+  .rst-versions .rst-other-versions dd {
+    display: inline-block;
+    margin: 0;
+  }
+  .rst-versions .rst-other-versions dd a {
+    display: inline-block;
+    padding: 6px;
+    color: #201919;
+    font-size: 12px;
+    text-decoration: none;
+  }
+  .rst-versions .rst-other-versions dd a:hover {
+    text-decoration-thickness: inherit;
+    color: #0d6efd;
+  }
+  .rst-versions .rst-other-versions {
+    font-size: 90%;
+    padding: 12px;
+    display: none;
+  }
+  .shift-up .rst-other-versions {
+    display: block;
+  }
+  .lang-con {
+    text-align: center;
+  }
+  .lang-zh,
+  .lang-en {
+    color: #2980b9;
+    cursor: pointer;
+  }
+</style>
+<div
+  class="rst-versions"
+  style="overflow: unset"
+  data-toggle="rst-versions"
+  role="note"
+  aria-label="versions"
+>
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    dev
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dt>Versions</dt>
+        <dd><a href="../../../../v1.0.1/index.html">v1.0.1</a></dd>
+        <dd><a href="../../../../v1.1/index.html">v1.1</a></dd>
+        <dd><a href="../../../../v1.2/index.html">v1.2</a></dd>
+        <dd><a href="../../../../v1.3/index.html">v1.3</a></dd>
+        <dd><a href="../../../../v1.4/index.html">v1.4</a></dd>
+        <dd><a href="../../../../v1.5/index.html">v1.5</a></dd>
+        <dd><a href="../../../../v1.6/01_software/board/mpp/K230_GPU_API参考.html">v1.6</a></dd>
+        <dd><a href="../../../../v1.7/01_software/board/mpp/K230_GPU_API参考.html">v1.7</a></dd>
+        <dd><a href="../../../../v1.8/01_software/board/mpp/K230_GPU_API参考.html">v1.8</a></dd>
+        <dd><a href="../../../../v1.9/01_software/board/mpp/K230_GPU_API参考.html">v1.9</a></dd>
+        <dd><a href="../../../../v2.0/01_software/board/mpp/K230_GPU_API参考.html">v2.0</a></dd>
+        <dd><a href="K230_GPU_API参考.html">dev</a></dd>
+        <dd><a href="../../../../main/01_software/board/mpp/K230_GPU_API参考.html">main</a></dd>
+    </dl>
+  </div>
+</div>
+<script>
+    document.querySelector('.rst-versions').addEventListener('click', function() {
+          var details = document.querySelector('.rst-versions');
+          details.classList.toggle('shift-up');
+      });
+</script></div>
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/kendryte/k230_docs" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="源码库"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/01_software/board/mpp/K230_GPU_API参考.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+    
+    <div class="admonition warning">
+      <p class="admonition-title">
+        
+          注意
+        
+      </p>
+      <p>
+        
+          这是最新开发分支配套的文档，可能包含已发布版本中尚未提供的功能。如果您要查看特定版本的文档，请使用左侧的下拉菜单并选择所需要的版本。
+        
+      </p>
+    </div>
+    
+
+    
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>K230 GPU API参考</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">功能介绍</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">数据流向</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">软件接口</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">主要类型及定义</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">参数类型</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-error-t">错误类型 vg_lite_error_t</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">功能枚举</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu">GPU控制</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">上下文初始化和控制函数</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-set-command-buffer-size">vg_lite_set_command_buffer_size</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-init">vg_lite_init</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-close">vg_lite_close</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-finish">vg_lite_finish</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-flush">vg_lite_flush</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">像素缓冲区</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">内存对齐要求</a><ul class="nav section-nav flex-column">
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">源图像对齐要求</a></li>
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">渲染目标缓冲区对齐要求</a></li>
+</ul>
+</li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">像素缓存</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">枚举类型</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-buffer-format-t">vg_lite_buffer_format_t</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-buffer-image-mode-t">vg_lite_buffer_image_mode_t</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-buffer-layout-t">vg_lite_buffer_layout_t</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-buffer-transparency-mode-t">vg_lite_buffer_transparency_mode_t</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">结构体</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-buffer-t">vg_lite_buffer_t</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">函数</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-allocate">vg_lite_allocate</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-free">vg_lite_free</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-buffer-upload">vg_lite_buffer_upload</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-map">vg_lite_map</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-unmap">vg_lite_unmap</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-set-clut">vg_lite_set_CLUT</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">矩阵</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">结构体</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-matrix-t">vg_lite_matrix_t</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">函数</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-identity">vg_lite_identity</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-perspective">vg_lite_perspective</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-rotate">vg_lite_rotate</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-scale">vg_lite_scale</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-translate">vg_lite_translate</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#blits">用于合成和混合的BLITs</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">枚举类型</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-blend-t">vg_lite_blend_t</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-filter-t">vg_lite_filter_t</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-global-alpha-t">vg_lite_global_alpha_t</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">结构体</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-rectangle-t">vg_lite_rectangle_t</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-point-t">vg_lite_point_t</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-point4-t">vg_lite_point4_t</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">函数</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-blit">vg_lite_blit</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-blit-rect">vg_lite_blit_rect</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-get-transform-matrix">vg_lite_get_transform_matrix</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-clear">vg_lite_clear</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#alpha">全局Alpha函数</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-set-image-global-alpha">vg_lite_set_image_global_alpha</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-set-dest-global-alpha">vg_lite_set_dest_global_alpha</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">矢量路径控制</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">枚举类型</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-quality-t">vg_lite_quality_t</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">结构体</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-hw-memory">vg_lite_hw_memory</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-path-t">vg_lite_path_t</a><ul class="nav section-nav flex-column">
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">路径对象的特别说明</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id26">函数</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-path-calc-length">vg_lite_path_calc_length</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-path-append">vg_lite_path_append</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-init-path">vg_lite_init_path</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-init-arc-path">vg_lite_init_arc_path</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-upload-path">vg_lite_upload_path</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-clear-path">vg_lite_clear_path</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id27">矢量路径操作码</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id28">基于矢量的绘制操作</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id29">枚举类型</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-fill-t">vg_lite_fill_t</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-pattern-mode-t">vg_lite_pattern_mode_t</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id30">结构体</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#v3-6-2-1-g-lite-color-ramp-t">v3.6.2.1 g_lite_color_ramp_t</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-linear-gradient-t">vg_lite_linear_gradient_t</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id31">函数</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-draw">vg_lite_draw</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-draw-gradient">vg_lite_draw_gradient</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-draw-pattern">vg_lite_draw_pattern</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id32">线性渐变初始化和控制函数</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-init-grad">vg_lite_init_grad</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-set-grad">vg_lite_set_grad</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-update-grad">vg_lite_update_grad</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-get-grad-matrix">vg_lite_get_grad_matrix</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-clear-grad">vg_lite_clear_grad</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id33">约束条件</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id34">性能建议与最佳实践</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cache-vs-non-cache">Cache vs Non-cache</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id35">内存使用</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id36">绘制流程</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id37">示例</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tiger">tiger</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lineargrad">linearGrad</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#imgindex">imgIndex</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vglite-drm">vglite_drm</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vglite-cube">vglite_cube</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="k230-gpu-api">
+<h1>K230 GPU API参考<a class="headerlink" href="#k230-gpu-api" title="Link to this heading">#</a></h1>
+<section id="id1">
+<h2>功能介绍<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<p>本模块主要用于加速矢量图形的绘制，可用于绘制菜单等页面等，支持加速部分lvgl绘制。GPU有一系列绘制指令，将绘制指令写入内存，提交地址及指令总长度给GPU后即可开始绘制。本模块支持多边形、二次贝塞尔曲线、三次贝塞尔曲线和椭圆曲线的填充绘制，支持线性渐变色填充，支持颜色查找表，支持图像合成和混合以及BLIT。</p>
+</section>
+<section id="id2">
+<h2>数据流向<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p>GPU软件驱动部分包括设备/dev/vg_lite及其内核模块驱动程序vg_lite.ko，以及用户态函数库libvg_lite.so，libvg_lite.so会打开/dev/vg_lite设备，通过ioctl()及mmap()与内核态的驱动程序进行交互。内核态驱动主要由vg_lite_hal.c实现，vg_lite.c中的函数通过vg_lite_kernel函数调用vg_lite_hal.c中的函数，执行实际的寄存器操作。</p>
+<p>注意：驱动不会检查绘制指令中的物理地址，调用VGLite API可以间接读写DDR内存的所有物理地址。</p>
+</section>
+<section id="id3">
+<h2>软件接口<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<p>软件接口详见软件包中的头文件vg_lite.h。</p>
+<section id="id4">
+<h3>主要类型及定义<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<section id="id5">
+<h4>参数类型<a class="headerlink" href="#id5" title="Link to this heading">#</a></h4>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>名称</p></th>
+<th class="head"><p>类型定义</p></th>
+<th class="head"><p>含义</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Int32_t</p></td>
+<td><p>int</p></td>
+<td><p>32位有符号整数</p></td>
+</tr>
+<tr class="row-odd"><td><p>uint32_t</p></td>
+<td><p>Unsigned int</p></td>
+<td><p>32位无符号整数</p></td>
+</tr>
+<tr class="row-even"><td><p>VG_LITE_S8</p></td>
+<td><p>enum vg_lite_format_t</p></td>
+<td><p>8位有符号整数坐标</p></td>
+</tr>
+<tr class="row-odd"><td><p>VG_LITE_S16</p></td>
+<td><p>enum vg_lite_format_t</p></td>
+<td><p>16位有符号整数坐标</p></td>
+</tr>
+<tr class="row-even"><td><p>VG_LITE_S32</p></td>
+<td><p>enum vg_lite_format_t</p></td>
+<td><p>32位有符号整数坐标</p></td>
+</tr>
+<tr class="row-odd"><td><p>vg_lite_float_t</p></td>
+<td><p>float</p></td>
+<td><p>单精度浮点数</p></td>
+</tr>
+<tr class="row-even"><td><p>vg_lite_color_t</p></td>
+<td><p>uint32_t</p></td>
+<td><p>32位颜色值 颜色值指定了各种功能中使用的颜色。颜色是用8位RGBA通道形成的。红色通道在颜色值的最低8位，其次是绿色和蓝色通道。alpha通道在颜色值的最高8位。 对于L8目标格式，通过使用默认的ITU-R BT.709转换规则将RGB颜色转换为L8。</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="vg-lite-error-t">
+<h4>错误类型 vg_lite_error_t<a class="headerlink" href="#vg-lite-error-t" title="Link to this heading">#</a></h4>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>枚举</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>VG_LITE_GENERIC_IO</p></td>
+<td><p>无法与内核驱动通信</p></td>
+</tr>
+<tr class="row-odd"><td><p>VG_LITE_INVALID_ARGUMENT</p></td>
+<td><p>非法参数</p></td>
+</tr>
+<tr class="row-even"><td><p>VG_LITE_MULTI_THREAD_FAIL</p></td>
+<td><p>多线程错误</p></td>
+</tr>
+<tr class="row-odd"><td><p>VG_LITE_NO_CONTEXT</p></td>
+<td><p>无上下文错误</p></td>
+</tr>
+<tr class="row-even"><td><p>VG_LITE_NOT_SUPPORT</p></td>
+<td><p>功能不支持</p></td>
+</tr>
+<tr class="row-odd"><td><p>VG_LITE_OUT_OF_MEMORY</p></td>
+<td><p>无可分配的驱动堆内存</p></td>
+</tr>
+<tr class="row-even"><td><p>VG_LITE_OUT_OF_RESOURCES</p></td>
+<td><p>无可分配的系统堆内存</p></td>
+</tr>
+<tr class="row-odd"><td><p>VG_LITE_SUCCESS</p></td>
+<td><p>成功</p></td>
+</tr>
+<tr class="row-even"><td><p>VG_LITE_TIMEOUT</p></td>
+<td><p>超时</p></td>
+</tr>
+<tr class="row-odd"><td><p>VG_LITE_ALREADY_EXISTS</p></td>
+<td><p>对象已存在</p></td>
+</tr>
+<tr class="row-even"><td><p>VG_LITE_NOT_ALIGNED</p></td>
+<td><p>数据对齐错误</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id6">
+<h4>功能枚举<a class="headerlink" href="#id6" title="Link to this heading">#</a></h4>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>枚举</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>gcFEATURE_BIT_VG_BORDER_CULLING</p></td>
+<td><p>边界剪裁</p></td>
+</tr>
+<tr class="row-odd"><td><p>gcFEATURE_BIT_VG_GLOBAL_ALPHA</p></td>
+<td><p>全局Alpha</p></td>
+</tr>
+<tr class="row-even"><td><p>gcFEATURE_BIT_VG_IM_FASTCLEAR</p></td>
+<td><p>快速清除</p></td>
+</tr>
+<tr class="row-odd"><td><p>gcFEATURE_BIT_VG_IM_INDEX_FORMAT</p></td>
+<td><p>颜色索引</p></td>
+</tr>
+<tr class="row-even"><td><p>gcFEATURE_BIT_VG_PE_PREMULTIPLY</p></td>
+<td><p>Alpha通道预乘</p></td>
+</tr>
+<tr class="row-odd"><td><p>gcFEATURE_BIT_VG_RADIAL_GRADIENT</p></td>
+<td><p>径向灰度</p></td>
+</tr>
+<tr class="row-even"><td><p>gcFEATURE_BIT_VG_RGBA2_FORMAT</p></td>
+<td><p>RGBA2222格式</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="gpu">
+<h3>GPU控制<a class="headerlink" href="#gpu" title="Link to this heading">#</a></h3>
+<p>如果没有特殊说明，那么在调用任何API函数之前，应用程序必须通过调用<a class="reference internal" href="#vg-lite-init">vg_lite_init</a>来初始化GPU隐式（全局）上下文，该函数将填充特征表、重置快速清除缓冲区、重置合成目标缓冲区，以及分配命令和细分缓冲区。</p>
+<p>GPU驱动程序<strong>只支持一个当前上下文和一个线程来向GPU发布命令</strong>。GPU驱动程序不支持在多个线程/进程中同时运行的多个并发上下文，因为GPU内核驱动程序不支持上下文切换。GPU应用程序在任何时候都只能使用一个上下文来向GPU硬件发出命令。如果GPU应用程序需要切换上下文，应该调用<a class="reference internal" href="#vg-lite-close">vg_lite_close</a>来关闭当前线程中的当前上下文，然后可以调用<a class="reference internal" href="#vg-lite-init">vg_lite_init</a>来初始化当前线程中或其他线程/进程中的新上下文。</p>
+<p>如果没有特殊说明，则所有函数都返回<a class="reference internal" href="#vg-lite-error-t">vg_lite_error_t</a>。</p>
+<section id="id7">
+<h4>上下文初始化和控制函数<a class="headerlink" href="#id7" title="Link to this heading">#</a></h4>
+<section id="vg-lite-set-command-buffer-size">
+<h5>vg_lite_set_command_buffer_size<a class="headerlink" href="#vg-lite-set-command-buffer-size" title="Link to this heading">#</a></h5>
+<ul>
+<li><p>描述</p>
+<p>这个函数是可选的。如果需要修改命令缓冲区的大小，必须在vg_lite_init前调用。命令缓冲区大小默认为64KB，这并不是说一帧的命令就必须小于64KB，当缓冲区填满时会直接提交渲染以清空缓冲区，更大的缓冲区意味着更低频率的渲染提交，可以减少系统调用开销。</p>
+</li>
+<li><p>参数</p></li>
+</ul>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>size</p></td>
+<td><p>命令缓冲区长度</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="vg-lite-init">
+<h5>vg_lite_init<a class="headerlink" href="#vg-lite-init" title="Link to this heading">#</a></h5>
+<ul>
+<li><p>描述</p>
+<p>该函数初始化GPU绘图/填充功能所需的内存和数据结构，为命令缓冲区和指定大小的嵌片缓冲区分配内存。嵌片缓冲区的宽度和高度必须是16的倍数。嵌片窗口可以根据系统中可用的内存量和所需的性能来指定。一个较小的窗口可以有较少的内存占用，但可能会导致较低的性能。可用于镶嵌的最小窗口是16x16。如果高度或宽度小于0，那么就不会创建嵌片缓冲区，可以用于只有填充的情况。</p>
+<p>如果这将是第一个访问硬件的上下文，硬件将被打开并初始化。如果需要初始化一个新的上下文，必须调用vg_lite_close来关闭当前的上下文。否则，vg_lite_init将返回一个错误。</p>
+</li>
+<li><p>参数</p></li>
+</ul>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>输入/输出</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>tessellation_width</p></td>
+<td><p>嵌片窗口宽度。必须是16的整数倍，最小为16，最大不能大于帧宽度，如果为0表示不使用tessellation，那么GPU将只运行blit。</p></td>
+<td><p>输入</p></td>
+</tr>
+<tr class="row-odd"><td><p>tessellation_height</p></td>
+<td><p>嵌片窗口高度。必须是16的整数倍，最小为16，最大不能大于帧宽度，如果为0表示不使用tessellation，那么GPU将只运行blit。</p></td>
+<td><p>输入</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="vg-lite-close">
+<h5>vg_lite_close<a class="headerlink" href="#vg-lite-close" title="Link to this heading">#</a></h5>
+<ul>
+<li><p>描述</p>
+<p>删除所有的资源，并释放先前由vg_lite_init函数初始化的所有内存。如果这是唯一的活动上下文，它还会自动关闭硬件。</p>
+</li>
+</ul>
+</section>
+<section id="vg-lite-finish">
+<h5>vg_lite_finish<a class="headerlink" href="#vg-lite-finish" title="Link to this heading">#</a></h5>
+<ul>
+<li><p>描述</p>
+<p>这个函数明确地将命令缓冲区提交给GPU，并等待其完成。</p>
+</li>
+</ul>
+</section>
+<section id="vg-lite-flush">
+<h5>vg_lite_flush<a class="headerlink" href="#vg-lite-flush" title="Link to this heading">#</a></h5>
+<ul>
+<li><p>描述</p>
+<p>这个函数明确地将命令缓冲区提交给GPU，而不等待它的完成。</p>
+</li>
+</ul>
+</section>
+</section>
+<section id="id8">
+<h4>像素缓冲区<a class="headerlink" href="#id8" title="Link to this heading">#</a></h4>
+<section id="id9">
+<h5>内存对齐要求<a class="headerlink" href="#id9" title="Link to this heading">#</a></h5>
+<section id="id10">
+<h6>源图像对齐要求<a class="headerlink" href="#id10" title="Link to this heading">#</a></h6>
+<p>GPU硬件要求光栅化图像的宽度是16像素的倍数。这一要求适用于所有图像格式。因此，用户需要将任意的图像宽度垫成16像素的倍数，以便GPU硬件能够正确工作。</p>
+<p>像素的字节对齐要求取决于具体的像素格式。</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>图像格式</p></th>
+<th class="head"><p>每像素比特数</p></th>
+<th class="head"><p>对齐要求</p></th>
+<th class="head"><p>支持作为源图像</p></th>
+<th class="head"><p>支持作为目标图像</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>VG_LITE_INDEX1</p></td>
+<td><p>1</p></td>
+<td><p>8B</p></td>
+<td><p>是</p></td>
+<td><p>否</p></td>
+</tr>
+<tr class="row-odd"><td><p>VG_LITE_INDEX2</p></td>
+<td><p>2</p></td>
+<td><p>8B</p></td>
+<td><p>是</p></td>
+<td><p>否</p></td>
+</tr>
+<tr class="row-even"><td><p>VG_LITE_INDEX4</p></td>
+<td><p>4</p></td>
+<td><p>8B</p></td>
+<td><p>是</p></td>
+<td><p>否</p></td>
+</tr>
+<tr class="row-odd"><td><p>VG_LITE_INDEX8</p></td>
+<td><p>8</p></td>
+<td><p>16B</p></td>
+<td><p>是</p></td>
+<td><p>否</p></td>
+</tr>
+<tr class="row-even"><td><p>VG_LITE_A4</p></td>
+<td><p>4</p></td>
+<td><p>8B</p></td>
+<td><p>是</p></td>
+<td><p>否</p></td>
+</tr>
+<tr class="row-odd"><td><p>VG_LITE_A8</p></td>
+<td><p>8</p></td>
+<td><p>16B</p></td>
+<td><p>是</p></td>
+<td><p>是</p></td>
+</tr>
+<tr class="row-even"><td><p>VG_LITE_L8</p></td>
+<td><p>8</p></td>
+<td><p>16B</p></td>
+<td><p>是</p></td>
+<td><p>是</p></td>
+</tr>
+<tr class="row-odd"><td><p>VG_LITE_ARGB2222组</p></td>
+<td><p>8</p></td>
+<td><p>16B</p></td>
+<td><p>是</p></td>
+<td><p>是</p></td>
+</tr>
+<tr class="row-even"><td><p>VG_LITE_RGB565组</p></td>
+<td><p>16</p></td>
+<td><p>32B</p></td>
+<td><p>是</p></td>
+<td><p>是</p></td>
+</tr>
+<tr class="row-odd"><td><p>VG_LITE_ARGB1555组</p></td>
+<td><p>16</p></td>
+<td><p>32B</p></td>
+<td><p>是</p></td>
+<td><p>是</p></td>
+</tr>
+<tr class="row-even"><td><p>VG_LITE_ARGB4444组</p></td>
+<td><p>16</p></td>
+<td><p>32B</p></td>
+<td><p>是</p></td>
+<td><p>是</p></td>
+</tr>
+<tr class="row-odd"><td><p>VG_LITE_ARGB8888/XRGB8888组</p></td>
+<td><p>32</p></td>
+<td><p>64B</p></td>
+<td><p>是</p></td>
+<td><p>是</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id11">
+<h6>渲染目标缓冲区对齐要求<a class="headerlink" href="#id11" title="Link to this heading">#</a></h6>
+<p>GPU硬件要求像素缓冲区的宽度是16像素的倍数。这一要求适用于所有图像格式。因此，用户需要将任意的像素缓冲区宽度对齐成16像素的倍数，以便GPU硬件能够正确工作。像素的字节对齐要求取决于具体的像素格式。</p>
+<p>请参阅本文件后面的对齐说明表2：图像源对齐摘要。</p>
+<p>像素缓冲区的起始地址对齐要求取决于缓冲区布局格式是平铺还是线性（vg_lite_buffer_layout_t enum）。</p>
+<p>- 如果格式是平铺（4x4平铺），起始地址和stride需要64字节对齐。</p>
+<p>- 如果格式是线性的，起始地址和stride没有对齐要求。</p>
+</section>
+</section>
+<section id="id12">
+<h5>像素缓存<a class="headerlink" href="#id12" title="Link to this heading">#</a></h5>
+<p>GPU包括两个完全关联的高速缓存。每个缓存有8行，每行有64字节。在这种情况下，一个缓存行可以容纳一个4x4像素的Tile或一个16x1像素的行。</p>
+</section>
+</section>
+<section id="id13">
+<h4>枚举类型<a class="headerlink" href="#id13" title="Link to this heading">#</a></h4>
+<section id="vg-lite-buffer-format-t">
+<h5>vg_lite_buffer_format_t<a class="headerlink" href="#vg-lite-buffer-format-t" title="Link to this heading">#</a></h5>
+<ul>
+<li><p>这个枚举类型指定了用于缓冲区的颜色格式。</p>
+<p>注意：关于图像格式的对齐要求汇总，请参见数值描述后的<a class="reference internal" href="#id9">内存对齐要求</a>。</p>
+</li>
+</ul>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>vg_lite_buffer_format_t</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>支持作为源</p></th>
+<th class="head"><p>支持作为目标</p></th>
+<th class="head"><p>对齐（字节）</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>VG_LITE_ABGR8888</p></td>
+<td><p>每个通道8bits，alpha在低8bits</p></td>
+<td><p>是</p></td>
+<td><p>是</p></td>
+<td><p>64</p></td>
+</tr>
+<tr class="row-odd"><td><p>VG_LITE_ARGB8888</p></td>
+<td><p></p></td>
+<td><p>是</p></td>
+<td><p>是</p></td>
+<td><p>64</p></td>
+</tr>
+<tr class="row-even"><td><p>VG_LITE_BGRA8888</p></td>
+<td><p></p></td>
+<td><p>是</p></td>
+<td><p>是</p></td>
+<td><p>64</p></td>
+</tr>
+<tr class="row-odd"><td><p>VG_LITE_RGBA8888</p></td>
+<td><p></p></td>
+<td><p>是</p></td>
+<td><p>是</p></td>
+<td><p>64</p></td>
+</tr>
+<tr class="row-even"><td><p>VG_LITE_BGRX8888</p></td>
+<td><p></p></td>
+<td><p>是</p></td>
+<td><p>是</p></td>
+<td><p>64</p></td>
+</tr>
+<tr class="row-odd"><td><p>VG_LITE_RGBX8888</p></td>
+<td><p></p></td>
+<td><p>是</p></td>
+<td><p>是</p></td>
+<td><p>64</p></td>
+</tr>
+<tr class="row-even"><td><p>VG_LITE_XBGR8888</p></td>
+<td><p></p></td>
+<td><p>是</p></td>
+<td><p>是</p></td>
+<td><p>64</p></td>
+</tr>
+<tr class="row-odd"><td><p>VG_LITE_XRGB8888</p></td>
+<td><p></p></td>
+<td><p>是</p></td>
+<td><p>是</p></td>
+<td><p>64</p></td>
+</tr>
+<tr class="row-even"><td><p>VG_LITE_ABGR1555</p></td>
+<td><p></p></td>
+<td><p>是</p></td>
+<td><p>是</p></td>
+<td><p>32</p></td>
+</tr>
+<tr class="row-odd"><td><p>VG_LITE_ARGB1555</p></td>
+<td><p></p></td>
+<td><p>是</p></td>
+<td><p>是</p></td>
+<td><p>32</p></td>
+</tr>
+<tr class="row-even"><td><p>VG_LITE_BGRA5551</p></td>
+<td><p></p></td>
+<td><p>是</p></td>
+<td><p>是</p></td>
+<td><p>32</p></td>
+</tr>
+<tr class="row-odd"><td><p>VG_LITE_RGBA5551</p></td>
+<td><p></p></td>
+<td><p>是</p></td>
+<td><p>是</p></td>
+<td><p>32</p></td>
+</tr>
+<tr class="row-even"><td><p>VG_LITE_BGR565</p></td>
+<td><p></p></td>
+<td><p>是</p></td>
+<td><p>是</p></td>
+<td><p>32</p></td>
+</tr>
+<tr class="row-odd"><td><p>VG_LITE_RGB565</p></td>
+<td><p></p></td>
+<td><p>是</p></td>
+<td><p>是</p></td>
+<td><p>32</p></td>
+</tr>
+<tr class="row-even"><td><p>VG_LITE_ABGR4444</p></td>
+<td><p></p></td>
+<td><p>是</p></td>
+<td><p>是</p></td>
+<td><p>32</p></td>
+</tr>
+<tr class="row-odd"><td><p>VG_LITE_ARGB4444</p></td>
+<td><p></p></td>
+<td><p>是</p></td>
+<td><p>是</p></td>
+<td><p>32</p></td>
+</tr>
+<tr class="row-even"><td><p>VG_LITE_BGRA4444</p></td>
+<td><p></p></td>
+<td><p>是</p></td>
+<td><p>是</p></td>
+<td><p>32</p></td>
+</tr>
+<tr class="row-odd"><td><p>VG_LITE_RGBA4444</p></td>
+<td><p></p></td>
+<td><p>是</p></td>
+<td><p>是</p></td>
+<td><p>32</p></td>
+</tr>
+<tr class="row-even"><td><p>VG_LITE_A4</p></td>
+<td><p>4bits alpha, 无RGB</p></td>
+<td><p>是</p></td>
+<td><p>否</p></td>
+<td><p>8</p></td>
+</tr>
+<tr class="row-odd"><td><p>VG_LITE_A8</p></td>
+<td><p>8bits alpha, 无RGB</p></td>
+<td><p>是</p></td>
+<td><p>是</p></td>
+<td><p>16</p></td>
+</tr>
+<tr class="row-even"><td><p>VG_LITE_ABGR2222</p></td>
+<td><p></p></td>
+<td><p>是</p></td>
+<td><p>是</p></td>
+<td><p>16</p></td>
+</tr>
+<tr class="row-odd"><td><p>VG_LITE_ARGB2222</p></td>
+<td><p></p></td>
+<td><p>是</p></td>
+<td><p>是</p></td>
+<td><p>16</p></td>
+</tr>
+<tr class="row-even"><td><p>VG_LITE_BGRA2222</p></td>
+<td><p></p></td>
+<td><p>是</p></td>
+<td><p>是</p></td>
+<td><p>16</p></td>
+</tr>
+<tr class="row-odd"><td><p>VG_LITE_RGBA2222</p></td>
+<td><p></p></td>
+<td><p>是</p></td>
+<td><p>是</p></td>
+<td><p>16</p></td>
+</tr>
+<tr class="row-even"><td><p>VG_LITE_INDEX_1</p></td>
+<td><p>1-bit 索引格式</p></td>
+<td><p>是</p></td>
+<td><p>否</p></td>
+<td><p>8</p></td>
+</tr>
+<tr class="row-odd"><td><p>VG_LITE_INDEX_2</p></td>
+<td><p>2-bit索引格式</p></td>
+<td><p>是</p></td>
+<td><p>否</p></td>
+<td><p>8</p></td>
+</tr>
+<tr class="row-even"><td><p>VG_LITE_INDEX_4</p></td>
+<td><p>4-bit索引格式</p></td>
+<td><p>是</p></td>
+<td><p>否</p></td>
+<td><p>8</p></td>
+</tr>
+<tr class="row-odd"><td><p>VG_LITE_INDEX_8</p></td>
+<td><p>8-bit索引格式</p></td>
+<td><p>是</p></td>
+<td><p>否</p></td>
+<td><p>8</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="vg-lite-buffer-image-mode-t">
+<h5>vg_lite_buffer_image_mode_t<a class="headerlink" href="#vg-lite-buffer-image-mode-t" title="Link to this heading">#</a></h5>
+<ul class="simple">
+<li><p>指定如何将图像渲染到缓冲区。</p></li>
+</ul>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>枚举</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>VG_LITE_NORMAL_IMAGE_MODE</p></td>
+<td><p>用混合模式绘制的图像</p></td>
+</tr>
+<tr class="row-odd"><td><p>VG_LITE_NONE_IMAGE_MODE</p></td>
+<td><p>图像输入被忽略</p></td>
+</tr>
+<tr class="row-even"><td><p>VG_LITE_MULTIPLY_IMAGE_MODE</p></td>
+<td><p>图像与绘制颜色相乘</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="vg-lite-buffer-layout-t">
+<h5>vg_lite_buffer_layout_t<a class="headerlink" href="#vg-lite-buffer-layout-t" title="Link to this heading">#</a></h5>
+<ul class="simple">
+<li><p>指定内存中的缓冲区数据布局。</p></li>
+</ul>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>枚举</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>VG_LITE_LINEAR</p></td>
+<td><p>线性（扫描线）布局。注意：这种布局对缓冲区没有对齐要求。</p></td>
+</tr>
+<tr class="row-odd"><td><p>VG_LITE_TILED</p></td>
+<td><p>数据被组织成4x4像素的嵌片。注意：对于这种布局，缓冲区的起始地址和跨度需要以64字节对齐。</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="vg-lite-buffer-transparency-mode-t">
+<h5>vg_lite_buffer_transparency_mode_t<a class="headerlink" href="#vg-lite-buffer-transparency-mode-t" title="Link to this heading">#</a></h5>
+<ul class="simple">
+<li><p>指定一个缓冲区的透明模式。</p></li>
+</ul>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>枚举</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>VG_LITE_IMAGE_OPAQUE</p></td>
+<td><p>不透明的图像：所有的图像像素都被复制到VG PE进行光栅化。</p></td>
+</tr>
+<tr class="row-odd"><td><p>VG_LITE_IMAGE_TRANSPARENT</p></td>
+<td><p>透明图像：只有非透明的图像像素被复制到VG PE中。 注意：这种模式只有在图像模式为VG_LITE_NORMAL_IMAGE_MODE或VG_LITE_MULTIPLY_IMAGE_MODE时才有效。</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="id14">
+<h4>结构体<a class="headerlink" href="#id14" title="Link to this heading">#</a></h4>
+<section id="vg-lite-buffer-t">
+<h5>vg_lite_buffer_t<a class="headerlink" href="#vg-lite-buffer-t" title="Link to this heading">#</a></h5>
+<ul class="simple">
+<li><p>该结构定义了GPU使用的图像或内存数据的缓冲区布局。</p></li>
+</ul>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>字段</p></th>
+<th class="head"><p>类型</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>width</p></td>
+<td><p>int32_t</p></td>
+<td><p>缓冲区像素宽度</p></td>
+</tr>
+<tr class="row-odd"><td><p>height</p></td>
+<td><p>int32_t</p></td>
+<td><p>缓冲区像素高度</p></td>
+</tr>
+<tr class="row-even"><td><p>stride</p></td>
+<td><p>int32_t</p></td>
+<td><p>一行的字节数</p></td>
+</tr>
+<tr class="row-odd"><td><p>tiled</p></td>
+<td><p>vg_lite_buffer_layout_t</p></td>
+<td><p>线性或平铺</p></td>
+</tr>
+<tr class="row-even"><td><p>format</p></td>
+<td><p>vg_lite_buffer_format_t</p></td>
+<td><p>颜色类型</p></td>
+</tr>
+<tr class="row-odd"><td><p>handle</p></td>
+<td><p>void *</p></td>
+<td><p>内存句柄</p></td>
+</tr>
+<tr class="row-even"><td><p>memory</p></td>
+<td><p>void *</p></td>
+<td><p>映射的虚拟地址</p></td>
+</tr>
+<tr class="row-odd"><td><p>address</p></td>
+<td><p>uint32_t</p></td>
+<td><p>物理地址</p></td>
+</tr>
+<tr class="row-even"><td><p>yuv</p></td>
+<td><p>N/A</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-odd"><td><p>image_mode</p></td>
+<td><p>vg_lite_buffer_image_mode_t</p></td>
+<td><p>Blit模式</p></td>
+</tr>
+<tr class="row-even"><td><p>transparency_mode</p></td>
+<td><p>vg_lite_buffer_transparency_mode_t</p></td>
+<td><p>透明模式</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="id15">
+<h4>函数<a class="headerlink" href="#id15" title="Link to this heading">#</a></h4>
+<section id="vg-lite-allocate">
+<h5>vg_lite_allocate<a class="headerlink" href="#vg-lite-allocate" title="Link to this heading">#</a></h5>
+<ul>
+<li><p>描述</p>
+<p>这个函数用于在blit或draw函数中使用缓冲区之前分配内存。</p>
+<p>为了让硬件访问一些内存，如源图像或目标缓冲区，需要首先分配。提供的<a class="reference internal" href="#vg-lite-buffer-t">vg_lite_buffer_t</a>结构需要用所请求的缓冲区的大小（宽度和高度）和格式进行初始化。如果stride被设置为0，这个函数将把它填进去。这个函数的唯一输入参数是指向缓冲区结构的指针。如果该结构有所有需要的信息，将为该缓冲区分配适当的内存。</p>
+<p>这个函数将调用内核来实际分配内存。<a class="reference internal" href="#vg-lite-buffer-t">vg_lite_buffer_t</a>结构中的内存句柄、逻辑地址和硬件地址将由内核填入。</p>
+</li>
+<li><p>参数</p>
+<p><a class="reference internal" href="#vg-lite-buffer-t">vg_lite_buffer_t</a> *buffer: 指向缓冲区的指针，该指针持有被分配的缓冲区的大小和格式。</p>
+</li>
+</ul>
+</section>
+<section id="vg-lite-free">
+<h5>vg_lite_free<a class="headerlink" href="#vg-lite-free" title="Link to this heading">#</a></h5>
+<ul>
+<li><p>描述</p>
+<p>这个函数用来取消先前分配的缓冲区，释放出该缓冲区的内存。</p>
+</li>
+<li><p>参数</p>
+<p><a class="reference internal" href="#vg-lite-buffer-t">vg_lite_buffer_t</a> *buffer: 指向被vg_lite_allocate填入的缓冲区结构的指针。</p>
+</li>
+</ul>
+</section>
+<section id="vg-lite-buffer-upload">
+<h5>vg_lite_buffer_upload<a class="headerlink" href="#vg-lite-buffer-upload" title="Link to this heading">#</a></h5>
+<ul>
+<li><p>描述</p>
+<p>该函数将像素数据上传到GPU内存。注意，要上传的数据（像素）的格式必须与缓冲区对象中描述的相同。输入的数据内存缓冲区应该包含足够的数据，以便上传到输入参数 “buffer “所指向的GPU缓冲区。</p>
+</li>
+<li><p>参数</p>
+<p>vg_lite_buffer_t *buffer: 指向被vg_lite_allocate填入的缓冲区结构的指针。</p>
+<p>uint8_t *data[3]: 指向像素数据的指针。</p>
+<p>uint32_t stride[3]: 像素数据的行跨度。</p>
+</li>
+</ul>
+</section>
+<section id="vg-lite-map">
+<h5>vg_lite_map<a class="headerlink" href="#vg-lite-map" title="Link to this heading">#</a></h5>
+<ul>
+<li><p>描述</p>
+<p>这个函数是用来将 DMABUF 导入 GPU 中进行使用，在调用前需要配置好 buffer 的 width, height, format, stride, memory 属性，具体用法可以参考 vglite_drm 这个示例。</p>
+</li>
+<li><p>参数</p>
+<p>vg_lite_buffer_t *buffer: 指向被<a class="reference internal" href="#vg-lite-allocate">vg_lite_allocate</a>填入的缓冲区结构的指针。
+vg_lite_map_flag_t flag: 目前只支持 VG_LITE_MAP_DMABUF
+int32_t fd: DMABUF fd</p>
+</li>
+</ul>
+</section>
+<section id="vg-lite-unmap">
+<h5>vg_lite_unmap<a class="headerlink" href="#vg-lite-unmap" title="Link to this heading">#</a></h5>
+<ul>
+<li><p>描述</p>
+<p>这个函数解除了缓冲区的映射，并释放了之前调用vg_lite_map分配的任何内存资源。</p>
+</li>
+<li><p>参数</p>
+<p>vg_lite_buffer_t *buffer: 指向被<a class="reference internal" href="#vg-lite-map">vg_lite_map</a>填入的缓冲区结构的指针。</p>
+</li>
+</ul>
+</section>
+<section id="vg-lite-set-clut">
+<h5>vg_lite_set_CLUT<a class="headerlink" href="#vg-lite-set-clut" title="Link to this heading">#</a></h5>
+<ul>
+<li><p>描述</p>
+<p>该函数在上下文状态下为索引彩色图像设置颜色查找表（CLUT）。一旦CLUT被设置（非空），用于索引格式图像渲染的图像像素颜色将根据像素的颜色索引值从颜色查找表（CLUT）中获得。</p>
+</li>
+<li><p>参数</p>
+<p>uint32_t count: 颜色查找表中的颜色计数。</p>
+<p>对于INDEX_1，表中最多可以有2种颜色。</p>
+<p>对于INDEX_2，表中最多可以有4种颜色。</p>
+<p>对于INDEX_4，表中最多可以有16种颜色。</p>
+<p>对于INDEX_8，表中最多可以有256种颜色。</p>
+<p>uint32_t *colors: 该指针指向的颜色查找表（CLUT）将被存储在上下文中，并在需要时被编程到命令缓冲区。在命令缓冲区被提交给硬件之前，CLUT不会生效。颜色为ARGB格式，A在最高位。</p>
+<p>注意：驱动程序不验证来自应用程序的CLUT内容。</p>
+</li>
+</ul>
+</section>
+</section>
+</section>
+<section id="id16">
+<h3>矩阵<a class="headerlink" href="#id16" title="Link to this heading">#</a></h3>
+<section id="id17">
+<h4>结构体<a class="headerlink" href="#id17" title="Link to this heading">#</a></h4>
+<section id="vg-lite-matrix-t">
+<h5>vg_lite_matrix_t<a class="headerlink" href="#vg-lite-matrix-t" title="Link to this heading">#</a></h5>
+<ul>
+<li><p>描述</p>
+<p>定义了一个3x3浮点数矩阵。</p>
+</li>
+</ul>
+</section>
+</section>
+<section id="id18">
+<h4>函数<a class="headerlink" href="#id18" title="Link to this heading">#</a></h4>
+<section id="vg-lite-identity">
+<h5>vg_lite_identity<a class="headerlink" href="#vg-lite-identity" title="Link to this heading">#</a></h5>
+<ul>
+<li><p>描述</p>
+<p>将矩阵设为单位矩阵。</p>
+</li>
+<li><p>参数</p>
+<p>vg_lite_matrix_t *matrix: 指向<a class="reference internal" href="#vg-lite-matrix-t">vg_lite_matrix_t</a>结构体的指针，该结构体将被加载单位矩阵。</p>
+</li>
+</ul>
+</section>
+<section id="vg-lite-perspective">
+<h5>vg_lite_perspective<a class="headerlink" href="#vg-lite-perspective" title="Link to this heading">#</a></h5>
+<ul>
+<li><p>描述</p>
+<p>对矩阵进行透视变换。</p>
+</li>
+<li><p>参数</p>
+<p>vg_lite_float_t px: 透视变换矩阵的。</p>
+<p>vg_lite_float_t py: 透视变换矩阵的</p>
+<p>vg_lite_matrix_t *matrix: 指向将被透视变换的<a class="reference internal" href="#vg-lite-matrix-t">vg_lite_matrix_t</a>结构的指针。</p>
+</li>
+</ul>
+</section>
+<section id="vg-lite-rotate">
+<h5>vg_lite_rotate<a class="headerlink" href="#vg-lite-rotate" title="Link to this heading">#</a></h5>
+<ul>
+<li><p>描述</p>
+<p>对矩阵进行指定角度的旋转变换。</p>
+</li>
+<li><p>参数</p>
+<p>vg_lite_float_t degrees: 旋转矩阵的度数（角度制），正数表示顺时针旋转。</p>
+<p>vg_lite_matrix_t *matrix: 指向将被旋转的<a class="reference internal" href="#vg-lite-matrix-t">vg_lite_matrix_t</a>结构的指针。</p>
+</li>
+</ul>
+</section>
+<section id="vg-lite-scale">
+<h5>vg_lite_scale<a class="headerlink" href="#vg-lite-scale" title="Link to this heading">#</a></h5>
+<ul>
+<li><p>描述</p>
+<p>对矩阵进行垂直和水平缩放。</p>
+</li>
+<li><p>参数</p>
+<p>vg_lite_float_t scale_x: 水平方向缩放因子。</p>
+<p>vg_lite_float_t scale_y: 竖直方向缩放因子。</p>
+<p>vg_lite_matrix_t *matrix: 指向将被缩放的<a class="reference internal" href="#vg-lite-matrix-t">vg_lite_matrix_t</a>结构的指针。</p>
+</li>
+</ul>
+</section>
+<section id="vg-lite-translate">
+<h5>vg_lite_translate<a class="headerlink" href="#vg-lite-translate" title="Link to this heading">#</a></h5>
+<ul>
+<li><p>描述</p>
+<p>对矩阵进行平移变换。</p>
+</li>
+<li><p>参数</p>
+<p>vg_lite_float_t x: 水平方向的平移。</p>
+<p>vg_lite_float_t y: 竖直方向的平移。</p>
+<p>vg_lite_matrix_t *matrix: 指向将被平移的<a class="reference internal" href="#vg-lite-matrix-t">vg_lite_matrix_t</a>结构的指针。</p>
+</li>
+</ul>
+</section>
+</section>
+</section>
+<section id="blits">
+<h3>用于合成和混合的BLITs<a class="headerlink" href="#blits" title="Link to this heading">#</a></h3>
+<section id="id19">
+<h4>枚举类型<a class="headerlink" href="#id19" title="Link to this heading">#</a></h4>
+<section id="vg-lite-blend-t">
+<h5>vg_lite_blend_t<a class="headerlink" href="#vg-lite-blend-t" title="Link to this heading">#</a></h5>
+<p>该枚举定义了一些VGLite API函数所支持的混合模式。S和D代表源和目标颜色通道，Sa和Da代表源和目标alpha通道。</p>
+<p>颜色以100%和50%的不透明度显示。</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>vg_lite_blend_t</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>VG_LITE_BLEND_ADDITIVE</p></td>
+<td><p>S+D</p></td>
+</tr>
+<tr class="row-odd"><td><p>VG_LITE_BLEND_DST_IN</p></td>
+<td><p>Sa*D</p></td>
+</tr>
+<tr class="row-even"><td><p>VG_LITE_BLEND_DST_OVER</p></td>
+<td><p>(1-Da)*S+D</p></td>
+</tr>
+<tr class="row-odd"><td><p>VG_LITE_BLEND_MULTIPLY</p></td>
+<td><p>S*(1-Da)+D*(1-Sa)+S*D</p></td>
+</tr>
+<tr class="row-even"><td><p>VG_LITE_BLEND_NONE</p></td>
+<td><p>S</p></td>
+</tr>
+<tr class="row-odd"><td><p>VG_LITE_BLEND_SCREEN</p></td>
+<td><p>S+D-S*D</p></td>
+</tr>
+<tr class="row-even"><td><p>VG_LITE_BLEND_SRC_IN</p></td>
+<td><p>Da*S</p></td>
+</tr>
+<tr class="row-odd"><td><p>VG_LITE_BLEND_SRC_OVER</p></td>
+<td><p>S+(1-Sa)*D</p></td>
+</tr>
+<tr class="row-even"><td><p>VG_LITE_BLEND_SUBTRACT</p></td>
+<td><p>D*(1-Sa)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="vg-lite-filter-t">
+<h5>vg_lite_filter_t<a class="headerlink" href="#vg-lite-filter-t" title="Link to this heading">#</a></h5>
+<p>指定blit和draw APIs中的样本过滤模式。</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>vg_lite_filter_t</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>VG_LITE_FILTER_POINT</p></td>
+<td><p>只取最近的图像像素。</p></td>
+</tr>
+<tr class="row-odd"><td><p>VG_LITE_FILTER_LINEAR</p></td>
+<td><p>使用沿水平线的线性内插。</p></td>
+</tr>
+<tr class="row-even"><td><p>VG_LITE_FILTER_BI_LINEAR</p></td>
+<td><p>在图像像素周围使用一个2x2的盒子，并进行插值。</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="vg-lite-global-alpha-t">
+<h5>vg_lite_global_alpha_t<a class="headerlink" href="#vg-lite-global-alpha-t" title="Link to this heading">#</a></h5>
+<p>指定blit APIs中的全局alpha模式。</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>vg_lite_global_alpha_t</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>VG_LITE_NORMAL</p></td>
+<td><p>使用原始的src/dst alpha值。</p></td>
+</tr>
+<tr class="row-odd"><td><p>VG_LITE_GLOBAL</p></td>
+<td><p>使用全局的src/dst alpha值来替换原始的src/dst alpha值。</p></td>
+</tr>
+<tr class="row-even"><td><p>VG_LITE_SCALED</p></td>
+<td><p>将全局的src/dst alpha值与原src/dst alpha值相乘。</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="id20">
+<h4>结构体<a class="headerlink" href="#id20" title="Link to this heading">#</a></h4>
+<section id="vg-lite-rectangle-t">
+<h5>vg_lite_rectangle_t<a class="headerlink" href="#vg-lite-rectangle-t" title="Link to this heading">#</a></h5>
+<p>该结构体定义了一个矩形的数据的组织。</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>字段</p></th>
+<th class="head"><p>类型</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>x</p></td>
+<td><p>int32_t</p></td>
+<td><p>x坐标，左上角为原点</p></td>
+</tr>
+<tr class="row-odd"><td><p>y</p></td>
+<td><p>int32_t</p></td>
+<td><p>Y坐标，左上角为原点</p></td>
+</tr>
+<tr class="row-even"><td><p>width</p></td>
+<td><p>int32_t</p></td>
+<td><p>宽度</p></td>
+</tr>
+<tr class="row-odd"><td><p>height</p></td>
+<td><p>int32_t</p></td>
+<td><p>高度</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="vg-lite-point-t">
+<h5>vg_lite_point_t<a class="headerlink" href="#vg-lite-point-t" title="Link to this heading">#</a></h5>
+<p>该结构体定义了一个2D点。</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>字段</p></th>
+<th class="head"><p>类型</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>x</p></td>
+<td><p>int32_t</p></td>
+<td><p>X坐标</p></td>
+</tr>
+<tr class="row-odd"><td><p>y</p></td>
+<td><p>int32_t</p></td>
+<td><p>Y坐标</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="vg-lite-point4-t">
+<h5>vg_lite_point4_t<a class="headerlink" href="#vg-lite-point4-t" title="Link to this heading">#</a></h5>
+<p>该结构体定义了四个构成多边形的二维点。这些点是由结构vg_lite_point_t定义的。</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>字段</p></th>
+<th class="head"><p>类型</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>vg_lite_point[4]</p></td>
+<td><p>int32_t each</p></td>
+<td><p>4个点的数组</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="id21">
+<h4>函数<a class="headerlink" href="#id21" title="Link to this heading">#</a></h4>
+<section id="vg-lite-blit">
+<h5>vg_lite_blit<a class="headerlink" href="#vg-lite-blit" title="Link to this heading">#</a></h5>
+<ul>
+<li><p>描述</p>
+<p>BLIT函数。BLIT操作是通过一个源缓冲区和一个目标缓冲区进行的。源缓冲区和目标缓冲区结构是用vg_lite_buffer_t结构体定义的。BLIT用指定的矩阵将源图像复制到目标缓冲区，该矩阵可以包括平移、旋转、缩放和透视校正。注意，vg_lite_buffer_t不支持覆盖采样抗锯齿，所以目标缓冲区的边缘可能不光滑，尤其是旋转矩阵。而路径渲染可以用来实现高质量的覆盖样本抗锯齿（16X，4X）渲染效果。</p>
+</li>
+<li><p>参数</p>
+<p>vg_lite_buffer_t *target: 指向定义目标缓冲区的vg_lite_buffer_t结构体。关于blit功能的有效目标颜色格式，请参见<a class="reference internal" href="#id10">源图像对齐要求</a>。</p>
+<p>vg_lite_buffer_t *source: 指向源缓冲区的vg_lite_buffer_t结构体。<a class="reference internal" href="#vg-lite-buffer-format-t">vg_lite_buffer_format_t</a>枚举中的所有颜色格式都是blit函数的有效源格式。</p>
+<p>vg_lite_matrix_t *matrix: 指向一个vg_lite_matrix_t结构，它定义了源像素到目标像素的3x3变换矩阵。如果矩阵为NULL，则假定是一个单位矩阵，这意味着源像素将被直接复制到目标像素的（0,0）位置。</p>
+<p>vg_lite_blend_t blend: 指定硬件支持的混合模式之一，以应用于每个图像像素。如果不需要混合，将此值设置为VG_LITE_BLEND_NONE。注意：如果”matrix”参数被指定为旋转或透视，而”blend”参数被指定为VG_LITE_BLEND_NONE、VG_LITE_BLEND_SRC_IN或VG_LITE_BLEND_DST_IN时，驱动程序将覆盖应用程序对BLIT操作的设置，透明度模式将始终被设置为TRANSPARENT。这是由于GPU硬件的一些限制。</p>
+<p>vg_lite_color_t color: 如果不为零，这个颜色值被用作混合色。在混合发生之前，混合色会与每个源像素相乘。如果你不需要混合色，把颜色参数设为0。</p>
+<p>vg_lite_filter_t filter: 指定过滤模式的类型。vg_lite_filter_t枚举中的所有格式都是这个函数的有效格式。</p>
+</li>
+</ul>
+</section>
+<section id="vg-lite-blit-rect">
+<h5>vg_lite_blit_rect<a class="headerlink" href="#vg-lite-blit-rect" title="Link to this heading">#</a></h5>
+<ul>
+<li><p>描述</p>
+<p>BLIT矩形函数。</p>
+</li>
+<li><p>参数</p>
+<p>vg_lite_buffer_t *target: 参考vg_lite_blit。</p>
+<p>vg_lite_buffer_t *source: 参考vg_lite_blit。</p>
+<p>uint32_t *rect: 指定要BLIT的矩形区域。</p>
+<p>vg_lite_matrix_t *matrix: 参考vg_lite_blit。</p>
+<p>vg_lite_blend_t *blend: 参考vg_lite_blit。</p>
+<p>vg_lite_color_t color: 参考vg_lite_blit。</p>
+<p>vg_lite_filter_t filter: 参考vg_lite_blit。</p>
+</li>
+</ul>
+</section>
+<section id="vg-lite-get-transform-matrix">
+<h5>vg_lite_get_transform_matrix<a class="headerlink" href="#vg-lite-get-transform-matrix" title="Link to this heading">#</a></h5>
+<ul>
+<li><p>描述</p>
+<p>这个函数从源坐标和目标坐标得到一个3x3的同质变换矩阵。</p>
+</li>
+<li><p>参数</p>
+<p>vg_lite_point4_t src: 指向一组构成源多边形的四个二维点的指针。</p>
+<p>vg_lite_point4_t dst: 指向一组构成目标多边形的四个二维点的指针。</p>
+<p>vg_lite_matrix_t *mat: 输出参数，指向一个3x3的同质矩阵，将源多边形转换为目标多边形。</p>
+</li>
+</ul>
+</section>
+<section id="vg-lite-clear">
+<h5>vg_lite_clear<a class="headerlink" href="#vg-lite-clear" title="Link to this heading">#</a></h5>
+<ul>
+<li><p>描述</p>
+<p>这个函数执行清除操作，用一个明确的颜色清除/填充指定的像素缓冲区（整个缓冲区或缓冲区中的部分矩形）。</p>
+</li>
+<li><p>参数</p>
+<p>vg_lite_buffer_t *target: 参考vg_lite_blit。</p>
+<p>vg_lite_rectangle_t *rectangle: 指向vg_lite_rectangle_t结构的指针，指定要填充的区域。如果该矩形为NULL，那么整个目标缓冲区将被填充指定的颜色。</p>
+<p>vg_lite_color_t color: 填充的颜色，如vg_lite_color_t枚举中指定的，这是用于填充缓冲区的颜色值。如果缓冲区是L8格式的，RGBA颜色将被转换为亮度值。</p>
+</li>
+</ul>
+</section>
+</section>
+<section id="alpha">
+<h4>全局Alpha函数<a class="headerlink" href="#alpha" title="Link to this heading">#</a></h4>
+<section id="vg-lite-set-image-global-alpha">
+<h5>vg_lite_set_image_global_alpha<a class="headerlink" href="#vg-lite-set-image-global-alpha" title="Link to this heading">#</a></h5>
+<ul>
+<li><p>描述</p>
+<p>这个函数将设置图像/源全局alpha并返回一个状态错误代码。</p>
+</li>
+<li><p>参数</p>
+<p>vg_lite_global_alpha_t alpha_mode: 全局Alpha模式，参见<a class="reference internal" href="#vg-lite-global-alpha-t">vg_lite_global_alpha_t</a>.</p>
+<p>uint32_t alpha_value: 要设置的 图像/源 全局Alpha值。</p>
+</li>
+</ul>
+</section>
+<section id="vg-lite-set-dest-global-alpha">
+<h5>vg_lite_set_dest_global_alpha<a class="headerlink" href="#vg-lite-set-dest-global-alpha" title="Link to this heading">#</a></h5>
+<ul>
+<li><p>描述</p>
+<p>这个函数将设置目标全局alpha，并返回一个状态错误代码。</p>
+</li>
+<li><p>参数</p>
+<p>vg_lite_global_alpha_t alpha_mode: 全局Alpha模式，参见<a class="reference internal" href="#vg-lite-global-alpha-t">vg_lite_global_alpha_t</a>.</p>
+<p>uint32_t alpha_value: 要设置的目标全局Alpha值。</p>
+</li>
+</ul>
+</section>
+</section>
+</section>
+<section id="id22">
+<h3>矢量路径控制<a class="headerlink" href="#id22" title="Link to this heading">#</a></h3>
+<section id="id23">
+<h4>枚举类型<a class="headerlink" href="#id23" title="Link to this heading">#</a></h4>
+<section id="vg-lite-quality-t">
+<h5>vg_lite_quality_t<a class="headerlink" href="#vg-lite-quality-t" title="Link to this heading">#</a></h5>
+<p>指定硬件辅助抗锯齿的级别。</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>vg_lite_quality_t</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>VG_LITE_HIGH</p></td>
+<td><p>高质量：16倍覆盖率采样抗锯齿</p></td>
+</tr>
+<tr class="row-odd"><td><p><em>VG_LITE_UPPER</em></p></td>
+<td><p><em>高质量：8倍覆盖率采样抗锯齿（从2020年6月起取消）。</em></p></td>
+</tr>
+<tr class="row-even"><td><p>VG_LITE_MEDIUM</p></td>
+<td><p>中等质量：4倍覆盖率采样抗锯齿</p></td>
+</tr>
+<tr class="row-odd"><td><p>VG_LITE_LOW</p></td>
+<td><p>低质量：无抗锯齿</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="id24">
+<h4>结构体<a class="headerlink" href="#id24" title="Link to this heading">#</a></h4>
+<section id="vg-lite-hw-memory">
+<h5>vg_lite_hw_memory<a class="headerlink" href="#vg-lite-hw-memory" title="Link to this heading">#</a></h5>
+<p>该结构体简单地记录了内核的内存分配信息。</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>字段</p></th>
+<th class="head"><p>类型</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>handle</p></td>
+<td><p>void *</p></td>
+<td><p>GPU内存对象句柄</p></td>
+</tr>
+<tr class="row-odd"><td><p>memory</p></td>
+<td><p>void *</p></td>
+<td><p>逻辑地址</p></td>
+</tr>
+<tr class="row-even"><td><p>address</p></td>
+<td><p>uint32_t</p></td>
+<td><p>GPU内存地址</p></td>
+</tr>
+<tr class="row-odd"><td><p>bytes</p></td>
+<td><p>uint32_t</p></td>
+<td><p>大小</p></td>
+</tr>
+<tr class="row-even"><td><p>property</p></td>
+<td><p>uint32_t</p></td>
+<td><p>第0位用于表示路径上传。 0: 禁用路径数据上传（总是嵌入到命令缓冲区）。 1: 启用自动路径数据上传。</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="vg-lite-path-t">
+<h5>vg_lite_path_t<a class="headerlink" href="#vg-lite-path-t" title="Link to this heading">#</a></h5>
+<p>该结构描述了矢量路径数据。</p>
+<p>路径数据由操作码和坐标组成。操作码的格式总是VG_LITE_S8。关于操作码的详细情况，请参考本文件中关于<a class="reference internal" href="#id27">矢量路径操作码</a>的部分。</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>字段</p></th>
+<th class="head"><p>类型</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>bounding_box[4]</p></td>
+<td><p>vg_lite_float_t</p></td>
+<td><p>路径的包围盒。 [0] 左侧 [1] 顶部 [2] 右侧 [3] 底部</p></td>
+</tr>
+<tr class="row-odd"><td><p>quality</p></td>
+<td><p>vg_lite_quality_t</p></td>
+<td><p>路径质量的枚举类型，抗锯齿级别</p></td>
+</tr>
+<tr class="row-even"><td><p>format</p></td>
+<td><p>enum vg_lite_format_t</p></td>
+<td><p>坐标格式的枚举类型</p></td>
+</tr>
+<tr class="row-odd"><td><p>uploaded</p></td>
+<td><p>vg_lite_hw_memory_t</p></td>
+<td><p>带有已上传到GPU可寻址内存的路径数据的结构体</p></td>
+</tr>
+<tr class="row-even"><td><p>path_length</p></td>
+<td><p>int32_t</p></td>
+<td><p>路径的字节数</p></td>
+</tr>
+<tr class="row-odd"><td><p>path</p></td>
+<td><p>void *</p></td>
+<td><p>路径数据指针</p></td>
+</tr>
+<tr class="row-even"><td><p>path_changed</p></td>
+<td><p>int32_t</p></td>
+<td><p>0: 未改变; 1: 改变.</p></td>
+</tr>
+</tbody>
+</table>
+<p>关于坐标格式与数据的对齐方式。</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>vg_lite_format_t</p></th>
+<th class="head"><p>路径数据对齐</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>VG_LITE_S8</p></td>
+<td><p>8 bit</p></td>
+</tr>
+<tr class="row-odd"><td><p>VG_LITE_S16</p></td>
+<td><p>2 bytes</p></td>
+</tr>
+<tr class="row-even"><td><p>VG_LITE_S32</p></td>
+<td><p>4 bytes</p></td>
+</tr>
+</tbody>
+</table>
+<section id="id25">
+<h6>路径对象的特别说明<a class="headerlink" href="#id25" title="Link to this heading">#</a></h6>
+<ul class="simple">
+<li><p>端序没有影响，因为它是靠边界对齐的。</p></li>
+<li><p>多个连续的操作码应该按照指定的数据格式的大小进行打包。例如，对于VG_LITE_S16按2个字节打包，对于VG_LITE_S32按4个字节打包。由于操作码是8位（1字节），对于16位（2字节）或32位（4字节）数据类型：</p></li>
+</ul>
+<p>…</p>
+<p>&lt;opcode1_that_needs_data &gt;，操作码为8位。</p>
+<p>&lt;align_to_data_size&gt;（对准数据）。</p>
+<p>&lt;opcode1的数据&gt; &lt;align_to_data_size&gt; &lt;data_for_opcode1&gt;</p>
+<p>&lt;opcode2_that_doesnt_need_data&gt; &lt;opcode2_that_doesnt_need_data&gt;</p>
+<p>&lt;opcode3_that_needs_data&gt;&lt;/p&gt;&lt;p&gt;&lt;p&gt;</p>
+<p>&lt;align_to_data_size</p>
+<p>&lt;data_for_opcode3&gt; &lt;data_for_opcode3&gt;</p>
+<p>…</p>
+<p>数组中的路径数据应该总是1，2，或4字节对齐，这取决于格式。例如，对于32位（4字节）的数据类型。</p>
+<p>…</p>
+<p>&lt;opcode1_that_needs_data &gt;&lt;opcode1_that_needs_data&gt;?</p>
+<p>&lt;pad to 4 bytes</p>
+<p>&lt;4 byte data_for_opcode1&gt;（4个字节）。</p>
+<p>&lt;opcode2_that_doesnt_need_data&gt; &lt;opcode2_that_doesnt_need_data&gt;</p>
+<p>&lt;opcode3_that_needs_data&gt;</p>
+<p>&lt;pad to 4 bytes</p>
+<p>&lt;4 byte data_for_opcode3&gt;</p>
+<p>…</p>
+<p>对于float类型，使用IEEE754编码规范，此时操作码仍然为8位有符号整数，可能需要软件进行特殊处理。</p>
+</section>
+</section>
+</section>
+<section id="id26">
+<h4>函数<a class="headerlink" href="#id26" title="Link to this heading">#</a></h4>
+<section id="vg-lite-path-calc-length">
+<h5>vg_lite_path_calc_length<a class="headerlink" href="#vg-lite-path-calc-length" title="Link to this heading">#</a></h5>
+<ul>
+<li><p>描述</p>
+<p>这个函数计算路径命令的缓冲区长度（以字节为单位）。应用程序可以根据这个函数计算的缓冲区长度分配一个缓冲区作为命令缓冲区使用。</p>
+</li>
+<li><p>参数</p>
+<p>uint8_t *cmd: 指向用于构建路径的操作码数组的指针。</p>
+<p>uint32_t count: 操作码数量。</p>
+<p>vg_lite_format_t format: 坐标数据格式，所有可用于vg_lite_format_t的格式都是该函数的有效格式。</p>
+</li>
+</ul>
+</section>
+<section id="vg-lite-path-append">
+<h5>vg_lite_path_append<a class="headerlink" href="#vg-lite-path-append" title="Link to this heading">#</a></h5>
+<ul>
+<li><p>描述</p>
+<p>这个函数为路径组装命令缓冲区，这个函数根据输入的操作码（cmd）和坐标（data）为路径制作最终的GPU命令。</p>
+</li>
+<li><p>参数</p>
+<p>vg_lite_path_t *path: 指向带有路径定义的vg_lite_path_t结构体的指针。</p>
+<p>uint8_t *cmd: 指向用于构建路径的操作码数组的指针。</p>
+<p>void *data: 指向用于构建路径的坐标数据数组的指针。</p>
+<p>uint32_t seg_count: 操作码数量。</p>
+</li>
+</ul>
+</section>
+<section id="vg-lite-init-path">
+<h5>vg_lite_init_path<a class="headerlink" href="#vg-lite-init-path" title="Link to this heading">#</a></h5>
+<ul>
+<li><p>描述</p>
+<p>这个函数用指定的值初始化一个路径定义。</p>
+</li>
+<li><p>参数</p>
+<p>vg_lite_path_t *path: 指向路径对象的vg_lite_path_t结构的指针，要用指定的成员值进行初始化。</p>
+<p>vg_lite_format_t data_format: 坐标数据格式。vg_lite_format_t枚举中的所有格式都是该函数的有效格式。</p>
+<p>vg_lite_quality_t quality: 路径对象的质量。vg_lite_quality_t枚举中的所有格式都是这个函数的有效格式。</p>
+<p>uint32_t path_length: 路径数据的长度（以字节为单位）。</p>
+<p>void *path_data: 路径数据的指针。</p>
+<p>vg_lite_float_t min_x, vg_lite_float_t min_y, vg_lite_float_t max_x, vg_lite_float_t max_y: 最小和最大的x和y值，指定路径的包围盒。</p>
+</li>
+</ul>
+</section>
+<section id="vg-lite-init-arc-path">
+<h5>vg_lite_init_arc_path<a class="headerlink" href="#vg-lite-init-arc-path" title="Link to this heading">#</a></h5>
+<ul>
+<li><p>描述</p>
+<p>这个函数用指定的值初始化一个弧形路径定义。</p>
+</li>
+<li><p>参数</p>
+<p>vg_lite_path_t *path: 参考vg_lite_init_path。</p>
+<p>vg_lite_format_t data_format: 参考vg_lite_init_path。</p>
+<p>vg_lite_quality_t quality: 参考vg_lite_init_path。</p>
+<p>uint32_t path_length: 参考vg_lite_init_path。</p>
+<p>void *path_data: 参考vg_lite_init_path。</p>
+<p>vg_lite_float_t min_x, vg_lite_float_t min_y, vg_lite_float_t max_x, vg_lite_float_t max_y: 参考vg_lite_init_path。</p>
+</li>
+</ul>
+</section>
+<section id="vg-lite-upload-path">
+<h5>vg_lite_upload_path<a class="headerlink" href="#vg-lite-upload-path" title="Link to this heading">#</a></h5>
+<ul>
+<li><p>描述</p>
+<p>该函数用于上传路径到GPU内存。</p>
+<p>在正常情况下，GPU驱动程序会在运行期间将任何路径数据复制到一个命令缓冲区结构中。如果有很多路径需要渲染，这确实需要一些时间。另外，在嵌入式系统中，路径数据通常不会发生变化，所以将路径数据以GPU可以直接访问的形式上传到GPU内存是有意义的。这个函数将提示驱动程序分配一个缓冲区，该缓冲区将包含路径数据和所需的命令缓冲区的头和脚的数据，以便GPU直接访问这些数据。在路径使用完毕后，调用vg_lite_clear_path来释放这个缓冲区。</p>
+</li>
+<li><p>参数</p>
+<p>vg_lite_path_t *path: 指向vg_lite_path_t结构体的指针，该结构体包含要上传的路径。</p>
+</li>
+</ul>
+</section>
+<section id="vg-lite-clear-path">
+<h5>vg_lite_clear_path<a class="headerlink" href="#vg-lite-clear-path" title="Link to this heading">#</a></h5>
+<ul>
+<li><p>描述</p>
+<p>这个函数将清除和重置路径成员值。如果路径已经被上传，它将释放上传路径时分配的GPU内存。</p>
+</li>
+<li><p>参数</p>
+<p>vg_lite_path_t *path: 指向要清除的vg_lite_path_t路径定义的指针。</p>
+</li>
+</ul>
+</section>
+</section>
+<section id="id27">
+<h4>矢量路径操作码<a class="headerlink" href="#id27" title="Link to this heading">#</a></h4>
+<p>以下操作码是可用于矢量路径数据的路径绘制命令。</p>
+<p>一个路径操作是以[操作码|坐标]的形式提交给GPU的。操作代码以VG_LITE_S8的形式存储，而坐标则通过vg_lite_format_t指定。</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>操作码</p></th>
+<th class="head"><p>参数</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x00</p></td>
+<td><p>None</p></td>
+<td><p>END. 完成，闭合所有开放的路径。</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x02</p></td>
+<td><p>(x,y)</p></td>
+<td><p>MOVE. 移动到给定的顶点。闭合所有开放的路径。 𝑠𝑡𝑎𝑟𝑡𝑥=𝑥 𝑠𝑡𝑎𝑟𝑡𝑦=𝑦</p></td>
+</tr>
+<tr class="row-even"><td><p>0x03</p></td>
+<td><p>(Δx,Δy)</p></td>
+<td><p>MOVE_REL. 移动到给定的相对点。闭合所有开放的路径。 𝑠𝑡𝑎𝑟𝑡𝑥=𝑠𝑡𝑎𝑟𝑡𝑥+Δ𝑥 𝑠𝑡𝑎𝑟𝑡𝑦=𝑠𝑡𝑎𝑟𝑡𝑦+Δ𝑦</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x04</p></td>
+<td><p>(x,y)</p></td>
+<td><p>LINE. 画一条直线到给定的顶点。 𝐿𝑖𝑛𝑒(𝑠𝑡𝑎𝑟𝑡𝑥,𝑠𝑡𝑎𝑟𝑡𝑦,𝑥,𝑦) 𝑠𝑡𝑎𝑟𝑡𝑥=𝑥 𝑠𝑡𝑎𝑟𝑡𝑦=𝑦</p></td>
+</tr>
+<tr class="row-even"><td><p>0x05</p></td>
+<td><p>(Δx,Δy)</p></td>
+<td><p>LINE_REL. 画一条直线到相对位置的顶点。 𝑥=𝑠𝑡𝑎𝑟𝑡𝑥+Δ𝑥 𝑦=𝑠𝑡𝑎𝑟𝑡𝑦+Δ𝑦 𝐿𝑖𝑛𝑒(𝑠𝑡𝑎𝑟𝑡𝑥,𝑠𝑡𝑎𝑟𝑡𝑦,𝑥,𝑦) 𝑠𝑡𝑎𝑟𝑡𝑥=𝑥 𝑠𝑡𝑎𝑟𝑡𝑦=𝑦</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x06</p></td>
+<td><p>(cx,cy) (x,y)</p></td>
+<td><p>QUAD. 使用指定的控制点绘制一条通往给定端点的二次曲线。 𝑄𝑢𝑎𝑑(𝑠𝑡𝑎𝑟𝑡𝑥,𝑠𝑡𝑎𝑟𝑡𝑦,𝑐𝑥,𝑐𝑦,𝑥,𝑦) 𝑠𝑡𝑎𝑟𝑡𝑥=𝑥 𝑠𝑡𝑎𝑟𝑡𝑦=𝑦</p></td>
+</tr>
+<tr class="row-even"><td><p>0x07</p></td>
+<td><p>(Δcx,Δcy)  (Δx,Δy)</p></td>
+<td><p>QUAD_REL. 使用指定的相对控制点绘制一条通往给定的相对位置端点的二次曲线。 𝑐𝑥= 𝑠𝑡𝑎𝑟𝑡𝑥+Δ𝑐𝑥 𝑐𝑦=𝑠𝑡𝑎𝑟𝑡𝑦+Δ𝑐𝑦 𝑥= 𝑠𝑡𝑎𝑟𝑡𝑥+Δ𝑥 𝑦=𝑠𝑡𝑎𝑟𝑡𝑦+Δ𝑦 𝑄𝑢𝑎𝑑(𝑠𝑡𝑎𝑟𝑡𝑥,𝑠𝑡𝑎𝑟𝑡𝑦,𝑐𝑥,𝑐𝑦,𝑥,𝑦) 𝑠𝑡𝑎𝑟𝑡𝑥=𝑥 𝑠𝑡𝑎𝑟𝑡𝑦=𝑦</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x08</p></td>
+<td><p>(cx1,cy1) (cx2,cy2) (x,y)</p></td>
+<td><p>CUBIC. 使用指定的控制点绘制一条到给定端点的三次曲线。 𝐶𝑢𝑏𝑖𝑐(𝑠𝑡𝑎𝑟𝑡𝑥,𝑠𝑡𝑎𝑟𝑡𝑦,𝑐𝑥1,𝑐𝑦1,𝑐𝑥2,𝑐𝑦2,𝑥,𝑦) 𝑠𝑡𝑎𝑟𝑡𝑥=𝑥 𝑠𝑡𝑎𝑟𝑡𝑦=𝑦</p></td>
+</tr>
+<tr class="row-even"><td><p>0x09</p></td>
+<td><p>(Δcx1,Δcy1)  (Δcx2,Δcy2)  (Δx,Δy)</p></td>
+<td><p>CUBIC_REL. 使用指定的控制点绘制一条到给定相对位置端点的三次曲线。 𝑐𝑥1= 𝑠𝑡𝑎𝑟𝑡𝑥+Δ𝑐𝑥1 𝑐𝑦1=𝑠𝑡𝑎𝑟𝑡𝑦+Δ𝑐𝑦1 𝑐𝑥2=𝑠𝑡𝑎𝑟𝑡𝑥+Δ𝑐𝑥2 𝑐𝑦2=𝑠𝑡𝑎𝑟𝑡𝑦+Δ𝑐𝑦2 𝑥=𝑠𝑡𝑎𝑟𝑡𝑥+Δ𝑥 𝑦=𝑠𝑡𝑎𝑟𝑡𝑦+Δ𝑦 𝐶𝑢𝑏𝑖𝑐(𝑠𝑡𝑎𝑟𝑡𝑥,𝑠𝑡𝑎𝑟𝑡𝑦,𝑐𝑥1,𝑐𝑦1,𝑐𝑥2,𝑐𝑦2,𝑥,𝑦) 𝑠𝑡𝑎𝑟𝑡𝑥=𝑥 𝑠𝑡𝑎𝑟𝑡𝑦=𝑦</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x0A</p></td>
+<td><p>(rh,rv,rot,x,y)</p></td>
+<td><p>SCCWARC. 使用指定的半径和旋转角度绘制一个小的CCW弧线到给定的端点。 𝑺𝑪𝑪𝑾𝑨𝑹𝑪(𝒓𝒉,𝒓𝒗,𝒓𝒐𝒕,𝒙,𝒚) 𝒔𝒕𝒂𝒓𝒕𝒙=𝒙 𝒔𝒕𝒂𝒓𝒕𝒚=𝒚</p></td>
+</tr>
+<tr class="row-even"><td><p>0x0B</p></td>
+<td><p>(rh,rv,rot,x,y)</p></td>
+<td><p>SCCWARC_REL. 使用指定的半径和旋转角度向给定的相对端点绘制一个小的CCW弧线。 𝑥=𝑠𝑡𝑎𝑟𝑡𝑥+Δ𝑥 𝑦=𝑠𝑡𝑎𝑟𝑡𝑦+Δ𝑦 𝑆𝐶𝐶𝑊𝐴𝑅𝐶(𝑟ℎ,𝑟𝑣,𝑟𝑜𝑡,𝑥,𝑦) 𝑠𝑡𝑎𝑟𝑡𝑥=𝑥 𝑠𝑡𝑎𝑟𝑡𝑦=𝑦</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x0C</p></td>
+<td><p>(rh,rv,rot,x,y)</p></td>
+<td><p>SCWARC. 使用指定的半径和旋转角度绘制一个小的CW弧线到给定的端点。 𝑆𝐶𝑊𝐴𝑅𝐶(𝑟ℎ,𝑟𝑣,𝑟𝑜𝑡,𝑥,𝑦) 𝑠𝑡𝑎𝑟𝑡𝑥=𝑥 𝑠𝑡𝑎𝑟𝑡𝑦=𝑦</p></td>
+</tr>
+<tr class="row-even"><td><p>0x0D</p></td>
+<td><p>(rh,rv,rot,x,y)</p></td>
+<td><p>SCWARC_REL. 使用指定的半径和旋转角度绘制一个小的CW弧线到给定的相对端点。 𝑥=𝑠𝑡𝑎𝑟𝑡𝑥+Δ𝑥 𝑦=𝑠𝑡𝑎𝑟𝑡𝑦+Δ𝑦 𝑆𝐶𝑊𝐴𝑅𝐶(𝑟ℎ,𝑟𝑣,𝑟𝑜𝑡,𝑥,𝑦) 𝑠𝑡𝑎𝑟𝑡𝑥=𝑥 𝑠𝑡𝑎𝑟𝑡𝑦=𝑦</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x0E</p></td>
+<td><p>(rh,rv,rot,x,y)</p></td>
+<td><p>LCCWARC. 使用指定的半径和旋转角度向给定的端点绘制一个大的CCW弧线。 𝐿𝐶𝐶𝑊𝐴𝑅𝐶(𝑟ℎ,𝑟𝑣,𝑟𝑜𝑡,𝑥,𝑦) 𝑠𝑡𝑎𝑟𝑡𝑥=𝑥 𝑠𝑡𝑎𝑟𝑡𝑦=𝑦</p></td>
+</tr>
+<tr class="row-even"><td><p>0x0F</p></td>
+<td><p>(rh,rv,rot,x,y)</p></td>
+<td><p>LCCWARC_REL. 使用指定的半径和旋转角度向给定的相对端点绘制一个大的CCW弧线。 𝑥=𝑠𝑡𝑎𝑟𝑡𝑥+Δ𝑥 𝑦=𝑠𝑡𝑎𝑟𝑡𝑦+Δ𝑦 𝐿𝐶𝐶𝑊𝐴𝑅𝐶(𝑟ℎ,𝑟𝑣,𝑟𝑜𝑡,𝑥,𝑦) 𝑠𝑡𝑎𝑟𝑡𝑥=𝑥 𝑠𝑡𝑎𝑟𝑡𝑦=𝑦</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x10</p></td>
+<td><p>(rh,rv,rot,x,y)</p></td>
+<td><p>LCWARC. 使用指定的半径和旋转角度绘制一个大的CW弧线到给定的端点。 𝐿𝐶𝑊𝐴𝑅𝐶(𝑟ℎ,𝑟𝑣,𝑟𝑜𝑡,𝑥,𝑦) 𝑠𝑡𝑎𝑟𝑡𝑥=𝑥 𝑠𝑡𝑎𝑟𝑡𝑦=𝑦</p></td>
+</tr>
+<tr class="row-even"><td><p>0x11</p></td>
+<td><p>(rh,rv,rot,x,y)</p></td>
+<td><p>LCWARC_REL. 使用指定的半径和旋转角度绘制一个大的CW弧线到给定的相对端点。 𝑥=𝑠𝑡𝑎𝑟𝑡𝑥+Δ𝑥 𝑦=𝑠𝑡𝑎𝑟𝑡𝑦+Δ𝑦 𝐿𝐶𝑊𝐴𝑅𝐶(𝑟ℎ,𝑟𝑣,𝑟𝑜𝑡,𝑥,𝑦) 𝑠𝑡𝑎𝑟𝑡𝑥=𝑥 𝑠𝑡𝑎𝑟𝑡𝑦=𝑦</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="id28">
+<h3>基于矢量的绘制操作<a class="headerlink" href="#id28" title="Link to this heading">#</a></h3>
+<section id="id29">
+<h4>枚举类型<a class="headerlink" href="#id29" title="Link to this heading">#</a></h4>
+<section id="vg-lite-fill-t">
+<h5>vg_lite_fill_t<a class="headerlink" href="#vg-lite-fill-t" title="Link to this heading">#</a></h5>
+<p>这个枚举用于指定要使用的填充规则。对于绘制任何路径，硬件都支持非零和奇偶的填充规则。</p>
+<p>为了确定任何一个点是否包含在一个物体内，想象一下从该点向任何方向画一条线到无限远，使该线不与路径的任何顶点交叉。对于被线穿过的每条边，如果边是从左到右穿过的，则在计数器上加1，就像观察者从线上走向无限远处看到的那样；如果边是从右到左穿过的，则减去1。这样一来，平面的每个区域都会得到一个整数值。</p>
+<p>非零填充规则说，如果所得之和不等于零，那么一个点就在形状内。偶数/奇数规则说，如果结果的总和是奇数，那么一个点就在形状里面，而不考虑符号。</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>vg_lite_fill_t</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>VG_LITE_FILL_NON_ZERO</p></td>
+<td><p>非零填充规则。如果一个像素至少与一个路径像素相交，就会被画出来。</p></td>
+</tr>
+<tr class="row-odd"><td><p>VG_LITE_FILL_EVEN_ODD</p></td>
+<td><p>偶数填充规则。如果一个像素与奇数的路径像素相交，就会被画出来。</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="vg-lite-pattern-mode-t">
+<h5>vg_lite_pattern_mode_t<a class="headerlink" href="#vg-lite-pattern-mode-t" title="Link to this heading">#</a></h5>
+<p>定义图像图案外的区域如何被填充到路径上。</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>vg_lite_pattern_mode_t</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>VG_LITE_PATTERN_COLOR</p></td>
+<td><p>按颜色填充图案的外部。</p></td>
+</tr>
+<tr class="row-odd"><td><p>VG_LITE_PATTERN_PAD</p></td>
+<td><p>图案边框的颜色被扩大以填充图案外的区域。</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="id30">
+<h4>结构体<a class="headerlink" href="#id30" title="Link to this heading">#</a></h4>
+<section id="v3-6-2-1-g-lite-color-ramp-t">
+<h5>v3.6.2.1 g_lite_color_ramp_t<a class="headerlink" href="#v3-6-2-1-g-lite-color-ramp-t" title="Link to this heading">#</a></h5>
+<p>这个结构体定义了径向梯度的止点。五个参数提供了停止点的偏移量和颜色。每个停止点都是由一组浮点值定义的，这些浮点值指定了偏移量以及sRGBA颜色和alpha值。颜色通道的值是以非重乘（R、G、B、alpha）四边形的形式存在。所有的参数都在[0,1]的范围内。红、绿、蓝、α值[0,1]被映射到8位像素值[0,255]。</p>
+<p>定义径向梯度停止的最大数量是MAX_COLOR_RAMP_STOPS，即256。</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>字段</p></th>
+<th class="head"><p>类型</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>stop</p></td>
+<td><p>vg_lite_float_t</p></td>
+<td><p>颜色停止点的偏移量</p></td>
+</tr>
+<tr class="row-odd"><td><p>red</p></td>
+<td><p>vg_lite_float_t</p></td>
+<td><p>红色停止点的偏移量</p></td>
+</tr>
+<tr class="row-even"><td><p>green</p></td>
+<td><p>vg_lite_float_t</p></td>
+<td><p>绿色停止点的偏移量</p></td>
+</tr>
+<tr class="row-odd"><td><p>blue</p></td>
+<td><p>vg_lite_float_t</p></td>
+<td><p>蓝色停止点的偏移量</p></td>
+</tr>
+<tr class="row-even"><td><p>alpha</p></td>
+<td><p>vg_lite_float_t</p></td>
+<td><p>Alpha通道停止点的偏移量</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="vg-lite-linear-gradient-t">
+<h5>vg_lite_linear_gradient_t<a class="headerlink" href="#vg-lite-linear-gradient-t" title="Link to this heading">#</a></h5>
+<p>该结构定义了VGLite数据中的线性梯度的组织。线性渐变被应用于填充路径。它将根据设置生成一个256x1的图像。</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>字段</p></th>
+<th class="head"><p>类型</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>colors[VLC_MAX_GRAD]</p></td>
+<td><p>uint32_t</p></td>
+<td><p>渐变的颜色数组</p></td>
+</tr>
+<tr class="row-odd"><td><p>count</p></td>
+<td><p>uint32_t</p></td>
+<td><p>颜色数量</p></td>
+</tr>
+<tr class="row-even"><td><p>stops[VLC_MAX_GRAD]</p></td>
+<td><p>uint32_t</p></td>
+<td><p>色阶数，从0到255</p></td>
+</tr>
+<tr class="row-odd"><td><p>matrix</p></td>
+<td><p>vg_lite_matrix_t</p></td>
+<td><p>转换梯度颜色斜率的矩阵结构体</p></td>
+</tr>
+<tr class="row-even"><td><p>image</p></td>
+<td><p>vg_lite_buffer_t</p></td>
+<td><p>表示颜色斜率的图像对象结构体。</p></td>
+</tr>
+</tbody>
+</table>
+<p>其中VLC_MAX_GRAD最大为16，VLC_GRADBUFFER_WIDTH最大为256.</p>
+</section>
+</section>
+<section id="id31">
+<h4>函数<a class="headerlink" href="#id31" title="Link to this heading">#</a></h4>
+<section id="vg-lite-draw">
+<h5>vg_lite_draw<a class="headerlink" href="#vg-lite-draw" title="Link to this heading">#</a></h5>
+<ul>
+<li><p>描述</p>
+<p>执行硬件加速的2D矢量绘制操作。</p>
+<p>嵌片缓冲区的大小可以在初始化时指定，该大小将被内核调整为硬件所需的最小对齐方式。如果你把嵌片缓冲区做得更小，分配的内存就会更少，但是一个路径可能会被多次下发到硬件，因为硬件会用提供的嵌片窗口大小来行走目标，所以性能可能会降低。良好的做法是将嵌片缓冲区的大小设置为最常见的路径大小。例如，如果你所做的只是渲染最高24pt的字体，你可以将嵌片缓冲区设置为24x24。</p>
+</li>
+<li><p>参数</p>
+<p>vg_lite_buffer_t *target: 指向目标缓冲区的vg_lite_buffer_t结构体的指针。所有在vg_lite_buffer_format_t枚举中的颜色格式都是绘图函数的有效目标格式。</p>
+<p>vg_lite_path_t *path: 指向vg_lite_path_t结构体的指针，该结构体包含描述要绘制的路径数据。关于操作码的详细内容，请参考本文件中关于<a class="reference internal" href="#id27">矢量路径操作码</a>的部分。</p>
+<p>vg_lite_fill_t fill_rule: 为路径的填充规则指定vg_lite_fill_t的枚举值。</p>
+<p>vg_lite_matrix_t *matrix: 指向vg_lite_matrix_t结构体的指针，该结构体定义了路径的仿射变换矩阵。如果矩阵为NULL，则假定是一个单位矩阵。注意：vg_lite_draw不支持非仿射变换，所以透视变换矩阵对路径没有影响。</p>
+<p>vg_lite_blend_t blend: 在vg_lite_blend_t枚举中选择一种硬件支持的混合模式，应用于每个绘制的像素。如果不需要混合，请将此值设置为VG_LITE_BLEND_NONE，即0。</p>
+<p>vg_lite_color_t color: 应用于路径绘制的每个像素的颜色。</p>
+</li>
+</ul>
+</section>
+<section id="vg-lite-draw-gradient">
+<h5>vg_lite_draw_gradient<a class="headerlink" href="#vg-lite-draw-gradient" title="Link to this heading">#</a></h5>
+<ul>
+<li><p>描述</p>
+<p>该函数用于根据指定的填充规则用渐变色填充路径。指定的路径将根据选定的矩阵进行转换，并渐变填充。</p>
+</li>
+<li><p>参数</p>
+<p>vg_lite_buffer_t *target: 参照vg_lite_draw.</p>
+<p>vg_lite_path_t *path: 参照vg_lite_draw.</p>
+<p>vg_lite_fill_t fill_rule: 参照vg_lite_draw.</p>
+<p>vg_lite_matrix_t *matrix: 参照vg_lite_draw.</p>
+<p>vg_lite_linear_gradient_t *grad: 指向vg_lite_linear_gradient_t结构体的指针，该结构体包含用于填充路径的值。</p>
+<p>vg_lite_blend_t blend: 参照vg_lite_draw.</p>
+</li>
+</ul>
+</section>
+<section id="vg-lite-draw-pattern">
+<h5>vg_lite_draw_pattern<a class="headerlink" href="#vg-lite-draw-pattern" title="Link to this heading">#</a></h5>
+<ul>
+<li><p>描述</p>
+<p>这个函数用图像图案填充一个路径。路径将根据指定的矩阵进行转换，并以转换后的图像图案填充。</p>
+</li>
+<li><p>参数</p>
+<p>vg_lite_buffer_t *target: 参照vg_lite_draw.</p>
+<p>vg_lite_path_t *path: 参照vg_lite_draw.</p>
+<p>vg_lite_fill_t fill_rule: 参照vg_lite_draw.</p>
+<p>vg_lite_matrix_t *matrix0: 指向vg_lite_matrix_t结构体的指针，它定义了路径的3x3变换矩阵。如果矩阵为NULL，就会假定是一个单位矩阵。</p>
+<p>vg_lite_buffer_t *source: 指向描述图像模式来源的vg_lite_buffer_t结构体的指针。</p>
+<p>vg_lite_matrix_t *matrix1: 指向一个vg_lite_matrix_t结构体的指针，该矩阵定义了源像素到目标像素的3x3变换。如果矩阵为NULL，则假定是一个单位矩阵，这意味着源像素将被直接复制到目标像素的0,0位置。</p>
+<p>vg_lite_blend_t blend: 参照vg_lite_draw.</p>
+<p>vg_lite_pattern_mode_t pattern mode: 指定vg_lite_pattern_mode_t值，它定义了如何填充图像图案外的区域。</p>
+<p>vg_lite_color_t pattern_color: 指定一个32bpp的ARGB颜色（vg_lite_color_t），当pattern_mode值为VG_LITE_PATTERN_COLOR时，应用于图像图案区域外的填充。</p>
+<p>vg_lite_filter_t filter: 指定过滤器的类型。vg_lite_filter_t枚举中的所有格式都是这个函数的有效格式。值为零（0）表示VG_LITE_FILTER_POINT。</p>
+</li>
+</ul>
+</section>
+</section>
+<section id="id32">
+<h4>线性渐变初始化和控制函数<a class="headerlink" href="#id32" title="Link to this heading">#</a></h4>
+<section id="vg-lite-init-grad">
+<h5>vg_lite_init_grad<a class="headerlink" href="#vg-lite-init-grad" title="Link to this heading">#</a></h5>
+<ul>
+<li><p>描述</p>
+<p>此函数以默认设置初始化线性梯度对象的内部缓冲区，用于渲染。</p>
+</li>
+<li><p>参数</p>
+<p>vg_lite_linear_gradient_t *grad: 指向vg_lite_linear_gradient_t结构体的指针，该结构定义了要被初始化的渐变。使用默认值。</p>
+</li>
+</ul>
+</section>
+<section id="vg-lite-set-grad">
+<h5>vg_lite_set_grad<a class="headerlink" href="#vg-lite-set-grad" title="Link to this heading">#</a></h5>
+<ul>
+<li><p>描述</p>
+<p>该函数用于设置vg_lite_linear_gradient_t结构成员的值。</p>
+<p>注意：在输入参数不完整或无效的情况下，采用以下规则设置默认梯度颜色。</p>
+<ol class="arabic simple">
+<li><p>如果没有指定有效的止点（例如，由于空的输入数组、超出范围或超出顺序的止点），则隐含地定义一个具有（R, G, B, α）颜色（0.0, 0.0, 0.0, 1.0）（不透明的黑色）的0停止点和一个具有颜色（1.0, 1.0, 1.0）（不透明的白色）的1止点。</p></li>
+<li><p>如果至少指定了一个有效的停止点，但没有定义偏移量为0的停止点，那么将添加一个隐含的停止点，偏移量为0，颜色与第一个用户定义的停止点相同。</p></li>
+<li><p>如果至少指定了一个有效的停止，但没有定义偏移量为1的停止，则添加一个隐式停止，其偏移量为1，颜色与最后一个用户定义的停止相同。</p></li>
+</ol>
+</li>
+<li><p>参数</p>
+<p>vg_lite_linear_gradient_t *grad: 指向要设置的vg_lite_linear_gradient_t结构体的指针。</p>
+<p>uint32_t count: 线性渐变中颜色的计数。最大的色块计数是由VLC_MAX_GRAD定义的，即16。</p>
+<p>uint32_t *colors: 指定渐变的颜色数组，ARGB8888格式，Alpha在最高位。</p>
+<p>uint32_t *stops: 指向渐变停止的偏移量的指针。</p>
+</li>
+</ul>
+</section>
+<section id="vg-lite-update-grad">
+<h5>vg_lite_update_grad<a class="headerlink" href="#vg-lite-update-grad" title="Link to this heading">#</a></h5>
+<ul>
+<li><p>描述</p>
+<p>这个函数用于更新或生成一个将要被渲染的图像对象的值。vg_lite_linear_gradient_t对象有一个图像缓冲区，用于渲染渐变图案。该图像缓冲区将被创建或更新为相应的渐变参数。</p>
+</li>
+<li><p>参数</p>
+<p>vg_lite_linear_gradient_t *grad: 指向vg_lite_linear_gradient_t结构体的指针，该结构体包含要用于渲染对象的更新值。</p>
+</li>
+</ul>
+</section>
+<section id="vg-lite-get-grad-matrix">
+<h5>vg_lite_get_grad_matrix<a class="headerlink" href="#vg-lite-get-grad-matrix" title="Link to this heading">#</a></h5>
+<ul>
+<li><p>描述</p>
+<p>这个函数用来获取渐变对象的变换矩阵的指针，这允许应用程序操作矩阵以促进渐变色路径的正确渲染。</p>
+</li>
+<li><p>参数</p>
+<p>vg_lite_linear_gradient_t *grad: 指向vg_lite_linear_gradient_t结构体的指针，该结构体包含要检索的矩阵。</p>
+</li>
+</ul>
+</section>
+<section id="vg-lite-clear-grad">
+<h5>vg_lite_clear_grad<a class="headerlink" href="#vg-lite-clear-grad" title="Link to this heading">#</a></h5>
+<ul>
+<li><p>描述</p>
+<p>该函数用于清除线性渐变对象的值，释放图像缓冲区的内存。</p>
+</li>
+<li><p>参数</p>
+<p>vg_lite_linear_gradient_t *grad: 指向要清除的vg_lite_linear_gradient_t结构的指针。</p>
+</li>
+</ul>
+</section>
+</section>
+</section>
+</section>
+<section id="id33">
+<h2>约束条件<a class="headerlink" href="#id33" title="Link to this heading">#</a></h2>
+<p>GPU驱动程序<strong>只支持一个当前上下文和一个线程来向GPU发布命令</strong>。GPU驱动程序<strong>不支持</strong>在多个线程/进程中同时运行的多个并发上下文，因为GPU内核驱动程序不支持上下文切换。GPU应用程序在任何时候都只能使用一个上下文来向GPU硬件发出命令。如果GPU应用程序需要切换上下文，应该调用<a class="reference internal" href="#vg-lite-close">vg_lite_close</a>来关闭当前线程中的当前上下文，然后可以调用<a class="reference internal" href="#vg-lite-init">vg_lite_init</a>来初始化当前线程中或其他线程/进程中的新上下文。</p>
+</section>
+<section id="id34">
+<h2>性能建议与最佳实践<a class="headerlink" href="#id34" title="Link to this heading">#</a></h2>
+<section id="cache-vs-non-cache">
+<h3>Cache vs Non-cache<a class="headerlink" href="#cache-vs-non-cache" title="Link to this heading">#</a></h3>
+<p>在加载vg_lite.ko模块时，通过cached参数可以配置是否关闭cache（默认启用cache），cache模式下在提交命令给GPU硬件之前会驱动会刷新CPU缓存（D-cache和L2-cache），而non-cache模式下会将command buffer及显存映射到用户态地址空间时设置为non-cache。一般情况下cache模式具有更好的性能，CPU写入command buffer以及读取显存都更快。</p>
+<p>目前刷新cache使用dcache.cipa指令，这个指令一次只能刷一个缓存行即64Bytes，对于较大的缓冲区例如1920x1080&#64;ARGB32，大约需要循环129600次，其中大部分是未命中的，会带来一定的性能开销，而如果使用dcache.ciall指令可以刷新所有cache，但是可能会影响其他进程所以没有使用。</p>
+</section>
+<section id="id35">
+<h3>内存使用<a class="headerlink" href="#id35" title="Link to this heading">#</a></h3>
+<p>vg_lite.ko模块加载后会占用大约130KB内存，除command buffer及显存外几乎不会占用更多空间，每个由vg_lite_hal_allocate_contiguous分配的内存除内存本身外还需要相应的页表资源以及一个大小为64B的节点。</p>
+</section>
+<section id="id36">
+<h3>绘制流程<a class="headerlink" href="#id36" title="Link to this heading">#</a></h3>
+<p>使用VGLite API进行操作</p>
+<ol class="arabic simple">
+<li><p>调用<a class="reference internal" href="#vg-lite-init">vg_lite_init</a>初始化GPU</p></li>
+<li><p>如果需要使用GPU显存，调用<a class="reference internal" href="#vg-lite-allocate">vg_lite_allocate</a>分配和映射</p></li>
+<li><p>使用API绘制</p></li>
+<li><p>调用<a class="reference internal" href="#vg-lite-finish">vg_lite_finish</a>或<a class="reference internal" href="#vg-lite-flush">vg_lite_flush</a>提交命令进行渲染，等待绘制结束</p></li>
+<li><p>进程结束前，调用<a class="reference internal" href="#vg-lite-close">vg_lite_close</a>关闭GPU</p></li>
+</ol>
+</section>
+</section>
+<section id="id37">
+<h2>示例<a class="headerlink" href="#id37" title="Link to this heading">#</a></h2>
+<p>K230 SDK 中包含了多个 GPU 示例，源码放置在 <code class="docutils literal notranslate"><span class="pre">src/little/buildroot-ext/package/vg_lite/test/samples</span></code>，在 buildroot 中打开 BR2_PACKAGE_VG_LITE_DEMOS 即可构建并添加到生成的系统镜像中（默认打开）。</p>
+<section id="tiger">
+<h3>tiger<a class="headerlink" href="#tiger" title="Link to this heading">#</a></h3>
+<p>这是一个绘制老虎图像的示例，运行后会在当前目录下生成 <code class="docutils literal notranslate"><span class="pre">tiger.png</span></code>。</p>
+<p><img alt="tiger.png" src="../../../_images/tiger.png" /></p>
+</section>
+<section id="lineargrad">
+<h3>linearGrad<a class="headerlink" href="#lineargrad" title="Link to this heading">#</a></h3>
+<p>这是一个线性渐变的图像示例，运行后会在当前目录下生成 <code class="docutils literal notranslate"><span class="pre">linearGrad.png</span></code>。</p>
+<p><img alt="linearGrad.png" src="../../../_images/linearGrad.png" /></p>
+</section>
+<section id="imgindex">
+<h3>imgIndex<a class="headerlink" href="#imgindex" title="Link to this heading">#</a></h3>
+<p>这是一个使用了颜色查找表的示例，运行后会在当前目录下生成 <code class="docutils literal notranslate"><span class="pre">imgIndex1.png</span></code>、<code class="docutils literal notranslate"><span class="pre">imgIndex2.png</span></code>、<code class="docutils literal notranslate"><span class="pre">imgIndex4.png</span></code> 和 <code class="docutils literal notranslate"><span class="pre">imgIndex8.png</span></code>，分别使用了不同数量的颜色索引。</p>
+<p><img alt="imgIndex1.png" src="../../../_images/imgIndex1.png" /></p>
+<p><img alt="imgIndex2.png" src="../../../_images/imgIndex2.png" /></p>
+<p><img alt="imgIndex4.png" src="../../../_images/imgIndex4.png" /></p>
+<p><img alt="imgIndex8.png" src="../../../_images/imgIndex8.png" /></p>
+</section>
+<section id="vglite-drm">
+<h3>vglite_drm<a class="headerlink" href="#vglite-drm" title="Link to this heading">#</a></h3>
+<p>这是一个 GPU + DRM 显示联动的示例，</p>
+<p>注意：由于 linux 下的视频输出驱动并<strong>不包含</strong>初始化功能，所以需要在运行前确保屏幕已经在使用，例如可以在大核上运行 <code class="docutils literal notranslate"><span class="pre">sample_vo.elf</span> <span class="pre">3</span></code>。</p>
+</section>
+<section id="vglite-cube">
+<h3>vglite_cube<a class="headerlink" href="#vglite-cube" title="Link to this heading">#</a></h3>
+<p>这是一个 GPU + DRM 显示联动的示例，在屏幕上绘制一个不停旋转的正方体。</p>
+<p>注意：由于 linux 下的视频输出驱动并<strong>不包含</strong>初始化功能，所以需要在运行前确保屏幕已经在使用，例如可以在大核上运行 <code class="docutils literal notranslate"><span class="pre">sample_vo.elf</span> <span class="pre">3</span></code>。</p>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+
+              
+              
+                <footer class="bd-footer-article">
+                  <div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+  <title>评论列表</title>
+  <style>
+    /* 评论顶部 */
+    .docs-comment .head {
+      display: flex;
+      justify-content: space-between;
+      padding-bottom: 1em;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .docs-comment .nickname {
+      cursor: pointer;
+    }
+
+    /* 评论输入框 */
+    .docs-comment .input {
+      display: flex;
+      margin-top: 20px;
+      position: relative;
+    }
+
+    .docs-comment .head-img {
+      border-radius: 3px;
+      width: 50px;
+      height: 50px;
+    }
+
+    .docs-comment .head-img img {
+      height: 50px;
+      width: 50px;
+    }
+
+    .docs-comment textarea,
+    .docs-comment .comment-content {
+      width: 100%;
+      margin-left: 10px;
+      border-radius: 5px;
+      padding: 0.75em;
+      display: block;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      width: 100%;
+      min-height: 5.125em;
+      /* max-height: 15em; */
+      border-radius: 5px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      font-size: 12px;
+      word-wrap: break-word;
+      resize: vertical;
+      background-color: #f6f6f6;
+      outline: none;
+    }
+
+    .docs-comment .replies .comment-content {
+      border: none;
+    }
+
+    .docs-comment .submit {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+    }
+
+    .docs-comment button {
+      padding: 0.75em 1.25em;
+      display: inline-block;
+      line-height: 1;
+      text-decoration: none;
+      white-space: nowrap;
+      cursor: pointer;
+      border: 1px solid #2962ff;
+      border-radius: 5px;
+      background-color: #2962ff;
+      color: #fff;
+      outline: none;
+      font-size: 0.75em;
+    }
+
+    .docs-comment .button .login {
+      margin-left: 20px;
+      background-color: #fff;
+      color: #2962ff;
+    }
+
+    .docs-comment .action {
+      text-align: right;
+
+      svg {
+        height: 16px;
+        width: 16px;
+        cursor: pointer;
+      }
+    }
+
+    .docs-comment .secondary {
+      color: #666;
+    }
+
+    /* 评论列表 */
+    #comment-list {
+      margin-top: 20px;
+    }
+
+    .docs-comment .comment-item,
+    .docs-comment .reply-item {
+      display: flex;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    .docs-comment .reply-icon {
+      margin-left: 10px;
+    }
+
+    .docs-comment .primary {
+      color: #2962ff;
+    }
+
+    .docs-comment .content {
+      margin-top: 0.5em;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="docs-comment">
+    <div class="head">
+      <div class="count primary">条评论</div>
+      <div class="nickname primary" onclick="handleLogin()">登录</div>
+    </div>
+    <div class="input">
+      <div class="head-img"></div>
+      <textarea id="comment" name="comment" rows="5" cols="5" placeholder="说点什么..." required minlength="10"
+        maxlength="200" spellcheck="true" autocomplete="on"></textarea>
+      <button class="submit" onclick="handleAdd()">评论</button>
+    </div>
+    <!-- 评论列表 -->
+    <div id="comment-list"></div>
+  </div>
+
+  <script>
+    let timer = null;
+    const deleteIcon = `<svg
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="#6190e8"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+  <line x1="10" y1="11" x2="10" y2="17" />
+  <line x1="14" y1="11" x2="14" y2="17" />
+</svg>`;
+    const replyIcon = `<svg
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="#6190e8"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10z" />
+</svg>`;
+
+    function getMd5OfEmail(email) {
+      const emailLowercase = email.toLowerCase();
+      const md5Hash = CryptoJS.MD5(emailLowercase).toString();
+      return md5Hash;
+    }
+
+    function formatTimestamp(timestamp) {
+      const now = Date.now(); // 当前时间的时间戳
+      const diff = now - timestamp; // 时间差（毫秒）
+
+      // 转换为秒、分钟、小时
+      const seconds = Math.floor(diff / 1000);
+      const minutes = Math.floor(seconds / 60);
+      const hours = Math.floor(minutes / 60);
+      if (seconds < 60) {
+        return ` 刚刚`;
+      } else if (minutes < 60) {
+        return `${minutes}分钟前`;
+      } else if (hours < 24) {
+        return `${hours}小时前`;
+      } else {
+        // 大于24小时，显示月份和日期
+        const date = new Date(timestamp);
+        const month = date.getMonth() + 1; // 月份从0开始，需要加1
+        const day = date.getDate();
+        return `${month}月${day}日`;
+      }
+    }
+    // 获取评论列表并渲染到页面
+    function getComments(url) {
+      axios({
+          method: "get",
+          url: "/api/docs/comments",
+          params: {
+            pageNo: 1,
+            pageSize: 20,
+            url: url,
+          },
+        })
+        .then((res) => {
+          renderComments(res.data.rows); // 渲染评论列表
+          const count = document.querySelector(".count");
+          count.innerHTML = `${res.data.count}条评论`;
+          clearInterval(timer);
+          timer = setInterval(() => {
+            document.querySelectorAll(".time").forEach((item) => {
+              item.innerHTML = formatTimestamp(
+                item.getAttribute("value") * 1
+              );
+            });
+          }, 10000);
+        })
+        .catch((error) => {
+          console.error("获取评论列表失败", error);
+        });
+    }
+    // 渲染评论列表
+    function renderComments(comments) {
+      const currentUser = JSON.parse(sessionStorage.getItem("user")) || {};
+      const commentList = document.getElementById("comment-list");
+      commentList.innerHTML = ""; // 清空当前列表
+
+      // 找到所有顶级评论（parent_id = 0）
+      const topLevelComments = comments.filter(
+        (comment) => comment.parent_id === 0
+      );
+
+      // 渲染每条评论及其回复
+      topLevelComments.forEach((comment) => {
+        const commentItem = document.createElement("div");
+        commentItem.className = "comment-item";
+        commentItem.innerHTML = `
+            <div class="head-img"><img src="${
+              comment.user.avatar
+                ? `/api/user/avatar?id=${comment.user.id}`
+                : `https://cravatar.cn/avatar/${getMd5OfEmail(
+                    comment.user.email
+                  )}?d=retro&f=y`
+            }" /></div>
+            <div class="comment-content">
+               <span class="nickname primary">${
+                 comment.user?.nickname || comment.user?.username
+               }</span><span>发表于</span><span class="secondary time" value="${
+            comment.createdAt
+          }"> ${formatTimestamp(comment.createdAt)}</span>
+<div class="content">${comment.content}</div>
+<div class="action">
+${
+  currentUser.role === "admin" || currentUser.id === comment.user.id
+    ? `<span onclick="handleDelete(${comment.id})">${deleteIcon}</span>`
+    : ""
+}
+  <span onclick="handleReply(${comment.id}, ${comment.id}, '${
+            comment.user.nickname || comment.user.username
+          }', '${comment.user.email}')" class="reply-icon">${replyIcon}</span>
+  </div>
+ <div class="replies" id="replies-${comment.id}"></div>
+              </div>
+           
+          `;
+        // <button onclick="handleDelete(${comment.id})">删除</button>
+        commentList.appendChild(commentItem);
+
+        // 找到当前评论的所有回复
+        const replies = comments.filter(
+          (reply) => reply.parent_id === comment.id
+        );
+        renderReplies(comment.id, replies); // 渲染回复
+      });
+    }
+
+    // 渲染回复
+    function renderReplies(parentId, replies) {
+      const currentUser = JSON.parse(sessionStorage.getItem("user")) || {};
+      const repliesContainer = document.getElementById(`replies-${parentId}`);
+      repliesContainer.innerHTML = ""; // 清空当前回复
+
+      replies.forEach((reply) => {
+        const replyItem = document.createElement("div");
+        replyItem.className = "reply-item";
+        replyItem.innerHTML = `
+            <div class="head-img"><img src="${
+              reply.user.avatar
+                ? `/api/user/avatar?id=${reply.user.id}`
+                : `https://cravatar.cn/avatar/${getMd5OfEmail(
+                    reply.user.email
+                  )}?d=retro&f=y`
+            }" /></div>
+            <div class="comment-content">
+               <span class="nickname primary">${
+                 reply.user?.nickname || reply.user?.username
+               }</span><span>回复于</span><span class="secondary time" value="${
+            reply.createdAt
+          }">  ${formatTimestamp(reply.createdAt)}</span>
+<div class="content">${reply.content}</div>
+              <div class="action">
+                ${
+                  currentUser.role === "admin" ||
+                  currentUser.id === reply.user.id
+                    ? `<span onclick="handleDelete(${reply.id})">${deleteIcon}</span>`
+                    : ""
+                }
+                 <span onclick="handleReply(${reply.parent_id}, ${reply.id}, '${
+            reply.user.nickname || reply.user.username
+          }', '${reply.user.email}')" class="reply-icon">${replyIcon}</span>
+                </div>
+                <div class="replies" id="replies-${reply.id}">
+                  
+                  </div>
+              </div>
+            
+          `;
+        repliesContainer.appendChild(replyItem);
+      });
+    }
+
+    // 新增评论
+    function handleAdd(parent_id = 0, email) {
+      const isLogin = sessionStorage.getItem("user");
+      if (isLogin) {
+        const currentUser = JSON.parse(isLogin);
+        if (!currentUser.id) {
+          alert("请先登录");
+          return;
+        }
+      } else {
+        alert("请先登录");
+        return;
+      }
+      let inputValue = document.getElementsByTagName("textarea")[0].value;
+      const url = window.location.href;
+      if (parent_id !== 0 && email) {
+        inputValue = document.getElementById("current-comment").value;
+      }
+      if (!inputValue) {
+        return false;
+      }
+      axios({
+          method: "post",
+          url: "/api/docs/comment",
+          data: {
+            url: url,
+            content: inputValue,
+            parent_id: parent_id, // 默认添加顶级评论
+          },
+        })
+        .then((res) => {
+          const url = window.location.href;
+          getComments(url); // 重新获取评论列表
+          document.getElementsByTagName("textarea")[0].value = "";
+          // 发送飞书消息
+          axios({
+              method: "post",
+              url: "/api/docs/sendMsg",
+              data: {
+                content: inputValue,
+                url: url,
+              },
+            })
+            .then((res) => {
+              console.log("发送邮件成功", res.data);
+            })
+            .catch((error) => {
+              console.error("发送邮件失败", error);
+            });
+          if (parent_id !== 0 && email) {
+            // 发送邮件提醒
+            axios({
+                method: "post",
+                url: "/api/docs/replyNotify",
+                data: {
+                  email: email,
+                  url: url,
+                },
+              })
+              .then((res) => {
+                console.log("发送邮件成功", res.data);
+              })
+              .catch((error) => {
+                console.error("发送邮件失败", error);
+              });
+          }
+        })
+        .catch((error) => {
+          console.error("新增评论失败", error);
+        });
+    }
+
+    // 删除评论
+    function handleDelete(id) {
+      if (confirm("确定要删除这条评论吗？")) {
+        axios({
+            method: "delete",
+            url: `/api/docs/comment/${id}`,
+          })
+          .then((res) => {
+            console.log("删除评论成功", res.data);
+            const url = window.location.href;
+            getComments(url); // 重新获取评论列表
+          })
+          .catch((error) => {
+            console.error("删除评论失败", error);
+          });
+      }
+    }
+    // 获取用户信息
+    function getUser() {
+      if (sessionStorage.getItem("user")) {
+        const currentUser = JSON.parse(sessionStorage.getItem("user"));
+	if(!currentUser.username) return false;
+        document.querySelector(".nickname").innerHTML =
+          currentUser.nickname || currentUser.username;
+        if (currentUser.avatar) {
+          document.querySelector(
+            ".head-img"
+          ).innerHTML = `<img src="/api/user/avatar?id=${currentUser.id}" />`;
+          return;
+        } else {
+          document.querySelector(
+            ".head-img"
+          ).innerHTML = `<img src="https://cravatar.cn/avatar/${getMd5OfEmail(
+              currentUser.email
+            )}?d=retro&f=y" />`;
+        }
+        return;
+      } else {
+        axios({
+            method: "get",
+            url: "/api/user",
+          })
+          .then((res) => {
+            if (res.data && res.data.id) {
+              sessionStorage.setItem("user", JSON.stringify(res.data));
+              document.querySelector(".nickname").innerHTML =
+                res.data.nickname || res.data.username;
+              if (currentUser.avatar) {
+                document.querySelector(
+                  ".head-img"
+                ).innerHTML = `<img src="/api/user/avatar?id=${res.data.id}" />`;
+                return;
+              } else {
+                document.querySelector(
+                  ".head-img"
+                ).innerHTML = `<img src="https://cravatar.cn/avatar/${getMd5OfEmail(
+                  res.data.email
+                )}?d=retro&f=y" />`;
+              }
+            }
+
+          })
+          .catch((error) => {
+            console.error("获取用户信息失败", error);
+          });
+      }
+    }
+    //回复评论
+    function handleReply(parentId, id, nickname, email) {
+      // 删除其他输入框
+      const currentReply = document.querySelector(".current-reply");
+      if (currentReply) {
+        currentReply.remove();
+      }
+      const repliesContainer = document.getElementById(`replies-${id}`);
+      // 创建一个新的 div 元素，并设置 class 为 "input"
+      const newInputDiv = document.createElement("div");
+      newInputDiv.className = "input current-reply";
+      // 创建 head-img 元素
+      const headImgDiv = document.createElement("div");
+      headImgDiv.className = "head-img";
+      // 创建 textarea 元素
+      const textareaElement = document.createElement("textarea");
+      textareaElement.id = "current-comment";
+      textareaElement.name = "comment";
+      textareaElement.rows = 5;
+      textareaElement.cols = 5;
+      textareaElement.placeholder = "说点什么...";
+      textareaElement.required = true;
+      textareaElement.minLength = 10;
+      textareaElement.maxLength = 200;
+      textareaElement.autofocus = true;
+      textareaElement.spellcheck = true;
+      textareaElement.autocomplete = "on";
+      textareaElement.value = `回复 @${nickname}: `;
+      // 创建 button 元素
+      const submitButton = document.createElement("button");
+      submitButton.className = "submit";
+      submitButton.textContent = "评论";
+      submitButton.onclick = () => handleAdd(parentId, email); // 绑定点击事件
+      // 将 head-img、textarea 和 button 添加到 newInputDiv 中
+      newInputDiv.appendChild(headImgDiv);
+      newInputDiv.appendChild(textareaElement);
+      newInputDiv.appendChild(submitButton);
+      repliesContainer.insertAdjacentElement("beforeend", newInputDiv);
+      textareaElement.focus();
+    }
+    const handleLogin = () => {
+      const currentUser = JSON.parse(sessionStorage.getItem("user"));
+      if (currentUser && currentUser.id) {
+        return;
+      }
+      window.location.href = "/ssoLogin/?website=" + window.location.href;
+    };
+    // 页面加载时获取评论列表
+    window.onload = function () {
+      getUser();
+      const url = window.location.href;
+      timer && clearInterval(timer);
+      getComments(url);
+    };
+    window.onbeforeunload = function () {
+      alert("页面关闭");
+      timer && clearInterval(timer);
+    };
+  </script>
+</body>
+
+</html></div>
+  
+</div>
+                </footer>
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="K230_FFT_API%E5%8F%82%E8%80%83.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">K230 FFT API参考</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="K230_SHA256_API%E5%8F%82%E8%80%83.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">K230 SHA256 API参考</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">功能介绍</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">数据流向</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">软件接口</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">主要类型及定义</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">参数类型</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-error-t">错误类型 vg_lite_error_t</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">功能枚举</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu">GPU控制</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">上下文初始化和控制函数</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-set-command-buffer-size">vg_lite_set_command_buffer_size</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-init">vg_lite_init</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-close">vg_lite_close</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-finish">vg_lite_finish</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-flush">vg_lite_flush</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">像素缓冲区</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">内存对齐要求</a><ul class="nav section-nav flex-column">
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">源图像对齐要求</a></li>
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">渲染目标缓冲区对齐要求</a></li>
+</ul>
+</li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">像素缓存</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">枚举类型</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-buffer-format-t">vg_lite_buffer_format_t</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-buffer-image-mode-t">vg_lite_buffer_image_mode_t</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-buffer-layout-t">vg_lite_buffer_layout_t</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-buffer-transparency-mode-t">vg_lite_buffer_transparency_mode_t</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">结构体</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-buffer-t">vg_lite_buffer_t</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">函数</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-allocate">vg_lite_allocate</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-free">vg_lite_free</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-buffer-upload">vg_lite_buffer_upload</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-map">vg_lite_map</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-unmap">vg_lite_unmap</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-set-clut">vg_lite_set_CLUT</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">矩阵</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">结构体</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-matrix-t">vg_lite_matrix_t</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">函数</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-identity">vg_lite_identity</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-perspective">vg_lite_perspective</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-rotate">vg_lite_rotate</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-scale">vg_lite_scale</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-translate">vg_lite_translate</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#blits">用于合成和混合的BLITs</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">枚举类型</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-blend-t">vg_lite_blend_t</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-filter-t">vg_lite_filter_t</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-global-alpha-t">vg_lite_global_alpha_t</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">结构体</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-rectangle-t">vg_lite_rectangle_t</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-point-t">vg_lite_point_t</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-point4-t">vg_lite_point4_t</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">函数</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-blit">vg_lite_blit</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-blit-rect">vg_lite_blit_rect</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-get-transform-matrix">vg_lite_get_transform_matrix</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-clear">vg_lite_clear</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#alpha">全局Alpha函数</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-set-image-global-alpha">vg_lite_set_image_global_alpha</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-set-dest-global-alpha">vg_lite_set_dest_global_alpha</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">矢量路径控制</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">枚举类型</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-quality-t">vg_lite_quality_t</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">结构体</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-hw-memory">vg_lite_hw_memory</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-path-t">vg_lite_path_t</a><ul class="nav section-nav flex-column">
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">路径对象的特别说明</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id26">函数</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-path-calc-length">vg_lite_path_calc_length</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-path-append">vg_lite_path_append</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-init-path">vg_lite_init_path</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-init-arc-path">vg_lite_init_arc_path</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-upload-path">vg_lite_upload_path</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-clear-path">vg_lite_clear_path</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id27">矢量路径操作码</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id28">基于矢量的绘制操作</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id29">枚举类型</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-fill-t">vg_lite_fill_t</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-pattern-mode-t">vg_lite_pattern_mode_t</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id30">结构体</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#v3-6-2-1-g-lite-color-ramp-t">v3.6.2.1 g_lite_color_ramp_t</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-linear-gradient-t">vg_lite_linear_gradient_t</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id31">函数</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-draw">vg_lite_draw</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-draw-gradient">vg_lite_draw_gradient</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-draw-pattern">vg_lite_draw_pattern</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id32">线性渐变初始化和控制函数</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-init-grad">vg_lite_init_grad</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-set-grad">vg_lite_set_grad</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-update-grad">vg_lite_update_grad</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-get-grad-matrix">vg_lite_get_grad_matrix</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#vg-lite-clear-grad">vg_lite_clear_grad</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id33">约束条件</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id34">性能建议与最佳实践</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cache-vs-non-cache">Cache vs Non-cache</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id35">内存使用</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id36">绘制流程</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id37">示例</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tiger">tiger</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lineargrad">linearGrad</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#imgindex">imgIndex</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vglite-drm">vglite_drm</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vglite-cube">vglite_cube</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026 嘉楠 | 京ICP备2025124317号 | 京公网安备11010802045870号.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item"><style>
+    .cancat{
+        font-size: 1rem;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 1rem;
+      }
+      .canact-section a{
+       color: #ebedf0;
+       line-height: 30px;
+       font-weight: 400;
+       text-decoration: none;
+      }
+      .canact-section a:hover {
+       color: #4d8eef;
+      }
+   </style>
+   <div class="footer-center">
+    <div class="cancat">开发者资源</div>
+    <section class="canact-section"><a href="https://www.kendryte.com/zh/resource">资料下载</a></section>
+    <section class="canact-section"><a href="https://www.kendryte.com/zh/document">文档中心</a></section>
+    <section class="canact-section"><a href="https://www.kendryte.com/zh/training/start">模型训练</a></section>
+    <section class="canact-section"><a href="https://www.kendryte.com/zh/model/library">模型库</a></section>
+   </div></div>
+      
+    </div>
+  
+  
+    <div class="footer-items__center">
+      
+        <div class="footer-item"><style>
+ .cancat{
+     font-size: 1rem;
+     font-weight: 700;
+     color: #fff;
+     margin-bottom: 1rem;
+   }
+   .canact-section a{
+    color: #ebedf0;
+    line-height: 30px;
+    font-weight: 400;
+    text-decoration: none;
+   }
+   .canact-section a:hover {
+    color: #4d8eef;
+   }
+   .copy-right {
+    margin-top:30px;
+    color: #ebedf0;
+   }
+</style>
+<div class="footer-center">
+ <div class="cancat">联系我们</div>
+ <section class="canact-section"><a href="mailto:salesai@canaan-creative.com">邮箱：salesAI@canaan-creative.com</a></section>
+ <section class="canact-section"><a href="/">QQ 群： 578895334 </a></section>
+ <section class="canact-section"><a href="/">微信公众号：嘉楠开发者</a></section>
+</div></div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><style>
+    .cancat{
+        font-size: 1rem;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 1rem;
+      }
+      .canact-section a{
+       color: #ebedf0;
+       line-height: 30px;
+       font-weight: 400;
+       text-decoration: none;
+      }
+      .canact-section a:hover {
+       color: #4d8eef;
+      }
+   </style>
+   <div class="footer-center">
+    <div class="cancat">资讯和社区</div>
+    <section class="canact-section"><a href="https://www.kendryte.com">勘智开发者社区</a></section>
+    <section class="canact-section"><a href="https://www.kendryte.com/zh/products">产品中心</a></section>
+    <section class="canact-section"><a href="https://www.kendryte.com/answer">问答社区</a></section>
+    <section class="canact-section"><a href="https://www.kendryte.com/zh/blog">博客</a></section>
+   </div></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
