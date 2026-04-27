@@ -54,6 +54,17 @@ static void bys_update_adv_data(void);
 static void bys_notify_app(uint8 *raw_pkt);
 static void bys_uart_rx_callback(uint8 *raw_pkt);
 
+/* 将内部地址顺序转换为显示顺序并写入广播MAC字段 */
+static void bys_set_adv_mac_be(const uint8 *addr_le)
+{
+    advertData[ADV_MAC_OFFSET + 0] = addr_le[5];
+    advertData[ADV_MAC_OFFSET + 1] = addr_le[4];
+    advertData[ADV_MAC_OFFSET + 2] = addr_le[3];
+    advertData[ADV_MAC_OFFSET + 3] = addr_le[2];
+    advertData[ADV_MAC_OFFSET + 4] = addr_le[1];
+    advertData[ADV_MAC_OFFSET + 5] = addr_le[0];
+}
+
 /* ─── 回调结构体 ──────────────────────────────────── */
 static gapRolesCBs_t bys_PeripheralCBs = {
     peripheralStateNotificationCB,
@@ -167,7 +178,7 @@ static void peripheralStateNotificationCB(gaprole_States_t newState)
         /* 读取本机MAC并填入广播数据 */
         uint8 addr[B_ADDR_LEN];
         GAPRole_GetParameter(GAPROLE_BD_ADDR, addr);
-        osal_memcpy(&advertData[ADV_MAC_OFFSET], addr, B_ADDR_LEN);
+        bys_set_adv_mac_be(addr);
         GAPRole_SetParameter(GAPROLE_ADVERT_DATA, sizeof(advertData), advertData);
         /* 上电即启动轮询，无论是否连接蓝牙都持续查询下位机 */
         osal_start_timerEx(bys_TaskID, BYS_POLL_TIMER_EVT, BYS_POLL_INTERVAL_MS);

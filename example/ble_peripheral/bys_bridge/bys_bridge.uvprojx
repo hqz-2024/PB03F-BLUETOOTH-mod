@@ -551,11 +551,6 @@
               <FileType>1</FileType>
               <FilePath>.\source\sbpProfile_ota.c</FilePath>
             </File>
-            <File>
-              <FileName>devinfoservice.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\components\profiles\DevInfo\devinfoservice.c</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
@@ -571,6 +566,11 @@
         <Group>
           <GroupName>lib</GroupName>
           <Files>
+            <File>
+              <FileName>devinfoservice.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\components\profiles\DevInfo\devinfoservice.c</FilePath>
+            </File>
             <File>
               <FileName>rf.lib</FileName>
               <FileType>4</FileType>
