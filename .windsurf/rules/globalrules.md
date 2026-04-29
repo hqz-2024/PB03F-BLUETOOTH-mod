@@ -1,5 +1,6 @@
 ---
 type: "always_apply"
+trigger: always_on
 ---
 
 # 行为要求
