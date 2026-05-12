@@ -151,8 +151,8 @@ int main(void)
 
     hal_rfphy_init();
     hal_init();
-
-    LOG("[BYS] Bridge starting, SDK %08x\n", SDK_VER_RELEASE_ID);
+    LOG("V11111");
+    LOG("[BYS] Bridge startingV1111, SDK %08x\n", SDK_VER_RELEASE_ID);
     app_main();
     return 0;
 }
