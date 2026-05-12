@@ -31,7 +31,7 @@ static uint8 advertData[31] = {
     /* AD3: Manufacturer Specific (length=0x16, type=0xFF) */
     0x16, 0xFF,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* MAC placeholder [10-15] */
-    0x01, 0x00,  /* device type = 0x0001 (BTC500DP PRO) [16-17] */
+    0x00, 0x00,  /* device type placeholder [16-17], filled from device response */
     0x00, 0x00,  /* mode    [18-19] */
     0x00, 0x00,  /* 2T/4T  [20-21] */
     0x00, 0x00,  /* current [22-23] */
@@ -225,6 +225,7 @@ static void bys_update_adv_data(void)
     advertData[(off)]   = LO_UINT16(val); \
     advertData[(off)+1] = HI_UINT16(val)
 
+    PUT_LE16(ADV_DEV_TYPE_OFFSET, g_bys_state.device_type);
     PUT_LE16(ADV_MODE_OFFSET,    g_bys_state.mode);
     PUT_LE16(ADV_T2T4_OFFSET,    g_bys_state.t2t4);
     PUT_LE16(ADV_CURRENT_OFFSET, g_bys_state.current);

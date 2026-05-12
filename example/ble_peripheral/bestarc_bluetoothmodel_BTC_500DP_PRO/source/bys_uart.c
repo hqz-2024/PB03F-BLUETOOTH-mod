@@ -218,6 +218,8 @@ void bys_uart_process_rx(void)
             uint16 chksum = BUILD_UINT16(s_rx_buf[i+8], s_rx_buf[i+9]);
 
             if (chksum == (uint16)(cmd + data)) {
+                /* 提取设备上报的机型代码 */
+                g_bys_state.device_type = BUILD_UINT16(s_rx_buf[i+2], s_rx_buf[i+3]);
                 /* 更新全局状态（查询响应） */
                 apply_response(cmd, data);
 
