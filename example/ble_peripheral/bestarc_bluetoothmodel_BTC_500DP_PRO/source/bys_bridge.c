@@ -5,7 +5,7 @@
 #include "hci.h"
 #include "gapgattserver.h"
 #include "gattservapp.h"
-#include "peripheral.h"
+#include "peripheralMultiConn.h"
 #include "gapbondmgr.h"
 #include "sbpProfile_ota.h"
 #include "devinfoservice.h"
@@ -46,11 +46,16 @@ static uint8 scanRspData[1] = { 0x00 };
 
 /* ─── 模块内部状态 ──────────────────────────────── */
 static uint8 bys_TaskID;
-static uint8 g_connected = FALSE;
 static uint8 s_ota_notify_count = 0;
 
+/* 是否至少有一个上位机在线（App 或遥控器） */
+static uint8 bys_any_connected(void)
+{
+    return (GAPRole_Connect_Active_Num() > 0) ? TRUE : FALSE;
+}
+
 /* ─── 内部函数原型 ──────────────────────────────── */
-static void peripheralStateNotificationCB(gaprole_States_t newState);
+static void peripheralStateNotificationCB(uint16 connHandle, gaprole_States_t newState);
 static void simpleProfileChangeCB(uint8 paramID);
 static void bys_update_adv_data(void);
 static void bys_notify_app(uint8 *raw_pkt);
@@ -176,7 +181,7 @@ uint16 BYS_Bridge_ProcessEvent(uint8 task_id, uint16 events)
     /* 1s 轮询定时器：向下位机发送下一条查询 */
     if (events & BYS_POLL_TIMER_EVT) {
         /* 若队列满（APP 指令占用），50ms 后重试，不推进查询索引 */
-        if (bys_uart_poll_next(g_connected) != 0) {
+        if (bys_uart_poll_next(bys_any_connected()) != 0) {
             osal_start_timerEx(bys_TaskID, BYS_POLL_TIMER_EVT, 50);
         } else {
             osal_start_timerEx(bys_TaskID, BYS_POLL_TIMER_EVT, BYS_POLL_INTERVAL_MS);
@@ -218,9 +223,10 @@ uint16 BYS_Bridge_ProcessEvent(uint8 task_id, uint16 events)
     return 0;
 }
 
-/* ─── GAP 状态回调 ───────────────────────────────── */
-static void peripheralStateNotificationCB(gaprole_States_t newState)
+/* ─── GAP 状态回调（多连接：附带 connHandle） ────── */
+static void peripheralStateNotificationCB(uint16 connHandle, gaprole_States_t newState)
 {
+    (void)connHandle;
     switch (newState) {
     case GAPROLE_STARTED: {
         /* 读取本机MAC并填入广播数据 */
@@ -234,16 +240,15 @@ static void peripheralStateNotificationCB(gaprole_States_t newState)
         break;
     }
     case GAPROLE_CONNECTED:
-        g_connected = TRUE;
-        LOG("[BYS] Connected\n");
+    case GAPROLE_CONNECTED_ADV:
+    case GAPROLE_CONNECTED_TO_TERMINA:
+        LOG("[BYS] Connected, active=%d\n", GAPRole_Connect_Active_Num());
         break;
 
     case GAPROLE_WAITING:
     case GAPROLE_WAITING_AFTER_TIMEOUT:
-        g_connected = FALSE;
-        /* 断连后不停止轮询定时器，继续以 APP_OFF 模式查询下位机 */
-        osal_start_timerEx(bys_TaskID, BYS_RESET_ADV_EVT, BYS_RESET_ADV_DELAY_MS);
-        LOG("[BYS] Disconnected, re-advertising...\n");
+        /* peripheralMultiConn 会自动重启广播，此处仅日志 */
+        LOG("[BYS] Disconnected, active=%d\n", GAPRole_Connect_Active_Num());
         break;
 
     default:
@@ -259,8 +264,8 @@ static void simpleProfileChangeCB(uint8 paramID)
     uint8 buf[SIMPLEPROFILE_CHAR1_LEN];  /* 必须与 GetParameter 拷贝长度一致 */
     SimpleProfile_GetParameter(SIMPLEPROFILE_CHAR1, buf);
     // app通讯日志打印代码
-    LOG("[APP RX] %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X\n",
-        buf[0],buf[1],buf[2],buf[3],buf[4],buf[5],buf[6],buf[7],buf[8],buf[9],buf[10],buf[11]);
+    // LOG("[APP RX] %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X\n",
+    //     buf[0],buf[1],buf[2],buf[3],buf[4],buf[5],buf[6],buf[7],buf[8],buf[9],buf[10],buf[11]);
 
     if (is_ota_trigger(buf)) {
         bys_ota_trigger();
@@ -293,14 +298,14 @@ static void bys_update_adv_data(void)
     GAPRole_SetParameter(GAPROLE_ADVERT_DATA, sizeof(advertData), advertData);
 }
 
-/* ─── Notify APP：通过FFE1发送原始数据包 ─────────── */
+/* ─── Notify 所有上位机：simpleProfile_Notify 内部按 CCCD 多播 ─── */
 static void bys_notify_app(uint8 *raw_pkt)
 {
-    if (g_connected) {
+    if (bys_any_connected()) {
         // 下位机串口通讯日志打印代码
-        LOG("[APP TX] %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X\n",
-            raw_pkt[0],raw_pkt[1],raw_pkt[2],raw_pkt[3],raw_pkt[4],raw_pkt[5],
-            raw_pkt[6],raw_pkt[7],raw_pkt[8],raw_pkt[9],raw_pkt[10],raw_pkt[11]);
+        // LOG("[APP TX] %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X\n",
+        //     raw_pkt[0],raw_pkt[1],raw_pkt[2],raw_pkt[3],raw_pkt[4],raw_pkt[5],
+        //     raw_pkt[6],raw_pkt[7],raw_pkt[8],raw_pkt[9],raw_pkt[10],raw_pkt[11]);
         simpleProfile_Notify(SIMPLEPROFILE_CHAR1, BYS_PKT_LEN, raw_pkt);
     }
 }
