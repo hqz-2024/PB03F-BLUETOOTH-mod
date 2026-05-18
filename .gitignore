@@ -46,6 +46,9 @@ components/driver_rom/
 !/lib/generate_mesh_lib/ethermind/build/*.keil
 !/lib/generate_mesh_lib/ethermind/build/*.armgcc
 
+# Augment
+.augment/
+
 #VS Coder
 .vscode
 *.code-workspace
