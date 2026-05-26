@@ -11,7 +11,7 @@
 #define BYS_UART_TX_NEXT_EVT    0x0010u   /* 上一包TX完成，从队列取下一包发送 */
 
 /* ─── 参数配置 ──────────────────────────────────── */
-#define BYS_POLL_INTERVAL_MS    250u      /* 每包查询间隔(ms)，8包×250ms=2s一轮 */
+#define BYS_POLL_INTERVAL_MS    100u      /* TX队列空闲后发送下一条轮询的延时(ms) */
 #define BYS_RESET_ADV_DELAY_MS  100u      /* 断连后重启广播的延时(ms) */
 
 /* ─── 广播数据偏移（advertData数组下标） ────────── */

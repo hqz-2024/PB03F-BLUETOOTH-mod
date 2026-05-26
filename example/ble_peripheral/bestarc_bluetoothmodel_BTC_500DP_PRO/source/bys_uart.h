@@ -67,10 +67,10 @@ typedef void (*bys_uart_rx_cb_t)(uint8 *raw_pkt);
 /* 初始化UART1，tx_next_evt为TX完成后触发的OSAL事件位 */
 void bys_uart_init(uint8 task_id, uint16 rx_evt, uint16 tx_next_evt, bys_uart_rx_cb_t rx_cb);
 
-/* 在BYS_UART_TX_NEXT_EVT事件处理里调用，从队列取下一包发送 */
-void bys_uart_tx_process(void);
+/* 在BYS_UART_TX_NEXT_EVT事件处理里调用，清busy并尝试发送队列下一包；返回1=已从队列发出新包，0=队列空闲 */
+uint8 bys_uart_tx_process(void);
 
-/* 向下位机发送下一条轮询查询（内部自动循环8条命令），队满返回1 */
+/* 发送下一条轮询查询：busy返回1；队列非空则优先发队列(返回1)；否则直接发轮询(返回0)，不入队 */
 uint8 bys_uart_poll_next(uint8 app_connected);
 
 /* 在OSAL的BYS_UART_RX_EVT事件里调用，解析接收缓冲区 */

@@ -143,14 +143,9 @@ uint16 BYS_Bridge_ProcessEvent(uint8 task_id, uint16 events)
         return events ^ BYS_RESET_ADV_EVT;
     }
 
-    /* 1s 轮询定时器：向下位机发送下一条查询 */
+    /* 轮询定时器：TX队列空闲时触发，向下位机发送下一条查询；若仍busy则等待TX_NEXT_EVT重新调度 */
     if (events & BYS_POLL_TIMER_EVT) {
-        /* 若队列满（APP 指令占用），50ms 后重试，不推进查询索引 */
-        if (bys_uart_poll_next(g_connected) != 0) {
-            osal_start_timerEx(bys_TaskID, BYS_POLL_TIMER_EVT, 50);
-        } else {
-            osal_start_timerEx(bys_TaskID, BYS_POLL_TIMER_EVT, BYS_POLL_INTERVAL_MS);
-        }
+        bys_uart_poll_next(g_connected);
         return events ^ BYS_POLL_TIMER_EVT;
     }
 
@@ -161,9 +156,11 @@ uint16 BYS_Bridge_ProcessEvent(uint8 task_id, uint16 events)
         return events ^ BYS_UART_RX_EVT;
     }
 
-    /* 上一包TX完成，发送队列中的下一包 */
+    /* 上一包TX完成：优先发队列，队列空闲则100ms后触发轮询 */
     if (events & BYS_UART_TX_NEXT_EVT) {
-        bys_uart_tx_process();
+        if (bys_uart_tx_process() == 0) {
+            osal_start_timerEx(bys_TaskID, BYS_POLL_TIMER_EVT, BYS_POLL_INTERVAL_MS);
+        }
         return events ^ BYS_UART_TX_NEXT_EVT;
     }
 
@@ -210,6 +207,9 @@ static void simpleProfileChangeCB(uint8 paramID)
 
     uint8 buf[SIMPLEPROFILE_CHAR1_LEN];  /* 必须与 GetParameter 拷贝长度一致 */
     SimpleProfile_GetParameter(SIMPLEPROFILE_CHAR1, buf);
+    // app通讯日志打印代码
+    LOG("[APP RX] %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X\n",
+        buf[0],buf[1],buf[2],buf[3],buf[4],buf[5],buf[6],buf[7],buf[8],buf[9],buf[10],buf[11]);
 
     /* 加入发送队列（高优先级），自动修正设备类型字段 */
     if (bys_uart_send_app_cmd(buf, BYS_PKT_LEN) != 0) {
@@ -241,6 +241,10 @@ static void bys_update_adv_data(void)
 static void bys_notify_app(uint8 *raw_pkt)
 {
     if (g_connected) {
+        // 下位机串口通讯日志打印代码
+        // LOG("[APP TX] %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X\n",
+        //     raw_pkt[0],raw_pkt[1],raw_pkt[2],raw_pkt[3],raw_pkt[4],raw_pkt[5],
+        //     raw_pkt[6],raw_pkt[7],raw_pkt[8],raw_pkt[9],raw_pkt[10],raw_pkt[11]);
         simpleProfile_Notify(SIMPLEPROFILE_CHAR1, BYS_PKT_LEN, raw_pkt);
     }
 }
@@ -248,5 +252,10 @@ static void bys_notify_app(uint8 *raw_pkt)
 /* ─── UART RX 回调：下位机每返回一包立即透传给APP ─── */
 static void bys_uart_rx_callback(uint8 *raw_pkt)
 {
+    // 下位机串口通讯日志打印代码
+    LOG("[UART RX] %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X\n",
+        raw_pkt[0],raw_pkt[1],raw_pkt[2],raw_pkt[3],raw_pkt[4],raw_pkt[5],
+        raw_pkt[6],raw_pkt[7],raw_pkt[8],raw_pkt[9],raw_pkt[10],raw_pkt[11]);
+
     bys_notify_app(raw_pkt);  /* 立即 Notify，不缓存 */
 }
