@@ -72,6 +72,9 @@ static void tx_process(void)
     uint8 *pkt = tx_dequeue();
     if (pkt == NULL) return;
     s_tx_busy = 1;
+    // 下位机串口通讯日志打印代码
+    // LOG("[UART TX] %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X\n",
+    //     pkt[0],pkt[1],pkt[2],pkt[3],pkt[4],pkt[5],pkt[6],pkt[7],pkt[8],pkt[9],pkt[10],pkt[11]);
     hal_uart_send_buff(BYS_UART_PORT, pkt, BYS_PKT_LEN);
 }
 

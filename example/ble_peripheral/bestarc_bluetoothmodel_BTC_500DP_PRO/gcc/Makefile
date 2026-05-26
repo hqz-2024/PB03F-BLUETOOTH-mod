@@ -17,7 +17,7 @@ include $(ROOT)/components/gcc/components.mk
 #DEF += -UCFG_SLEEP_MODE
 #DEF += -DCFG_SLEEP_MODE=PWR_MODE_NO_SLEEP
 
-DEF += -DMAX_NUM_LL_CONN=1
+DEF += -DMAX_NUM_LL_CONN=2
 DEF += -DGATT_MAX_NUM_CONN=MAX_NUM_LL_CONN+1
 
 FLASH_LD = $(PROJ_ROOT)/gcc/sbp.ld

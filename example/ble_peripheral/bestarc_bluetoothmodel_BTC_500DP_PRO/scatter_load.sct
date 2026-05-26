@@ -35,7 +35,7 @@ LR_ROM_XIP  0x11020000 0x020000 {
    linkdb.o(+RO)
    sm*.o(+RO)
    gap*.o(+RO)
-   peripheral.o(+RO)
+   peripheralMultiConn.o(+RO)
    simplebleperipheral.o(+RO)
    sbpProfile_ota.o(+RO)
    ;led_light.o(+RO)
@@ -43,8 +43,11 @@ LR_ROM_XIP  0x11020000 0x020000 {
    ;ota_app_service.o(+RO)
    my_printf.o(+RO)
    gpio.o(+RO)
+   uart.o(+RO)
+   timer.o(+RO)
    ;osal_snv.o(+RO)
    *.o(_section_xip_code_, _func_xip_code_.*)
+   .ANY(.constdata)
   }
  }  
 

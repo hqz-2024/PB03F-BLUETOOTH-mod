@@ -2414,10 +2414,9 @@ bStatus_t GATTServApp_ProcessCharCfg( gattCharCfg_t* charCfgTbl, uint8* pValue,
                                       uint16 numAttrs, uint8 taskId )
 {
     bStatus_t status = SUCCESS;
-//    for ( uint8 i = 0; i < GATT_MAX_NUM_CONN; i++ )
+    for ( uint8 i = 0; i < GATT_MAX_NUM_CONN; i++ )
     {
-//        gattCharCfg_t* pItem = &(charCfgTbl[i]);
-        gattCharCfg_t* pItem = charCfgTbl;
+        gattCharCfg_t* pItem = &(charCfgTbl[i]);
 
         if ( ( pItem->connHandle != INVALID_CONNHANDLE ) &&
                 ( pItem->value != GATT_CFG_NO_OPERATION ) )

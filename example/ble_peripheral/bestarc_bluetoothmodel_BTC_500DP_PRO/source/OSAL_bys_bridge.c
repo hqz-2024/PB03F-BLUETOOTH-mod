@@ -17,7 +17,7 @@
 #include "gapbondmgr.h"
 #include "gatt.h"
 #include "gattservapp.h"
-#include "peripheral.h"
+#include "peripheralMultiConn.h"
 
 /* 应用层 */
 #include "bys_bridge.h"
