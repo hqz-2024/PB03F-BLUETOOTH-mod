@@ -50,6 +50,7 @@ components/driver_rom/
 .vscode
 *.code-workspace
 .project
+.augment
 
 
 #Force include file/folder
