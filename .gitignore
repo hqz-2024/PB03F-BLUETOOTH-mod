@@ -48,6 +48,8 @@ components/driver_rom/
 
 # Augment
 .augment/
+PHY6222_BLE_SoC_Datasheet_v1.4_20230302/
+pb03f规格书/
 
 #VS Coder
 .vscode

@@ -372,7 +372,66 @@ App 业务连接（与主设备 `BYS`）保持不变，**新增**遥控器初始
 
 ---
 
-## 八、开发里程碑
+## 八、角色切换与调试宏（两端统一约定）
+
+主设备端（PB03F）与遥控器端（ESP32-S3）共用同一份工程代码，通过头文件中的宏在编译期切换角色。两端均遵循下述命名约定，便于后续维护与脚本化构建。
+
+### 8.1 公共头文件
+
+ESP32-S3：`main/APP/device_config.h`
+PB03F：`app/inc/device_config.h`（约定，工程实际同名即可）
+
+### 8.2 角色切换宏
+
+```c
+#define DEVICE_ROLE_MASTER  0
+#define DEVICE_ROLE_REMOTE  1
+
+#ifndef DEVICE_ROLE
+#define DEVICE_ROLE         DEVICE_ROLE_REMOTE   // 默认值，按需修改
+#endif
+```
+
+- 所有角色相关代码使用 `#if (DEVICE_ROLE == DEVICE_ROLE_MASTER)` / `#if (DEVICE_ROLE == DEVICE_ROLE_REMOTE)` 包裹。
+- 非本角色代码必须提供同名 stub 函数（返回 `ESP_ERR_NOT_SUPPORTED` 或等价错误码），避免链接错误。
+- 切换宏后必须 **全量重新编译**，不要使用增量构建。
+
+### 8.3 调试用固定 MAC 宏（跳过 App 配网）
+
+仅遥控器端有效，用于桌面联调阶段跳过 App 写入流程，直接指定要连接的主设备 MAC：
+
+```c
+#define REMOTE_DEBUG_FIXED_MAC      0            // 1=启用 0=关闭
+#define REMOTE_DEBUG_FIXED_MAC_B0   0xAA         // 主设备 BT MAC 字节 0
+#define REMOTE_DEBUG_FIXED_MAC_B1   0xBB
+#define REMOTE_DEBUG_FIXED_MAC_B2   0xCC
+#define REMOTE_DEBUG_FIXED_MAC_B3   0xDD
+#define REMOTE_DEBUG_FIXED_MAC_B4   0xEE
+#define REMOTE_DEBUG_FIXED_MAC_B5   0xFF
+```
+
+行为约定：
+
+- `REMOTE_DEBUG_FIXED_MAC=1`：强制进入正常模式，使用上述 6 字节作为目标 MAC，**不读不写 NVS**，**不进入配置屏**。
+- `REMOTE_DEBUG_FIXED_MAC=0`：按正常流程，从 NVS 读取 MAC，缺失则进入配置模式。
+- 字节顺序与主设备广播 Manufacturer Data 中 MAC 一致（B0 在最前）。
+- 量产固件必须置 0。
+
+### 8.4 PB03F 端同步要求
+
+PB03F 主设备在沿用本工程方案时同样必须提供：
+
+| 宏 | 用途 | 备注 |
+|----|------|------|
+| `DEVICE_ROLE` | 编译期角色选择 | PB03F 工程通常固定为 `DEVICE_ROLE_MASTER`，但保留宏便于未来共用代码片段 |
+| `BLE_MAX_ALLOW_CONNECTION` | 同时连接数 | 主设备固定为 2 |
+| `DEBUG_FORCE_PEER_MAC`（可选） | 调试用强制指定对端 MAC | 与遥控器端 `REMOTE_DEBUG_FIXED_MAC` 语义对齐，命名前缀按工程风格调整即可 |
+
+> 后续两端的任何角色相关新增配置项，必须先在本节登记，再落到各自工程代码。
+
+---
+
+## 九、开发里程碑
 
 1. **M1 - 主设备端双连接改造**：`BLE_MAX_ALLOW_CONNECTION=2`，连接槽位管理，Notify 多播，1 连接时继续广播；用 2 部手机连接验证。
 2. **M2 - 遥控器配置模式**：ESP32-S3 NimBLE Peripheral `BYS_remote`（UUID `0xFFE0/0xFFE1`）+ NVS 持久化 + 重启逻辑 + 配置模式 UI（"请使用 app 进行初始化配置"）。
