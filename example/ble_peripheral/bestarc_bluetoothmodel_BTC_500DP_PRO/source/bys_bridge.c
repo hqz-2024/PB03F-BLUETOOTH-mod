@@ -180,7 +180,7 @@ uint16 BYS_Bridge_ProcessEvent(uint8 task_id, uint16 events)
 
     /* 轮询定时器：TX队列空闲时触发，向下位机发送下一条查询；若仍busy则等待TX_NEXT_EVT重新调度 */
     if (events & BYS_POLL_TIMER_EVT) {
-        bys_uart_poll_next(g_connected);
+        bys_uart_poll_next(bys_any_connected());
         return events ^ BYS_POLL_TIMER_EVT;
     }
 
@@ -261,8 +261,8 @@ static void simpleProfileChangeCB(uint8 paramID)
     uint8 buf[SIMPLEPROFILE_CHAR1_LEN];  /* 必须与 GetParameter 拷贝长度一致 */
     SimpleProfile_GetParameter(SIMPLEPROFILE_CHAR1, buf);
     // app通讯日志打印代码
-    // LOG("[APP RX] %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X\n",
-    //     buf[0],buf[1],buf[2],buf[3],buf[4],buf[5],buf[6],buf[7],buf[8],buf[9],buf[10],buf[11]);
+    LOG("[APP RX] %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X\n",
+        buf[0],buf[1],buf[2],buf[3],buf[4],buf[5],buf[6],buf[7],buf[8],buf[9],buf[10],buf[11]);
 
     if (is_ota_trigger(buf)) {
         bys_ota_trigger();
@@ -300,9 +300,9 @@ static void bys_notify_app(uint8 *raw_pkt)
 {
     if (bys_any_connected()) {
         // 下位机串口通讯日志打印代码
-        // LOG("[APP TX] %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X\n",
-        //     raw_pkt[0],raw_pkt[1],raw_pkt[2],raw_pkt[3],raw_pkt[4],raw_pkt[5],
-        //     raw_pkt[6],raw_pkt[7],raw_pkt[8],raw_pkt[9],raw_pkt[10],raw_pkt[11]);
+        LOG("[APP TX] %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X\n",
+            raw_pkt[0],raw_pkt[1],raw_pkt[2],raw_pkt[3],raw_pkt[4],raw_pkt[5],
+            raw_pkt[6],raw_pkt[7],raw_pkt[8],raw_pkt[9],raw_pkt[10],raw_pkt[11]);
         simpleProfile_Notify(SIMPLEPROFILE_CHAR1, BYS_PKT_LEN, raw_pkt);
     }
 }
