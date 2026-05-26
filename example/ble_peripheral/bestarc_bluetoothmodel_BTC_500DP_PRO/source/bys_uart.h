@@ -20,6 +20,10 @@
 #define BYS_DEV_APP_ON      0x8000u   /* APP已连接 */
 #define BYS_DEV_APP_OFF     0x0000u   /* APP未连接 */
 
+/* OTA 触发命令码（双向，设备类型字段忽略） */
+#define BYS_CMD_OTA_TRIGGER     0xFE00u
+#define BYS_DATA_OTA_TRIGGER    0x00FEu
+
 /* 查询命令码 */
 #define BYS_CMD_QUERY_MODE      0x0002u
 #define BYS_CMD_QUERY_T2T4      0x0003u

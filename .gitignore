@@ -46,6 +46,11 @@ components/driver_rom/
 !/lib/generate_mesh_lib/ethermind/build/*.keil
 !/lib/generate_mesh_lib/ethermind/build/*.armgcc
 
+# Augment
+.augment/
+PHY6222_BLE_SoC_Datasheet_v1.4_20230302/
+pb03f规格书/
+
 #VS Coder
 .vscode
 *.code-workspace

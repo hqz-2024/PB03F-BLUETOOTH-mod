@@ -9,6 +9,7 @@
 #define BYS_POLL_TIMER_EVT      0x0004u   /* 1秒轮询下位机 */
 #define BYS_UART_RX_EVT         0x0008u   /* UART收到数据（uart_rx_cb触发） */
 #define BYS_UART_TX_NEXT_EVT    0x0010u   /* 上一包TX完成，从队列取下一包发送 */
+#define BYS_OTA_NOTIFY_EVT      0x0020u   /* 向下位机发送OTA通知包 */
 
 /* ─── 参数配置 ──────────────────────────────────── */
 #define BYS_POLL_INTERVAL_MS    100u      /* TX队列空闲后发送下一条轮询的延时(ms) */
