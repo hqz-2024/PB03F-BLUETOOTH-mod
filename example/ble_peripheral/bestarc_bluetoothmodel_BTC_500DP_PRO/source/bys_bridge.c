@@ -256,22 +256,27 @@ static void peripheralStateNotificationCB(uint16 connHandle, gaprole_States_t ne
 /* ─── GATT CHAR1(FFE1) 写入回调（APP→下位机） ─── */
 static void simpleProfileChangeCB(uint8 paramID)
 {
-    if (paramID != SIMPLEPROFILE_CHAR1) return;
+    uint8 buf[SIMPLEPROFILE_CHAR1_LEN];
 
-    uint8 buf[SIMPLEPROFILE_CHAR1_LEN];  /* 必须与 GetParameter 拷贝长度一致 */
-    SimpleProfile_GetParameter(SIMPLEPROFILE_CHAR1, buf);
-    // app通讯日志打印代码
-    LOG("[APP RX] %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X\n",
-        buf[0],buf[1],buf[2],buf[3],buf[4],buf[5],buf[6],buf[7],buf[8],buf[9],buf[10],buf[11]);
+    if (paramID == SIMPLEPROFILE_CHAR1) {
+        SimpleProfile_GetParameter(SIMPLEPROFILE_CHAR1, buf);
+        LOG("[APP RX] %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X\n",
+            buf[0],buf[1],buf[2],buf[3],buf[4],buf[5],buf[6],buf[7],buf[8],buf[9],buf[10],buf[11]);
+    } else if (paramID == SIMPLEPROFILE_CHAR2) {
+        SimpleProfile_GetParameter(SIMPLEPROFILE_CHAR2, buf);
+        LOG("[REMOTE RX] %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X\n",
+            buf[0],buf[1],buf[2],buf[3],buf[4],buf[5],buf[6],buf[7],buf[8],buf[9],buf[10],buf[11]);
+    } else {
+        return;
+    }
 
     if (is_ota_trigger(buf)) {
         bys_ota_trigger();
         return;
     }
 
-    /* 加入发送队列（高优先级），自动修正设备类型字段 */
     if (bys_uart_send_app_cmd(buf, BYS_PKT_LEN) != 0) {
-        LOG("[BYS] Failed to send APP cmd\n");
+        LOG("[BYS] Failed to send cmd\n");
     }
 }
 
@@ -295,15 +300,15 @@ static void bys_update_adv_data(void)
     GAPRole_SetParameter(GAPROLE_ADVERT_DATA, sizeof(advertData), advertData);
 }
 
-/* ─── Notify 所有上位机：simpleProfile_Notify 内部按 CCCD 多播 ─── */
+/* ─── Notify 所有上位机：App 走 CHAR1，遥控器走 CHAR2 ─── */
 static void bys_notify_app(uint8 *raw_pkt)
 {
     if (bys_any_connected()) {
-        // 下位机串口通讯日志打印代码
-        LOG("[APP TX] %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X\n",
+        LOG("[TX ALL] %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X\n",
             raw_pkt[0],raw_pkt[1],raw_pkt[2],raw_pkt[3],raw_pkt[4],raw_pkt[5],
             raw_pkt[6],raw_pkt[7],raw_pkt[8],raw_pkt[9],raw_pkt[10],raw_pkt[11]);
         simpleProfile_Notify(SIMPLEPROFILE_CHAR1, BYS_PKT_LEN, raw_pkt);
+        simpleProfile_Notify(SIMPLEPROFILE_CHAR2, BYS_PKT_LEN, raw_pkt);
     }
 }
 

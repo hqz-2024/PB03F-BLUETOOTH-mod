@@ -50,17 +50,20 @@ extern "C" {
 #include "bcomdef.h"
 
 /* 特征值参数ID */
-#define SIMPLEPROFILE_CHAR1             0   /* FFE1：双向数据通道（Write + Notify） */
+#define SIMPLEPROFILE_CHAR1             0   /* FFE1：App 数据通道（Write + Notify） */
+#define SIMPLEPROFILE_CHAR2             1   /* FFE2：遥控器数据通道（Write + Notify） */
 
 /* Service / Characteristic UUID */
 #define SIMPLEPROFILE_SERV_UUID         0xFFE0
 #define SIMPLEPROFILE_CHAR1_UUID        0xFFE1
+#define SIMPLEPROFILE_CHAR2_UUID        0xFFE2
 
 /* Service 标志位 */
 #define SIMPLEPROFILE_SERVICE           0x00000001
 
 /* 单包数据缓冲区长度（字节），与协议包长 BYS_PKT_LEN 一致 */
 #define SIMPLEPROFILE_CHAR1_LEN         12
+#define SIMPLEPROFILE_CHAR2_LEN         12
 
 /* App写回调 */
 typedef void (*simpleProfileChange_t)(uint8 paramID);

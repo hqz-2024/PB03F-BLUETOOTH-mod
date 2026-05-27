@@ -94,8 +94,8 @@
 ### 3.1 功能职责
 
 1. BLE Peripheral，广播名 `BYS`，广播包按协议 §四 组装（29 字节，含 MAC + 当前工作状态），由 `bys_bridge.c` 中 `advertData[]` 维护。
-2. **同时承载 2 个 BLE 连接**（App + 遥控器），二者地位完全等价。
-3. 任一连接 Write 12 字节包 → 校验 → 通过 UART1 透传给电焊机主控。
+2. **同时承载 2 个 BLE 连接**（App + 遥控器），通过不同特征值区分来源：App 使用 `0xFFE1`，遥控器使用 `0xFFE2`；二者数据处理逻辑等价。
+3. 任一特征值收到 Write 12 字节包 → 校验 → 通过 UART1 透传给电焊机主控。
 4. 电焊机主控 UART1 上报包 → 校验 → **Notify 给所有当前已连接的句柄**（实现"任一端操作三端同步"）。
 5. 广播包中 8~21 字节（设备类型、钢板/网格、2T/4T、电流、后气、维弧、气压单位）随主控上报实时刷新，便于遥控器/App 在连接前即可看到最近状态。
 6. 1 个连接占用时 **继续广播** 以接纳第 2 个连接；2 个连接都占满时停止广播；任一连接断开后立即恢复广播。
@@ -119,19 +119,23 @@
 | 入口 | `main.c` | `BLE_MAX_ALLOW_CONNECTION = 2`、堆/缓冲区扩容 |
 | OSAL | `source/OSAL_bys_bridge.c` | 任务表不变 |
 | Bridge 主逻辑 | `source/bys_bridge.c` | 增加多连接管理：连接/断开维护 `g_conn_mask[]` + `g_connHandle[2]`，Notify 时遍历下发；GAP 状态机在 `GAPROLE_CONNECTED` 时仍重启广播 |
-| GATT Profile | `source/sbpProfile_ota.c/h` | UUID 不变；`simpleProfile_Notify` 内部改为对所有活动 handle 调用 `GATT_Notification` |
+| GATT Profile | `source/sbpProfile_ota.c/h` | 同一 Service `0xFFE0` 下新增 `CHAR2`（`0xFFE2`），App 走 `CHAR1`（`0xFFE1`），遥控器走 `CHAR2`；`simpleProfile_Notify` 分 param 操作对应 CCCD 表 |
 | UART 桥 | `source/bys_uart.c/h` | 不变，仍轮询 8 条查询；`bys_uart_poll_next(app_connected)` 改用 `g_conn_mask != 0` |
 
-### 3.4 BLE GATT（沿用现有量产工程，不改 UUID）
+### 3.4 BLE GATT（同一 Service 下区分 App 与遥控器通道）
 
 来源：`source/sbpProfile_ota.h`
 
 | 属性 | UUID | 属性 | 说明 |
 |------|------|------|------|
 | Service | `0xFFE0` | Primary | BYS 数据透传服务 |
-| Char `SIMPLEPROFILE_CHAR1` | `0xFFE1` | **Write + Notify**，12 字节 | 双向数据通道，App 与遥控器均使用此特征收发协议包 |
+| Char `SIMPLEPROFILE_CHAR1` | `0xFFE1` | **Write + Notify**，12 字节 | **App 专用**数据通道 |
+| Char `SIMPLEPROFILE_CHAR2` | `0xFFE2` | **Write + Notify**，12 字节 | **遥控器专用**数据通道 |
 
-遥控器端 Central 必须使用同一 Service/Char UUID 进行发现、Write Without Response 和订阅 Notify。
+- App 端 Central 使用 `0xFFE0` / `0xFFE1` 进行发现、Write Without Response 和订阅 Notify。
+- 遥控器端 Central 使用 `0xFFE0` / `0xFFE2` 进行发现、Write Without Response 和订阅 Notify。
+- PB03F 在写回调中通过 `paramID`（`SIMPLEPROFILE_CHAR1` / `SIMPLEPROFILE_CHAR2`）区分来源，业务处理逻辑一致。
+- Notify 广播时，PB03F 同时向 `CHAR1` 和 `CHAR2` 下发同一份数据，两端即时同步。
 
 ### 3.5 串口（沿用 `bys_uart.h` 配置）
 
@@ -293,9 +297,9 @@ static void on_uart_rx(uint8 *pkt) {
    - AD Type `0x09` Local Name == `"BYS"`，且
    - AD Type `0xFF` Manufacturer Data 前 6 字节 MAC 与 NVS 中 `target_mac` 完全一致。
 2. 命中后停止扫描，`ble_gap_connect` 建立连接（即便此刻 App 已连接，主设备 `BLE_MAX_ALLOW_CONNECTION=2`，连接成功；若已是第 3 个连接则失败，自动退回扫描重试）。
-3. 发现 Service `0xFFE0` / Char `0xFFE1`。
-4. 订阅 Notify → 主设备 Notify 的所有上报包（含 App 操作回声）进入 UI 状态机更新。
-5. UI 操作 → 组装 12 字节协议包 → Write Without Response。
+3. 发现 Service `0xFFE0` / Char `0xFFE2`（遥控器专用通道，区别于 App 使用的 `0xFFE1`）。
+4. 订阅 `0xFFE2` Notify → 主设备 Notify 的所有上报包（含 App 操作回声）进入 UI 状态机更新。
+5. UI 操作 → 组装 12 字节协议包 → Write Without Response 到 `0xFFE2`。
 6. 断线后 LVGL 顶栏切"未连接"图标，自动回到扫描状态，**无限重连**。
 
 ### 4.6 BOOT 5 次连按 reset
@@ -427,6 +431,13 @@ PB03F 主设备在沿用本工程方案时同样必须提供：
 | `BLE_MAX_ALLOW_CONNECTION` | 同时连接数 | 主设备固定为 2 |
 | `DEBUG_FORCE_PEER_MAC`（可选） | 调试用强制指定对端 MAC | 与遥控器端 `REMOTE_DEBUG_FIXED_MAC` 语义对齐，命名前缀按工程风格调整即可 |
 
+**GATT 通道约定**（同一 Service `0xFFE0` 下区分两端）：
+
+| 端 | 特征值 UUID | 说明 |
+|----|-----------|------|
+| App | `0xFFE1` | 沿用现有量产工程，App 端代码不变 |
+| 遥控器 | `0xFFE2` | 遥控器 Central 发现并订阅此特征值，与 App 通道物理隔离 |
+
 > 后续两端的任何角色相关新增配置项，必须先在本节登记，再落到各自工程代码。
 
 ---
@@ -435,7 +446,7 @@ PB03F 主设备在沿用本工程方案时同样必须提供：
 
 1. **M1 - 主设备端双连接改造**：`BLE_MAX_ALLOW_CONNECTION=2`，连接槽位管理，Notify 多播，1 连接时继续广播；用 2 部手机连接验证。
 2. **M2 - 遥控器配置模式**：ESP32-S3 NimBLE Peripheral `BYS_remote`（UUID `0xFFE0/0xFFE1`）+ NVS 持久化 + 重启逻辑 + 配置模式 UI（"请使用 app 进行初始化配置"）。
-3. **M3 - 遥控器正常模式**：扫描过滤（Name `BYS` + Manuf MAC 匹配）→ 连接 → GATT 透传 → 协议包收发。
+3. **M3 - 遥控器正常模式**：扫描过滤（Name `BYS` + Manuf MAC 匹配）→ 连接 → 发现 `0xFFE0`/`0xFFE2` → GATT 透传 → 协议包收发。
 4. **M4 - 遥控器 UI**：LVGL v9 主界面 + 报警/超时提示，所有状态由 Notify 包驱动。
 5. **M5 - App 端增加配置入口**：扫描 `BYS_remote`，下发 12 字节配置包；调整 App 业务 UI 改为"以 Notify 回声为准"。
 6. **M6 - BOOT 5 连按 reset** + 三端在线压力测试（双端高频写入、断连重连、Notify 回声去抖）。

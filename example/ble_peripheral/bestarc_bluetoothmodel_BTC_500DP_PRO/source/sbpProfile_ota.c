@@ -63,7 +63,7 @@
     CONSTANTS
 */
 
-//#define SERVAPP_NUM_ATTR_SUPPORTED        24
+#define SERVAPP_NUM_ATTR_SUPPORTED        24
 
 /*********************************************************************
     TYPEDEFS
@@ -82,6 +82,12 @@ CONST uint8 simpleProfileServUUID[ATT_BT_UUID_SIZE] =
 CONST uint8 simpleProfilechar1UUID[ATT_BT_UUID_SIZE] =
 {
     LO_UINT16(SIMPLEPROFILE_CHAR1_UUID), HI_UINT16(SIMPLEPROFILE_CHAR1_UUID)
+};
+
+/* Characteristic 2 UUID: 0xFFE2 */
+CONST uint8 simpleProfilechar2UUID[ATT_BT_UUID_SIZE] =
+{
+    LO_UINT16(SIMPLEPROFILE_CHAR2_UUID), HI_UINT16(SIMPLEPROFILE_CHAR2_UUID)
 };
 
 /*********************************************************************
@@ -108,6 +114,14 @@ static uint8 simpleProfileChar1Props =
 static uint8 simpleProfileChar1[SIMPLEPROFILE_CHAR1_LEN];
 
 static gattCharCfg_t simpleProfileChar1Config[GATT_MAX_NUM_CONN];
+
+/* FFE2：Read + Write + WriteWithoutResponse + Notify */
+static uint8 simpleProfileChar2Props =
+    GATT_PROP_READ | GATT_PROP_WRITE | GATT_PROP_WRITE_NO_RSP | GATT_PROP_NOTIFY;
+
+static uint8 simpleProfileChar2[SIMPLEPROFILE_CHAR2_LEN];
+
+static gattCharCfg_t simpleProfileChar2Config[GATT_MAX_NUM_CONN];
 
 /* ── 属性表（4条目） ──────────────────────────── */
 static gattAttribute_t simpleProfileAttrTbl[] =
@@ -138,6 +152,29 @@ static gattAttribute_t simpleProfileAttrTbl[] =
         { ATT_BT_UUID_SIZE, clientCharCfgUUID },
         GATT_PERMIT_READ | GATT_PERMIT_WRITE, 0,
         (uint8*)simpleProfileChar1Config
+    },
+
+    /* ── FFE2 遥控器通道 ────────────────────────── */
+
+    /* Characteristic Declaration: FFE2 */
+    {
+        { ATT_BT_UUID_SIZE, characterUUID },
+        GATT_PERMIT_READ, 0,
+        &simpleProfileChar2Props
+    },
+
+    /* Characteristic Value: FFE2，Read + Write */
+    {
+        { ATT_BT_UUID_SIZE, simpleProfilechar2UUID },
+        GATT_PERMIT_READ | GATT_PERMIT_WRITE, 0,
+        simpleProfileChar2
+    },
+
+    /* CCCD：客户端写入 0x0001 开启 Notify */
+    {
+        { ATT_BT_UUID_SIZE, clientCharCfgUUID },
+        GATT_PERMIT_READ | GATT_PERMIT_WRITE, 0,
+        (uint8*)simpleProfileChar2Config
     },
 };
 
@@ -175,6 +212,7 @@ bStatus_t SimpleProfile_AddService( uint32 services )
 {
     uint8 status = SUCCESS;
     GATTServApp_InitCharCfg( INVALID_CONNHANDLE, simpleProfileChar1Config );
+    GATTServApp_InitCharCfg( INVALID_CONNHANDLE, simpleProfileChar2Config );
     VOID linkDB_Register( simpleProfile_HandleConnStatusCB );
 
     if ( services & SIMPLEPROFILE_SERVICE )
@@ -223,9 +261,15 @@ bStatus_t SimpleProfile_RegisterAppCBs( simpleProfileCBs_t* appCallbacks )
 /* FFE1 只读（GetParameter），供 bys_bridge 读取 App 写入的数据 */
 bStatus_t SimpleProfile_GetParameter( uint8 param, void* value )
 {
-    if ( param != SIMPLEPROFILE_CHAR1 ) return INVALIDPARAMETER;
-    VOID osal_memcpy( value, simpleProfileChar1, SIMPLEPROFILE_CHAR1_LEN );
-    return SUCCESS;
+    if ( param == SIMPLEPROFILE_CHAR1 ) {
+        VOID osal_memcpy( value, simpleProfileChar1, SIMPLEPROFILE_CHAR1_LEN );
+        return SUCCESS;
+    }
+    if ( param == SIMPLEPROFILE_CHAR2 ) {
+        VOID osal_memcpy( value, simpleProfileChar2, SIMPLEPROFILE_CHAR2_LEN );
+        return SUCCESS;
+    }
+    return INVALIDPARAMETER;
 }
 
 /*********************************************************************
@@ -254,6 +298,12 @@ static uint8 simpleProfile_ReadAttrCB( uint16 connHandle, gattAttribute_t* pAttr
     {
         *pLen = SIMPLEPROFILE_CHAR1_LEN;
         VOID osal_memcpy( pValue, pAttr->pValue, SIMPLEPROFILE_CHAR1_LEN );
+        return SUCCESS;
+    }
+    if ( uuid == SIMPLEPROFILE_CHAR2_UUID )
+    {
+        *pLen = SIMPLEPROFILE_CHAR2_LEN;
+        VOID osal_memcpy( pValue, pAttr->pValue, SIMPLEPROFILE_CHAR2_LEN );
         return SUCCESS;
     }
     *pLen = 0;
@@ -287,6 +337,19 @@ static bStatus_t simpleProfile_WriteAttrCB( uint16 connHandle, gattAttribute_t* 
         return SUCCESS;
     }
 
+    if ( uuid == SIMPLEPROFILE_CHAR2_UUID )
+    {
+        if ( offset != 0 ) return ATT_ERR_ATTR_NOT_LONG;
+        if ( len > SIMPLEPROFILE_CHAR2_LEN ) return ATT_ERR_INVALID_VALUE_SIZE;
+
+        VOID osal_memcpy( (uint8*)pAttr->pValue, pValue, len );
+
+        if ( simpleProfile_AppCBs && simpleProfile_AppCBs->pfnSimpleProfileChange )
+            simpleProfile_AppCBs->pfnSimpleProfileChange( SIMPLEPROFILE_CHAR2 );
+
+        return SUCCESS;
+    }
+
     return ATT_ERR_ATTR_NOT_FOUND;
 }
 
@@ -298,17 +361,26 @@ static void simpleProfile_HandleConnStatusCB( uint16 connHandle, uint8 changeTyp
          ( changeType == LINKDB_STATUS_UPDATE_STATEFLAGS && !linkDB_Up( connHandle ) ) )
     {
         GATTServApp_InitCharCfg( connHandle, simpleProfileChar1Config );
+        GATTServApp_InitCharCfg( connHandle, simpleProfileChar2Config );
     }
 }
 
 /* Notify：PB03F 主动推数据给 App */
 bStatus_t simpleProfile_Notify( uint8 param, uint8 len, void* value )
 {
-    if ( param != SIMPLEPROFILE_CHAR1 ) return INVALIDPARAMETER;
-    VOID osal_memcpy( simpleProfileChar1, value, len );
-    return GATTServApp_ProcessCharCfg( simpleProfileChar1Config, simpleProfileChar1, FALSE,
-                                       simpleProfileAttrTbl, GATT_NUM_ATTRS( simpleProfileAttrTbl ),
-                                       INVALID_TASK_ID );
+    if ( param == SIMPLEPROFILE_CHAR1 ) {
+        VOID osal_memcpy( simpleProfileChar1, value, len );
+        return GATTServApp_ProcessCharCfg( simpleProfileChar1Config, simpleProfileChar1, FALSE,
+                                           simpleProfileAttrTbl, GATT_NUM_ATTRS( simpleProfileAttrTbl ),
+                                           INVALID_TASK_ID );
+    }
+    if ( param == SIMPLEPROFILE_CHAR2 ) {
+        VOID osal_memcpy( simpleProfileChar2, value, len );
+        return GATTServApp_ProcessCharCfg( simpleProfileChar2Config, simpleProfileChar2, FALSE,
+                                           simpleProfileAttrTbl, GATT_NUM_ATTRS( simpleProfileAttrTbl ),
+                                           INVALID_TASK_ID );
+    }
+    return INVALIDPARAMETER;
 }
 
 /*********************************************************************
