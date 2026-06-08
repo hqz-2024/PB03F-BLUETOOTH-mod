@@ -292,6 +292,9 @@ uint8 bys_uart_tx_process(void)
 #define BYS_CMD_SET_ARC       0x0600u
 #define BYS_CMD_SET_UNIT      0x0700u
 
+/* ─── 测试模式设备型号 ──────────────────────────── */
+#define TEST_DEVICE_TYPE      0x0002u
+
 /* ─── 各参数范围（按通讯协议）─────────────────────── */
 #define TEST_MODE_MIN       0
 #define TEST_MODE_MAX       3     /* 0=钢板 1=网格 2=除锈 3=气刨 */
@@ -373,8 +376,8 @@ static void test_build_pkt(uint8 *pkt, uint16 cmd, uint16 data)
     uint16 chksum = cmd + data;
     pkt[0]  = BYS_HEADER_0;
     pkt[1]  = BYS_HEADER_1;
-    pkt[2]  = LO_UINT16(0x0002);
-    pkt[3]  = HI_UINT16(0x0002);
+    pkt[2]  = LO_UINT16(TEST_DEVICE_TYPE);
+    pkt[3]  = HI_UINT16(TEST_DEVICE_TYPE);
     pkt[4]  = LO_UINT16(cmd);
     pkt[5]  = HI_UINT16(cmd);
     pkt[6]  = LO_UINT16(data);
@@ -421,7 +424,7 @@ void bys_test_init(bys_uart_rx_cb_t rx_cb)
 /* P15触发：先随机mode+voltage确定电流区间，再随机其余参数 */
 void bys_test_tick(void)
 {
-    g_bys_state.device_type = 0x0002;
+    g_bys_state.device_type = TEST_DEVICE_TYPE;
     g_bys_state.mode    = random_range(TEST_MODE_MIN, TEST_MODE_MAX);
     g_bys_state.voltage = random_range(TEST_VOLTAGE_MIN, TEST_VOLTAGE_MAX);
 
