@@ -5,6 +5,7 @@
 #include "timer.h"
 #include "log.h"
 #include "bus_dev.h"
+#include "error.h"
 
 /* ─── 引脚定义 ─────────────────────────────────── */
 #define PIN_PWM         GPIO_P00
@@ -93,7 +94,7 @@ void remote_hw_init(void)
 
     /* PWM: P0 */
     hal_pwm_module_init();
-    hal_pwm_init(PWM_CH, PWM_DIV, PWM_CNT_UP, PWM_POLARITY_RISING);
+    hal_pwm_init(PWM_CH, PWM_DIV, PWM_CNT_UP, PWM_POLARITY_FALLING);
     hal_pwm_set_count_val(PWM_CH, 0, PWM_TOP);
     hal_gpio_fmux_set(PIN_PWM, FMUX_PWM0);
     hal_pwm_open_channel(PWM_CH, PIN_PWM);
@@ -136,6 +137,7 @@ void remote_hw_set_pwm_mv(uint16_t target_mv, work_mode_e mode)
     if (target_mv < min_mv) target_mv = min_mv;
     if (target_mv > max_mv) target_mv = max_mv;
 
+    /* FALLING 极性抵消硬件反相: Vout = VDD * cmp / (TOP+1) */
     uint16_t cmp = (uint32_t)target_mv * (PWM_TOP + 1) / MV_VDD;
     if (cmp > PWM_TOP) cmp = PWM_TOP;
 
@@ -189,32 +191,42 @@ motor_state_e remote_hw_motor_state(void)
     return s_motor_state;
 }
 
+/* ─── ADC 回调 (hal_adc_config_channel 要求非空) ── */
+static void _adc_dummy_cb(adc_Evt_t* pev)
+{
+    (void)pev;
+}
+
 /* ─── ADC 读取 ─────────────────────────────────── */
-/* 直接用寄存器读取 P11 (ADC_CH0, 10-bit 模式, VDD 量程) */
 uint16_t remote_hw_adc_read_mv(void)
 {
     adc_Cfg_t cfg = {
-        .channel            = ADC_CH0,
+        .channel            = ADC_BIT(ADC_CH0),
         .is_continue_mode   = FALSE,
         .is_differential_mode = 0,
-        .is_high_resolution  = 0       /* 10-bit, 0~VDD */
+        .is_high_resolution  = ADC_BIT(ADC_CH0)  /* bitmask: 衰减模式 0~3.2V */
     };
-    hal_adc_config_channel(cfg, NULL);
+    int ret = hal_adc_config_channel(cfg, _adc_dummy_cb);
+    if (ret != PPlus_SUCCESS) {
+        LOG("[ADC] config_channel failed: %d\n", ret);
+        return 0;
+    }
+
     hal_adc_start(POLLING_MODE);
 
-    /* 等待转换完成 */
+    /* 等待转换完成: 配对通道号为奇数位，ch2 = ADC_CH0+1 = 3 */
     volatile uint32_t to = 10000;
     while (to--) {
-        if (AP_ADCC->intr_status & BIT(ADC_CH0)) break;
+        if (AP_ADCC->intr_status & BIT(ADC_CH0 + 1)) break;
     }
-    AP_ADCC->intr_clear = BIT(ADC_CH0);
+    AP_ADCC->intr_clear = BIT(ADC_CH0 + 1);
 
-    /* ADC_CH0=2, 第一个样本在偏移 8 处 */
-    uint16_t raw = read_reg(ADC_CH_BASE + (ADC_CH0 * 0x80) + (2 * 4)) & 0x3FF;
+    /* 衰减模式 12-bit, raw 范围 0~4095 */
+    uint16_t raw = read_reg(ADC_CH_BASE + ((ADC_CH0 + 1) * 0x80) + (2 * 4)) & 0xFFF;
 
     hal_adc_stop();
 
-    return (uint32_t)raw * 3300 / 1024;
+    return (uint32_t)raw * 3300 / 4096;
 }
 
 /* ─── 模式 / 延时读取 ──────────────────────────── */
