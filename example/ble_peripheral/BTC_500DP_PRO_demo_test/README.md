@@ -1,33 +1,75 @@
-# bestarc_bluetoothmodel_BTC_500DP_PRO
+# BTC_500DP_PRO_demo_test
+
 ## 更新说明
 # ------------------------------------- #
 版本V1.0 
 日期2026/05/12
-BTC500DPPRO设备试产200pcs的版本代码
+基于 PHY62XX SDK 3.1.5 的 BLE 蓝牙桥接通讯测试工程
 # ------------------------------------- #
-
-
 
 ## 1. 工程说明
 
-基于 PHY62XX SDK 3.1.5 的 BLE 蓝牙桥接固件，适用于 **BTC500DP PRO** 焊机。
+该工程用于 **BYS 系列焊机 BLE ↔ UART 通讯测试**，当前已支持以下机型通过编译期宏切换：
+
+- `BTC550DP Ultra`
+- `BTC500DP PRO`
+- `BTC500DP 5GEN PRO`
+- `BTC500DP 7GEN PRO`
 
 核心功能：
 
 - 通过 UART1 与下位机进行 12 字节固定包协议通讯，轮询查询设备状态
 - 通过 BLE 广播上报设备状态（模式、电流、后气、维弧等）
 - 通过 BLE GATT（FFE0/FFE1）实现 App 与下位机的双向透传
+- 根据机型自动裁剪不支持的协议字段、查询命令和测试模式行为
 
-设备型号：根据下位机上传数据进行广播，无需手动配置；
+机型不是运行时切换，而是通过 `source/demo_test_config.h` 在编译期选择。
 
-
-cut55pro 设备号：0x0001
-BTC500DPPRO 设备号：0x0002
-BTC500DPMAX 设备号：0x0003
-........
 ---
 
-## 2. 协议说明
+## 2. 机型配置
+
+### 配置文件
+
+- `source/demo_test_config.h`
+
+### 机型选择宏
+
+```c
+#define DEMO_TEST_MODEL_BTC550DP_ULTRA      1
+#define DEMO_TEST_MODEL_BTC500DP_PRO        2
+#define DEMO_TEST_MODEL_BTC500DP_5GEN_PRO   3
+#define DEMO_TEST_MODEL_BTC500DP_7GEN_PRO   4
+
+#ifndef DEMO_TEST_MODEL
+#define DEMO_TEST_MODEL DEMO_TEST_MODEL_BTC500DP_PRO
+#endif
+```
+
+修改 `DEMO_TEST_MODEL` 即可切换目标机型。
+
+### 当前机型配置项
+
+每个机型会在 `demo_test_config.h` 中定义以下内容：
+
+- `DEMO_TEST_MODEL_NAME`：BLE Device Information Service 里的机型名
+- `DEMO_TEST_DEVICE_TYPE`：协议里的设备类型码
+- `DEMO_TEST_SUPPORT_*`：功能支持位
+- `DEMO_TEST_PROTOCOL_VARIANT`：协议变体
+- `DEMO_TEST_CURRENT_MAX_*`：不同模式/电压下的电流范围
+
+### 当前设备类型码
+
+| 机型 | 设备类型 |
+|------|----------|
+| BTC550DP Ultra | `0x0003` |
+| BTC500DP PRO | `0x0002` |
+| BTC500DP 5GEN PRO | `0x0005` |
+| BTC500DP 7GEN PRO | `0x0004` |
+
+---
+
+## 3. 协议说明
 
 ### UART 参数
 
@@ -51,11 +93,28 @@ BTC500DPMAX 设备号：0x0003
 - `0x8000`：APP 已连接
 - `0x0000`：APP 未连接
 
-### 查询命令（8 条循环轮询）
+### 协议变体
+
+当前工程内部分为两类协议变体：
+
+1. `DEMO_TEST_PROTO_ULTRA_LIKE`
+   - 适用于：Ultra / BTC500DP PRO / BTC500DP 7GEN PRO
+   - 支持 mode、arc、BAR 等完整字段
+
+2. `DEMO_TEST_PROTO_5GEN`
+   - 适用于：BTC500DP 5GEN PRO
+   - 不支持 mode
+   - 不支持 arc
+   - unit 仅支持 PSI / MPa
+   - 查询码、设置确认码与 Ultra-like 机型不同
+
+### 查询命令
+
+#### Ultra-like 机型
 
 | 命令码 | 说明 | 响应码 |
 |--------|------|--------|
-| `0x0002` | 模式（钢板/网格/除锈） | `0x0082` |
+| `0x0002` | 模式 | `0x0082` |
 | `0x0003` | 2T/4T | `0x0083` |
 | `0x0004` | 电流 | `0x0084` |
 | `0x0005` | 后气时间 | `0x0085` |
@@ -64,17 +123,24 @@ BTC500DPMAX 设备号：0x0003
 | `0x0008` | 报警状态 | `0x0088` |
 | `0x0009` | 输入电压 | `0x0089` |
 
-轮询间隔 250ms/包，8 包一轮 = 2 秒。
+#### 5GEN 机型
 
-### 模式字段
+| 命令码 | 说明 | 响应码 |
+|--------|------|--------|
+| `0x0002` | 保留轮询，数据固定 `0x0000` | 无 |
+| `0x0003` | 2T/4T | `0x0083` |
+| `0x0004` | 电流 | `0x0084` |
+| `0x0005` | 后气时间 | `0x0085` |
+| `0x0006` | 保留轮询，数据固定 `0x0000` | 无 |
+| `0x0007` | 气压单位 | `0x0087` |
+| `0x0008` | 报警状态 | `0x0088` |
+| `0x0009` | 输入电压 | `0x0089` |
 
-- `0x0000`：钢板
-- `0x0001`：网格
-- `0x0002`：除锈
+5GEN 的 8 个轮询位全部执行；其中协议标记为“无”的 `0x0002`、`0x0006` 也会发送，数据区固定为 `0x0000`。
 
 ---
 
-## 3. BLE 广播
+## 4. BLE 广播
 
 广播数据 31 字节，包含 3 个 AD Structure：
 
@@ -87,13 +153,19 @@ AD3 字段布局：
 | 偏移 | 长度 | 字段 |
 |------|------|------|
 | 10-15 | 6B | MAC 地址（大端序） |
-| 16-17 | 2B | 设备类型 `0x0001` |
+| 16-17 | 2B | 设备类型 |
 | 18-19 | 2B | 模式 |
 | 20-21 | 2B | 2T/4T |
 | 22-23 | 2B | 电流 |
 | 24-25 | 2B | 后气时间 |
 | 26-27 | 2B | 维弧时间 |
 | 28-29 | 2B | 气压单位 |
+
+说明：
+
+- 广播包结构保持统一
+- 不支持的字段会保持默认值
+- `source/bys_bridge.c` 中的 Device Information Service `MODEL_NUMBER` 会跟随 `DEMO_TEST_MODEL_NAME`
 
 ### GATT 服务
 
@@ -104,7 +176,7 @@ AD3 字段布局：
 
 ---
 
-## 4. 文件说明
+## 5. 文件说明
 
 ### 启动入口
 
@@ -125,17 +197,20 @@ AD3 字段布局：
   - App 写入回调 → 转发给 UART
   - UART 回调 → Notify 给 App
   - 定时器驱动轮询
+  - Device Information Service 机型名配置
 
 ### UART 协议
 
-- **`source/bys_uart.h`**：协议常量（包头包尾、命令码、响应码）、设备状态结构体
+- **`source/demo_test_config.h`**：机型选择、功能裁剪、协议变体、电流范围配置
+- **`source/bys_uart.h`**：协议常量、功能开关映射、设备状态结构体
 - **`source/bys_uart.c`**：
   - UART1 初始化
   - 12 字节协议包的打包与解析
   - 发送队列管理（3 包深度）
-  - 8 条查询命令循环轮询
-  - 接收校验与状态更新（`g_bys_state`）
+  - 按机型动态生成轮询命令表
+  - 按机型解析响应并更新 `g_bys_state`
   - App 控制指令入队与发送
+  - 测试模式下按机型动态生成响应序列
 
 ### GATT Profile
 
@@ -149,7 +224,7 @@ AD3 字段布局：
 
 ---
 
-## 5. 数据流
+## 6. 数据流
 
 ### App → 下位机
 
@@ -169,7 +244,7 @@ AD3 字段布局：
 
 ---
 
-## 6. IO 分配
+## 7. IO 分配
 
 | GPIO | 功能 |
 |------|------|
@@ -180,7 +255,7 @@ AD3 字段布局：
 
 ---
 
-## 7. 关键配置参数
+## 8. 关键配置参数
 
 | 参数 | 值 | 位置 |
 |------|-----|------|
@@ -189,5 +264,5 @@ AD3 字段布局：
 | UART 波特率 | 19200 | `bys_uart.h` |
 | 轮询间隔 | 250ms/包 | `bys_bridge.h` |
 | TX 队列深度 | 3 包 | `bys_uart.c` |
-| RF 发射功率 | 0dBm | `main.c` |
-| BLE 包版本 | 5.1 | `main.c` |
+| 默认机型 | BTC500DP PRO | `demo_test_config.h` |
+| 协议变体 | Ultra-like / 5GEN | `demo_test_config.h` |

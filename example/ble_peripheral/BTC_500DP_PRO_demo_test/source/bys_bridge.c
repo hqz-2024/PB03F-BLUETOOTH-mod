@@ -115,7 +115,7 @@ void BYS_Bridge_Init(uint8 task_id)
 
     /* 注册 Device Information Service */
     DevInfo_AddService();
-    DevInfo_SetParameter(DEVINFO_MODEL_NUMBER,      9,  "BTC500DP");
+    DevInfo_SetParameter(DEVINFO_MODEL_NUMBER,      sizeof(DEMO_TEST_MODEL_NAME) - 1,  DEMO_TEST_MODEL_NAME);
     DevInfo_SetParameter(DEVINFO_MANUFACTURER_NAME, 3,  "BYS");
     DevInfo_SetParameter(DEVINFO_FIRMWARE_REV,      5,  "1.0.0");
     DevInfo_SetParameter(DEVINFO_HARDWARE_REV,      5,  "1.0.0");

@@ -37,14 +37,36 @@ bys_device_state_t g_bys_state = {0};
 
 /* 8条查询命令循环表 */
 static const uint16 s_query_cmds[BYS_QUERY_COUNT] = {
+#if (DEMO_TEST_PROTOCOL_VARIANT == DEMO_TEST_PROTO_5GEN)
+    BYS_CMD_QUERY_NOP0,
+#endif
+#if BYS_QUERY_ITEM_MODE
     BYS_CMD_QUERY_MODE,
+#endif
+#if BYS_QUERY_ITEM_T2T4
     BYS_CMD_QUERY_T2T4,
+#endif
+#if BYS_QUERY_ITEM_CURRENT
     BYS_CMD_QUERY_CURRENT,
+#endif
+#if BYS_QUERY_ITEM_POSTGAS
     BYS_CMD_QUERY_POSTGAS,
+#endif
+#if (DEMO_TEST_PROTOCOL_VARIANT == DEMO_TEST_PROTO_5GEN)
+    BYS_CMD_QUERY_NOP1,
+#endif
+#if BYS_QUERY_ITEM_ARC
     BYS_CMD_QUERY_ARC,
+#endif
+#if BYS_QUERY_ITEM_UNIT
     BYS_CMD_QUERY_UNIT,
+#endif
+#if BYS_QUERY_ITEM_ALARM
     BYS_CMD_QUERY_ALARM,
+#endif
+#if BYS_QUERY_ITEM_VOLTAGE
     BYS_CMD_QUERY_VOLTAGE,
+#endif
 };
 
 /* ─── 内部函数 ──────────────────────────────────── */
@@ -110,22 +132,38 @@ static void send_packet(uint16 dev_type, uint16 cmd, uint16 data)
 static uint8 apply_response(uint16 cmd, uint16 data)
 {
     switch (cmd) {
+#if BYS_QUERY_ITEM_MODE
         case BYS_RSP_MODE:    g_bys_state.mode    = data; return 1;
+#endif
+#if BYS_QUERY_ITEM_T2T4
         case BYS_RSP_T2T4:    g_bys_state.t2t4    = data; return 1;
+#endif
+#if BYS_QUERY_ITEM_CURRENT
         case BYS_RSP_CURRENT: g_bys_state.current = data; return 1;
+#endif
+#if BYS_QUERY_ITEM_POSTGAS
         case BYS_RSP_POSTGAS: g_bys_state.postgas = data; return 1;
+#endif
+#if BYS_QUERY_ITEM_ARC
         case BYS_RSP_ARC:     g_bys_state.arc     = data; return 1;
+#endif
+#if BYS_QUERY_ITEM_UNIT
         case BYS_RSP_UNIT:    g_bys_state.unit    = data; return 1;
+#endif
+#if BYS_QUERY_ITEM_ALARM
         case BYS_RSP_ALARM:   g_bys_state.alarm   = data; return 1;
+#endif
+#if BYS_QUERY_ITEM_VOLTAGE
         case BYS_RSP_VOLTAGE:
             g_bys_state.voltage = data;
-            g_bys_state.valid   = 1;   /* 一轮完成 */
+            g_bys_state.valid   = 1;
             return 1;
+#endif
         case BYS_RSP_ERROR:
             LOG("[BYS] ERR code=0x%04x\n", data);
-            return 1;  /* 错误包也是响应 */
+            return 1;
         default:
-            return 0;  /* 未知命令，可能是APP控制指令的确认包(0x82XX) */
+            return 0;
     }
 }
 
@@ -285,42 +323,73 @@ uint8 bys_uart_tx_process(void)
 #ifdef BYS_TEST_MODE
 
 /* ─── App 设置命令码（按通讯协议）─────────────────── */
+#if (DEMO_TEST_PROTOCOL_VARIANT == DEMO_TEST_PROTO_5GEN)
+#define BYS_CMD_SET_T2T4      0x0300u
+#define BYS_CMD_SET_CURRENT   0x0400u
+#define BYS_CMD_SET_POSTGAS   0x0500u
+#define BYS_CMD_SET_UNIT      0x0700u
+#else
 #define BYS_CMD_SET_MODE      0x0200u
 #define BYS_CMD_SET_T2T4      0x0300u
 #define BYS_CMD_SET_CURRENT   0x0400u
 #define BYS_CMD_SET_POSTGAS   0x0500u
 #define BYS_CMD_SET_ARC       0x0600u
 #define BYS_CMD_SET_UNIT      0x0700u
+#endif
 
 /* ─── 测试模式设备型号 ──────────────────────────── */
-#define TEST_DEVICE_TYPE      0x0002u
+static const uint16 s_test_rsp_cmds[BYS_QUERY_COUNT] = {
+#if (DEMO_TEST_PROTOCOL_VARIANT == DEMO_TEST_PROTO_5GEN)
+    BYS_RSP_NOP0,
+#endif
+#if BYS_QUERY_ITEM_MODE
+    BYS_RSP_MODE,
+#endif
+#if BYS_QUERY_ITEM_T2T4
+    BYS_RSP_T2T4,
+#endif
+#if BYS_QUERY_ITEM_CURRENT
+    BYS_RSP_CURRENT,
+#endif
+#if BYS_QUERY_ITEM_POSTGAS
+    BYS_RSP_POSTGAS,
+#endif
+#if (DEMO_TEST_PROTOCOL_VARIANT == DEMO_TEST_PROTO_5GEN)
+    BYS_RSP_NOP1,
+#endif
+#if BYS_QUERY_ITEM_ARC
+    BYS_RSP_ARC,
+#endif
+#if BYS_QUERY_ITEM_UNIT
+    BYS_RSP_UNIT,
+#endif
+#if BYS_QUERY_ITEM_ALARM
+    BYS_RSP_ALARM,
+#endif
+#if BYS_QUERY_ITEM_VOLTAGE
+    BYS_RSP_VOLTAGE,
+#endif
+};
 
 /* ─── 各参数范围（按通讯协议）─────────────────────── */
-#define TEST_MODE_MIN       0
-#define TEST_MODE_MAX       3     /* 0=钢板 1=网格 2=除锈 3=气刨 */
-#define TEST_T2T4_MIN       0
-#define TEST_T2T4_MAX       1
-#define TEST_CURRENT_MIN    15
-/* 电流上限由 mode+voltage 查表决定 */
-
 static uint16 current_max_by_mode_voltage(uint16 mode, uint16 voltage)
 {
-    if (voltage == 0) { /* 120V */
-        if (mode == 0 || mode == 3) return 35; /* 钢板/气刨 */
-        return 30; /* 网格/除锈 */
+    if (voltage == 0) {
+        switch (mode) {
+        case 0: return DEMO_TEST_CURRENT_MAX_120V_MODE_0;
+        case 1: return DEMO_TEST_CURRENT_MAX_120V_MODE_1;
+        case 2: return DEMO_TEST_CURRENT_MAX_120V_MODE_2;
+        default: return DEMO_TEST_CURRENT_MAX_120V_MODE_3;
+        }
     }
-    /* 240V */
-    if (mode == 0 || mode == 3) return 50; /* 钢板/气刨 */
-    return 30; /* 网格/除锈 */
+
+    switch (mode) {
+    case 0: return DEMO_TEST_CURRENT_MAX_240V_MODE_0;
+    case 1: return DEMO_TEST_CURRENT_MAX_240V_MODE_1;
+    case 2: return DEMO_TEST_CURRENT_MAX_240V_MODE_2;
+    default: return DEMO_TEST_CURRENT_MAX_240V_MODE_3;
+    }
 }
-#define TEST_POSTGAS_MIN    3
-#define TEST_POSTGAS_MAX    15
-#define TEST_ARC_MIN        3
-#define TEST_ARC_MAX        15
-#define TEST_UNIT_MIN       0
-#define TEST_UNIT_MAX       2
-#define TEST_VOLTAGE_MIN    0
-#define TEST_VOLTAGE_MAX    1
 
 /* ─── App 指令缓冲队列（8包深）────────────────────── */
 #define APP_CMD_BUF_SIZE    8
@@ -361,23 +430,82 @@ static uint16 random_range(uint16 min, uint16 max)
     return min + (test_rand() % (max - min + 1));
 }
 
+static uint16 clamp_range(uint16 value, uint16 min, uint16 max)
+{
+    if (value < min) return min;
+    if (value > max) return max;
+    return value;
+}
+
+static uint16 normalize_mode(uint16 mode)
+{
+#if DEMO_TEST_SUPPORT_MODE
+    return clamp_range(mode, BYS_TEST_MODE_MIN, BYS_TEST_MODE_MAX);
+#else
+    (void)mode;
+    return BYS_TEST_MODE_MIN;
+#endif
+}
+
+static uint16 normalize_t2t4(uint16 value)
+{
+    return clamp_range(value, BYS_TEST_T2T4_MIN, BYS_TEST_T2T4_MAX);
+}
+
+static uint16 normalize_postgas(uint16 value)
+{
+    return clamp_range(value, BYS_TEST_POSTGAS_MIN, BYS_TEST_POSTGAS_MAX);
+}
+
+static uint16 normalize_arc(uint16 value)
+{
+#if DEMO_TEST_SUPPORT_ARC
+    return clamp_range(value, BYS_TEST_ARC_MIN, BYS_TEST_ARC_MAX);
+#else
+    (void)value;
+    return BYS_TEST_ARC_MIN;
+#endif
+}
+
+static uint16 normalize_unit(uint16 value)
+{
+    return clamp_range(value, BYS_TEST_UNIT_MIN, BYS_TEST_UNIT_MAX);
+}
+
+static uint16 normalize_alarm(uint16 value)
+{
+    return clamp_range(value, BYS_TEST_ALARM_MIN, BYS_TEST_ALARM_MAX);
+}
+
+static uint16 normalize_voltage(uint16 value)
+{
+    return clamp_range(value, BYS_TEST_VOLTAGE_MIN, BYS_TEST_VOLTAGE_MAX);
+}
+
+static uint16 normalize_current(uint16 mode, uint16 voltage, uint16 value)
+{
+    uint16 current_min = BYS_TEST_CURRENT_MIN;
+    uint16 current_max = current_max_by_mode_voltage(mode, voltage);
+    return clamp_range(value, current_min, current_max);
+}
+
 /* ─── 协议字段基准值（App下发时更新） ──────────────── */
 static uint8_t s_test_poll_idx = 0;
-static uint16  s_base_mode     = 0;
-static uint16  s_base_t2t4     = 0;
-static uint16  s_base_current  = 15;
-static uint16  s_base_postgas  = 3;
-static uint16  s_base_arc      = 3;
-static uint16  s_base_unit     = 0;
-static uint16  s_base_voltage  = 0;
+static uint16  s_base_mode     = DEMO_TEST_MODE_MIN;
+static uint16  s_base_t2t4     = DEMO_TEST_T2T4_MIN;
+static uint16  s_base_current  = DEMO_TEST_CURRENT_MIN;
+static uint16  s_base_postgas  = DEMO_TEST_POSTGAS_MIN;
+static uint16  s_base_arc      = DEMO_TEST_ARC_MIN;
+static uint16  s_base_unit     = DEMO_TEST_UNIT_MIN;
+static uint16  s_base_voltage  = DEMO_TEST_VOLTAGE_MIN;
 
 static void test_build_pkt(uint8 *pkt, uint16 cmd, uint16 data)
 {
     uint16 chksum = cmd + data;
     pkt[0]  = BYS_HEADER_0;
     pkt[1]  = BYS_HEADER_1;
-    pkt[2]  = LO_UINT16(TEST_DEVICE_TYPE);
-    pkt[3]  = HI_UINT16(TEST_DEVICE_TYPE);
+    pkt[2]  = LO_UINT16(BYS_TEST_DEVICE_TYPE);
+    pkt[3]  = HI_UINT16(BYS_TEST_DEVICE_TYPE);
     pkt[4]  = LO_UINT16(cmd);
     pkt[5]  = HI_UINT16(cmd);
     pkt[6]  = LO_UINT16(data);
@@ -388,6 +516,42 @@ static void test_build_pkt(uint8 *pkt, uint16 cmd, uint16 data)
     pkt[11] = BYS_TAIL_1;
 }
 
+static uint16 test_get_rsp_value(uint16 rsp_cmd)
+{
+    switch (rsp_cmd) {
+#if (DEMO_TEST_PROTOCOL_VARIANT == DEMO_TEST_PROTO_5GEN)
+    case BYS_RSP_NOP0:
+    case BYS_RSP_NOP1:
+        return 0;
+#endif
+#if BYS_QUERY_ITEM_MODE
+    case BYS_RSP_MODE:    return g_bys_state.mode;
+#endif
+#if BYS_QUERY_ITEM_T2T4
+    case BYS_RSP_T2T4:    return g_bys_state.t2t4;
+#endif
+#if BYS_QUERY_ITEM_CURRENT
+    case BYS_RSP_CURRENT: return g_bys_state.current;
+#endif
+#if BYS_QUERY_ITEM_POSTGAS
+    case BYS_RSP_POSTGAS: return g_bys_state.postgas;
+#endif
+#if BYS_QUERY_ITEM_ARC
+    case BYS_RSP_ARC:     return g_bys_state.arc;
+#endif
+#if BYS_QUERY_ITEM_UNIT
+    case BYS_RSP_UNIT:    return g_bys_state.unit;
+#endif
+#if BYS_QUERY_ITEM_ALARM
+    case BYS_RSP_ALARM:   return g_bys_state.alarm;
+#endif
+#if BYS_QUERY_ITEM_VOLTAGE
+    case BYS_RSP_VOLTAGE: return g_bys_state.voltage;
+#endif
+    default:              return 0;
+    }
+}
+
 /* 处理一条缓冲的App指令：更新基准值并立即生效 */
 static void bys_test_process_cmd(const uint8 *buf)
 {
@@ -396,19 +560,60 @@ static void bys_test_process_cmd(const uint8 *buf)
     uint16 rsp  = 0;
 
     switch (cmd) {
-    case BYS_CMD_SET_MODE:    s_base_mode    = data; g_bys_state.mode    = data; rsp = BYS_RSP_SET_MODE;    break;
-    case BYS_CMD_SET_T2T4:    s_base_t2t4    = data; g_bys_state.t2t4    = data; rsp = BYS_RSP_SET_T2T4;    break;
-    case BYS_CMD_SET_CURRENT: s_base_current = data; g_bys_state.current = data; rsp = BYS_RSP_SET_CURRENT; break;
-    case BYS_CMD_SET_POSTGAS: s_base_postgas = data; g_bys_state.postgas = data; rsp = BYS_RSP_SET_POSTGAS; break;
-    case BYS_CMD_SET_ARC:     s_base_arc     = data; g_bys_state.arc     = data; rsp = BYS_RSP_SET_ARC;     break;
-    case BYS_CMD_SET_UNIT:    s_base_unit    = data; g_bys_state.unit    = data; rsp = BYS_RSP_SET_UNIT;    break;
+#if DEMO_TEST_SUPPORT_MODE
+#if (DEMO_TEST_PROTOCOL_VARIANT != DEMO_TEST_PROTO_5GEN)
+    case BYS_CMD_SET_MODE:
+        s_base_mode = data;
+        g_bys_state.mode = data;
+        rsp = BYS_RSP_SET_MODE;
+        break;
+#endif
+#endif
+#if DEMO_TEST_SUPPORT_T2T4
+    case BYS_CMD_SET_T2T4:
+        s_base_t2t4 = data;
+        g_bys_state.t2t4 = data;
+        rsp = BYS_RSP_SET_T2T4;
+        break;
+#endif
+#if DEMO_TEST_SUPPORT_CURRENT
+    case BYS_CMD_SET_CURRENT:
+        s_base_current = data;
+        g_bys_state.current = data;
+        rsp = BYS_RSP_SET_CURRENT;
+        break;
+#endif
+#if DEMO_TEST_SUPPORT_POSTGAS
+    case BYS_CMD_SET_POSTGAS:
+        s_base_postgas = data;
+        g_bys_state.postgas = data;
+        rsp = BYS_RSP_SET_POSTGAS;
+        break;
+#endif
+#if DEMO_TEST_SUPPORT_ARC
+#if (DEMO_TEST_PROTOCOL_VARIANT != DEMO_TEST_PROTO_5GEN)
+    case BYS_CMD_SET_ARC:
+        s_base_arc = data;
+        g_bys_state.arc = data;
+        rsp = BYS_RSP_SET_ARC;
+        break;
+#endif
+#endif
+#if DEMO_TEST_SUPPORT_UNIT
+    case BYS_CMD_SET_UNIT:
+        s_base_unit = data;
+        g_bys_state.unit = data;
+        rsp = BYS_RSP_SET_UNIT;
+        break;
+#endif
     default: return;
     }
 
-    /* 回复确认包 */
-    uint8 pkt[BYS_PKT_LEN];
-    test_build_pkt(pkt, rsp, data);
-    if (s_rx_cb) s_rx_cb(pkt);
+    {
+        uint8 pkt[BYS_PKT_LEN];
+        test_build_pkt(pkt, rsp, data);
+        if (s_rx_cb) s_rx_cb(pkt);
+    }
 }
 
 /* ─── 对外接口 ────────────────────────────────────── */
@@ -424,17 +629,26 @@ void bys_test_init(bys_uart_rx_cb_t rx_cb)
 /* P15触发：先随机mode+voltage确定电流区间，再随机其余参数 */
 void bys_test_tick(void)
 {
-    g_bys_state.device_type = TEST_DEVICE_TYPE;
-    g_bys_state.mode    = random_range(TEST_MODE_MIN, TEST_MODE_MAX);
-    g_bys_state.voltage = random_range(TEST_VOLTAGE_MIN, TEST_VOLTAGE_MAX);
-
-    uint16 cur_max = current_max_by_mode_voltage(g_bys_state.mode, g_bys_state.voltage);
-    g_bys_state.current = random_range(TEST_CURRENT_MIN, cur_max);
-    g_bys_state.t2t4    = random_range(TEST_T2T4_MIN,    TEST_T2T4_MAX);
-    g_bys_state.postgas = random_range(TEST_POSTGAS_MIN, TEST_POSTGAS_MAX);
-    g_bys_state.arc     = random_range(TEST_ARC_MIN,     TEST_ARC_MAX);
-    g_bys_state.unit    = random_range(TEST_UNIT_MIN,    TEST_UNIT_MAX);
-    g_bys_state.alarm   = 0;
+    g_bys_state.device_type = BYS_TEST_DEVICE_TYPE;
+#if DEMO_TEST_SUPPORT_MODE
+    g_bys_state.mode = normalize_mode(random_range(BYS_TEST_MODE_MIN, BYS_TEST_MODE_MAX));
+#else
+    g_bys_state.mode = BYS_TEST_MODE_MIN;
+#endif
+    g_bys_state.voltage = normalize_voltage(random_range(BYS_TEST_VOLTAGE_MIN, BYS_TEST_VOLTAGE_MAX));
+    g_bys_state.current = normalize_current(
+        g_bys_state.mode,
+        g_bys_state.voltage,
+        random_range(BYS_TEST_CURRENT_MIN, current_max_by_mode_voltage(g_bys_state.mode, g_bys_state.voltage)));
+    g_bys_state.t2t4    = normalize_t2t4(random_range(BYS_TEST_T2T4_MIN, BYS_TEST_T2T4_MAX));
+    g_bys_state.postgas = normalize_postgas(random_range(BYS_TEST_POSTGAS_MIN, BYS_TEST_POSTGAS_MAX));
+#if DEMO_TEST_SUPPORT_ARC
+    g_bys_state.arc     = normalize_arc(random_range(BYS_TEST_ARC_MIN, BYS_TEST_ARC_MAX));
+#else
+    g_bys_state.arc     = BYS_TEST_ARC_MIN;
+#endif
+    g_bys_state.unit    = normalize_unit(random_range(BYS_TEST_UNIT_MIN, BYS_TEST_UNIT_MAX));
+    g_bys_state.alarm   = BYS_TEST_ALARM_VALUE;
     g_bys_state.valid   = 1;
 }
 
@@ -449,18 +663,8 @@ void bys_test_poll_next(void)
 
     /* 正常循帧 */
     uint8  pkt[BYS_PKT_LEN];
-    uint16 rsp_cmd, val;
-
-    switch (s_test_poll_idx) {
-    case 0: rsp_cmd = BYS_RSP_MODE;    val = g_bys_state.mode;    break;
-    case 1: rsp_cmd = BYS_RSP_T2T4;    val = g_bys_state.t2t4;    break;
-    case 2: rsp_cmd = BYS_RSP_CURRENT; val = g_bys_state.current; break;
-    case 3: rsp_cmd = BYS_RSP_POSTGAS; val = g_bys_state.postgas; break;
-    case 4: rsp_cmd = BYS_RSP_ARC;     val = g_bys_state.arc;     break;
-    case 5: rsp_cmd = BYS_RSP_UNIT;    val = g_bys_state.unit;    break;
-    case 6: rsp_cmd = BYS_RSP_ALARM;   val = g_bys_state.alarm;   break;
-    default: rsp_cmd = BYS_RSP_VOLTAGE; val = g_bys_state.voltage; break;
-    }
+    uint16 rsp_cmd = s_test_rsp_cmds[s_test_poll_idx];
+    uint16 val = test_get_rsp_value(rsp_cmd);
 
     test_build_pkt(pkt, rsp_cmd, val);
     if (s_rx_cb) s_rx_cb(pkt);
