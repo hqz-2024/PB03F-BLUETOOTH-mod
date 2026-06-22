@@ -13,6 +13,7 @@
 
 #include "bys_bridge.h"
 #include "bys_uart.h"
+#include "clock.h"
 
 /* ─── BLE 连接参数 ──────────────────────────────── */
 /* 单位 1.25ms：0x0006=7.5ms，0x0190=500ms */
@@ -46,6 +47,7 @@ static uint8 scanRspData[1] = { 0x00 };
 /* ─── 模块内部状态 ──────────────────────────────── */
 static uint8 bys_TaskID;
 static uint8 g_connected = FALSE;
+static uint8 s_ota_notify_count = 0;
 
 /* ─── 内部函数原型 ──────────────────────────────── */
 static void peripheralStateNotificationCB(gaprole_States_t newState);
@@ -53,6 +55,34 @@ static void simpleProfileChangeCB(uint8 paramID);
 static void bys_update_adv_data(void);
 static void bys_notify_app(uint8 *raw_pkt);
 static void bys_uart_rx_callback(uint8 *raw_pkt);
+static uint8 is_ota_trigger(const uint8 *pkt);
+static void bys_ota_trigger(void);
+static void enter_ota_mode(void);
+
+/* 检测是否为OTA触发包（cmd=0xFE00, data=0x00FE，设备类型字段忽略） */
+static uint8 is_ota_trigger(const uint8 *pkt)
+{
+    uint16 cmd  = BUILD_UINT16(pkt[4], pkt[5]);
+    uint16 data = BUILD_UINT16(pkt[6], pkt[7]);
+    return (cmd == BYS_CMD_OTA_TRIGGER && data == BYS_DATA_OTA_TRIGGER) ? 1 : 0;
+}
+
+/* 触发OTA流程：向下位机发送50ms间隔的通知包，再进入OTA模式 */
+static void bys_ota_trigger(void)
+{
+    if (s_ota_notify_count > 0) return;
+    s_ota_notify_count = 3;
+    LOG("[OTA] OTA triggered, notifying slave...\n");
+    osal_set_event(bys_TaskID, BYS_OTA_NOTIFY_EVT);
+}
+
+/* 写寄存器标记OTA模式并软复位，Bootloader启动时识别并进入OTA */
+static void enter_ota_mode(void)
+{
+    LOG("[OTA] Entering OTA mode, rebooting...\n");
+    *(volatile uint32*)0x4000f034 = 0x2;
+    hal_system_soft_reset();
+}
 
 /* 将内部地址顺序转换为显示顺序并写入广播MAC字段 */
 static void bys_set_adv_mac_be(const uint8 *addr_le)
@@ -143,27 +173,42 @@ uint16 BYS_Bridge_ProcessEvent(uint8 task_id, uint16 events)
         return events ^ BYS_RESET_ADV_EVT;
     }
 
-    /* 100ms定时器：清除TX节流→尝试轮询→消费通知队列 */
+    /* 轮询定时器：TX队列空闲时触发，向下位机发送下一条查询；若仍busy则等待TX_NEXT_EVT重新调度 */
     if (events & BYS_POLL_TIMER_EVT) {
-        bys_uart_tick();
         bys_uart_poll_next(g_connected);
-        bys_uart_notify_process();
         return events ^ BYS_POLL_TIMER_EVT;
     }
 
-    /* UART 收到下位机数据：解析→入通知队列→刷新广播 */
+    /* 向下位机发送OTA通知包（共发3包，每50ms一包，完成后进入OTA模式） */
+    if (events & BYS_OTA_NOTIFY_EVT) {
+        if (s_ota_notify_count > 0) {
+            uint8 pkt[BYS_PKT_LEN] = {
+                BYS_HEADER_0, BYS_HEADER_1, 0x00, 0x80,
+                0x00, 0xFE, 0xFE, 0x00, 0xFE, 0xFE,
+                BYS_TAIL_0, BYS_TAIL_1
+            };
+            bys_uart_send_app_cmd(pkt, BYS_PKT_LEN);
+            LOG("[OTA] Notify slave %d/3\n", 4 - s_ota_notify_count);
+            s_ota_notify_count--;
+            osal_start_timerEx(bys_TaskID, BYS_OTA_NOTIFY_EVT, 50);
+        } else {
+            enter_ota_mode();
+        }
+        return events ^ BYS_OTA_NOTIFY_EVT;
+    }
+
+    /* UART 收到下位机数据（解析在 bys_uart_rx_callback 里完成） */
     if (events & BYS_UART_RX_EVT) {
         bys_uart_process_rx();
-        bys_update_adv_data();
+        bys_update_adv_data();  /* 刷新广播数据 */
         return events ^ BYS_UART_RX_EVT;
     }
 
-    /* TX完成：清busy→消费队列→尝试轮询→消费通知→重启定时器 */
+    /* 上一包TX完成：优先发队列，队列空闲则100ms后触发轮询 */
     if (events & BYS_UART_TX_NEXT_EVT) {
-        bys_uart_tx_process();
-        bys_uart_poll_next(g_connected);
-        bys_uart_notify_process();
-        osal_start_timerEx(bys_TaskID, BYS_POLL_TIMER_EVT, BYS_POLL_INTERVAL_MS);
+        if (bys_uart_tx_process() == 0) {
+            osal_start_timerEx(bys_TaskID, BYS_POLL_TIMER_EVT, BYS_POLL_INTERVAL_MS);
+        }
         return events ^ BYS_UART_TX_NEXT_EVT;
     }
 
@@ -213,6 +258,12 @@ static void simpleProfileChangeCB(uint8 paramID)
     // app通讯日志打印代码
     LOG("[APP RX] %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X\n",
         buf[0],buf[1],buf[2],buf[3],buf[4],buf[5],buf[6],buf[7],buf[8],buf[9],buf[10],buf[11]);
+
+    if (is_ota_trigger(buf)) {
+        bys_ota_trigger();
+        return;
+    }
+
     /* 加入发送队列（高优先级），自动修正设备类型字段 */
     if (bys_uart_send_app_cmd(buf, BYS_PKT_LEN) != 0) {
         LOG("[BYS] Failed to send APP cmd\n");
@@ -258,5 +309,9 @@ static void bys_uart_rx_callback(uint8 *raw_pkt)
     LOG("[UART RX] %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X\n",
         raw_pkt[0],raw_pkt[1],raw_pkt[2],raw_pkt[3],raw_pkt[4],raw_pkt[5],
         raw_pkt[6],raw_pkt[7],raw_pkt[8],raw_pkt[9],raw_pkt[10],raw_pkt[11]);
+    if (is_ota_trigger(raw_pkt)) {
+        bys_ota_trigger();
+        return;
+    }
     bys_notify_app(raw_pkt);  /* 立即 Notify，不缓存 */
 }

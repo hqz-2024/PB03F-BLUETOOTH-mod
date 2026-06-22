@@ -12,8 +12,8 @@ static uint8  s_tx_hw_buf[BYS_TX_BUF_SIZE];
 static uint8  s_task_id;
 static uint16 s_rx_evt;
 static uint16 s_tx_next_evt;
-static bys_uart_rx_cb_t s_rx_cb;
-static uint8  s_tx_busy = 0;
+static bys_uart_rx_cb_t s_rx_cb;  /* 每包响应回调 */
+static uint8  s_tx_busy = 0;       /* 1=硬件正在发送，禁止下一包入FIFO */
 
 /* 接收环形缓冲区，最多缓存3包 */
 static uint8  s_rx_buf[BYS_PKT_LEN * 3];
@@ -22,24 +22,14 @@ static uint8  s_rx_len = 0;
 /* 轮询状态：当前待发送的查询命令索引 */
 static uint8  s_query_idx = 0;
 
-/* 发送队列：仅缓存APP→下位机指令，轮询包不入队 */
+/* 发送队列：仅缓存APP控制指令，轮询包不入队 */
 #define TX_QUEUE_SIZE   3
 static uint8  s_tx_queue[TX_QUEUE_SIZE][BYS_PKT_LEN];
 static uint8  s_tx_head = 0;
 static uint8  s_tx_tail = 0;
 
-/* 轮询包直发缓冲（不入队列），异步发送期间需保持不变 */
+/* 轮询包发送缓冲：异步发送期间需保持有效 */
 static uint8  s_poll_pkt[BYS_PKT_LEN];
-
-/* 统一TX节流：任何UART包发送后置1，定时器到期清零，保证包间≥100ms */
-static uint8  s_tx_throttle = 0;
-
-/* 通知队列：缓存下位机→APP的上报数据，由定时器驱动逐包发送 */
-#define NOTIFY_QUEUE_SIZE   4
-static uint8  s_notify_queue[NOTIFY_QUEUE_SIZE][BYS_PKT_LEN];
-static uint8  s_notify_head = 0;
-static uint8  s_notify_tail = 0;
-static uint8  s_notify_count = 0;
 
 /* 全局设备状态，供广播数据使用 */
 bys_device_state_t g_bys_state = {0};
@@ -66,7 +56,8 @@ static const uint16 s_query_cmds[BYS_QUERY_COUNT] = {
 static uint8 tx_enqueue(uint8 *pkt)
 {
     uint8 next_tail = (s_tx_tail + 1) % TX_QUEUE_SIZE;
-    if (next_tail == s_tx_head) return 1;
+    if (next_tail == s_tx_head) return 1;  /* 队满 */
+
     osal_memcpy(s_tx_queue[s_tx_tail], pkt, BYS_PKT_LEN);
     s_tx_tail = next_tail;
     return 0;
@@ -75,48 +66,48 @@ static uint8 tx_enqueue(uint8 *pkt)
 /* 发送队列出队（队空返回NULL） */
 static uint8* tx_dequeue(void)
 {
-    if (s_tx_head == s_tx_tail) return NULL;
+    if (s_tx_head == s_tx_tail) return NULL;  /* 队空 */
     uint8 *pkt = s_tx_queue[s_tx_head];
     s_tx_head = (s_tx_head + 1) % TX_QUEUE_SIZE;
     return pkt;
 }
 
-/* 通知队列入队（队满覆盖最旧） */
-static void notify_enqueue(uint8 *pkt)
+/* 尝试发送队列头部一包；返回1=已发出，0=未发出（busy或队空） */
+static uint8 tx_process(void)
 {
-    if (s_notify_count >= NOTIFY_QUEUE_SIZE) {
-        s_notify_head = (s_notify_head + 1) % NOTIFY_QUEUE_SIZE;
-        s_notify_count--;
-    }
-    osal_memcpy(s_notify_queue[s_notify_tail], pkt, BYS_PKT_LEN);
-    s_notify_tail = (s_notify_tail + 1) % NOTIFY_QUEUE_SIZE;
-    s_notify_count++;
-}
-
-/* 通知队列出队（队空返回NULL） */
-static uint8* notify_dequeue(void)
-{
-    if (s_notify_count == 0) return NULL;
-    uint8 *pkt = s_notify_queue[s_notify_head];
-    s_notify_head = (s_notify_head + 1) % NOTIFY_QUEUE_SIZE;
-    s_notify_count--;
-    return pkt;
-}
-
-/* 尝试发送队列头部一包。统一节流：busy或throttle时跳过 */
-static void tx_process(void)
-{
-    if (s_tx_busy) return;
-    if (s_tx_throttle) return;
+    if (s_tx_busy) return 0;
     uint8 *pkt = tx_dequeue();
-    if (pkt == NULL) return;
+    if (pkt == NULL) return 0;
     s_tx_busy = 1;
-    s_tx_throttle = 1;
     // 下位机串口通讯日志打印代码
-    LOG("[UART TX] %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X\n",
-        pkt[0],pkt[1],pkt[2],pkt[3],pkt[4],pkt[5],pkt[6],pkt[7],pkt[8],pkt[9],pkt[10],pkt[11]);
-   
+    // LOG("[UART TX] %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X\n",
+    //     pkt[0],pkt[1],pkt[2],pkt[3],pkt[4],pkt[5],pkt[6],pkt[7],pkt[8],pkt[9],pkt[10],pkt[11]);
     hal_uart_send_buff(BYS_UART_PORT, pkt, BYS_PKT_LEN);
+    return 1;
+}
+
+/* 构造并发送一个标准12字节数据包（加入发送队列） */
+static void send_packet(uint16 dev_type, uint16 cmd, uint16 data)
+{
+    uint8  pkt[BYS_PKT_LEN];
+    uint16 chksum = cmd + data;
+
+    pkt[0]  = BYS_HEADER_0;
+    pkt[1]  = BYS_HEADER_1;
+    pkt[2]  = LO_UINT16(dev_type);
+    pkt[3]  = HI_UINT16(dev_type);
+    pkt[4]  = LO_UINT16(cmd);
+    pkt[5]  = HI_UINT16(cmd);
+    pkt[6]  = LO_UINT16(data);
+    pkt[7]  = HI_UINT16(data);
+    pkt[8]  = LO_UINT16(chksum);
+    pkt[9]  = HI_UINT16(chksum);
+    pkt[10] = BYS_TAIL_0;
+    pkt[11] = BYS_TAIL_1;
+
+    if (tx_enqueue(pkt) == 0) {
+        tx_process();  /* 入队成功，立即尝试发送 */
+    }
 }
 
 /* 根据响应命令码更新全局设备状态，返回是否为查询响应（非错误包） */
@@ -136,20 +127,21 @@ static uint8 apply_response(uint16 cmd, uint16 data)
         case BYS_RSP_ALARM:           g_bys_state.alarm           = data; return 1;
         case BYS_RSP_INPUT_VOLTAGE:
             g_bys_state.input_voltage = data;
-            g_bys_state.valid         = 1;
+            g_bys_state.valid         = 1;   /* 一轮完成 */
             return 1;
         case BYS_RSP_ERROR:
             LOG("[BYS] ERR code=0x%04x\n", data);
-            return 1;
+            return 1;  /* 错误包也是响应 */
         default:
-            return 0;
+            return 0;  /* 未知命令，可能是APP控制指令的确认包(0x82XX~0x8DXX) */
     }
 }
 
-/* UART 中断回调：RX搬数据触发OSAL事件；TX完成延时清busy */
+/* UART 中断回调：RX搬数据触发OSAL事件；TX完成清busy并触发下一包发送 */
 static void uart_rx_cb(uart_Evt_t *evt)
 {
     if (evt->type == UART_EVT_TYPE_TX_COMPLETED) {
+        /* 保持 s_tx_busy=1，15ms 到期后才清零并发下一包，期间任何 tx_process() 都会被拦截 */
         osal_start_timerEx(s_task_id, s_tx_next_evt, 15);
         return;
     }
@@ -170,10 +162,10 @@ static void uart_rx_cb(uart_Evt_t *evt)
 
 void bys_uart_init(uint8 task_id, uint16 rx_evt, uint16 tx_next_evt, bys_uart_rx_cb_t rx_cb)
 {
-    s_task_id     = task_id;
-    s_rx_evt      = rx_evt;
+    s_task_id    = task_id;
+    s_rx_evt     = rx_evt;
     s_tx_next_evt = tx_next_evt;
-    s_rx_cb       = rx_cb;
+    s_rx_cb      = rx_cb;
 
     uart_Cfg_t cfg = {
         .tx_pin      = BYS_UART_TX_PIN,
@@ -190,20 +182,25 @@ void bys_uart_init(uint8 task_id, uint16 rx_evt, uint16 tx_next_evt, bys_uart_rx
     hal_uart_init(cfg, BYS_UART_PORT);
     hal_uart_set_tx_buf(BYS_UART_PORT, s_tx_hw_buf, BYS_TX_BUF_SIZE);
 
+    /* 锁定 UART1 电源域，防止 BLE 连接事件间隙的时钟门控导致 RX 中断丢失 */
     hal_pwrmgr_lock(MOD_UART1);
 }
 
-/* 发送轮询命令：忙/throttle/队列非空→1，否则发轮询→0（轮询包不入队） */
+/* busy→1；队列非空→优先发队列(1)；否则直接发轮询(0)，轮询包不入队 */
 uint8 bys_uart_poll_next(uint8 app_connected)
 {
     if (s_tx_busy) return 1;
-    if (s_tx_head != s_tx_tail) { tx_process(); return 1; }
-    if (s_tx_throttle) return 1;
+
+    /* APP指令优先：队列非空时本次不发轮询，先排空队列 */
+    if (s_tx_head != s_tx_tail) {
+        tx_process();
+        return 1;
+    }
 
     uint16 dev_type = app_connected ? BYS_DEV_APP_ON : BYS_DEV_APP_OFF;
-    uint16 cmd     = s_query_cmds[s_query_idx];
-    uint16 data    = 0x0000;
-    uint16 chksum  = cmd + data;
+    uint16 cmd      = s_query_cmds[s_query_idx];
+    uint16 data     = 0x0000;
+    uint16 chksum   = cmd + data;
 
     s_poll_pkt[0]  = BYS_HEADER_0;
     s_poll_pkt[1]  = BYS_HEADER_1;
@@ -220,18 +217,11 @@ uint8 bys_uart_poll_next(uint8 app_connected)
 
     s_query_idx = (s_query_idx + 1) % BYS_QUERY_COUNT;
     s_tx_busy = 1;
-    s_tx_throttle = 1;
     hal_uart_send_buff(BYS_UART_PORT, s_poll_pkt, BYS_PKT_LEN);
     return 0;
 }
 
-/* 清除统一TX节流标志（定时器到期调用） */
-void bys_uart_tick(void)
-{
-    s_tx_throttle = 0;
-}
-
-/* 解析接收缓冲区：校验通过后入通知队列（不再立即回调） */
+/* 解析接收缓冲区中所有完整数据包，每包立即回调上层 */
 void bys_uart_process_rx(void)
 {
     uint8 i = 0;
@@ -246,56 +236,56 @@ void bys_uart_process_rx(void)
             uint16 chksum = BUILD_UINT16(s_rx_buf[i+8], s_rx_buf[i+9]);
 
             if (chksum == (uint16)(cmd + data)) {
+                /* 提取设备上报的机型代码 */
                 g_bys_state.device_type = BUILD_UINT16(s_rx_buf[i+2], s_rx_buf[i+3]);
+                /* 更新全局状态（查询响应） */
                 apply_response(cmd, data);
-                notify_enqueue(s_rx_buf + i);  /* 入通知队列，不立即回调 */
+
+                /* 立即回调上层，透传原始12字节包给APP */
+                if (s_rx_cb != NULL) {
+                    s_rx_cb(s_rx_buf + i);
+                }
             }
             i += BYS_PKT_LEN;
         } else {
-            i++;
+            i++;  /* 丢弃无效字节，继续寻找包头 */
         }
     }
+    /* 移除已处理的字节 */
     if (i > 0) {
         s_rx_len -= i;
         if (s_rx_len > 0)
             osal_memcpy(s_rx_buf, s_rx_buf + i, s_rx_len);
     }
 
+    /* 处理完后尝试发送队列中的下一包 */
     tx_process();
 }
 
-/* 从通知队列取一包→回调上层（BLE Notify到APP），返回1=已发，0=队列空 */
-uint8 bys_uart_notify_process(void)
-{
-    uint8 *pkt = notify_dequeue();
-    if (pkt == NULL) return 0;
-    if (s_rx_cb != NULL) s_rx_cb(pkt);
-    return 1;
-}
-
-/* APP控制指令入队，返回0成功 */
+/* APP控制指令入队（高优先级），返回0成功 */
 uint8 bys_uart_send_app_cmd(uint8 *buf, uint8 len)
 {
     if (len != BYS_PKT_LEN) return 1;
     if (buf[0] != BYS_HEADER_0 || buf[1] != BYS_HEADER_1) return 1;
 
+    /* 修正设备类型字段为APP已连接（小端序：低字节在pkt[2]） */
     buf[2] = LO_UINT16(BYS_DEV_APP_ON);
     buf[3] = HI_UINT16(BYS_DEV_APP_ON);
 
+    /* 入队（队满会丢弃） */
     if (tx_enqueue(buf) != 0) {
         LOG("[BYS] TX queue full, drop APP cmd\n");
         return 1;
     }
 
+    /* 立即尝试发送 */
     tx_process();
     return 0;
 }
 
-/* TX完成事件中调用：清busy，消费队列。返回0=队列空，1=还有待发 */
+/* TX_NEXT_EVT到期：清busy并发队列下一包；返回1=已发出新包，0=队列空闲(由调用方启动100ms轮询定时器) */
 uint8 bys_uart_tx_process(void)
 {
     s_tx_busy = 0;
-    if (s_tx_head == s_tx_tail) return 0;
-    tx_process();
-    return 1;
+    return tx_process();
 }

@@ -20,6 +20,10 @@
 #define BYS_DEV_APP_ON      0x8000u   /* APP已连接 */
 #define BYS_DEV_APP_OFF     0x0000u   /* APP未连接 */
 
+/* OTA 触发包识别 */
+#define BYS_CMD_OTA_TRIGGER     0xFE00u  /* OTA触发命令码 */
+#define BYS_DATA_OTA_TRIGGER    0x00FEu  /* OTA触发数据码 */
+
 /* 查询命令码 — MIG145 Pro 协议 */
 #define BYS_CMD_QUERY_MODE             0x0002u  /* 查询 MIG/LIFT TIG/MMA 模式 */
 #define BYS_CMD_QUERY_WIRE_DIAMETER    0x0003u  /* 查询焊丝直径 */
@@ -79,22 +83,16 @@ typedef void (*bys_uart_rx_cb_t)(uint8 *raw_pkt);
 /* 初始化UART1，tx_next_evt为TX完成后触发的OSAL事件位 */
 void bys_uart_init(uint8 task_id, uint16 rx_evt, uint16 tx_next_evt, bys_uart_rx_cb_t rx_cb);
 
-/* TX完成事件中调用：清busy，消费队列。返回0=队列空，1=还有待发 */
+/* TX_NEXT_EVT到期：清busy并发队列下一包；返回1=已发出新包，0=队列空闲(由调用方启动100ms轮询定时器) */
 uint8 bys_uart_tx_process(void);
 
-/* 发送下一包轮询：忙/节流/队列非空→1，成功→0（轮询包不入队） */
+/* busy→1；队列非空→优先发队列(1)；否则直接发轮询(0)，轮询包不入队 */
 uint8 bys_uart_poll_next(uint8 app_connected);
 
-/* 清除统一TX节流标志，由定时器到期调用 */
-void bys_uart_tick(void);
-
-/* RX事件中调用：解析接收缓冲，校验后入通知队列 */
+/* RX事件中调用：解析接收缓冲区，每包立即透传给APP */
 void bys_uart_process_rx(void);
 
-/* 从通知队列取一包回调上层（BLE Notify），返回1=已发，0=队列空 */
-uint8 bys_uart_notify_process(void);
-
-/* APP控制指令入队，返回0成功 */
+/* APP控制指令入队（高优先级），返回0成功 */
 uint8 bys_uart_send_app_cmd(uint8 *buf, uint8 len);
 
 #endif /* BYS_UART_H */
