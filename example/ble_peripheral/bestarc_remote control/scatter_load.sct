@@ -36,7 +36,6 @@ LR_ROM_XIP  0x11020000 0x020000 {
    sm*.o(+RO)
    gap*.o(+RO)
    peripheral.o(+RO)
-   simplebleperipheral.o(+RO)
    sbpProfile_ota.o(+RO)
    ;led_light.o(+RO)
    ;pwm.o(+RO)

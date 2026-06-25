@@ -10,7 +10,7 @@
     #include "osal_cbTimer.h"
 #endif
 
-/* BLE 协议栈 */
+/* BLE */
 #include "l2cap.h"
 #include "gap.h"
 #include "gapgattserver.h"
@@ -18,61 +18,54 @@
 #include "gatt.h"
 #include "gattservapp.h"
 #include "peripheral.h"
+#include "central.h"
 
-/* 应用层 */
+/* app */
 #include "remote_app.h"
 
-/* 任务处理函数表 (顺序必须与 osalInitTasks 一致) */
 __ATTR_SECTION_SRAM__ const pTaskEventHandlerFn tasksArr[] = {
-    LL_ProcessEvent,                                        /* task 0 */
-    HCI_ProcessEvent,                                       /* task 1 */
+    LL_ProcessEvent,
+    HCI_ProcessEvent,
 #if defined(OSAL_CBTIMER_NUM_TASKS)
-    OSAL_CBTIMER_PROCESS_EVENT(osal_CbTimerProcessEvent),   /* task 2 */
+    OSAL_CBTIMER_PROCESS_EVENT(osal_CbTimerProcessEvent),
 #endif
-    L2CAP_ProcessEvent,                                     /* task 3 */
-    SM_ProcessEvent,                                        /* task 4 */
-    GAP_ProcessEvent,                                       /* task 5 */
-    GATT_ProcessEvent,                                      /* task 6 */
-    GAPRole_ProcessEvent,                                   /* task 7 */
+    L2CAP_ProcessEvent,
+    SM_ProcessEvent,
+    GAP_ProcessEvent,
+    GATT_ProcessEvent,
+    GAPRole_ProcessEvent,           /* Peripheral (config mode) */
+    GAPCentralRole_ProcessEvent,    /* Central   (normal mode) */
 #if (DEF_GAPBOND_MGR_ENABLE == 1)
-    GAPBondMgr_ProcessEvent,                                /* task 8 */
+    GAPBondMgr_ProcessEvent,
 #endif
-    GATTServApp_ProcessEvent,                               /* task 9 */
-    Remote_ProcessEvent,                                    /* task 10：应用任务 */
+    GATTServApp_ProcessEvent,
+    Remote_ProcessEvent,
 };
 
-__ATTR_SECTION_SRAM__ const uint8 tasksCnt =
-    sizeof(tasksArr) / sizeof(tasksArr[0]);
-
+__ATTR_SECTION_SRAM__ const uint8 tasksCnt = sizeof(tasksArr) / sizeof(tasksArr[0]);
 uint16 *tasksEvents;
 
-/* 任务初始化（顺序必须与 tasksArr 完全一致） */
 void osalInitTasks(void)
 {
     uint8 taskID = 0;
-
     tasksEvents = (uint16 *)osal_mem_alloc(sizeof(uint16) * tasksCnt);
     osal_memset(tasksEvents, 0, sizeof(uint16) * tasksCnt);
 
     LL_Init(taskID++);
     HCI_Init(taskID++);
-
 #if defined(OSAL_CBTIMER_NUM_TASKS)
-    osal_CbTimerInit(taskID);
-    taskID += OSAL_CBTIMER_NUM_TASKS;
+    osal_CbTimerInit(taskID); taskID += OSAL_CBTIMER_NUM_TASKS;
 #endif
-
     L2CAP_Init(taskID++);
     SM_Init(taskID++);
     GAP_Init(taskID++);
     GATT_Init(taskID++);
     GAPRole_Init(taskID++);
-
+    GAPCentralRole_Init(taskID++);
 #if (DEF_GAPBOND_MGR_ENABLE == 1)
     GAPBondMgr_Init(taskID++);
 #endif
-
     GATTServApp_Init(taskID++);
-    Remote_Init(taskID++);  /* 应用任务，必须最后 */
+    Remote_Init(taskID++);
 }
 #endif

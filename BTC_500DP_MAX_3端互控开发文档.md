@@ -23,11 +23,11 @@
 
 三端角色：
 
-| 端 | 硬件 | BLE 角色 | BLE 名称 | 备注 |
-|----|------|---------|---------|------|
-| 主设备端 | PB03F + 电焊机主控 | Peripheral（同时承载 **2 个连接**） | `BYS` | 透传桥，UART ↔ BLE，对 App 与遥控器一视同仁 |
-| App 端 | 手机 | Central | — | 业务连接已联调，新增遥控器配置入口 |
-| 遥控器端 | ESP32-S3 + LCD | Central（正常模式）/ Peripheral（配置模式） | 配置模式：`BYS_remote` | 1:1 绑定主设备 MAC |
+| 端       | 硬件               | BLE 角色                                    | BLE 名称                 | 备注                                         |
+| -------- | ------------------ | ------------------------------------------- | ------------------------ | -------------------------------------------- |
+| 主设备端 | PB03F + 电焊机主控 | Peripheral（同时承载**2 个连接**）    | `BYS`                  | 透传桥，UART ↔ BLE，对 App 与遥控器一视同仁 |
+| App 端   | 手机               | Central                                     | —                       | 业务连接已联调，新增遥控器配置入口           |
+| 遥控器端 | ESP32-S3 + LCD     | Central（正常模式）/ Peripheral（配置模式） | 配置模式：`BYS_remote` | 1:1 绑定主设备 MAC                           |
 
 通讯链路：
 
@@ -65,6 +65,7 @@
 ```
 
 设备类型字段：
+
 - 上位机（App / 遥控器）→ 设备：`0x8000`（上位机已连接）/ `0x0000`（未连接）
 - 设备 → 上位机：`0x0003`（BTC500DP MAX）
 
@@ -74,15 +75,16 @@
 
 三端均为**对等数据源**，任一端发起的变更都通过主控/PB03F 同步给另外两端：
 
-| 数据源 | 触发方式 | 路径 |
-|--------|---------|------|
-| App 端 | 用户操作 App UI | App → BLE Write → PB03F → UART → 主控 → UART 响应 → PB03F → BLE Notify 到 App+遥控器 |
+| 数据源   | 触发方式           | 路径                                                                                           |
+| -------- | ------------------ | ---------------------------------------------------------------------------------------------- |
+| App 端   | 用户操作 App UI    | App → BLE Write → PB03F → UART → 主控 → UART 响应 → PB03F → BLE Notify 到 App+遥控器    |
 | 遥控器端 | 用户操作遥控器触屏 | 遥控器 → BLE Write → PB03F → UART → 主控 → UART 响应 → PB03F → BLE Notify 到 App+遥控器 |
-| 主设备端 | 用户按主控面板按钮 | 主控 → UART 主动上报包 → PB03F → BLE Notify 到 App+遥控器 |
+| 主设备端 | 用户按主控面板按钮 | 主控 → UART 主动上报包 → PB03F → BLE Notify 到 App+遥控器                                   |
 
 主控主动上报使用与查询响应相同的命令码（`0x008x` 系列），PB03F **不区分是"主控对查询的响应"还是"主控对本地按钮的主动上报"**，统一作为 Notify 包透传给所有已连接上位机。
 
 `设备类型` 字段仅作为"是否有任意上位机在线"的纯指示，不影响主控功能：
+
 - 主设备维护连接位图 `g_conn_mask`（bit0/bit1 分别对应 2 个连接槽）。
 - PB03F 向主控发送的所有包（轮询查询 + App/遥控器 Write 透传）中：`g_conn_mask != 0` 填 `0x8000`，否则填 `0x0000`。
 - 主控按钮在任何状态下均可操作，操作结果通过 UART 主动上报，PB03F 立即多播给所有上位机；当没有上位机在线时（`g_conn_mask == 0`），PB03F 仅刷新本地缓存与广播包，不做 Notify。
@@ -102,34 +104,34 @@
 
 ### 3.2 改造对照（基于 `bestarc_bluetoothmodel_BTC_500DP_PRO`）
 
-| 项 | 原量产工程 | 升级后 |
-|----|-----------|-------|
-| `BLE_MAX_ALLOW_CONNECTION` | 1 | **2** |
-| `pConnContext[]` / `g_pConnectionBuffer[]` | 按 1 算 | 按 2 重新分配 |
-| `LL_LINK_HEAP_SIZE` | `(1*3+0)*280` | `(2*3+0)*280` |
-| `LARGE_HEAP_SIZE` | 3 KB | **4 KB**（双连接 Host 内存增长） |
-| Notify 分发 | 单 connHandle | 遍历 `linkDB_NumActive()` 所有活动 handle |
-| 广播控制 | 连接后停广播 | 1 个连接时仍广播；2 个连接才停 |
-| 设备类型字段 | `app_connected` 单标志 | `g_conn_mask`（位图），任一位为 1 即 `0x8000` |
+| 项                                             | 原量产工程               | 升级后                                            |
+| ---------------------------------------------- | ------------------------ | ------------------------------------------------- |
+| `BLE_MAX_ALLOW_CONNECTION`                   | 1                        | **2**                                       |
+| `pConnContext[]` / `g_pConnectionBuffer[]` | 按 1 算                  | 按 2 重新分配                                     |
+| `LL_LINK_HEAP_SIZE`                          | `(1*3+0)*280`          | `(2*3+0)*280`                                   |
+| `LARGE_HEAP_SIZE`                            | 3 KB                     | **4 KB**（双连接 Host 内存增长）            |
+| Notify 分发                                    | 单 connHandle            | 遍历 `linkDB_NumActive()` 所有活动 handle       |
+| 广播控制                                       | 连接后停广播             | 1 个连接时仍广播；2 个连接才停                    |
+| 设备类型字段                                   | `app_connected` 单标志 | `g_conn_mask`（位图），任一位为 1 即 `0x8000` |
 
 ### 3.3 软件模块（沿用并扩展现有文件）
 
-| 模块 | 文件 | 关键改动 |
-|------|------|---------|
-| 入口 | `main.c` | `BLE_MAX_ALLOW_CONNECTION = 2`、堆/缓冲区扩容 |
-| OSAL | `source/OSAL_bys_bridge.c` | 任务表不变 |
-| Bridge 主逻辑 | `source/bys_bridge.c` | 增加多连接管理：连接/断开维护 `g_conn_mask[]` + `g_connHandle[2]`，Notify 时遍历下发；GAP 状态机在 `GAPROLE_CONNECTED` 时仍重启广播 |
-| GATT Profile | `source/sbpProfile_ota.c/h` | 同一 Service `0xFFE0` 下新增 `CHAR2`（`0xFFE2`），App 走 `CHAR1`（`0xFFE1`），遥控器走 `CHAR2`；`simpleProfile_Notify` 分 param 操作对应 CCCD 表 |
-| UART 桥 | `source/bys_uart.c/h` | 不变，仍轮询 8 条查询；`bys_uart_poll_next(app_connected)` 改用 `g_conn_mask != 0` |
+| 模块          | 文件                          | 关键改动                                                                                                                                                       |
+| ------------- | ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 入口          | `main.c`                    | `BLE_MAX_ALLOW_CONNECTION = 2`、堆/缓冲区扩容                                                                                                                |
+| OSAL          | `source/OSAL_bys_bridge.c`  | 任务表不变                                                                                                                                                     |
+| Bridge 主逻辑 | `source/bys_bridge.c`       | 增加多连接管理：连接/断开维护 `g_conn_mask[]` + `g_connHandle[2]`，Notify 时遍历下发；GAP 状态机在 `GAPROLE_CONNECTED` 时仍重启广播                      |
+| GATT Profile  | `source/sbpProfile_ota.c/h` | 同一 Service `0xFFE0` 下新增 `CHAR2`（`0xFFE2`），App 走 `CHAR1`（`0xFFE1`），遥控器走 `CHAR2`；`simpleProfile_Notify` 分 param 操作对应 CCCD 表 |
+| UART 桥       | `source/bys_uart.c/h`       | 不变，仍轮询 8 条查询；`bys_uart_poll_next(app_connected)` 改用 `g_conn_mask != 0`                                                                         |
 
 ### 3.4 BLE GATT（同一 Service 下区分 App 与遥控器通道）
 
 来源：`source/sbpProfile_ota.h`
 
-| 属性 | UUID | 属性 | 说明 |
-|------|------|------|------|
-| Service | `0xFFE0` | Primary | BYS 数据透传服务 |
-| Char `SIMPLEPROFILE_CHAR1` | `0xFFE1` | **Write + Notify**，12 字节 | **App 专用**数据通道 |
+| 属性                         | UUID       | 属性                              | 说明                         |
+| ---------------------------- | ---------- | --------------------------------- | ---------------------------- |
+| Service                      | `0xFFE0` | Primary                           | BYS 数据透传服务             |
+| Char `SIMPLEPROFILE_CHAR1` | `0xFFE1` | **Write + Notify**，12 字节 | **App 专用**数据通道   |
 | Char `SIMPLEPROFILE_CHAR2` | `0xFFE2` | **Write + Notify**，12 字节 | **遥控器专用**数据通道 |
 
 - App 端 Central 使用 `0xFFE0` / `0xFFE1` 进行发现、Write Without Response 和订阅 Notify。
@@ -139,18 +141,19 @@
 
 ### 3.5 串口（沿用 `bys_uart.h` 配置）
 
-| 项 | 取值 |
-|----|------|
-| Port | `UART1` |
-| TX | `P24` |
-| RX | `P23` |
-| 波特率 | `19200` |
-| 数据位/校验/停止 | 8N1（`parity = FALSE`） |
-| 电源锁 | `hal_pwrmgr_lock(MOD_UART1)` 防止睡眠丢字节 |
+| 项               | 取值                                          |
+| ---------------- | --------------------------------------------- |
+| Port             | `UART1`                                     |
+| TX               | `P24`                                       |
+| RX               | `P23`                                       |
+| 波特率           | `19200`                                     |
+| 数据位/校验/停止 | 8N1（`parity = FALSE`）                     |
+| 电源锁           | `hal_pwrmgr_lock(MOD_UART1)` 防止睡眠丢字节 |
 
 > 注：协议文档原文写 "8N0"，实际现有量产固件 `uart_Cfg_t.parity = FALSE` 即 8N1，与电焊机主控已联调通过，沿用之。
 
 数据流：
+
 - BLE Write 收到 → 12 字节校验（包头/包尾/`校验=cmd+data`）→ `bys_uart_send_app_cmd()` 入队 → UART1 发出。
 - UART1 RX 满包 → `bys_uart_process_rx()` 解析 → 调用 `rx_cb(raw_pkt)`：
   1. 更新 `g_bys_state` → 刷新 `advertData[16..29]`；
@@ -249,19 +252,20 @@ static void on_uart_rx(uint8 *pkt) {
 
 ### 4.2 功能模块
 
-| 模块 | 组件路径 | 职责 |
-|------|---------|------|
-| `remote_nvs` | `components/remote_nvs/` | 读写 `target_mac`（6 字节），命名空间 `bys_remote`，key `mac` |
-| `remote_ble_central` | `components/remote_ble_central/` | 正常模式：扫描 → 按 MAC 过滤 → 连接 → 发现服务 → 订阅 Notify → Write |
-| `remote_ble_peripheral` | `components/remote_ble_peripheral/` | 配置模式：广播 `BYS_remote`，提供 1 个 Write 特征接收 MAC |
-| `remote_proto` | `components/remote_proto/` | 12 字节包封装/解析，与协议文档一致 |
-| `remote_ui` | `components/remote_ui/` | LVGL UI：主界面（电流/模式/2T4T/后气/维弧/气压/状态/报警）+ 配置等待界面 |
-| `remote_button` | `components/remote_button/` | BOOT 引脚检测，5 次连按（窗口 3s）触发 reset |
-| `remote_app` | `main/` | 状态机：MODE_CONFIG / MODE_NORMAL 切换与编排 |
+| 模块                      | 组件路径                              | 职责                                                                      |
+| ------------------------- | ------------------------------------- | ------------------------------------------------------------------------- |
+| `remote_nvs`            | `components/remote_nvs/`            | 读写 `target_mac`（6 字节），命名空间 `bys_remote`，key `mac`       |
+| `remote_ble_central`    | `components/remote_ble_central/`    | 正常模式：扫描 → 按 MAC 过滤 → 连接 → 发现服务 → 订阅 Notify → Write |
+| `remote_ble_peripheral` | `components/remote_ble_peripheral/` | 配置模式：广播 `BYS_remote`，提供 1 个 Write 特征接收 MAC               |
+| `remote_proto`          | `components/remote_proto/`          | 12 字节包封装/解析，与协议文档一致                                        |
+| `remote_ui`             | `components/remote_ui/`             | LVGL UI：主界面（电流/模式/2T4T/后气/维弧/气压/状态/报警）+ 配置等待界面  |
+| `remote_button`         | `components/remote_button/`         | BOOT 引脚检测，5 次连按（窗口 3s）触发 reset                              |
+| `remote_app`            | `main/`                             | 状态机：MODE_CONFIG / MODE_NORMAL 切换与编排                              |
 
 ### 4.3 BLE 栈选择
 
 强制使用 **NimBLE**（ESP-IDF 推荐，内存占用更低）：
+
 - 配置模式：`esp_nimble_hci_init` + `ble_gap_adv_start`
 - 正常模式：`ble_gap_disc` → `ble_gap_connect` → `ble_gattc_disc_all_svcs` → `ble_gattc_write_no_rsp` / Notify
 
@@ -269,27 +273,31 @@ static void on_uart_rx(uint8 *pkt) {
 
 **沿用 App 已有规范，与主设备完全相同的 UUID**：
 
-| 属性 | UUID | 属性 | 说明 |
-|------|------|------|------|
-| Service | `0xFFE0` | Primary | 配置/数据服务（同主设备） |
-| Char | `0xFFE1` | Write + Notify，12 字节 | 配置时 App 在前 6 字节填入主设备 MAC，其余填 0；遥控器写入成功后 Notify 回 12 字节确认包，1s 内自动重启 |
+| 属性    | UUID       | 属性                    | 说明                                                                                                    |
+| ------- | ---------- | ----------------------- | ------------------------------------------------------------------------------------------------------- |
+| Service | `0xFFE0` | Primary                 | 配置/数据服务（同主设备）                                                                               |
+| Char    | `0xFFE1` | Write + Notify，12 字节 | 配置时 App 写入标准 ByS 帧承载目标主设备 MAC；遥控器写入成功后 Notify 回确认包，1s 内自动重启 |
 
-配置写入包（12 字节，固定格式，便于 App 复用现有 BLE 通道）：
+**配置写入包 = 标准 ByS 12 字节帧，MAC 填入 DeviceType / Cmd / Data 三个 2 字节字段**：
 
 ```
-偏移  0  1  2  3  4  5    6  7    8  9   10 11
-内容 [主设备MAC 6B]      [0x00FF]  [校验2B]  [BB 55]
-                          ↑ 配置魔数（取代命令码）
-校验 = 0x00FF + 0x0000  （数据区固定 0x0000，仅作占位）
+偏移   0    1    2    3    4    5    6    7    8    9    10   11
+内容  [AA   55 ] [ MAC0-1  ] [ MAC2-3  ] [ MAC4-5  ] [ chksum  ] [BB   55 ]
+      ↑ 帧头    ↑ DevType  ↑ Cmd       ↑ Data      ↑ 校验      ↑ 帧尾
 ```
 
-> 配置魔数 `0x00FF` 是为了与正常业务命令码（`0x02xx`~`0x09xx`、`0x8xxx`）完全互斥，避免误识别。
-> 包头沿用 `AA 55`，包尾沿用 `BB 55`，保持帧结构与业务协议一致。
+- `DevType`（byte 2-3）：MAC 字节 0-1，小端
+- `Cmd`（byte 4-5）：MAC 字节 2-3，小端
+- `Data`（byte 6-7）：MAC 字节 4-5，小端
+- `chksum`（byte 8-9）：`Cmd + Data`，小端
+
+> **设计理由**：完全复用标准 ByS 帧结构与校验逻辑（`chksum = Cmd + Data`），无需额外魔数，App 端代码可直接复用 ByS 封包函数。配置模式下 0xFFE1 收到的 12 字节包即为配置包，验证帧头/帧尾/校验通过后提取 6 字节 MAC。
 
 遥控器收到合法配置包后：
-1. 写 NVS：`bys_remote/mac` = 前 6 字节 MAC
-2. 回 Notify 一包：`AA 55 | 00 03 | 00 FF | 00 01 | 01 03 | BB 55`（数据区 `0x0001` 表示"已保存"）
-3. 1s 后 `esp_restart()`
+
+1. 写 SNV：`bys_remote/mac` = 提取的 6 字节 MAC
+2. 回 Notify 确认包：`AA 55 | MAC0-1 | MAC2-3 | MAC4-5 | chk | BB 55`（原帧回显，表示"已保存"）
+3. 1s 后软复位，进入正常模式主动连接该 MAC
 
 ### 4.5 正常模式连接流程
 
@@ -313,12 +321,14 @@ static void on_uart_rx(uint8 *pkt) {
 ### 4.7 UI 草案（LVGL v9）
 
 - **配置模式**：全屏单行大字提示：
+
   ```
   请使用 app 进行初始化配置
   ```
-  下方副标题显示遥控器自身 MAC（便于 App 端识别）+ 蓝牙图标动画。
 
+  下方副标题显示遥控器自身 MAC（便于 App 端识别）+ 蓝牙图标动画。
 - **正常模式**：
+
   - 顶栏：连接状态图标 + 报警图标
   - 左侧：模式（钢板/网格/除锈/气刨）+ 2T/4T 切换按钮
   - 中间：大号电流数字 + 加减按钮
@@ -337,16 +347,16 @@ App 业务连接（与主设备 `BYS`）保持不变，**新增**遥控器初始
 
 1. App 扫描到名为 `BYS_remote` 的设备 → 弹出"发现新遥控器，是否配置？"
 2. 用户在 App 中选定一台 `BYS` 主设备（App 本地或当前列表中已知 MAC）。
-3. App 连接 `BYS_remote` → 发现 Service `0xFFE0` / Char `0xFFE1` → 写入 12 字节配置包：
-   ```
-   AA 55 | 00 00 | 00 FF | 00 00 | FF 00 | BB 55
-   ↑包头  ↑设备类型 ↑魔数   ↑数据   ↑校验   ↑包尾
-   ```
-   其中前 6 字节填写"主设备 MAC（小端）"——按现有 Manufacturer Data MAC 顺序原样填入。
-4. 等待遥控器回 Notify，数据区 `0x0001` 即写入成功；提示"配置完成"。
-5. 遥控器 1 s 后自动重启，进入正常模式连接主设备。
+3. App 连接 `BYS_remote` → 发现 Service `0xFFE0` / Char `0xFFE1` → 将主设备 MAC 填入 ByS 帧的 DevType+Cmd+Data 字段后写入（格式详见 §4.4）：
 
-> 实际写入 12 字节的 byte0~byte5 填 MAC，byte6~byte7 填 `00 FF`（魔数），byte8~byte9 填 `00 00`，byte10~byte11 填校验和。可参考 §4.4 表格。
+   **示例 — 主设备 MAC = `AA:BB:CC:DD:EE:FF`**：
+   ```
+   AA 55 | BB AA | DD CC | FF EE | BA DD | BB 55
+   ↑帧头  ↑DevType(MAC0-1) ↑Cmd(MAC2-3) ↑Data(MAC4-5) ↑chk(Cmd+Data) ↑帧尾
+   ```
+
+4. 等待遥控器回 Notify（原帧回显），即写入成功；提示"配置完成"。
+5. 遥控器 1 s 后自动复位，进入正常模式连接主设备。
 
 ### 5.2 三端在线行为
 
@@ -369,10 +379,10 @@ App 业务连接（与主设备 `BYS`）保持不变，**新增**遥控器初始
 
 ## 七、NVS 数据结构（遥控器端）
 
-| 命名空间 | Key | 类型 | 长度 | 说明 |
-|---------|-----|------|------|------|
-| `bys_remote` | `mac` | blob | 6 B | 绑定的主设备 MAC（小端，字节序与主设备广播 Manufacturer Data 中的 MAC 一致） |
-| `bys_remote` | `cfg_ver` | u8 | 1 B | 配置版本号，预留升级用 |
+| 命名空间       | Key         | 类型 | 长度 | 说明                                                                         |
+| -------------- | ----------- | ---- | ---- | ---------------------------------------------------------------------------- |
+| `bys_remote` | `mac`     | blob | 6 B  | 绑定的主设备 MAC（小端，字节序与主设备广播 Manufacturer Data 中的 MAC 一致） |
+| `bys_remote` | `cfg_ver` | u8   | 1 B  | 配置版本号，预留升级用                                                       |
 
 ---
 
@@ -425,18 +435,18 @@ PB03F：`app/inc/device_config.h`（约定，工程实际同名即可）
 
 PB03F 主设备在沿用本工程方案时同样必须提供：
 
-| 宏 | 用途 | 备注 |
-|----|------|------|
-| `DEVICE_ROLE` | 编译期角色选择 | PB03F 工程通常固定为 `DEVICE_ROLE_MASTER`，但保留宏便于未来共用代码片段 |
-| `BLE_MAX_ALLOW_CONNECTION` | 同时连接数 | 主设备固定为 2 |
+| 宏                               | 用途                   | 备注                                                                       |
+| -------------------------------- | ---------------------- | -------------------------------------------------------------------------- |
+| `DEVICE_ROLE`                  | 编译期角色选择         | PB03F 工程通常固定为 `DEVICE_ROLE_MASTER`，但保留宏便于未来共用代码片段  |
+| `BLE_MAX_ALLOW_CONNECTION`     | 同时连接数             | 主设备固定为 2                                                             |
 | `DEBUG_FORCE_PEER_MAC`（可选） | 调试用强制指定对端 MAC | 与遥控器端 `REMOTE_DEBUG_FIXED_MAC` 语义对齐，命名前缀按工程风格调整即可 |
 
 **GATT 通道约定**（同一 Service `0xFFE0` 下区分两端）：
 
-| 端 | 特征值 UUID | 说明 |
-|----|-----------|------|
-| App | `0xFFE1` | 沿用现有量产工程，App 端代码不变 |
-| 遥控器 | `0xFFE2` | 遥控器 Central 发现并订阅此特征值，与 App 通道物理隔离 |
+| 端     | 特征值 UUID | 说明                                                   |
+| ------ | ----------- | ------------------------------------------------------ |
+| App    | `0xFFE1`  | 沿用现有量产工程，App 端代码不变                       |
+| 遥控器 | `0xFFE2`  | 遥控器 Central 发现并订阅此特征值，与 App 通道物理隔离 |
 
 > 后续两端的任何角色相关新增配置项，必须先在本节登记，再落到各自工程代码。
 

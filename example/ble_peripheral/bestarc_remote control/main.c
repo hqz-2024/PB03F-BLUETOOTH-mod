@@ -16,7 +16,7 @@ extern void init_config(void);
 extern int  app_main(void);
 extern void hal_rom_boot_init(void);
 
-/* ─── BLE 连接缓冲区 (遥控器 Central 模式，1 连接) ─── */
+/* ─── BLE 连接缓冲区 (遥控器 MultiRole 模式，1 连接) ─── */
 #define BLE_MAX_ALLOW_CONNECTION        1
 #define BLE_MAX_ALLOW_PKT_PER_EVENT_TX  2
 #define BLE_MAX_ALLOW_PKT_PER_EVENT_RX  2
@@ -33,11 +33,15 @@ extern void hal_rom_boot_init(void);
 ALIGN4_U8      g_pConnectionBuffer[BLE_CONN_BUF_SIZE];
 llConnState_t  pConnContext[BLE_MAX_ALLOW_CONNECTION];
 
+/* MultiRole 从机连接设备列表 */
+#define BLE_CONN_LL_DEV_LIST_SIZE  (BLE_MAX_ALLOW_CONNECTION * (6 + 1 + 1))
+ALIGN4_U8   g_llDevList[BLE_CONN_LL_DEV_LIST_SIZE];
+
 /* ─── OSAL 堆 ────────────────────────────────────── */
-#define LARGE_HEAP_SIZE  (3 * 1024)
+#define LARGE_HEAP_SIZE  (4 * 1024)
 ALIGN4_U8   g_largeHeap[LARGE_HEAP_SIZE];
 
-#define LL_LINKBUF_CFG_NUM   0
+#define LL_LINKBUF_CFG_NUM   4
 #define LL_PKT_BUFSIZE       280
 #define LL_LINK_HEAP_SIZE   ((BLE_MAX_ALLOW_CONNECTION * 3 + LL_LINKBUF_CFG_NUM) * LL_PKT_BUFSIZE)
 ALIGN4_U8   g_llLinkHeap[LL_LINK_HEAP_SIZE];
@@ -59,16 +63,16 @@ static void hal_low_power_io_init(void)
         {GPIO_P11, GPIO_PULL_DOWN}, /* P11 电位器 ADC */
         {GPIO_P15, GPIO_PULL_DOWN}, /* P15 模式选择 (外部上拉) */
         {GPIO_P18, GPIO_PULL_DOWN}, /* P18 拖尾延时 (外部上拉) */
+        {GPIO_P20, GPIO_PULL_DOWN}, /* P20 MX1616H 使能脚 */
         {GPIO_P23, GPIO_PULL_DOWN}, /* P23 MX1616H IN2 (外部下拉) */
         {GPIO_P24, GPIO_PULL_DOWN}, /* P24 MX1616H IN1 (外部下拉) */
+        {GPIO_P31, GPIO_PULL_UP},   /* P31 按键 (外部上拉，按下低) */
         {GPIO_P16, GPIO_FLOATING},  /* 32K XTAL IN  */
         {GPIO_P17, GPIO_FLOATING},  /* 32K XTAL OUT */
         {GPIO_P14, GPIO_PULL_DOWN},
-        {GPIO_P20, GPIO_PULL_DOWN},
         {GPIO_P25, GPIO_PULL_DOWN},
         {GPIO_P26, GPIO_PULL_DOWN},
         {GPIO_P27, GPIO_PULL_DOWN},
-        {GPIO_P31, GPIO_PULL_DOWN},
         {GPIO_P32, GPIO_PULL_DOWN},
         {GPIO_P33, GPIO_PULL_DOWN},
         {GPIO_P34, GPIO_PULL_DOWN},
@@ -94,6 +98,8 @@ static void ble_mem_init_config(void)
                           BLE_MAX_ALLOW_PKT_PER_EVENT_TX,
                           BLE_MAX_ALLOW_PKT_PER_EVENT_RX,
                           BLE_PKT_VERSION);
+    extern void ll_multi_conn_llDevList_Init(uint8_t *pBuf);
+    ll_multi_conn_llDevList_Init(g_llDevList);
     Host_InitContext(MAX_NUM_LL_CONN, glinkDB, glinkCBs,
                      smPairingParam, gMTU_Size, gAuthenLink,
                      l2capReassembleBuf, l2capSegmentBuf,
@@ -145,8 +151,8 @@ int main(void)
     extern void ll_patch_no_sleep(void);
     ll_patch_no_sleep();
 #endif
-    extern void ll_patch_slave(void);
-    ll_patch_slave();
+    extern void ll_patch_multislave(void);
+    ll_patch_multislave();
 
     hal_rfphy_init();
     hal_init();

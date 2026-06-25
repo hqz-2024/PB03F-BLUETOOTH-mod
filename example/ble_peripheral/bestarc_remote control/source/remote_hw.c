@@ -15,6 +15,8 @@
 #define PIN_ADC_POT     GPIO_P11
 #define PIN_MODE        GPIO_P15
 #define PIN_TRAIL       GPIO_P18
+#define PIN_MOTOR_EN    GPIO_P20
+#define PIN_BTN_RESET   GPIO_P31
 
 /* ─── PWM 参数 ─────────────────────────────────── */
 #define PWM_CH          PWM_CH0
@@ -36,6 +38,7 @@
 static motor_state_e s_motor_state = MOTOR_OFF;
 static volatile uint8_t s_ir_triggered = 0;
 static volatile uint8_t s_ir_flag = 0;       /* 由 ISR 置位，应用层查询后清除 */
+static volatile uint8_t s_btn_flag = 0;       /* P31 按键标志 */
 
 /* ─── 定时器回调 ───────────────────────────────── */
 static void _motor_timer_cb(uint8_t evt)
@@ -63,38 +66,49 @@ static void _ir_edge_cb(gpio_pin_e pin, gpio_polarity_e type)
     if (type == POL_RISING) {
         s_ir_triggered = 1;
         s_ir_flag = 1;
-        LOG("[HW] IR rising edge (P07 HIGH)\n");
     } else {
         s_ir_triggered = 0;
         s_ir_flag = 1;
-        LOG("[HW] IR falling edge (P07 LOW)\n");
+    }
+}
+
+/* ─── P31 按钮回调 ──────────────────────────────── */
+static void _btn_edge_cb(gpio_pin_e pin, gpio_polarity_e type)
+{
+    (void)pin;
+    if (type == POL_FALLING) {
+        s_btn_flag = 1;
     }
 }
 
 /* ─── 硬件初始化 ───────────────────────────────── */
 void remote_hw_init(void)
 {
-    /* GPIO: 电机输出 */
+    /* GPIO: 电机输出 + 使能 */
     hal_gpio_pin_init(PIN_MOTOR_IN1, GPIO_OUTPUT);
     hal_gpio_pin_init(PIN_MOTOR_IN2, GPIO_OUTPUT);
+    hal_gpio_pin_init(PIN_MOTOR_EN,  GPIO_OUTPUT);
     hal_gpio_write(PIN_MOTOR_IN1, 0);
     hal_gpio_write(PIN_MOTOR_IN2, 0);
-    LOG("[HW] GPIO init: P23(IN2) P24(IN1) output low\n");
+    hal_gpio_write(PIN_MOTOR_EN,  0);
+    LOG("[HW] GPIO init: P23(IN2) P24(IN1) output low  P20(EN) output low\n");
 
     /* GPIO: 输入 (P7/P15/P18) */
     hal_gpio_pin_init(PIN_IR,    GPIO_INPUT);
     hal_gpio_pin_init(PIN_MODE,  GPIO_INPUT);
     hal_gpio_pin_init(PIN_TRAIL, GPIO_INPUT);
+    hal_gpio_pin_init(PIN_BTN_RESET, GPIO_INPUT);
 
     /* P15/P18 外部上拉，P7 外部上拉 */
     hal_gpio_pull_set(PIN_IR,    GPIO_FLOATING);   /* 外部 10k 上拉 */
     hal_gpio_pull_set(PIN_MODE,  GPIO_FLOATING);   /* 外部 10k 上拉 */
     hal_gpio_pull_set(PIN_TRAIL, GPIO_FLOATING);   /* 外部 10k 上拉 */
-    LOG("[HW] GPIO init: P07(IR) P15(MODE) P18(TRAIL) input floating\n");
+    hal_gpio_pull_set(PIN_BTN_RESET, GPIO_FLOATING);
+    LOG("[HW] GPIO init: P07(IR) P15(MODE) P18(TRAIL) P31(BTN) input floating\n");
 
     /* PWM: P0 */
     hal_pwm_module_init();
-    hal_pwm_init(PWM_CH, PWM_DIV, PWM_CNT_UP, PWM_POLARITY_FALLING);
+    hal_pwm_init(PWM_CH, PWM_DIV, PWM_CNT_UP, PWM_POLARITY_RISING);
     hal_pwm_set_count_val(PWM_CH, 0, PWM_TOP);
     hal_gpio_fmux_set(PIN_PWM, FMUX_PWM0);
     hal_pwm_open_channel(PWM_CH, PIN_PWM);
@@ -111,6 +125,11 @@ void remote_hw_init(void)
     hal_gpioin_register(PIN_IR, _ir_edge_cb, _ir_edge_cb);
     hal_gpioin_enable(PIN_IR);
     LOG("[HW] IR interrupt: P07 dual-edge registered\n");
+
+    /* GPIO 中断: P31 按键下降沿触发 */
+    hal_gpioin_register(PIN_BTN_RESET, NULL, _btn_edge_cb);
+    hal_gpioin_enable(PIN_BTN_RESET);
+    LOG("[HW] BTN interrupt: P31 falling-edge registered\n");
 
     /* 读取初始 P7 状态 */
     s_ir_triggered = hal_gpio_read(PIN_IR) ? 1 : 0;
@@ -137,8 +156,9 @@ void remote_hw_set_pwm_mv(uint16_t target_mv, work_mode_e mode)
     if (target_mv < min_mv) target_mv = min_mv;
     if (target_mv > max_mv) target_mv = max_mv;
 
-    /* FALLING 极性抵消硬件反相: Vout = VDD * cmp / (TOP+1) */
-    uint16_t cmp = (uint32_t)target_mv * (PWM_TOP + 1) / MV_VDD;
+    /* RISING 极性: cmp=0→Vout≈3V, cmp=TOP→Vout≈1V */
+    int32_t cmp = (int32_t)(3000 - target_mv) * (PWM_TOP + 1) / 2000;
+    if (cmp < 0) cmp = 0;
     if (cmp > PWM_TOP) cmp = PWM_TOP;
 
     hal_pwm_set_count_val(PWM_CH, cmp, PWM_TOP);
@@ -160,8 +180,9 @@ void remote_hw_motor_start(void)
     /* 初始相位: IN1=HIGH, IN2=LOW */
     hal_gpio_write(PIN_MOTOR_IN1, 1);
     hal_gpio_write(PIN_MOTOR_IN2, 0);
+    hal_gpio_write(PIN_MOTOR_EN,  1);
 
-    LOG("[MOTOR] 50Hz square wave start: P24/P23 complementary output (IN1/IN2 toggle every 10ms)\n");
+    LOG("[MOTOR] 50Hz square wave start: P24/P23 complementary, P20(EN)=HIGH\n");
 }
 
 void remote_hw_motor_brake(void)
@@ -172,7 +193,8 @@ void remote_hw_motor_brake(void)
     /* 高电平刹车: IN1=IN2=HIGH */
     hal_gpio_write(PIN_MOTOR_IN1, 1);
     hal_gpio_write(PIN_MOTOR_IN2, 1);
-    LOG("[MOTOR] 50Hz square wave stop -> brake: P24=HIGH P23=HIGH (H-bridge upper arm short)\n");
+    hal_gpio_write(PIN_MOTOR_EN,  0);
+    LOG("[MOTOR] Square wave stop -> brake: P24=HIGH P23=HIGH P20(EN)=LOW (H-bridge upper arm short)\n");
 }
 
 void remote_hw_motor_coast(void)
@@ -183,7 +205,8 @@ void remote_hw_motor_coast(void)
     /* 惰行: IN1=IN2=LOW */
     hal_gpio_write(PIN_MOTOR_IN1, 0);
     hal_gpio_write(PIN_MOTOR_IN2, 0);
-    LOG("[MOTOR] Square wave stop -> coast: P24=LOW P23=LOW (all MOS off)\n");
+    hal_gpio_write(PIN_MOTOR_EN,  0);
+    LOG("[MOTOR] Square wave stop -> coast: P24=LOW P23=LOW P20(EN)=LOW (all MOS off)\n");
 }
 
 motor_state_e remote_hw_motor_state(void)
@@ -253,5 +276,12 @@ uint8_t remote_hw_ir_flag_get_and_clear(void)
 {
     uint8_t val = s_ir_flag;
     s_ir_flag = 0;
+    return val;
+}
+
+uint8_t remote_hw_btn_flag_get_and_clear(void)
+{
+    uint8_t val = s_btn_flag;
+    s_btn_flag = 0;
     return val;
 }

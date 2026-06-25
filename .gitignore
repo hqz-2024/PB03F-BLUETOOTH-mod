@@ -61,7 +61,6 @@ unpacked_proto/
 .augment
 
 
-
 #Force include file/folder
 !example/OTA/OTA_internal_flash/bin/
 !**/OTA/*/bin/ota*.hex

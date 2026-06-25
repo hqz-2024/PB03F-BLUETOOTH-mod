@@ -8,6 +8,7 @@ PROJ_ROOT := ..
 
 VPATH = $(PROJ_ROOT)
 VPATH += $(PROJ_ROOT)/source
+VPATH += $(ROOT)/components/driver/i2c
 
 include $(ROOT)/components/gcc/components.cflags
 include $(ROOT)/components/gcc/components.mk
@@ -30,8 +31,12 @@ SRC_RAW = main.c
 SRC_RAW += sbpProfile_ota.c
 SRC_RAW += remote_proto.c
 SRC_RAW += remote_hw.c
+SRC_RAW += remote_ble.c
+SRC_RAW += remote_ui.c
 SRC_RAW += remote_app.c
 SRC_RAW += OSAL_remote.c
+SRC_RAW += mini_oled.c
+SRC_RAW += i2c.c
 
 STARTUP_RAW = phy6222_start.s
 
@@ -45,6 +50,7 @@ CFLAGS += --specs=nosys.specs
 CFLAGS += -mcpu=cortex-m0
 CFLAGS += -mthumb
 CFLAGS += -ffunction-sections
+CFLAGS += -fdata-sections
 CFLAGS += -Wall
 
 LFLAGS += -Wl,--gc-sections

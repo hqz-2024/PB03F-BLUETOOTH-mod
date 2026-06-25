@@ -42,4 +42,7 @@ uint16_t   remote_hw_get_trail_delay_ms(void);
 uint8_t remote_hw_is_ir_triggered(void);
 uint8_t remote_hw_ir_flag_get_and_clear(void);
 
+/* ─── P31 按钮 ─── */
+uint8_t remote_hw_btn_flag_get_and_clear(void);
+
 #endif /* REMOTE_HW_H */

@@ -334,9 +334,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls>-DADV_NCONN_CFG=0x01  -DADV_CONN_CFG=0x02  -DSCAN_CFG=0x04   -DINIT_CFG=0x08   -DBROADCASTER_CFG=0x01 -DOBSERVER_CFG=0x02  -DPERIPHERAL_CFG=0x04  -DCENTRAL_CFG=0x08 </MiscControls>
-              <Define>CFG_CP  OSAL_CBTIMER_NUM_TASKS=1 MTU_SIZE=247 HOST_CONFIG=4 HCI_TL_NONE=1 ENABLE_LOG_ROM_=0  _BUILD_FOR_DTM_=0 DEBUG_INFO=1 DBG_ROM_MAIN=0 APP_CFG=0  OSALMEM_METRICS=0 PHY_MCU_TYPE=MCU_BUMBEE_M0 CFG_SLEEP_MODE=PWR_MODE_NO_SLEEP CFG_HCLK_DYNAMIC_CHANGE=0 DEF_GAPBOND_MGR_ENABLE=0 USE_FS=0 MAX_NUM_LL_CONN=1 GATT_MAX_NUM_CONN = MAX_NUM_LL_CONN+1</Define>
+              <Define>CFG_CP  OSAL_CBTIMER_NUM_TASKS=1 MTU_SIZE=247 HOST_CONFIG=12 HCI_TL_NONE=1 ENABLE_LOG_ROM_=0  _BUILD_FOR_DTM_=0 DEBUG_INFO=1 DBG_ROM_MAIN=0 APP_CFG=0  OSALMEM_METRICS=0 PHY_MCU_TYPE=MCU_BUMBEE_M0 CFG_SLEEP_MODE=PWR_MODE_NO_SLEEP CFG_HCLK_DYNAMIC_CHANGE=0 DEF_GAPBOND_MGR_ENABLE=0 USE_FS=1 MAX_NUM_LL_CONN=1 GATT_MAX_NUM_CONN = MAX_NUM_LL_CONN+1</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\..\components\inc;..\..\..\components\ble\controller;..\..\..\components\osal\include;..\..\..\components\common;..\..\..\components\ble\include;..\..\..\components\ble\hci;..\..\..\components\ble\host;..\..\..\components\Profiles\ota_app;..\..\..\components\Profiles\DevInfo;..\..\..\components\Profiles\SimpleProfile;..\..\..\components\Profiles\Roles;.\source;..\..\..\components\libraries\crc16;..\..\..\components\driver\watchdog;..\..\..\components\driver\clock;..\..\..\components\arch\cm0;..\..\..\components\driver\pwrmgr;..\..\..\components\driver\uart;..\..\..\components\driver\gpio;..\..\..\components\driver\timer;..\..\..\misc;..\..\..\components\driver\log;..\..\..\components\libraries\cliface;..\..\..\components\driver\key;..\..\..\components\driver\pwm;..\..\..\components\driver\flash;..\..\..\components\libraries\fs;..\..\..\components\driver\led_light;..\..\..\components\driver\adc</IncludePath>
+              <IncludePath>..\..\..\components\inc;..\..\..\components\ble\controller;..\..\..\components\osal\include;..\..\..\components\common;..\..\..\components\ble\include;..\..\..\components\ble\hci;..\..\..\components\ble\host;..\..\..\components\Profiles\ota_app;..\..\..\components\Profiles\DevInfo;..\..\..\components\Profiles\SimpleProfile;..\..\..\components\Profiles\Roles;..\source;..\..\..\components\libraries\crc16;..\..\..\components\Profiles\multiRole;..\..\..\components\driver\watchdog;..\..\..\components\driver\clock;..\..\..\components\arch\cm0;..\..\..\components\driver\pwrmgr;..\..\..\components\driver\uart;..\..\..\components\driver\gpio;..\..\..\components\driver\timer;..\..\..\misc;..\..\..\components\driver\log;..\..\..\components\libraries\cliface;..\..\..\components\driver\key;..\..\..\components\driver\pwm;..\..\..\components\driver\flash;..\..\..\components\libraries\fs;..\..\..\components\driver\led_light;..\..\..\components\driver\adc;..\..\..\components\driver\i2c</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -445,6 +445,16 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\components\driver\pwm\pwm.c</FilePath>
             </File>
+            <File>
+              <FileName>i2c.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\components\driver\i2c\i2c.c</FilePath>
+            </File>
+            <File>
+              <FileName>fs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\components\libraries\fs\fs.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -461,7 +471,7 @@
                   <RVCTZI>0</RVCTZI>
                   <RVCTOtherData>0</RVCTOtherData>
                   <ModuleSelection>0</ModuleSelection>
-                  <IncludeInBuild>0</IncludeInBuild>
+                  <IncludeInBuild>1</IncludeInBuild>
                   <AlwaysBuild>2</AlwaysBuild>
                   <GenerateAssemblyFile>2</GenerateAssemblyFile>
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
@@ -594,6 +604,21 @@
               <FileName>remote_proto.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\source\remote_proto.c</FilePath>
+            </File>
+            <File>
+              <FileName>remote_ble.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\source\remote_ble.c</FilePath>
+            </File>
+            <File>
+              <FileName>remote_ui.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\source\remote_ui.c</FilePath>
+            </File>
+            <File>
+              <FileName>mini_oled.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\source\mini_oled.c</FilePath>
             </File>
           </Files>
         </Group>
