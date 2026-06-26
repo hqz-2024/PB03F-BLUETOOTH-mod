@@ -7,12 +7,30 @@
 #include "osal_snv.h"
 #include "log.h"
 
-static uint8_t        s_taskID;
+static uint8_t        s_taskID = INVALID_TASK_ID;
 static app_state_e    s_app_state = APP_STATE_IDLE;
 static work_mode_e    s_work_mode = MODE_GRID;
 static uint16_t       s_trail_ms = 100;
 static work_mode_e    s_last_mode = MODE_GRID;
 static uint8_t        s_last_ir = 0;
+static uint8_t        s_ble_connected = 0;
+
+static void _ui_update(void)
+{
+    remote_ui_update(remote_ble_mode() == BLE_MODE_CONFIG,
+                     s_ble_connected,
+                     s_work_mode == MODE_GRID,
+                     remote_hw_is_ir_triggered(),
+                     s_app_state != APP_STATE_IDLE,
+                     s_trail_ms);
+}
+
+static void _ui_request_refresh(void)
+{
+    if (s_taskID != INVALID_TASK_ID) {
+        osal_set_event(s_taskID, REMOTE_UI_EVT);
+    }
+}
 
 /* ─── BLE 回调转发 ───────────────────────────────── */
 static void _ble_event_cb(ble_evt_e evt, void* arg)
@@ -20,13 +38,17 @@ static void _ble_event_cb(ble_evt_e evt, void* arg)
     (void)arg;
     switch (evt) {
     case BLE_EVT_CONNECTED:
+        s_ble_connected = 1;
         if (remote_ble_mode() == BLE_MODE_CONFIG)
             LOG("[APP] Config: App connected\n");
         else
             LOG("[APP] Normal: BYS connected, link ready\n");
+        _ui_request_refresh();
         break;
     case BLE_EVT_DISCONNECTED:
+        s_ble_connected = 0;
         LOG("[APP] BLE disconnected\n");
+        _ui_request_refresh();
         break;
     case BLE_EVT_CONFIG_DONE:
         /* SNV 写入成功，启动 1s 延时复位 */
@@ -93,6 +115,7 @@ uint16 Remote_ProcessEvent(uint8 task_id, uint16 events)
             remote_ble_start_config();
             LOG("[APP] OSAL started: CONFIG mode (waiting for App)\n");
         }
+        _ui_update();
         return events ^ REMOTE_START_EVT;
     }
 
@@ -194,9 +217,9 @@ uint16 Remote_ProcessEvent(uint8 task_id, uint16 events)
         return events ^ REMOTE_CONFIG_RESET_EVT;
     }
 
-    /* ── OLED 动画 ──────────────────────────────────── */
+    /* ── OLED 状态刷新 ──────────────────────────────────── */
     if (events & REMOTE_UI_EVT) {
-        remote_ui_process();
+        _ui_update();
         osal_start_timerEx(s_taskID, REMOTE_UI_EVT, REMOTE_UI_INTERVAL_MS);
         return events ^ REMOTE_UI_EVT;
     }

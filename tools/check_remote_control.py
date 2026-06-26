@@ -19,8 +19,9 @@ def main():
     app_c = read("source/remote_app.c")
     hw_c = read("source/remote_hw.c")
     makefile = read("gcc/Makefile")
-    ui_h = read("source/remote_ui.h")
     ui_c = read("source/remote_ui.c")
+    oled_h = read("source/mini_oled.h")
+    oled_c = read("source/mini_oled.c")
 
     expect("uint8_t mac[6]={p[3],p[2],p[5],p[4],p[7],p[6]}" in ble_c,
            "config MAC parser must keep compatibility with the documented example frame")
@@ -46,24 +47,42 @@ def main():
            "config mode must notify the original config frame back to the App after saving MAC")
     expect("#include \"remote_ui.h\"" in app_c and "remote_ui_init();" in app_c,
            "remote app must initialize OLED UI at startup")
-    expect("u8g2_Setup_ssd1306_i2c_128x64_noname_f" in ui_c,
-           "OLED UI must use U8g2 SSD1306 128x64 I2C full-buffer setup")
-    expect("hal_i2c_pin_init(OLED_I2C_DEV, OLED_PIN_SDA, OLED_PIN_SCL)" in ui_c,
+    expect("#include \"mini_oled.h\"" in ui_c and "s_ready = oled_init();" in ui_c,
+           "OLED UI wrapper must initialize the mini OLED driver and keep init status")
+    expect("hal_i2c_pin_init(OLED_I2C_DEV, OLED_PIN_SDA, OLED_PIN_SCL)" in oled_c,
            "OLED I2C pins must be initialized through PB03F HAL")
-    expect("#define OLED_PIN_SCL      GPIO_P32" in ui_c and "#define OLED_PIN_SDA      GPIO_P33" in ui_c,
+    expect("#define OLED_PIN_SCL     GPIO_P32" in oled_c and "#define OLED_PIN_SDA     GPIO_P33" in oled_c,
            "OLED I2C pins must be SCL=P32 and SDA=P33")
-    expect("remote_ui_draw_boot();" in ui_c,
-           "OLED init must draw an initial boot/test screen")
-    expect("void remote_ui_draw_boot(void);" in ui_h,
-           "remote_ui.h must expose the boot/test draw entry")
+    expect("uint8_t _i2c_write" in oled_c and "uint8_t buf[2] = {0x00, cmd}" in oled_c and "buf[0] = 0x40" in oled_c and "OLED_DATA_CHUNK" in oled_c,
+           "OLED driver must send SSD1306 control byte with payload and chunk page data")
+    expect("I2C_CLOCK_100K" in oled_c,
+           "OLED init should use 100K I2C first for bring-up margin")
+    expect("BYS REMOTE" not in oled_c and "OLED READY" not in oled_c and "ADDR 0x3C" not in oled_c,
+           "OLED driver must not contain UI page content; remote_ui owns display text")
+    expect("[OLED] I2C write failed" in oled_c and "SSD1306 init failed" in oled_c,
+           "OLED init must report I2C/init failures instead of blindly reporting ready")
+    expect("uint8_t oled_init(void);" in oled_h and "uint8_t oled_flush(void);" in oled_h,
+           "mini_oled.h must expose status-returning init and flush APIs")
+    expect("happy birthday" not in oled_c and "oled_scroll_task" not in oled_c and "oled_scroll_task" not in oled_h,
+           "OLED driver must not contain demo scrolling text or app-specific display content")
+    expect("remote_ui_update" in ui_c and "remote_ui_update" in app_c,
+           "remote app must push real status into the OLED UI instead of running demo animation")
+    expect("_ui_request_refresh" in app_c and "case BLE_EVT_CONNECTED" in app_c,
+           "BLE callbacks should request OLED refresh through the OSAL app task")
+    expect("case BLE_EVT_CONNECTED" in app_c and "_ui_update();\n        break;" not in app_c,
+           "BLE callbacks must not perform direct full-screen I2C refresh")
+    expect("s_drawn" in ui_c and "s_last_trail_ms" in ui_c,
+           "remote_ui must avoid redundant full-screen OLED flushes when status has not changed")
+    expect("BYS REMOTE" in ui_c and "BLE:" in ui_c and "MODE:" in ui_c and "TRAIL:" in ui_c,
+           "remote_ui must render the remote status page")
     expect("SRC_RAW += remote_ble.c" in makefile,
            "GCC build must include remote_ble.c")
     expect("SRC_RAW += remote_ui.c" in makefile,
            "GCC build must include remote_ui.c")
-    expect("U8g2/src/clib" in makefile,
-           "GCC build must include U8g2 clib include path")
-    expect("u8g2_d_setup.c" in makefile and "u8x8_d_ssd1306_128x64_noname.c" in makefile,
-           "GCC build must include the U8g2 SSD1306 source set")
+    expect("SRC_RAW += mini_oled.c" in makefile,
+           "GCC build must include mini_oled.c")
+    expect("U8g2" not in makefile and "u8g2" not in makefile,
+           "GCC build must not include removed U8g2 sources")
 
     ir_cb = hw_c.split("static void _ir_edge_cb", 1)[1].split("}", 1)[0]
     expect("LOG(" not in ir_cb, "IR ISR callback must not call LOG")

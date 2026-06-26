@@ -12,13 +12,13 @@
 #define REMOTE_BTN_POLL_EVT         0x0020u   /* P31 按钮巡检 */
 #define REMOTE_RECONNECT_EVT        0x0040u   /* 重连间隔到期 */
 #define REMOTE_CONFIG_RESET_EVT     0x0080u   /* 配置完成后 1s 延时复位 */
-#define REMOTE_UI_EVT               0x0100u   /* OLED 动画刷新 */
+#define REMOTE_UI_EVT               0x0100u   /* OLED 状态刷新 */
 
 /* ─── 参数配置 ──────────────────────────────────── */
 #define REMOTE_ADC_INTERVAL_MS      100u
 #define REMOTE_IR_POLL_MS           20u
 #define REMOTE_BTN_POLL_MS          50u
-#define REMOTE_UI_INTERVAL_MS       50u       /* 滚动动画帧率 */
+#define REMOTE_UI_INTERVAL_MS       200u      /* OLED 状态刷新 */
 
 /* ─── 应用状态 ──────────────────────────────────── */
 typedef enum {
