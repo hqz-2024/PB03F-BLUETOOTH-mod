@@ -31,6 +31,20 @@ def main():
            "GATT discovery must be stateful and wait for procedure complete")
     expect("name_len + 1" in ble_c and "adv_mac=%d addr=%d" in ble_c,
            "central scan must match the exact BYS name and target MAC")
+    expect("s_pending_link" in ble_c and "Central: found target" in ble_c,
+           "central scan must remember a matched device before scan-complete")
+    expect("[BLE] Scan: GAP=" in ble_c and "REV=" in ble_c and "manu=" in ble_c and "match(n=" in ble_c,
+           "central scan must log discovered device GAP address, reversed address, manufacturer data, and match flags")
+    expect("wait scan complete" in ble_c and "stop scan" not in ble_c,
+           "central scan logging must not stop discovery immediately after the first matched target")
+    expect("if(s_pending_link)" in ble_c and "GAPCentralRole_EstablishLink(FALSE,FALSE,s_pending_addr_type,s_pending_addr)" in ble_c,
+           "central scan-complete must connect to the pending matched device instead of retrying")
+    expect("s_connecting" in ble_c and "!s_connecting" in ble_c,
+           "central retry logic must not treat an in-progress link as scan failure")
+    expect("REMOTE_CONNECT_GUARD_EVT" in ble_c and "CONNECT_GUARD_MS" in ble_c and "gapCancelLinkReq" in ble_c,
+           "central connect attempts must have a guard timeout and cancel path")
+    expect("events & REMOTE_CONNECT_GUARD_EVT" in app_c and "remote_ble_process_event();" in app_c,
+           "app task must route BLE connect guard timeout into BLE processing")
     expect("if (len != BLE_PKT_LEN)" in ble_c,
            "remote_ble_send must reject non-12-byte packets")
     expect("remote_ble_start_normal(uint8_t reset_retry)" in ble_c,
@@ -73,8 +87,27 @@ def main():
            "BLE callbacks must not perform direct full-screen I2C refresh")
     expect("s_drawn" in ui_c and "s_last_trail_ms" in ui_c,
            "remote_ui must avoid redundant full-screen OLED flushes when status has not changed")
-    expect("BYS REMOTE" in ui_c and "BLE:" in ui_c and "MODE:" in ui_c and "TRAIL:" in ui_c,
-           "remote_ui must render the remote status page")
+    expect("BYS_CMD_SET_CURRENT" in ble_c + app_c + ui_c + oled_c or "BYS_CMD_SET_CURRENT" in read("source/remote_proto.h"),
+           "remote protocol must define the current set command")
+    expect("BYS_ACK_CURRENT" in read("source/remote_proto.h") and "BYS_ACK_CURRENT" in app_c,
+           "remote app must handle current set acknowledgements")
+    expect("PIN_ENCODER_A" in hw_c and "GPIO_P16" in hw_c and "PIN_ENCODER_B" in hw_c and "GPIO_P17" in hw_c,
+           "hardware layer must initialize P16/P17 rotary encoder inputs")
+    expect("remote_hw_encoder_get_delta" in hw_c and "remote_hw_encoder_get_delta" in app_c,
+           "remote app must consume rotary encoder deltas")
+    expect("static uint8_t s_encoder_last" in hw_c and "static int8 s_encoder_accum" in hw_c,
+           "rotary encoder state variables must be defined before use")
+    expect("BYS_CMD_SET_CURRENT" in app_c and "BYS_DEV_REMOTE" in app_c and "remote_ble_send" in app_c,
+           "P31 confirm must send current set command over BLE")
+    expect("#define BYS_DEV_REMOTE          0x2000u" in read("source/remote_proto.h"),
+           "remote current command must use DevType 0x2000 to match documented frames")
+    expect("#define BYS_CMD_SET_CURRENT     0x0400u" in read("source/remote_proto.h") and
+           "#define BYS_ACK_CURRENT         0x8400u" in read("source/remote_proto.h"),
+           "current command and acknowledgement constants must match the device protocol")
+    expect("edit_current" in ui_c and "blink_on" in ui_c,
+           "OLED UI must show blinking current while editing")
+    expect("BYS REMOTE" in ui_c and "CUR:" in ui_c and "MODE:" in ui_c and "V:" in ui_c,
+           "remote_ui must render the BLE parameter status page")
     expect("SRC_RAW += remote_ble.c" in makefile,
            "GCC build must include remote_ble.c")
     expect("SRC_RAW += remote_ui.c" in makefile,

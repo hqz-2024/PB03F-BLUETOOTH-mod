@@ -153,6 +153,8 @@ int main(void)
 #endif
     extern void ll_patch_multislave(void);
     ll_patch_multislave();
+    extern void ll_patch_multi(void);
+    ll_patch_multi();
 
     hal_rfphy_init();
     hal_init();

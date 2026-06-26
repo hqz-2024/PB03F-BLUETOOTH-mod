@@ -1,16 +1,11 @@
 #if (APP_CFG == 0)
 #include "OSAL.h"
 #include "OSAL_Tasks.h"
-
-/* LL / HCI */
 #include "ll.h"
 #include "hci_tl.h"
-
 #if defined(OSAL_CBTIMER_NUM_TASKS)
     #include "osal_cbTimer.h"
 #endif
-
-/* BLE */
 #include "l2cap.h"
 #include "gap.h"
 #include "gapgattserver.h"
@@ -18,9 +13,6 @@
 #include "gatt.h"
 #include "gattservapp.h"
 #include "peripheral.h"
-#include "central.h"
-
-/* app */
 #include "remote_app.h"
 
 __ATTR_SECTION_SRAM__ const pTaskEventHandlerFn tasksArr[] = {
@@ -33,8 +25,7 @@ __ATTR_SECTION_SRAM__ const pTaskEventHandlerFn tasksArr[] = {
     SM_ProcessEvent,
     GAP_ProcessEvent,
     GATT_ProcessEvent,
-    GAPRole_ProcessEvent,           /* Peripheral (config mode) */
-    GAPCentralRole_ProcessEvent,    /* Central   (normal mode) */
+    GAPRole_ProcessEvent,
 #if (DEF_GAPBOND_MGR_ENABLE == 1)
     GAPBondMgr_ProcessEvent,
 #endif
@@ -61,7 +52,6 @@ void osalInitTasks(void)
     GAP_Init(taskID++);
     GATT_Init(taskID++);
     GAPRole_Init(taskID++);
-    GAPCentralRole_Init(taskID++);
 #if (DEF_GAPBOND_MGR_ENABLE == 1)
     GAPBondMgr_Init(taskID++);
 #endif

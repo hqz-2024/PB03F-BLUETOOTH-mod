@@ -33,6 +33,7 @@ void      remote_ble_process_event(void);
 ble_mode_e remote_ble_mode(void);
 void      remote_ble_start_config(void);
 void      remote_ble_start_normal(uint8_t reset_retry);
+void      remote_ble_process_reconnect(void);
 void      remote_ble_send(const uint8_t* data, uint8_t len);
 uint8_t   remote_ble_has_mac(void);
 void      remote_ble_save_mac(const uint8_t* mac);

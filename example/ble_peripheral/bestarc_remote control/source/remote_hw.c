@@ -17,6 +17,8 @@
 #define PIN_TRAIL       GPIO_P18
 #define PIN_MOTOR_EN    GPIO_P20
 #define PIN_BTN_RESET   GPIO_P31
+#define PIN_ENCODER_A   GPIO_P16
+#define PIN_ENCODER_B   GPIO_P17
 
 /* ─── PWM 参数 ─────────────────────────────────── */
 #define PWM_CH          PWM_CH0
@@ -39,6 +41,8 @@ static motor_state_e s_motor_state = MOTOR_OFF;
 static volatile uint8_t s_ir_triggered = 0;
 static volatile uint8_t s_ir_flag = 0;       /* 由 ISR 置位，应用层查询后清除 */
 static volatile uint8_t s_btn_flag = 0;       /* P31 按键标志 */
+static uint8_t s_encoder_last = 0;
+static int8 s_encoder_accum = 0;
 
 /* ─── 定时器回调 ───────────────────────────────── */
 static void _motor_timer_cb(uint8_t evt)
@@ -98,13 +102,17 @@ void remote_hw_init(void)
     hal_gpio_pin_init(PIN_MODE,  GPIO_INPUT);
     hal_gpio_pin_init(PIN_TRAIL, GPIO_INPUT);
     hal_gpio_pin_init(PIN_BTN_RESET, GPIO_INPUT);
+    hal_gpio_pin_init(PIN_ENCODER_A, GPIO_INPUT);
+    hal_gpio_pin_init(PIN_ENCODER_B, GPIO_INPUT);
 
     /* P15/P18 外部上拉，P7 外部上拉 */
     hal_gpio_pull_set(PIN_IR,    GPIO_FLOATING);   /* 外部 10k 上拉 */
     hal_gpio_pull_set(PIN_MODE,  GPIO_FLOATING);   /* 外部 10k 上拉 */
     hal_gpio_pull_set(PIN_TRAIL, GPIO_FLOATING);   /* 外部 10k 上拉 */
     hal_gpio_pull_set(PIN_BTN_RESET, GPIO_FLOATING);
-    LOG("[HW] GPIO init: P07(IR) P15(MODE) P18(TRAIL) P31(BTN) input floating\n");
+    hal_gpio_pull_set(PIN_ENCODER_A, STRONG_PULL_UP);
+    hal_gpio_pull_set(PIN_ENCODER_B, STRONG_PULL_UP);
+    LOG("[HW] GPIO init: P07(IR) P15(MODE) P18(TRAIL) P31(BTN) P16/P17(ENC) input\n");
 
     /* PWM: P0 */
     hal_pwm_module_init();
@@ -133,6 +141,9 @@ void remote_hw_init(void)
 
     /* 读取初始 P7 状态 */
     s_ir_triggered = hal_gpio_read(PIN_IR) ? 1 : 0;
+    s_encoder_last = (hal_gpio_read(PIN_ENCODER_A) ? 2u : 0u) |
+                     (hal_gpio_read(PIN_ENCODER_B) ? 1u : 0u);
+    s_encoder_accum = 0;
 
     /* ADC 初始化 (单次采样模式) */
     hal_adc_init();
@@ -284,4 +295,31 @@ uint8_t remote_hw_btn_flag_get_and_clear(void)
     uint8_t val = s_btn_flag;
     s_btn_flag = 0;
     return val;
+}
+
+int8 remote_hw_encoder_get_delta(void)
+{
+    static const int8 step_table[16] = {
+        0, -1,  1,  0,
+        1,  0,  0, -1,
+       -1,  0,  0,  1,
+        0,  1, -1,  0
+    };
+    uint8_t now = (hal_gpio_read(PIN_ENCODER_A) ? 2u : 0u) |
+                  (hal_gpio_read(PIN_ENCODER_B) ? 1u : 0u);
+    uint8_t idx = (uint8_t)((s_encoder_last << 2) | now);
+    int8 ret = 0;
+
+    s_encoder_last = now;
+    s_encoder_accum += step_table[idx & 0x0Fu];
+
+    if (s_encoder_accum >= 4) {
+        s_encoder_accum = 0;
+        ret = 1;
+    } else if (s_encoder_accum <= -4) {
+        s_encoder_accum = 0;
+        ret = -1;
+    }
+
+    return ret;
 }

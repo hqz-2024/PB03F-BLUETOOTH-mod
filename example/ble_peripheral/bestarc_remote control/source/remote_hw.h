@@ -44,5 +44,6 @@ uint8_t remote_hw_ir_flag_get_and_clear(void);
 
 /* ─── P31 按钮 ─── */
 uint8_t remote_hw_btn_flag_get_and_clear(void);
+int8 remote_hw_encoder_get_delta(void);
 
 #endif /* REMOTE_HW_H */
