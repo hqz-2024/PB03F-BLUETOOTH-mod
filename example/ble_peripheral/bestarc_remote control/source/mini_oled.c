@@ -117,18 +117,17 @@ static uint8_t _i2c_write(const uint8_t* data, uint8_t len)
     if (ret == PPlus_SUCCESS) {
         ret = hal_i2c_tx_start(OLED_I2C_PORT);
     }
-    HAL_EXIT_CRITICAL_SECTION();
-
     if (ret == PPlus_SUCCESS) {
         ret = hal_i2c_send(OLED_I2C_PORT, (uint8_t*)data, len);
     }
+    HAL_EXIT_CRITICAL_SECTION();
 
     if (ret != PPlus_SUCCESS) {
         if (!s_i2c_error_logged) {
             LOG("[OLED] I2C write failed: ret=%d len=%d\n", ret, len);
             s_i2c_error_logged = 1;
         }
-        hal_i2c_init(OLED_I2C_DEV, I2C_CLOCK_100K);
+        hal_i2c_init(OLED_I2C_DEV, I2C_CLOCK_400K);
         return 0;
     }
 
@@ -308,7 +307,7 @@ uint8_t oled_init(void)
     hal_gpio_pull_set(OLED_PIN_SDA, STRONG_PULL_UP);
     hal_gpio_pull_set(OLED_PIN_SCL, STRONG_PULL_UP);
 
-    pi2c = hal_i2c_init(OLED_I2C_DEV, I2C_CLOCK_100K);
+    pi2c = hal_i2c_init(OLED_I2C_DEV, I2C_CLOCK_400K);
     if (pi2c == NULL) {
         LOG("[OLED] I2C init failed\n");
         return 0;
@@ -334,7 +333,7 @@ uint8_t oled_init(void)
     }
 
     s_ready = 1;
-    LOG("[OLED] SSD1306 128x64 ready (github-style driver, addr=0x%02X, I2C=100K)\n", OLED_ADDR);
+    LOG("[OLED] SSD1306 128x64 ready (github-style driver, addr=0x%02X, I2C=400K)\n", OLED_ADDR);
     return 1;
 }
 
