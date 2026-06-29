@@ -141,6 +141,10 @@ void BYS_Bridge_Init(uint8 task_id)
     GAPRole_SetParameter(GAPROLE_SLAVE_LATENCY,      sizeof(uint16), &latency);
     GAPRole_SetParameter(GAPROLE_TIMEOUT_MULTIPLIER, sizeof(uint16), &timeout);
 
+    /* 注册 GAP/GATT 基础服务 */
+    GGS_AddService(GATT_ALL_SERVICES);
+    GATTServApp_AddService(GATT_ALL_SERVICES);
+
     /* 注册 Device Information Service */
     DevInfo_AddService();
     DevInfo_SetParameter(DEVINFO_MODEL_NUMBER,      9,  "BTC500DP");
@@ -240,6 +244,8 @@ static void peripheralStateNotificationCB(uint16 connHandle, gaprole_States_t ne
     case GAPROLE_CONNECTED_ADV:
     case GAPROLE_CONNECTED_TO_TERMINA:
         LOG("[BYS] Connected, active=%d\n", GAPRole_Connect_Active_Num());
+        LOG("[BYS] service changed ind ret=%d (conn=%d)\n",
+            GATTServApp_SendServiceChangedInd(connHandle, bys_TaskID), connHandle);
         break;
 
     case GAPROLE_WAITING:

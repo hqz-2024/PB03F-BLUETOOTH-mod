@@ -7,12 +7,13 @@
     #include "osal_cbTimer.h"
 #endif
 #include "l2cap.h"
+#include "hci.h"
 #include "gap.h"
 #include "gapgattserver.h"
 #include "gapbondmgr.h"
 #include "gatt.h"
 #include "gattservapp.h"
-#include "peripheral.h"
+#include "central.h"
 #include "remote_app.h"
 
 __ATTR_SECTION_SRAM__ const pTaskEventHandlerFn tasksArr[] = {
@@ -22,13 +23,11 @@ __ATTR_SECTION_SRAM__ const pTaskEventHandlerFn tasksArr[] = {
     OSAL_CBTIMER_PROCESS_EVENT(osal_CbTimerProcessEvent),
 #endif
     L2CAP_ProcessEvent,
-    SM_ProcessEvent,
     GAP_ProcessEvent,
     GATT_ProcessEvent,
-    GAPRole_ProcessEvent,
-#if (DEF_GAPBOND_MGR_ENABLE == 1)
+    SM_ProcessEvent,
+    GAPCentralRole_ProcessEvent,
     GAPBondMgr_ProcessEvent,
-#endif
     GATTServApp_ProcessEvent,
     Remote_ProcessEvent,
 };
@@ -48,13 +47,11 @@ void osalInitTasks(void)
     osal_CbTimerInit(taskID); taskID += OSAL_CBTIMER_NUM_TASKS;
 #endif
     L2CAP_Init(taskID++);
-    SM_Init(taskID++);
     GAP_Init(taskID++);
     GATT_Init(taskID++);
-    GAPRole_Init(taskID++);
-#if (DEF_GAPBOND_MGR_ENABLE == 1)
+    SM_Init(taskID++);
+    GAPCentralRole_Init(taskID++);
     GAPBondMgr_Init(taskID++);
-#endif
     GATTServApp_Init(taskID++);
     Remote_Init(taskID++);
 }

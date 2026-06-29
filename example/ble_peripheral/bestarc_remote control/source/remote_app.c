@@ -27,12 +27,31 @@ static bys_device_state_t s_bys_state = {
     BYS_VOLTAGE_240V,
     0u
 };
+static bys_device_state_t s_bys_cache = {
+    BYS_DEV_BTC500DP_MAX,
+    BYS_MODE_PLATE,
+    BYS_T2T4_2T,
+    BYS_CURRENT_MIN,
+    0u,
+    0u,
+    0u,
+    0u,
+    BYS_VOLTAGE_240V,
+    0u
+};
 static uint8_t        s_current_editing = 0;
 static uint8_t        s_current_pending = 0;
 static uint8_t        s_current_blink = 1;
 static uint16_t       s_edit_current = BYS_CURRENT_MIN;
+static uint8_t        s_ui_dirty = 1;
+static uint8_t        s_ui_data_dirty = 0;
+static uint8_t        s_ui_fast_dirty = 1;
+static uint8_t        s_bys_cache_dirty = 0;
+static uint32_t       s_last_ui_flush_ms = 0;
 
 static void _ui_request_refresh(void);
+static void _ui_request_data_refresh(void);
+static void _ui_apply_cache(void);
 
 static void _ui_update(void)
 {
@@ -50,17 +69,32 @@ static void _ui_update(void)
 
 static void _ui_request_refresh(void)
 {
-    if (s_taskID != INVALID_TASK_ID) {
-        osal_set_event(s_taskID, REMOTE_UI_EVT);
+    s_ui_dirty = 1;
+    s_ui_fast_dirty = 1;
+}
+
+static void _ui_request_data_refresh(void)
+{
+    s_ui_data_dirty = 1;
+}
+
+static void _ui_apply_cache(void)
+{
+    s_bys_state = s_bys_cache;
+    if (!s_current_editing) {
+        s_edit_current = s_bys_state.current;
+    } else {
+        s_edit_current = remote_proto_clamp_current(s_edit_current, s_bys_state.mode, s_bys_state.voltage);
     }
+    s_bys_cache_dirty = 0;
 }
 
 static void _current_set_from_remote(uint16_t current)
 {
-    s_bys_state.current = remote_proto_clamp_current(current, s_bys_state.mode, s_bys_state.voltage);
-    s_bys_state.valid = 1;
+    s_bys_cache.current = remote_proto_clamp_current(current, s_bys_cache.mode, s_bys_cache.voltage);
+    s_bys_cache.valid = 1;
     if (!s_current_editing) {
-        s_edit_current = s_bys_state.current;
+        s_edit_current = s_bys_cache.current;
     }
 }
 
@@ -112,22 +146,29 @@ static void _current_confirm(void)
 static void _handle_bys_frame(const uint8_t *pkt)
 {
     bys_frame_t frame;
+    bys_device_state_t old_cache;
+    uint8_t old_current_editing;
+    uint16_t old_edit_current;
 
     if (!remote_proto_parse(pkt, &frame)) {
         LOG("[APP] BYS frame ignored: invalid\n");
         return;
     }
 
-    s_bys_state.device_type = frame.device_type;
+    old_cache = s_bys_cache;
+    old_current_editing = s_current_editing;
+    old_edit_current = s_edit_current;
+
+    s_bys_cache.device_type = frame.device_type;
     switch (frame.cmd) {
     case BYS_RSP_MODE:
     case BYS_ACK_MODE:
-        s_bys_state.mode = frame.data;
-        s_edit_current = remote_proto_clamp_current(s_edit_current, s_bys_state.mode, s_bys_state.voltage);
+        s_bys_cache.mode = frame.data;
+        s_bys_cache.current = remote_proto_clamp_current(s_bys_cache.current, s_bys_cache.mode, s_bys_cache.voltage);
         break;
     case BYS_RSP_T2T4:
     case BYS_ACK_T2T4:
-        s_bys_state.t2t4 = frame.data;
+        s_bys_cache.t2t4 = frame.data;
         break;
     case BYS_RSP_CURRENT:
     case BYS_ACK_CURRENT:
@@ -135,40 +176,49 @@ static void _handle_bys_frame(const uint8_t *pkt)
         if (frame.cmd == BYS_ACK_CURRENT) {
             s_current_editing = 0;
             s_current_pending = 0;
-            s_edit_current = s_bys_state.current;
+            s_edit_current = s_bys_cache.current;
         }
         break;
     case BYS_RSP_POSTGAS:
     case BYS_ACK_POSTGAS:
-        s_bys_state.postgas = frame.data;
+        s_bys_cache.postgas = frame.data;
         break;
     case BYS_RSP_ARC:
     case BYS_ACK_ARC:
-        s_bys_state.arc = frame.data;
+        s_bys_cache.arc = frame.data;
         break;
     case BYS_RSP_UNIT:
     case BYS_ACK_UNIT:
-        s_bys_state.unit = frame.data;
+        s_bys_cache.unit = frame.data;
         break;
     case BYS_RSP_ALARM:
-        s_bys_state.alarm = frame.data;
+        s_bys_cache.alarm = frame.data;
         break;
     case BYS_RSP_VOLTAGE:
-        s_bys_state.voltage = frame.data;
-        s_bys_state.current = remote_proto_clamp_current(s_bys_state.current, s_bys_state.mode, s_bys_state.voltage);
-        s_edit_current = remote_proto_clamp_current(s_edit_current, s_bys_state.mode, s_bys_state.voltage);
+        s_bys_cache.voltage = frame.data;
+        s_bys_cache.current = remote_proto_clamp_current(s_bys_cache.current, s_bys_cache.mode, s_bys_cache.voltage);
         break;
     case BYS_RSP_ERROR:
-        s_bys_state.alarm = frame.data;
+        s_bys_cache.alarm = frame.data;
         s_current_pending = 0;
         break;
     default:
         break;
     }
 
-    s_bys_state.valid = 1;
-    LOG("[APP] BYS frame dev=%04X cmd=%04X data=%d\n", frame.device_type, frame.cmd, frame.data);
-    _ui_request_refresh();
+    s_bys_cache.valid = 1;
+    // LOG("[APP] BYS frame dev=%04X cmd=%04X data=%d\n", frame.device_type, frame.cmd, frame.data);
+    if (old_cache.valid != s_bys_cache.valid ||
+        old_cache.t2t4 != s_bys_cache.t2t4 ||
+        old_cache.current != s_bys_cache.current ||
+        old_cache.postgas != s_bys_cache.postgas ||
+        old_cache.arc != s_bys_cache.arc ||
+        old_cache.voltage != s_bys_cache.voltage ||
+        old_current_editing != s_current_editing ||
+        ((old_current_editing || s_current_editing) && old_edit_current != s_edit_current)) {
+        s_bys_cache_dirty = 1;
+        _ui_request_data_refresh();
+    }
 }
 
 static void _ble_event_cb(ble_evt_e evt, void* arg)
@@ -195,8 +245,8 @@ static void _ble_event_cb(ble_evt_e evt, void* arg)
         break;
     case BLE_EVT_DATA_RX: {
         uint8_t* d = (uint8_t*)arg;
-        LOG("[APP] BLE DATA RX: %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X\n",
-            d[0],d[1],d[2],d[3],d[4],d[5],d[6],d[7],d[8],d[9],d[10],d[11]);
+        // LOG("[APP] BLE DATA RX: %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X\n",
+        //     d[0],d[1],d[2],d[3],d[4],d[5],d[6],d[7],d[8],d[9],d[10],d[11]);
         _handle_bys_frame(d);
         break;
     }
@@ -255,6 +305,11 @@ uint16 Remote_ProcessEvent(uint8 task_id, uint16 events)
             LOG("[APP] OSAL started: CONFIG mode (waiting for App)\n");
         }
         _ui_update();
+        s_ui_dirty = 0;
+        if (remote_ui_flush_pending()) {
+            s_ui_fast_dirty = 0;
+            s_last_ui_flush_ms = osal_GetSystemClock();
+        }
         return events ^ REMOTE_START_EVT;
     }
 
@@ -354,6 +409,11 @@ uint16 Remote_ProcessEvent(uint8 task_id, uint16 events)
         return events ^ REMOTE_RECONNECT_EVT;
     }
 
+    if (events & REMOTE_LINK_GUARD_EVT) {
+        remote_ble_process_link_guard();
+        return events ^ REMOTE_LINK_GUARD_EVT;
+    }
+
     if (events & REMOTE_CONFIG_RESET_EVT) {
         LOG("[APP] Soft reset...\n");
         NVIC_SystemReset();
@@ -361,12 +421,49 @@ uint16 Remote_ProcessEvent(uint8 task_id, uint16 events)
     }
 
     if (events & REMOTE_UI_EVT) {
+        static uint8_t blink_tick = 0;
+        uint8_t data_due = 0;
+        uint32_t now = osal_GetSystemClock();
+
         if (s_current_editing) {
-            s_current_blink = s_current_blink ? 0 : 1;
+            blink_tick++;
+            if (blink_tick >= 5) {
+                blink_tick = 0;
+                s_current_blink = s_current_blink ? 0 : 1;
+                s_ui_dirty = 1;
+            }
         } else {
+            blink_tick = 0;
             s_current_blink = 1;
         }
-        _ui_update();
+
+        if (s_ui_data_dirty && s_bys_cache_dirty && !s_current_editing) {
+            if (s_last_ui_flush_ms == 0) {
+                data_due = 1;
+            } else {
+                uint32_t elapsed = now - s_last_ui_flush_ms;
+                if (elapsed >= REMOTE_UI_DATA_FLUSH_MIN_MS) {
+                    data_due = 1;
+                }
+            }
+        }
+
+        if (s_ui_dirty || data_due) {
+            if (data_due) {
+                _ui_apply_cache();
+            }
+            _ui_update();
+            if (remote_ui_flush_pending()) {
+                s_ui_dirty = 0;
+                s_ui_fast_dirty = 0;
+                if (!s_bys_cache_dirty) {
+                    s_ui_data_dirty = 0;
+                }
+                s_last_ui_flush_ms = now;
+            }
+        } else if (remote_ui_flush_pending()) {
+            /* Flush a pending OLED frame when there is no newer UI state. */
+        }
         osal_start_timerEx(s_taskID, REMOTE_UI_EVT, REMOTE_UI_INTERVAL_MS);
         return events ^ REMOTE_UI_EVT;
     }

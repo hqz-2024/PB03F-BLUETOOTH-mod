@@ -35,7 +35,6 @@ LR_ROM_XIP  0x11020000 0x020000 {
    linkdb.o(+RO)
    sm*.o(+RO)
    gap*.o(+RO)
-   peripheral.o(+RO)
    sbpProfile_ota.o(+RO)
    remote_ble.o(+RO)
    remote_app.o(+RO)

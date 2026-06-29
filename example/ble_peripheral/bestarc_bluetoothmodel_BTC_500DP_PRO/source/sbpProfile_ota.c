@@ -261,6 +261,8 @@ bStatus_t SimpleProfile_RegisterAppCBs( simpleProfileCBs_t* appCallbacks )
 /* FFE1 只读（GetParameter），供 bys_bridge 读取 App 写入的数据 */
 bStatus_t SimpleProfile_GetParameter( uint8 param, void* value )
 {
+    if ( value == NULL ) return INVALIDPARAMETER;
+
     if ( param == SIMPLEPROFILE_CHAR1 ) {
         VOID osal_memcpy( value, simpleProfileChar1, SIMPLEPROFILE_CHAR1_LEN );
         return SUCCESS;
@@ -296,12 +298,14 @@ static uint8 simpleProfile_ReadAttrCB( uint16 connHandle, gattAttribute_t* pAttr
     uint16 uuid = BUILD_UINT16( pAttr->type.uuid[0], pAttr->type.uuid[1] );
     if ( uuid == SIMPLEPROFILE_CHAR1_UUID )
     {
+        if ( maxLen < SIMPLEPROFILE_CHAR1_LEN ) return ATT_ERR_INVALID_VALUE_SIZE;
         *pLen = SIMPLEPROFILE_CHAR1_LEN;
         VOID osal_memcpy( pValue, pAttr->pValue, SIMPLEPROFILE_CHAR1_LEN );
         return SUCCESS;
     }
     if ( uuid == SIMPLEPROFILE_CHAR2_UUID )
     {
+        if ( maxLen < SIMPLEPROFILE_CHAR2_LEN ) return ATT_ERR_INVALID_VALUE_SIZE;
         *pLen = SIMPLEPROFILE_CHAR2_LEN;
         VOID osal_memcpy( pValue, pAttr->pValue, SIMPLEPROFILE_CHAR2_LEN );
         return SUCCESS;
@@ -327,7 +331,7 @@ static bStatus_t simpleProfile_WriteAttrCB( uint16 connHandle, gattAttribute_t* 
     if ( uuid == SIMPLEPROFILE_CHAR1_UUID )
     {
         if ( offset != 0 ) return ATT_ERR_ATTR_NOT_LONG;
-        if ( len > SIMPLEPROFILE_CHAR1_LEN ) return ATT_ERR_INVALID_VALUE_SIZE;
+        if ( len != SIMPLEPROFILE_CHAR1_LEN ) return ATT_ERR_INVALID_VALUE_SIZE;
 
         VOID osal_memcpy( (uint8*)pAttr->pValue, pValue, len );
 
@@ -340,7 +344,7 @@ static bStatus_t simpleProfile_WriteAttrCB( uint16 connHandle, gattAttribute_t* 
     if ( uuid == SIMPLEPROFILE_CHAR2_UUID )
     {
         if ( offset != 0 ) return ATT_ERR_ATTR_NOT_LONG;
-        if ( len > SIMPLEPROFILE_CHAR2_LEN ) return ATT_ERR_INVALID_VALUE_SIZE;
+        if ( len != SIMPLEPROFILE_CHAR2_LEN ) return ATT_ERR_INVALID_VALUE_SIZE;
 
         VOID osal_memcpy( (uint8*)pAttr->pValue, pValue, len );
 
@@ -368,13 +372,17 @@ static void simpleProfile_HandleConnStatusCB( uint16 connHandle, uint8 changeTyp
 /* Notify：PB03F 主动推数据给 App */
 bStatus_t simpleProfile_Notify( uint8 param, uint8 len, void* value )
 {
+    if ( value == NULL ) return INVALIDPARAMETER;
+
     if ( param == SIMPLEPROFILE_CHAR1 ) {
+        if ( len != SIMPLEPROFILE_CHAR1_LEN ) return INVALIDPARAMETER;
         VOID osal_memcpy( simpleProfileChar1, value, len );
         return GATTServApp_ProcessCharCfg( simpleProfileChar1Config, simpleProfileChar1, FALSE,
                                            simpleProfileAttrTbl, GATT_NUM_ATTRS( simpleProfileAttrTbl ),
                                            INVALID_TASK_ID );
     }
     if ( param == SIMPLEPROFILE_CHAR2 ) {
+        if ( len != SIMPLEPROFILE_CHAR2_LEN ) return INVALIDPARAMETER;
         VOID osal_memcpy( simpleProfileChar2, value, len );
         return GATTServApp_ProcessCharCfg( simpleProfileChar2Config, simpleProfileChar2, FALSE,
                                            simpleProfileAttrTbl, GATT_NUM_ATTRS( simpleProfileAttrTbl ),

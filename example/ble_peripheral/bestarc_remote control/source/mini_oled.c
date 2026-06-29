@@ -17,9 +17,15 @@
 #define OLED_PAGES       8u
 #define OLED_FONT_W      6u
 #define OLED_FONT_H      8u
-#define OLED_DATA_CHUNK  16u
+#define OLED_PAGE_BYTES  128u
+#define OLED_FB_SIZE     (OLED_WIDTH * OLED_PAGES)
+#define OLED_TX_CHUNK    16u
+#define OLED_SEG_REMAP_CMD 0xA0u
+#define OLED_COM_SCAN_CMD  0xC0u
 
-static uint8_t s_fb[OLED_WIDTH * OLED_PAGES];
+static uint8_t s_fb[OLED_FB_SIZE];
+static uint8_t s_tx_buf[1 + OLED_TX_CHUNK];
+static uint8_t s_refresh_pending = 0;
 static uint8_t s_ready = 0;
 static uint8_t s_i2c_error_logged = 0;
 
@@ -76,14 +82,15 @@ static const uint8_t s_font[96][6] = {
 
 static const uint8_t s_init_seq[] = {
     0xAE,
+    0x2E,
     0xD5, 0x80,
     0xA8, 0x3F,
     0xD3, 0x00,
     0x40,
     0x8D, 0x14,
     0x20, 0x02,
-    0xA1,
-    0xC8,
+    OLED_SEG_REMAP_CMD,
+    OLED_COM_SCAN_CMD,
     0xDA, 0x12,
     0x81, 0xCF,
     0xD9, 0xF1,
@@ -121,6 +128,7 @@ static uint8_t _i2c_write(const uint8_t* data, uint8_t len)
             LOG("[OLED] I2C write failed: ret=%d len=%d\n", ret, len);
             s_i2c_error_logged = 1;
         }
+        hal_i2c_init(OLED_I2C_DEV, I2C_CLOCK_100K);
         return 0;
     }
 
@@ -139,20 +147,57 @@ static uint8_t _cmd2(uint8_t cmd, uint8_t arg)
     return _i2c_write(buf, sizeof(buf));
 }
 
-static uint8_t _data128(const uint8_t* data)
+static uint8_t _set_page_col(uint8_t page, uint8_t col)
 {
-    uint8_t offset = 0;
-    uint8_t buf[1 + OLED_DATA_CHUNK];
+    uint8_t buf[4] = {
+        0x00,
+        (uint8_t)(0xB0 | page),
+        (uint8_t)(0x00 | (col & 0x0Fu)),
+        (uint8_t)(0x10 | ((col >> 4) & 0x0Fu))
+    };
+    return _i2c_write(buf, sizeof(buf));
+}
 
-    buf[0] = 0x40;
-    while (offset < OLED_WIDTH) {
-        memcpy(&buf[1], &data[offset], OLED_DATA_CHUNK);
-        if (!_i2c_write(buf, sizeof(buf))) {
-            return 0;
-        }
-        offset += OLED_DATA_CHUNK;
+static uint8_t _write_data_chunk(uint8_t page, uint8_t col, const uint8_t* data, uint8_t len)
+{
+    if (page >= OLED_PAGES || col >= OLED_WIDTH || len == 0 || len > OLED_TX_CHUNK) {
+        return 0;
     }
 
+    if (!_set_page_col(page, col)) {
+        return 0;
+    }
+
+    s_tx_buf[0] = 0x40;
+    memcpy(&s_tx_buf[1], data, len);
+    return _i2c_write(s_tx_buf, (uint8_t)(len + 1u));
+}
+
+static uint8_t _write_page(uint8_t page)
+{
+    uint8_t col;
+
+    if (page >= OLED_PAGES) {
+        return 0;
+    }
+
+    for (col = 0; col < OLED_PAGE_BYTES; col = (uint8_t)(col + OLED_TX_CHUNK)) {
+        uint16 offset = (uint16)page * OLED_WIDTH + col;
+
+        if (!_write_data_chunk(page, col, &s_fb[offset], OLED_TX_CHUNK)) {
+            return 0;
+        }
+    }
+
+    return 1;
+}
+
+static uint8_t _set_fixed_mapping(void)
+{
+    if (!_cmd(0x2E)) return 0;
+    if (!_cmd2(0x20, 0x02)) return 0;
+    if (!_cmd(OLED_SEG_REMAP_CMD)) return 0;
+    if (!_cmd(OLED_COM_SCAN_CMD)) return 0;
     return 1;
 }
 
@@ -176,13 +221,41 @@ uint8_t oled_flush(void)
 {
     uint8_t page;
 
+    if (!_set_fixed_mapping()) {
+        return 0;
+    }
+
     for (page = 0; page < OLED_PAGES; page++) {
-        if (!_cmd2(0xB0 | page, 0x00)) return 0;
-        if (!_cmd(0x10)) return 0;
-        if (!_data128(&s_fb[page * OLED_WIDTH])) return 0;
+        if (!_write_page(page)) {
+            return 0;
+        }
     }
 
     return 1;
+}
+
+void oled_request_flush_pages(uint8_t first_page, uint8_t page_count)
+{
+    if (first_page >= OLED_PAGES || page_count == 0) {
+        return;
+    }
+
+    (void)page_count;
+    s_refresh_pending = 1;
+}
+
+uint8_t oled_flush_pending(void)
+{
+    uint8_t flushed;
+
+    if (!s_ready || !s_refresh_pending) {
+        return 0;
+    }
+
+    flushed = oled_flush();
+    s_refresh_pending = 0;
+
+    return flushed;
 }
 
 void oled_draw_char(uint8_t x, uint8_t y, char c)
@@ -205,8 +278,11 @@ void oled_draw_char(uint8_t x, uint8_t y, char c)
 
 void oled_draw_str(uint8_t x, uint8_t y, const char* str)
 {
-    while (*str) {
+    while (*str && x < OLED_WIDTH) {
         oled_draw_char(x, y, *str++);
+        if (x > (uint8_t)(OLED_WIDTH - OLED_FONT_W)) {
+            break;
+        }
         x += OLED_FONT_W;
     }
 }
@@ -217,6 +293,7 @@ uint8_t oled_init(void)
     void* pi2c;
 
     s_ready = 0;
+    s_refresh_pending = 0;
     s_i2c_error_logged = 0;
 
     hal_gpio_pin_init(OLED_PIN_SDA, GPIO_INPUT);
@@ -228,6 +305,8 @@ uint8_t oled_init(void)
         LOG("[OLED] I2C pin init failed\n");
         return 0;
     }
+    hal_gpio_pull_set(OLED_PIN_SDA, STRONG_PULL_UP);
+    hal_gpio_pull_set(OLED_PIN_SCL, STRONG_PULL_UP);
 
     pi2c = hal_i2c_init(OLED_I2C_DEV, I2C_CLOCK_100K);
     if (pi2c == NULL) {
@@ -243,6 +322,10 @@ uint8_t oled_init(void)
             return 0;
         }
     }
+    if (!_set_fixed_mapping()) {
+        LOG("[OLED] SSD1306 mapping init failed\n");
+        return 0;
+    }
 
     oled_clear();
     if (!oled_flush()) {
@@ -251,7 +334,7 @@ uint8_t oled_init(void)
     }
 
     s_ready = 1;
-    LOG("[OLED] SSD1306 128x64 ready (mini driver, addr=0x%02X, I2C=100K)\n", OLED_ADDR);
+    LOG("[OLED] SSD1306 128x64 ready (github-style driver, addr=0x%02X, I2C=100K)\n", OLED_ADDR);
     return 1;
 }
 
