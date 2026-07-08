@@ -71,3 +71,42 @@ void remote_proto_build(uint8 *pkt, uint16 dev_type, uint16 cmd, uint16 data)
     pkt[10] = BYS_TAIL_0;
     pkt[11] = BYS_TAIL_1;
 }
+
+/* ─── 设备型号识别与回复 ────────────────────────── */
+uint16_t remote_proto_dev_model(uint16_t raw_dev_type)
+{
+    uint8_t hi, lo;
+
+    if (raw_dev_type == 0) return BYS_DEV_MODEL_UNKNOWN;
+
+    hi = HI_UINT16(raw_dev_type);
+    lo = LO_UINT16(raw_dev_type);
+    /* 型号 ID 可能在高位或低位字节，取非零值作为型号标识 */
+    if (lo && !hi) { hi = lo; lo = 0; }
+
+    /* 高位携带型号 ID: 0x0200=PRO, 0x0300=ULTRA, 0x0400=7GEN, 0x0500=5GEN */
+    switch (hi) {
+    case 0x02: return BYS_DEV_MODEL_PRO;
+    case 0x03: return BYS_DEV_MODEL_ULTRA;
+    case 0x04: return BYS_DEV_MODEL_7GEN;
+    case 0x05: return BYS_DEV_MODEL_5GEN;
+    default:   return BYS_DEV_MODEL_UNKNOWN;
+    }
+}
+
+const char* remote_proto_dev_name(uint16_t model)
+{
+    switch (model) {
+    case BYS_DEV_MODEL_PRO:    return "500DP PRO";
+    case BYS_DEV_MODEL_ULTRA:  return "500DP ULTRA";
+    case BYS_DEV_MODEL_7GEN:   return "500DP 7GEN";
+    case BYS_DEV_MODEL_5GEN:   return "500DP 5GEN";
+    default:                   return "";
+    }
+}
+
+uint16_t remote_proto_dev_reply(uint16_t model)
+{
+    return (uint16_t)(model >> 8);
+    /* 0x0200→0x0002 -> BYS_SET_U16→02 00  etc. */
+}

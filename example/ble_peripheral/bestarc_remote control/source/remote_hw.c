@@ -39,10 +39,21 @@
 /* ─── 模块状态 ─────────────────────────────────── */
 static motor_state_e s_motor_state = MOTOR_OFF;
 static volatile uint8_t s_ir_triggered = 0;
-static volatile uint8_t s_ir_flag = 0;       /* 由 ISR 置位，应用层查询后清除 */
-static volatile uint8_t s_btn_flag = 0;       /* P31 按键标志 */
-static uint8_t s_encoder_last = 0;
-static int8 s_encoder_accum = 0;
+static volatile uint8_t s_ir_flag = 0;
+static volatile uint8_t s_btn_press   = 0;
+static volatile uint8_t s_btn_release = 0;
+static volatile int8   s_encoder_delta = 0;
+static          uint8_t s_encoder_last = 0;
+static          int8   s_encoder_accum = 0;
+
+/* ─── 编码器 Gray 码步进表 ──────────────────────── */
+/* 索引: (prev<<2) | curr, bit1=A, bit0=B (方向已取反) */
+static const int8 s_step_table[16] = {
+     0,  1, -1,  0,
+    -1,  0,  0,  1,
+     1,  0,  0, -1,
+     0, -1,  1,  0
+};
 
 /* ─── 定时器回调 ───────────────────────────────── */
 static void _motor_timer_cb(uint8_t evt)
@@ -76,12 +87,43 @@ static void _ir_edge_cb(gpio_pin_e pin, gpio_polarity_e type)
     }
 }
 
-/* ─── P31 按钮回调 ──────────────────────────────── */
+/* ─── P31 按钮回调 (双沿: 按下/释放) ────────────── */
 static void _btn_edge_cb(gpio_pin_e pin, gpio_polarity_e type)
 {
     (void)pin;
     if (type == POL_FALLING) {
-        s_btn_flag = 1;
+        s_btn_press = 1;
+    } else {
+        s_btn_release = 1;
+    }
+}
+
+/* ─── 编码器中断回调 (P16/P17 双沿触发) ──────────── */
+static void _enc_edge_cb(gpio_pin_e pin, gpio_polarity_e type)
+{
+    uint8_t now;
+    uint8_t idx;
+    int8 step;
+
+    (void)pin;
+    (void)type;
+
+    now = (hal_gpio_read(PIN_ENCODER_A) ? 2u : 0u)
+        | (hal_gpio_read(PIN_ENCODER_B) ? 1u : 0u);
+
+    idx = (uint8_t)((s_encoder_last << 2) | now);
+    s_encoder_last = now;
+
+    step = s_step_table[idx & 0x0Fu];
+    if (step) {
+        s_encoder_accum += step;
+        if (s_encoder_accum >= 4) {
+            s_encoder_accum -= 4;
+            if (s_encoder_delta < 127) s_encoder_delta++;
+        } else if (s_encoder_accum <= -4) {
+            s_encoder_accum += 4;
+            if (s_encoder_delta > -128) s_encoder_delta--;
+        }
     }
 }
 
@@ -134,15 +176,23 @@ void remote_hw_init(void)
     hal_gpioin_enable(PIN_IR);
     LOG("[HW] IR interrupt: P07 dual-edge registered\n");
 
-    /* GPIO 中断: P31 按键下降沿触发 */
-    hal_gpioin_register(PIN_BTN_RESET, NULL, _btn_edge_cb);
+    /* GPIO 中断: P31 按键双沿触发 */
+    hal_gpioin_register(PIN_BTN_RESET, _btn_edge_cb, _btn_edge_cb);
     hal_gpioin_enable(PIN_BTN_RESET);
-    LOG("[HW] BTN interrupt: P31 falling-edge registered\n");
+    LOG("[HW] BTN interrupt: P31 both-edge registered\n");
+
+    /* GPIO 中断: P16/P17 编码器双沿触发 */
+    hal_gpioin_register(PIN_ENCODER_A, _enc_edge_cb, _enc_edge_cb);
+    hal_gpioin_register(PIN_ENCODER_B, _enc_edge_cb, _enc_edge_cb);
+    hal_gpioin_enable(PIN_ENCODER_A);
+    hal_gpioin_enable(PIN_ENCODER_B);
+    LOG("[HW] Encoder interrupt: P16/P17 dual-edge registered\n");
 
     /* 读取初始 P7 状态 */
     s_ir_triggered = hal_gpio_read(PIN_IR) ? 1 : 0;
-    s_encoder_last = (hal_gpio_read(PIN_ENCODER_A) ? 2u : 0u) |
-                     (hal_gpio_read(PIN_ENCODER_B) ? 1u : 0u);
+    s_encoder_last = (hal_gpio_read(PIN_ENCODER_A) ? 2u : 0u)
+                   | (hal_gpio_read(PIN_ENCODER_B) ? 1u : 0u);
+    s_encoder_delta = 0;
     s_encoder_accum = 0;
 
     /* ADC 初始化 (单次采样模式) */
@@ -290,36 +340,27 @@ uint8_t remote_hw_ir_flag_get_and_clear(void)
     return val;
 }
 
-uint8_t remote_hw_btn_flag_get_and_clear(void)
+uint8_t remote_hw_btn_flags_get_and_clear(uint8_t* out_press, uint8_t* out_release)
 {
-    uint8_t val = s_btn_flag;
-    s_btn_flag = 0;
-    return val;
+    HAL_ENTER_CRITICAL_SECTION();
+    *out_press   = s_btn_press;
+    *out_release = s_btn_release;
+    s_btn_press   = 0;
+    s_btn_release = 0;
+    HAL_EXIT_CRITICAL_SECTION();
+    return (*out_press || *out_release) ? 1 : 0;
 }
 
 int8 remote_hw_encoder_get_delta(void)
 {
-    static const int8 step_table[16] = {
-        0, -1,  1,  0,
-        1,  0,  0, -1,
-       -1,  0,  0,  1,
-        0,  1, -1,  0
-    };
-    uint8_t now = (hal_gpio_read(PIN_ENCODER_A) ? 2u : 0u) |
-                  (hal_gpio_read(PIN_ENCODER_B) ? 1u : 0u);
-    uint8_t idx = (uint8_t)((s_encoder_last << 2) | now);
-    int8 ret = 0;
+    int8 ret;
 
-    s_encoder_last = now;
-    s_encoder_accum += step_table[idx & 0x0Fu];
-
-    if (s_encoder_accum >= 4) {
-        s_encoder_accum = 0;
-        ret = 1;
-    } else if (s_encoder_accum <= -4) {
-        s_encoder_accum = 0;
-        ret = -1;
-    }
+    HAL_ENTER_CRITICAL_SECTION();
+    ret = s_encoder_delta;
+    if (ret > 1)  ret = 1;
+    if (ret < -1) ret = -1;
+    s_encoder_delta = 0;
+    HAL_EXIT_CRITICAL_SECTION();
 
     return ret;
 }

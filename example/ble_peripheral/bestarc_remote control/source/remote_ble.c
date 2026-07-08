@@ -876,22 +876,34 @@ void remote_ble_process_event(void)
 void remote_ble_send(const uint8_t* d, uint8_t len)
 {
     attWriteReq_t w;
+    bStatus_t status;
 
     if (len != BLE_PKT_LEN) {
         LOG("[BLE] DATA TX ignored: bad len=%d\n", len);
         return;
     }
 
-    if (s_connHandle == GAP_CONNHANDLE_INIT || !s_conn_ready || !s_char2_handle) {
+    if (s_connHandle == GAP_CONNHANDLE_INIT) {
+        LOG("[BLE] DATA TX fail: no conn handle\n");
+        return;
+    }
+    if (!s_conn_ready) {
+        LOG("[BLE] DATA TX fail: conn not ready\n");
+        return;
+    }
+    if (!s_char2_handle) {
+        LOG("[BLE] DATA TX fail: no char handle\n");
         return;
     }
 
     w.handle = s_char2_handle;
     w.len = len;
-    osal_memcpy(w.value, d, len);
     w.sig = 0;
-    w.cmd = 0;
-    GATT_WriteNoRsp(s_connHandle, &w);
+    w.cmd = 1;
+    osal_memcpy(w.value, d, len);
+    status = GATT_WriteNoRsp(s_connHandle, &w);
+    LOG("[BLE] DATA TX handle=0x%04X len=%d status=%d\n",
+        s_char2_handle, len, status);
 }
 
 void remote_ble_process_reconnect(void)

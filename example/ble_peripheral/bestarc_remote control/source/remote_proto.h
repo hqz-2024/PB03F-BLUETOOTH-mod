@@ -33,6 +33,7 @@
 #define BYS_CMD_SET_POSTGAS     0x0500u
 #define BYS_CMD_SET_ARC         0x0600u
 #define BYS_CMD_SET_UNIT        0x0700u
+#define BYS_CMD_SET_VOLTAGE     0x0900u
 
 #define BYS_RSP_ERROR           0x8100u
 #define BYS_RSP_MODE            0x0082u
@@ -66,6 +67,13 @@
 #define BYS_CHAR_APP_UUID       0xFFE1
 #define BYS_CHAR_REMOTE_UUID    0xFFE2
 
+/* ─── 设备型号 ─────────────────────────────────── */
+#define BYS_DEV_MODEL_PRO        0x0200u
+#define BYS_DEV_MODEL_ULTRA      0x0300u
+#define BYS_DEV_MODEL_7GEN       0x0400u
+#define BYS_DEV_MODEL_5GEN       0x0500u
+#define BYS_DEV_MODEL_UNKNOWN     0x0000u
+
 typedef struct {
     uint16 device_type;
     uint16 cmd;
@@ -97,5 +105,8 @@ uint8 remote_proto_parse(const uint8 *pkt, bys_frame_t *frame);
 uint16 remote_proto_current_max(uint16 mode, uint16 voltage);
 uint16 remote_proto_clamp_current(uint16 current, uint16 mode, uint16 voltage);
 void remote_proto_build(uint8 *pkt, uint16 dev_type, uint16 cmd, uint16 data);
+uint16_t remote_proto_dev_model(uint16_t raw_dev_type);
+const char* remote_proto_dev_name(uint16_t model);
+uint16_t remote_proto_dev_reply(uint16_t model);
 
 #endif
