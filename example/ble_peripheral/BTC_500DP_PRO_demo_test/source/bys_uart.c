@@ -648,7 +648,11 @@ void bys_test_tick(void)
     g_bys_state.arc     = BYS_TEST_ARC_MIN;
 #endif
     g_bys_state.unit    = normalize_unit(random_range(BYS_TEST_UNIT_MIN, BYS_TEST_UNIT_MAX));
-    g_bys_state.alarm   = BYS_TEST_ALARM_VALUE;
+    {
+        static uint8_t alarm_seq = 0;
+        g_bys_state.alarm = alarm_seq;
+        alarm_seq = (alarm_seq + 1) % 3;
+    }
     g_bys_state.valid   = 1;
 }
 
