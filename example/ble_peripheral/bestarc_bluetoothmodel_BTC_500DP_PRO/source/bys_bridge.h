@@ -6,14 +6,19 @@
 /* ─── OSAL 事件位 ───────────────────────────────── */
 #define BYS_START_DEVICE_EVT    0x0001u   /* 启动GAP角色 */
 #define BYS_RESET_ADV_EVT       0x0002u   /* 断连后重新开启广播 */
-#define BYS_POLL_TIMER_EVT      0x0004u   /* 1秒轮询下位机 */
-#define BYS_UART_RX_EVT         0x0008u   /* UART收到数据（uart_rx_cb触发） */
-#define BYS_UART_TX_NEXT_EVT    0x0010u   /* 上一包TX完成，从队列取下一包发送 */
+#define BYS_POLL_TIMER_EVT      0x0004u   /* 轮询下位机定时器 */
+#define BYS_UART_RX_EVT         0x0008u   /* UART1收到下位机数据 */
+#define BYS_UART_TX_NEXT_EVT    0x0010u   /* 上一包TX完成，取下一包 */
 #define BYS_OTA_NOTIFY_EVT      0x0020u   /* 向下位机发送OTA通知包 */
+#define PROXY_UART_RX_EVT       0x0040u   /* UART0收到第三方设备数据 */
+#define PROXY_HB_TIMEOUT_EVT    0x0080u   /* 第三方设备心跳超时 */
+#define PROXY_UART_TX_NEXT_EVT  0x0100u   /* UART0 TX完成，取队列下一包 */
+#define BYS_OP_TIMEOUT_EVT      0x0200u   /* 操作模式超时：300ms无新指令恢复轮询 */
 
 /* ─── 参数配置 ──────────────────────────────────── */
 #define BYS_POLL_INTERVAL_MS    100u      /* TX队列空闲后发送下一条轮询的延时(ms) */
 #define BYS_RESET_ADV_DELAY_MS  100u      /* 断连后重启广播的延时(ms) */
+#define BYS_OP_TIMEOUT_MS       300u      /* 操作模式：收到B/C指令后暂停轮询，300ms无新指令才恢复 */
 
 /* ─── 广播数据偏移（advertData数组下标） ────────── */
 /* AD1(3B) + AD2(5B) = 8B，AD3从第8字节开始 */

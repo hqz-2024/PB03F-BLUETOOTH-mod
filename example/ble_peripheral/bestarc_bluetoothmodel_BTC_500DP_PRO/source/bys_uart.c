@@ -22,8 +22,8 @@ static uint8  s_rx_len = 0;
 /* 轮询状态：当前待发送的查询命令索引 */
 static uint8  s_query_idx = 0;
 
-/* 发送队列：仅缓存APP控制指令，轮询包不入队 */
-#define TX_QUEUE_SIZE   3
+/* 发送队列：仅缓存APP控制指令，轮询包不入队；8槽保证B/C同时下发多条指令不丢 */
+#define TX_QUEUE_SIZE   8
 static uint8  s_tx_queue[TX_QUEUE_SIZE][BYS_PKT_LEN];
 static uint8  s_tx_head = 0;
 static uint8  s_tx_tail = 0;

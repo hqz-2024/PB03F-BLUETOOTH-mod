@@ -56,10 +56,12 @@ static void hal_low_power_io_init(void)
     ioinit_cfg_t ioInit[] = {
         {GPIO_P02, GPIO_FLOATING},  /* SWD */
         {GPIO_P03, GPIO_FLOATING},  /* SWD */
-        {GPIO_P09, GPIO_PULL_UP},   /* UART0 TX (DEBUG) */
-        {GPIO_P10, GPIO_PULL_UP},   /* UART0 RX (DEBUG) */
+        {GPIO_P09, GPIO_PULL_UP},   /* UART0 TX (烧录保留，LOG_INIT用后释放) */
+        {GPIO_P10, GPIO_PULL_UP},   /* UART0 RX (烧录保留，LOG_INIT用后释放) */
         {GPIO_P23, GPIO_PULL_UP},   /* UART1 RX (下位机) */
         {GPIO_P24, GPIO_PULL_UP},   /* UART1 TX (下位机) */
+        {GPIO_P32, GPIO_PULL_UP}, /* UART0 RX (第三方设备透传，proxy_uart_init重映射) */
+        {GPIO_P33, GPIO_PULL_UP}, /* UART0 TX (第三方设备透传，proxy_uart_init重映射) */
         {GPIO_P11, GPIO_PULL_DOWN},
         {GPIO_P16, GPIO_FLOATING},  /* XTAL */
         {GPIO_P18, GPIO_PULL_DOWN},
@@ -74,8 +76,6 @@ static void hal_low_power_io_init(void)
         {GPIO_P26, GPIO_PULL_DOWN},
         {GPIO_P27, GPIO_PULL_DOWN},
         {GPIO_P31, GPIO_PULL_DOWN},
-        {GPIO_P32, GPIO_PULL_DOWN},
-        {GPIO_P33, GPIO_PULL_DOWN},
         {GPIO_P34, GPIO_PULL_DOWN},
     };
     for (uint8_t i = 0; i < sizeof(ioInit)/sizeof(ioinit_cfg_t); i++)
