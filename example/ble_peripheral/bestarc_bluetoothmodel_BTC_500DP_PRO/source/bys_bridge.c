@@ -55,6 +55,16 @@ static uint8 s_polling = 0;
 /* 操作模式标志：1=收到B/C操作指令，暂停轮询，主控优先处理操作指令 */
 static uint8 s_op_active = 0;
 
+/* 排水模式：BLE 断联且无任何设备在线时，
+   以 0x0000（APP未连接）轮询完整一轮，通知主控 APP 下线后再停止 */
+static uint8 s_drain_poll = 0;
+static uint8 s_drain_cnt  = 0;
+
+/* 开机预热模式：进入广播后无论有无设备在线，先轮询完整一轮，
+   获取设备型号与状态并刷新广播数据（暂存RAM），完成后若无设备则停止 */
+static uint8 s_boot_poll = 0;
+static uint8 s_boot_cnt  = 0;
+
 /* ─── 连接状态检查 ──────────────────────────────── */
 
 /* BLE 是否至少有 1 个连接 */
@@ -199,6 +209,9 @@ static void proxy_uart_rx_callback(uint8 *raw_pkt)
 static void proxy_hb_wake_cb(void)
 {
     LOG("[PROXY] Device online (heartbeat detected)\n");
+    /* 设备重新在线：取消排水/预热模式 */
+    s_drain_poll = 0;
+    s_boot_poll  = 0;
     bys_start_polling();
 }
 
@@ -282,7 +295,32 @@ uint16 BYS_Bridge_ProcessEvent(uint8 task_id, uint16 events)
     /* 轮询定时器：操作模式下不轮询（主控优先处理B/C指令），非操作模式才发查询 */
     if (events & BYS_POLL_TIMER_EVT) {
         if (!s_op_active && s_polling) {
-            bys_uart_poll_next(bys_any_connected());
+            if (s_drain_poll) {
+                /* 排水模式：以 0x0000（APP未连接）轮询完整一轮后停止 */
+                if (bys_uart_poll_next(FALSE) == 0) {
+                    s_drain_cnt++;
+                    if (s_drain_cnt >= bys_uart_get_query_count()) {
+                        s_drain_poll = 0;
+                        bys_stop_polling();
+                        LOG("[BYS] Drain poll done, polling stopped\n");
+                    }
+                }
+            } else if (s_boot_poll) {
+                /* 开机预热：轮询完整一轮获取型号+状态，刷新广播后若无设备则停止 */
+                if (bys_uart_poll_next(bys_ble_connected()) == 0) {
+                    s_boot_cnt++;
+                    if (s_boot_cnt >= bys_uart_get_query_count()) {
+                        s_boot_poll = 0;
+                        LOG("[BYS] Boot warmup done\n");
+                        if (!bys_any_connected()) {
+                            bys_stop_polling();
+                        }
+                    }
+                }
+            } else {
+                /* 设备类型仅反映 BLE 连接状态：BLE 在线→0x8000，仅C在线/无BLE→0x0000 */
+                bys_uart_poll_next(bys_ble_connected());
+            }
         }
         return events ^ BYS_POLL_TIMER_EVT;
     }
@@ -347,7 +385,8 @@ uint16 BYS_Bridge_ProcessEvent(uint8 task_id, uint16 events)
     if (events & PROXY_HB_TIMEOUT_EVT) {
         if (proxy_uart_handle_timeout()) {
             LOG("[PROXY] Device offline (heartbeat timeout)\n");
-            if (!bys_any_connected()) {
+            /* 排水模式期间不打断 0x0000 通知轮询 */
+            if (!bys_any_connected() && !s_drain_poll) {
                 bys_stop_polling();
             }
         }
@@ -373,10 +412,14 @@ static void peripheralStateNotificationCB(uint16 connHandle, gaprole_States_t ne
         /*
            GAPROLE_STARTED 可能由断连后自动重启广播触发，
            此时 GAPRole_Connect_Active_Num 已可靠归零。
-           如果 WAITING 阶段未能停止轮询（连接数还没减），在此补齐。
+           若已有设备在线或正在排水，保持现状；
+           否则启动开机预热：轮询完整一轮填充广播数据（型号+状态），完成后若无设备则停止。
         */
-        if (!bys_any_connected()) {
-            bys_stop_polling();
+        if (!bys_any_connected() && !s_drain_poll) {
+            bys_start_polling();
+            s_boot_poll = 1;
+            s_boot_cnt  = 0;
+            LOG("[BYS] Boot warmup poll start\n");
         }
         break;
     }
@@ -386,7 +429,9 @@ static void peripheralStateNotificationCB(uint16 connHandle, gaprole_States_t ne
         LOG("[BYS] Connected, active=%d\n", GAPRole_Connect_Active_Num());
         LOG("[BYS] service changed ind ret=%d (conn=%d)\n",
             GATTServApp_SendServiceChangedInd(connHandle, bys_TaskID), connHandle);
-        /* APP 上线 → 启动轮询 */
+        /* APP 上线 → 取消排水/预热，恢复正常轮询（设备类型恢复 0x8000） */
+        s_drain_poll = 0;
+        s_boot_poll  = 0;
         bys_start_polling();
         break;
 
@@ -394,10 +439,16 @@ static void peripheralStateNotificationCB(uint16 connHandle, gaprole_States_t ne
     case GAPROLE_WAITING_AFTER_TIMEOUT:
         /* peripheralMultiConn 会自动重启广播，此处仅日志 */
         LOG("[BYS] Disconnected, active=%d\n", GAPRole_Connect_Active_Num());
-        /* 如果第三方设备也不在线 → 停止轮询 */
         if (!bys_any_connected()) {
-            bys_stop_polling();
+            /* 两设备均离线：进入排水模式，以 0x0000（APP未连接）轮询完整一轮，
+               通知主控 APP 下线并更新状态，完成后停止轮询重新进入广播 */
+            if (s_polling && !s_drain_poll) {
+                s_drain_poll = 1;
+                s_drain_cnt  = 0;
+                LOG("[BYS] Drain poll start (APP offline notify)\n");
+            }
         }
+        /* C 仍在线：不停止轮询，设备类型自动切换为 0x0000 通知主控 APP 下线 */
         break;
 
     default:
@@ -435,7 +486,7 @@ static void simpleProfileChangeCB(uint8 paramID)
     }
 }
 
-/* ─── 更新广播数据中的设备状态字段 ─────────────── */
+/* ─── 更新广播数据中的设备状态字段（按系列布局） ─── */
 static void bys_update_adv_data(void)
 {
     /* 小端序填写各字段 */
@@ -445,11 +496,22 @@ static void bys_update_adv_data(void)
 
     PUT_LE16(ADV_DEV_TYPE_OFFSET, g_bys_state.device_type);
     PUT_LE16(ADV_MODE_OFFSET,    g_bys_state.mode);
-    PUT_LE16(ADV_T2T4_OFFSET,    g_bys_state.t2t4);
-    PUT_LE16(ADV_CURRENT_OFFSET, g_bys_state.current);
-    PUT_LE16(ADV_POSTGAS_OFFSET, g_bys_state.postgas);
-    PUT_LE16(ADV_ARC_OFFSET,     g_bys_state.arc);
-    PUT_LE16(ADV_UNIT_OFFSET,    g_bys_state.unit);
+
+    if (IS_MIG_SERIES(g_bys_state.device_type)) {
+        /* MIG 广播布局：工作模式+焊丝直径+电流+2T4T+报警+输入电压 */
+        PUT_LE16(ADV_T2T4_OFFSET,    g_bys_state.wire_dia);  /* 焊丝直径 */
+        PUT_LE16(ADV_CURRENT_OFFSET, g_bys_state.current);   /* MIG电流 */
+        PUT_LE16(ADV_POSTGAS_OFFSET, g_bys_state.t2t4);      /* 2T/4T */
+        PUT_LE16(ADV_ARC_OFFSET,     g_bys_state.alarm);     /* 报警 */
+        PUT_LE16(ADV_UNIT_OFFSET,    g_bys_state.voltage);   /* 输入电压 */
+    } else {
+        /* BTC 广播布局：模式+2T4T+电流+后气+维弧+单位（含5GEN，不存在的字段回复0） */
+        PUT_LE16(ADV_T2T4_OFFSET,    g_bys_state.t2t4);
+        PUT_LE16(ADV_CURRENT_OFFSET, g_bys_state.current);
+        PUT_LE16(ADV_POSTGAS_OFFSET, g_bys_state.postgas);
+        PUT_LE16(ADV_ARC_OFFSET,     g_bys_state.arc);
+        PUT_LE16(ADV_UNIT_OFFSET,    g_bys_state.unit);
+    }
 #undef PUT_LE16
 
     GAPRole_SetParameter(GAPROLE_ADVERT_DATA, sizeof(advertData), advertData);

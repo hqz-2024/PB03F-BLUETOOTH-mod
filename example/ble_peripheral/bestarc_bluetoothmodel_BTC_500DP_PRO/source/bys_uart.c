@@ -34,8 +34,10 @@ static uint8  s_poll_pkt[BYS_PKT_LEN];
 /* 全局设备状态，供广播数据使用 */
 bys_device_state_t g_bys_state = {0};
 
-/* 8条查询命令循环表 */
-static const uint16 s_query_cmds[BYS_QUERY_COUNT] = {
+/* ─── 查询命令表（按设备系列自动切换） ──────────── */
+
+/* BTC 系列：8 条查询（0x0002-0x0009） */
+static const uint16 s_query_cmds_btc[BYS_QUERY_COUNT_BTC] = {
     BYS_CMD_QUERY_MODE,
     BYS_CMD_QUERY_T2T4,
     BYS_CMD_QUERY_CURRENT,
@@ -45,6 +47,26 @@ static const uint16 s_query_cmds[BYS_QUERY_COUNT] = {
     BYS_CMD_QUERY_ALARM,
     BYS_CMD_QUERY_VOLTAGE,
 };
+
+/* MIG 系列：12 条查询（0x0002-0x000D） */
+static const uint16 s_query_cmds_mig[BYS_QUERY_COUNT_MIG] = {
+    BYS_CMD_QUERY_MODE,             /* MIG: 0x0002 查询工作模式 */
+    BYS_CMD_QUERY_T2T4,             /* MIG: 0x0003 查询焊丝直径 */
+    BYS_CMD_QUERY_CURRENT,          /* MIG: 0x0004 查询智能模式 */
+    BYS_CMD_QUERY_POSTGAS,          /* MIG: 0x0005 查询MIG电流 */
+    BYS_CMD_QUERY_ARC,              /* MIG: 0x0006 查询MIG电压调整(-3.0~3.0) */
+    BYS_CMD_QUERY_UNIT,             /* MIG: 0x0007 查询2T/4T */
+    BYS_CMD_QUERY_ALARM,            /* MIG: 0x0008 查询TIG电流 */
+    BYS_CMD_QUERY_VOLTAGE,          /* MIG: 0x0009 查询MMA电流 */
+    BYS_CMD_MIG_QUERY_VOLTADJ,      /* MIG: 0x000A 查询VRD */
+    BYS_CMD_MIG_QUERY_VOLTAGE2,     /* MIG: 0x000B 查询MIG电压显示 */
+    BYS_CMD_MIG_QUERY_ALARM,        /* MIG: 0x000C 查询报警 */
+    BYS_CMD_MIG_QUERY_VOLTAGE,      /* MIG: 0x000D 查询输入电压 */
+};
+
+/* 当前生效的查询表（默认 BTC，收到设备型号后自动切换） */
+static const uint16 *s_query_table = s_query_cmds_btc;
+static uint8  s_query_count = BYS_QUERY_COUNT_BTC;
 
 /* ─── 内部函数 ──────────────────────────────────── */
 
@@ -109,6 +131,37 @@ static void send_packet(uint16 dev_type, uint16 cmd, uint16 data)
 /* 根据响应命令码更新全局设备状态，返回是否为查询响应（非错误包） */
 static uint8 apply_response(uint16 cmd, uint16 data)
 {
+    /* MIG 系列：响应命令码与 BTC 不同（0x0082-0x008D），按系列解析 */
+    if (IS_MIG_SERIES(g_bys_state.device_type)) {
+        switch (cmd) {
+            case BYS_RSP_MODE:        /* 0x0082 工作模式 */
+                g_bys_state.mode    = data;
+                return 1;
+            case BYS_RSP_MIG_WIRE:    /* 0x0083 焊丝直径 */
+                g_bys_state.wire_dia = data;
+                return 1;
+            case 0x0084u:             /* 智能模式开/关 */
+                g_bys_state.smart    = data;
+                return 1;
+            case BYS_RSP_MIG_CURRENT: /* 0x0085 MIG电流 */
+                g_bys_state.current  = data;
+                return 1;
+            case BYS_RSP_MIG_T2T4:    /* 0x0087 2T/4T */
+                g_bys_state.t2t4     = data;
+                return 1;
+            case BYS_RSP_MIG_ALARM:   /* 0x008C 报警 */
+                g_bys_state.alarm    = data;
+                return 1;
+            case BYS_RSP_MIG_VOLTAGE: /* 0x008D 输入电压（一轮完成） */
+                g_bys_state.voltage  = data;
+                g_bys_state.valid    = 1;
+                return 1;
+            default:
+                return 0;  /* TIG/MMA电流、VRD、电压等非广播字段，仍透传 */
+        }
+    }
+
+    /* BTC 系列（含 5GEN） */
     switch (cmd) {
         case BYS_RSP_MODE:    g_bys_state.mode    = data; return 1;
         case BYS_RSP_T2T4:    g_bys_state.t2t4    = data; return 1;
@@ -126,6 +179,29 @@ static uint8 apply_response(uint16 cmd, uint16 data)
             return 1;  /* 错误包也是响应 */
         default:
             return 0;  /* 未知命令，可能是APP控制指令的确认包(0x82XX) */
+    }
+}
+
+/* 根据设备型号切换查询表（BTC 8条 / MIG 12条） */
+static void update_query_table(void)
+{
+    const uint16 *new_tab;
+    uint8 new_cnt;
+
+    if (IS_MIG_SERIES(g_bys_state.device_type)) {
+        new_tab = s_query_cmds_mig;
+        new_cnt = BYS_QUERY_COUNT_MIG;
+    } else {
+        new_tab = s_query_cmds_btc;
+        new_cnt = BYS_QUERY_COUNT_BTC;
+    }
+
+    if (s_query_table != new_tab) {
+        s_query_table = new_tab;
+        s_query_count = new_cnt;
+        s_query_idx   = 0;
+        LOG("[BYS] Query table switched to %s (%d cmds)\n",
+            IS_MIG_SERIES(g_bys_state.device_type) ? "MIG" : "BTC", new_cnt);
     }
 }
 
@@ -190,7 +266,7 @@ uint8 bys_uart_poll_next(uint8 app_connected)
     }
 
     uint16 dev_type = app_connected ? BYS_DEV_APP_ON : BYS_DEV_APP_OFF;
-    uint16 cmd      = s_query_cmds[s_query_idx];
+    uint16 cmd      = s_query_table[s_query_idx];
     uint16 data     = 0x0000;
     uint16 chksum   = cmd + data;
 
@@ -207,7 +283,7 @@ uint8 bys_uart_poll_next(uint8 app_connected)
     s_poll_pkt[10] = BYS_TAIL_0;
     s_poll_pkt[11] = BYS_TAIL_1;
 
-    s_query_idx = (s_query_idx + 1) % BYS_QUERY_COUNT;
+    s_query_idx = (s_query_idx + 1) % s_query_count;
     s_tx_busy = 1;
     hal_uart_send_buff(BYS_UART_PORT, s_poll_pkt, BYS_PKT_LEN);
     return 0;
@@ -228,8 +304,9 @@ void bys_uart_process_rx(void)
             uint16 chksum = BUILD_UINT16(s_rx_buf[i+8], s_rx_buf[i+9]);
 
             if (chksum == (uint16)(cmd + data)) {
-                /* 提取设备上报的机型代码 */
+                /* 提取设备上报的机型代码，并按系列自动切换轮询规则 */
                 g_bys_state.device_type = BUILD_UINT16(s_rx_buf[i+2], s_rx_buf[i+3]);
+                update_query_table();
                 /* 更新全局状态（查询响应） */
                 apply_response(cmd, data);
 
@@ -254,15 +331,12 @@ void bys_uart_process_rx(void)
     tx_process();
 }
 
-/* APP控制指令入队（高优先级），返回0成功 */
+/* APP控制指令入队（高优先级），返回0成功
+   2-3位设备类型字段按发送方原样透传，不做修改 */
 uint8 bys_uart_send_app_cmd(uint8 *buf, uint8 len)
 {
     if (len != BYS_PKT_LEN) return 1;
     if (buf[0] != BYS_HEADER_0 || buf[1] != BYS_HEADER_1) return 1;
-
-    /* 修正设备类型字段为APP已连接（小端序：低字节在pkt[2]） */
-    buf[2] = LO_UINT16(BYS_DEV_APP_ON);
-    buf[3] = HI_UINT16(BYS_DEV_APP_ON);
 
     /* 入队（队满会丢弃） */
     if (tx_enqueue(buf) != 0) {
@@ -280,4 +354,10 @@ uint8 bys_uart_tx_process(void)
 {
     s_tx_busy = 0;
     return tx_process();
+}
+
+/* 返回当前生效的查询条数（BTC=8 / MIG=12，由设备型号自动切换） */
+uint8 bys_uart_get_query_count(void)
+{
+    return s_query_count;
 }

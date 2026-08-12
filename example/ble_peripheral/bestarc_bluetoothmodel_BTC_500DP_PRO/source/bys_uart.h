@@ -24,7 +24,18 @@
 #define BYS_CMD_OTA_TRIGGER     0xFE00u
 #define BYS_DATA_OTA_TRIGGER    0x00FEu
 
-/* 查询命令码 */
+/* ─── 设备型号（主控响应帧 2-3 位，低字节） ──────── */
+#define BYS_DEV_TYPE_BTC500DP_PRO   0x0002u   /* BTC 系列 */
+#define BYS_DEV_TYPE_BTC550DP_ULTRA 0x0003u   /* BTC 系列 */
+#define BYS_DEV_TYPE_BTC500DP_7GEN  0x0004u   /* BTC 系列 */
+#define BYS_DEV_TYPE_BTC500DP_5GEN  0x0005u   /* BTC 系列（单功能机，实测兼容8条轮询） */
+#define BYS_DEV_TYPE_MIG145         0x0006u   /* MIG 系列 */
+#define BYS_DEV_TYPE_MIG135         0x0007u   /* MIG 系列 */
+
+/* 设备是否属于 MIG 系列（轮询规则/广播布局按系列区分） */
+#define IS_MIG_SERIES(dt)  ((dt) == BYS_DEV_TYPE_MIG145 || (dt) == BYS_DEV_TYPE_MIG135)
+
+/* 查询命令码（BTC 系列，8 条） */
 #define BYS_CMD_QUERY_MODE      0x0002u
 #define BYS_CMD_QUERY_T2T4      0x0003u
 #define BYS_CMD_QUERY_CURRENT   0x0004u
@@ -33,7 +44,14 @@
 #define BYS_CMD_QUERY_UNIT      0x0007u
 #define BYS_CMD_QUERY_ALARM     0x0008u
 #define BYS_CMD_QUERY_VOLTAGE   0x0009u
-#define BYS_QUERY_COUNT         8u
+#define BYS_QUERY_COUNT_BTC     8u
+
+/* 查询命令码（MIG 系列扩展，0x0002-0x000D 共12条） */
+#define BYS_CMD_MIG_QUERY_VOLTADJ   0x000Au   /* MIG电压调整(-3.0~3.0) */
+#define BYS_CMD_MIG_QUERY_VOLTAGE2  0x000Bu   /* MIG电压显示(13.5~24.2) */
+#define BYS_CMD_MIG_QUERY_ALARM     0x000Cu
+#define BYS_CMD_MIG_QUERY_VOLTAGE   0x000Du
+#define BYS_QUERY_COUNT_MIG     12u
 
 /* 响应命令码 */
 #define BYS_RSP_ERROR       0x8100u
@@ -46,17 +64,26 @@
 #define BYS_RSP_ALARM       0x0088u
 #define BYS_RSP_VOLTAGE     0x0089u
 
+/* 响应命令码（MIG 系列，广播所需字段） */
+#define BYS_RSP_MIG_WIRE      0x0083u   /* 焊丝直径 */
+#define BYS_RSP_MIG_CURRENT   0x0085u   /* MIG电流 */
+#define BYS_RSP_MIG_T2T4      0x0087u
+#define BYS_RSP_MIG_ALARM     0x008Cu
+#define BYS_RSP_MIG_VOLTAGE   0x008Du
+
 /* ─── 设备状态结构体 ─────────────────────────────── */
 typedef struct {
     uint16 device_type; /* 设备机型，从下位机响应包中获取 */
-    uint16 mode;        /* 0=钢板 1=网格 2=除锈 */
+    uint16 mode;        /* BTC: 0=钢板 1=网格 2=除锈；MIG: 0=MIG 1=LIFT TIG 2=MMA */
     uint16 t2t4;        /* 0=2T   1=4T */
-    uint16 current;     /* 电流(A) */
-    uint16 postgas;     /* 后气时间(s) */
-    uint16 arc;         /* 维弧时间(s) */
-    uint16 unit;        /* 0=PSI 1=MPa 2=BAR */
+    uint16 current;     /* BTC: 电流(A)；MIG: MIG电流 */
+    uint16 postgas;     /* 后气时间(s)（BTC） */
+    uint16 arc;         /* 维弧时间(s)（BTC） */
+    uint16 unit;        /* 0=PSI 1=MPa 2=BAR（BTC） */
     uint16 alarm;       /* 0=无 1=过流 2=过热 */
-    uint16 voltage;     /* 0=120V 1=240V */
+    uint16 voltage;     /* BTC: 0=120V 1=240V；MIG: 0=110V 1=220V */
+    uint16 wire_dia;    /* 焊丝直径（MIG，0x0083响应） */
+    uint16 smart;       /* 智能模式开/关（MIG，0x0084响应） */
     uint8  valid;       /* 至少完成一轮查询后置1 */
 } bys_device_state_t;
 
@@ -82,5 +109,8 @@ void bys_uart_process_rx(void);
 
 /* APP控制指令入队：将12字节包加入发送队列（高优先级，立即发送），返回0成功 */
 uint8 bys_uart_send_app_cmd(uint8 *buf, uint8 len);
+
+/* 返回当前生效的查询条数（BTC=8 / MIG=12，由设备型号自动切换） */
+uint8 bys_uart_get_query_count(void);
 
 #endif /* BYS_UART_H */
