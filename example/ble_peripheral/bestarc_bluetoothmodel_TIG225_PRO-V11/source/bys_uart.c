@@ -34,7 +34,7 @@ static uint8  s_poll_pkt[BYS_PKT_LEN];
 /* 全局设备状态，供广播数据使用 */
 bys_device_state_t g_bys_state = {0};
 
-/* 21条查询命令循环表 — ACDC TIG215 Pro 协议 v000 */
+/* 21条查询命令循环表 — ACDC TIG225 Pro 协议 v000 */
 static const uint16 s_query_cmds[BYS_QUERY_COUNT] = {
     BYS_CMD_QUERY_MODE,
     BYS_CMD_QUERY_HOT_START,

@@ -23,7 +23,7 @@
 /* 单位 10ms：0x01F4=500 → 5s 超时后进入 WAITING_AFTER_TIMEOUT */
 #define DEFAULT_CONN_TIMEOUT        0x01F4u
 
-/* ─── 广播数据（AD1+AD2+AD3，ACDC TIG215 Pro 协议 v000） ── */
+/* ─── 广播数据（AD1+AD2+AD3，ACDC TIG225 Pro 协议 v000） ── */
 static uint8 advertData[31] = {
     /* AD1: Flags */
     0x02, 0x01, 0x06,
@@ -32,7 +32,7 @@ static uint8 advertData[31] = {
     /* AD3: Manufacturer Specific (length=0x16, type=0xFF) */
     0x16, 0xFF,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* MAC placeholder [10-15] */
-    0x00, 0x00,  /* device type   [16-17] 0x0009 = ACDC TIG215 Pro */
+    0x00, 0x00,  /* device type   [16-17] 主控上报值（TIG 系列文档为 0x0009） */
     0x00, 0x00,  /* 焊接模式       [18-19] */
     0x00, 0x00,  /* 2T/4T/点焊    [20-21] */
     0x00, 0x00,  /* 焊接电流       [22-23] */
@@ -138,7 +138,7 @@ void BYS_Bridge_Init(uint8 task_id)
 
     /* 注册 Device Information Service */
     DevInfo_AddService();
-    DevInfo_SetParameter(DEVINFO_MODEL_NUMBER,      9,  "TIG215PRO");
+    DevInfo_SetParameter(DEVINFO_MODEL_NUMBER,      9,  "TIG225PRO");
     DevInfo_SetParameter(DEVINFO_MANUFACTURER_NAME, 3,  "BYS");
     DevInfo_SetParameter(DEVINFO_FIRMWARE_REV,      5,  "1.0.0");
     DevInfo_SetParameter(DEVINFO_HARDWARE_REV,      5,  "1.0.0");

@@ -19,7 +19,7 @@
 /* AD1(3B) + AD2(5B) = 8B，AD3从第8字节开始 */
 #define ADV_AD3_START           8
 #define ADV_MAC_OFFSET          10        /* AD3内MAC起始（绝对偏移）*/
-#define ADV_DEV_TYPE_OFFSET      16       /* 设备类型 0x0009 TIG215 Pro */
+#define ADV_DEV_TYPE_OFFSET      16       /* 设备类型（主控上报，TIG 系列文档为 0x0009） */
 #define ADV_MODE_OFFSET          18       /* 焊接模式 */
 #define ADV_T2T4_OFFSET          20       /* 2T/4T/点焊 */
 #define ADV_CURRENT_OFFSET       22       /* 焊接电流 */

@@ -7,7 +7,10 @@
 #define BYS_UART_PORT       UART1
 #define BYS_UART_TX_PIN     P24
 #define BYS_UART_RX_PIN     P23
-#define BYS_UART_BAUD       57600   /* ACDC TIG215 Pro 协议 v000：波特率 57600 8N0 */
+#define BYS_UART_BAUD       57600  /* ACDC TIG225 Pro 协议 v000：波特率 115200 8N0
+                                     * （TIG215 Pro 为 57600，TIG225 Pro 提升为 115200）
+                                     * 调试日志走 UART0（P9/P10），波特率不受此项影响，
+                                     * 仍由 SDK 的 dbg_printf_init() 决定（115200）。 */
 
 /* ─── 协议常量 ──────────────────────────────────── */
 #define BYS_PKT_LEN         12
@@ -24,8 +27,10 @@
 #define BYS_CMD_OTA_TRIGGER     0xFE00u
 #define BYS_DATA_OTA_TRIGGER    0x00FEu
 
-/* 本机机型码：设备上报时低字节固定为 09（ACDC TIG215 Pro） */
-#define BYS_DEV_TYPE_TIG215_PRO 0x0009u
+/* 本机机型码：协议规定设备上报时低字节为机型代码，TIG215 Pro/0x0009，
+ * 后续机型以此累加（TIG225 Pro 文档未给出新值，仍沿用 0x0009）。
+ * 实际取值以主控上报为准：解析响应包时透传，不在此硬编码。 */
+#define BYS_DEV_TYPE_TIG_PRO    0x0009u
 
 /* ─── 命令码：上位机设定（APP下发→主控，本模块只透传不解析）───
  * 0x0200 模式(0=STICK 1=TIG(DC) 2=TIG(AC方波) 3=TIG(AC三角波))
@@ -90,7 +95,7 @@
 
 /* ─── 设备状态结构体 ─────────────────────────────── */
 typedef struct {
-    uint16 device_type;    /* 设备机型：0x0009 = ACDC TIG215 Pro */
+    uint16 device_type;    /* 设备机型：主控上报值（TIG 系列文档为 0x0009） */
     uint16 mode;           /* 0=STICK 1=TIG(DC) 2=TIG(AC方波) 3=TIG(AC三角波) */
     uint16 hot_start;      /* 热引弧电流 0~100A，0=OFF */
     uint16 thrust;         /* 推力电流   0~100A，0=OFF */
