@@ -12,7 +12,7 @@
 #define BYS_OTA_NOTIFY_EVT      0x0020u   /* 向下位机发送OTA通知包 */
 
 /* ─── 参数配置 ──────────────────────────────────── */
-#define BYS_POLL_INTERVAL_MS    100u      /* TX 空闲后再发轮询的延时(ms) */
+#define BYS_POLL_INTERVAL_MS    30u      /* TX 空闲后再发轮询的延时(ms) */
 #define BYS_RESET_ADV_DELAY_MS  100u      /* 断连后重启广播的延时(ms) */
 
 /* ─── 广播数据偏移（advertData数组下标） ────────── */
