@@ -80,8 +80,10 @@ class ProtocolDemoContractTest(unittest.TestCase):
             self.assertIn(field, header)
         self.assertRegex(config, r"DEMO_TEST_SPOT_TIME_MIN\s+10u")
         self.assertRegex(config, r"DEMO_TEST_SPOT_TIME_MAX\s+150u")
-        self.assertIn("ac_freq * 2u", source)
-        self.assertIn("maximum 400", source.lower())
+        self.assertRegex(config, r"DEMO_TEST_TRIANGLE_CMD_MIN\s+100u")
+        self.assertRegex(config, r"DEMO_TEST_TRIANGLE_CMD_MAX\s+4000u")
+        self.assertIn("ac_freq * 20u", source)
+        self.assertIn("maximum 4000", source.lower())
 
     def test_gatt_and_uart_pins(self):
         for project in (MIG145, TIG225):
@@ -175,6 +177,37 @@ class ProtocolDemoContractTest(unittest.TestCase):
                 source = read(project / script)
                 self.assertIn(output, source)
                 self.assertNotIn("simpleBlePeripheral", source)
+
+    def test_polling_starts_during_bridge_init(self):
+        for project in (MIG145, TIG225):
+            source = read(project / "source" / "bys_bridge.c")
+            init_start = source.index("void BYS_Bridge_Init")
+            init_end = source.index("uint16 BYS_Bridge_ProcessEvent", init_start)
+            init_body = source[init_start:init_end]
+            poll_pos = init_body.index(
+                "osal_start_timerEx(bys_TaskID, BYS_POLL_TIMER_EVT"
+            )
+            start_pos = init_body.index(
+                "osal_set_event(bys_TaskID, BYS_START_DEVICE_EVT)"
+            )
+            self.assertLess(poll_pos, start_pos)
+
+    def test_app_query_probe_receives_a_query_response(self):
+        for project in (MIG145, TIG225):
+            source = read(project / "source" / "bys_test.c")
+            handle = source[source.index("uint8 bys_test_handle_app_cmd"):]
+            self.assertIn("query_response(cmd", handle)
+            self.assertLess(
+                handle.index("query_response(cmd"),
+                handle.index("apply_setting(cmd"),
+            )
+
+    def test_test_mode_clamps_known_settings_instead_of_rejecting(self):
+        for project in (MIG145, TIG225):
+            source = read(project / "source" / "bys_test.c")
+            handle = source[source.index("uint8 bys_test_handle_app_cmd"):]
+            self.assertNotIn("validate_setting(cmd, data)", handle)
+            self.assertIn("apply_setting(cmd, data)", handle)
 
 
 if __name__ == "__main__":

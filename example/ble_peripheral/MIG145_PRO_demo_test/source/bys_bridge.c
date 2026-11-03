@@ -190,6 +190,10 @@ void BYS_Bridge_Init(uint8 task_id)
     hal_gpioin_enable(BYS_BUTTON_PIN);
 #endif
 
+    /* Start polling immediately at boot; BLE connection state is not required. */
+    osal_start_timerEx(bys_TaskID, BYS_POLL_TIMER_EVT,
+                       BYS_POLL_INTERVAL_MS);
+
     osal_set_event(bys_TaskID, BYS_START_DEVICE_EVT);
 }
 
@@ -305,8 +309,6 @@ static void peripheralStateNotificationCB(gaprole_States_t newState)
         GAPRole_GetParameter(GAPROLE_BD_ADDR, addr);
         bys_set_adv_mac_be(addr);
         GAPRole_SetParameter(GAPROLE_ADVERT_DATA, sizeof(advertData), advertData);
-        osal_start_timerEx(bys_TaskID, BYS_POLL_TIMER_EVT,
-                           BYS_POLL_INTERVAL_MS);
         LOG("[MIG145] advertising started\n");
         break;
     }

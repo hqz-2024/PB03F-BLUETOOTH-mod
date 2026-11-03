@@ -106,37 +106,10 @@ static void normalize_state(void)
     g_bys_state.valid = 1u;
 }
 
-static uint8 validate_setting(uint16 cmd, uint16 data)
+static uint8 apply_setting(uint16 cmd, uint16 data)
 {
-    switch (cmd) {
-    case BYS_CMD_SET_MODE:
-        return data <= 2u ? 1u : 0u;
-    case BYS_CMD_SET_WIRE_DIAMETER:
-        return data <= DEMO_TEST_WIRE_DIAMETER_MAX ? 1u : 0u;
-    case BYS_CMD_SET_SMART_MODE:
-        return data <= DEMO_TEST_SMART_MODE_MAX ? 1u : 0u;
-    case BYS_CMD_SET_MIG_CURRENT:
-        return (data >= DEMO_TEST_MIG_CURRENT_MIN &&
-                data <= mig_current_max(g_bys_state.input_voltage)) ? 1u : 0u;
-    case BYS_CMD_SET_MIG_VOLTAGE_ADJ:
-        return data <= DEMO_TEST_MIG_VOLTAGE_ADJ_MAX ? 1u : 0u;
-    case BYS_CMD_SET_T2T4:
-        return data <= DEMO_TEST_T2T4_MAX ? 1u : 0u;
-    case BYS_CMD_SET_TIG_CURRENT:
-        return (data >= DEMO_TEST_TIG_CURRENT_MIN &&
-                data <= tig_current_max(g_bys_state.input_voltage)) ? 1u : 0u;
-    case BYS_CMD_SET_MMA_CURRENT:
-        return (data >= DEMO_TEST_MMA_CURRENT_MIN &&
-                data <= mma_current_max(g_bys_state.input_voltage)) ? 1u : 0u;
-    case BYS_CMD_SET_VRD:
-        return data <= DEMO_TEST_VRD_MAX ? 1u : 0u;
-    default:
-        return 0u;
-    }
-}
+    uint8 known = 1u;
 
-static void apply_setting(uint16 cmd, uint16 data)
-{
     switch (cmd) {
     case BYS_CMD_SET_MODE:
         g_bys_state.mode = bys_setting_mode_to_state(data);
@@ -166,53 +139,101 @@ static void apply_setting(uint16 cmd, uint16 data)
         g_bys_state.vrd = data;
         break;
     default:
+        known = 0u;
         break;
     }
-    normalize_state();
+    if (known) {
+        normalize_state();
+    }
+    return known;
 }
 
-static uint16 query_value(uint16 query_cmd, uint16 *response_cmd)
+static uint16 setting_confirmation_value(uint16 cmd)
+{
+    switch (cmd) {
+    case BYS_CMD_SET_MODE:
+        if (g_bys_state.mode == 2u) {
+            return 0u; /* internal MMA -> setting-table MMA */
+        }
+        if (g_bys_state.mode == 0u) {
+            return 2u; /* internal MIG -> setting-table MIG */
+        }
+        return 1u;
+    case BYS_CMD_SET_WIRE_DIAMETER:
+        return g_bys_state.wire_diameter;
+    case BYS_CMD_SET_SMART_MODE:
+        return g_bys_state.smart_mode;
+    case BYS_CMD_SET_MIG_CURRENT:
+        return g_bys_state.mig_current;
+    case BYS_CMD_SET_MIG_VOLTAGE_ADJ:
+        return g_bys_state.mig_voltage_adj;
+    case BYS_CMD_SET_T2T4:
+        return g_bys_state.t2t4;
+    case BYS_CMD_SET_TIG_CURRENT:
+        return g_bys_state.tig_current;
+    case BYS_CMD_SET_MMA_CURRENT:
+        return g_bys_state.mma_current;
+    case BYS_CMD_SET_VRD:
+        return g_bys_state.vrd;
+    default:
+        return 0u;
+    }
+}
+
+static uint8 query_response(uint16 query_cmd, uint16 *response_cmd,
+                            uint16 *response_data)
 {
     switch (query_cmd) {
     case BYS_CMD_QUERY_MODE:
         *response_cmd = BYS_RSP_MODE;
-        return g_bys_state.mode;
+        *response_data = g_bys_state.mode;
+        return 1u;
     case BYS_CMD_QUERY_WIRE_DIAMETER:
         *response_cmd = BYS_RSP_WIRE_DIAMETER;
-        return g_bys_state.wire_diameter;
+        *response_data = g_bys_state.wire_diameter;
+        return 1u;
     case BYS_CMD_QUERY_SMART_MODE:
         *response_cmd = BYS_RSP_SMART_MODE;
-        return g_bys_state.smart_mode;
+        *response_data = g_bys_state.smart_mode;
+        return 1u;
     case BYS_CMD_QUERY_MIG_CURRENT:
         *response_cmd = BYS_RSP_MIG_CURRENT;
-        return g_bys_state.mig_current;
+        *response_data = g_bys_state.mig_current;
+        return 1u;
     case BYS_CMD_QUERY_MIG_VOLTAGE_ADJ:
         *response_cmd = BYS_RSP_MIG_VOLTAGE_ADJ;
-        return g_bys_state.mig_voltage_adj;
+        *response_data = g_bys_state.mig_voltage_adj;
+        return 1u;
     case BYS_CMD_QUERY_T2T4:
         *response_cmd = BYS_RSP_T2T4;
-        return g_bys_state.t2t4;
+        *response_data = g_bys_state.t2t4;
+        return 1u;
     case BYS_CMD_QUERY_TIG_CURRENT:
         *response_cmd = BYS_RSP_TIG_CURRENT;
-        return g_bys_state.tig_current;
+        *response_data = g_bys_state.tig_current;
+        return 1u;
     case BYS_CMD_QUERY_MMA_CURRENT:
         *response_cmd = BYS_RSP_MMA_CURRENT;
-        return g_bys_state.mma_current;
+        *response_data = g_bys_state.mma_current;
+        return 1u;
     case BYS_CMD_QUERY_VRD:
         *response_cmd = BYS_RSP_VRD;
-        return g_bys_state.vrd;
+        *response_data = g_bys_state.vrd;
+        return 1u;
     case BYS_CMD_QUERY_MIG_VOLTAGE:
         *response_cmd = BYS_RSP_MIG_VOLTAGE;
-        return g_bys_state.mig_voltage_actual;
+        *response_data = g_bys_state.mig_voltage_actual;
+        return 1u;
     case BYS_CMD_QUERY_ALARM:
         *response_cmd = BYS_RSP_ALARM;
-        return g_bys_state.alarm;
+        *response_data = g_bys_state.alarm;
+        return 1u;
     case BYS_CMD_QUERY_INPUT_VOLTAGE:
         *response_cmd = BYS_RSP_INPUT_VOLTAGE;
-        return g_bys_state.input_voltage;
+        *response_data = g_bys_state.input_voltage;
+        return 1u;
     default:
-        *response_cmd = BYS_RSP_ERROR;
-        return BYS_RSP_ERROR_BUSY;
+        return 0u;
     }
 }
 
@@ -239,8 +260,10 @@ void bys_test_poll_next(void)
     uint16 response_cmd;
     uint16 response_data;
 
-    response_data = query_value(bys_uart_query_cmd(s_poll_idx), &response_cmd);
-    bys_uart_emit_response(response_cmd, response_data);
+    if (query_response(bys_uart_query_cmd(s_poll_idx),
+                       &response_cmd, &response_data)) {
+        bys_uart_emit_response(response_cmd, response_data);
+    }
     s_poll_idx = (uint8)((s_poll_idx + 1u) % BYS_QUERY_COUNT);
 }
 
@@ -280,6 +303,9 @@ uint8 bys_test_handle_app_cmd(uint8 *buf, uint8 len)
 {
     uint16 cmd;
     uint16 data;
+    uint16 response_cmd;
+    uint16 response_data;
+    uint16 applied;
 
     if (len != BYS_PKT_LEN || !bys_packet_valid(buf)) {
         return 1u;
@@ -287,15 +313,25 @@ uint8 bys_test_handle_app_cmd(uint8 *buf, uint8 len)
 
     cmd = BUILD_UINT16(buf[4], buf[5]);
     data = BUILD_UINT16(buf[6], buf[7]);
-    if (!validate_setting(cmd, data)) {
-        LOG("[MIG145 TEST] reject cmd=0x%04x data=0x%04x\n", cmd, data);
-        bys_uart_emit_response(BYS_RSP_ERROR, BYS_RSP_ERROR_BUSY);
-        return 1u;
+
+    /* The App may write query commands to request an immediate report. */
+    if (query_response(cmd, &response_cmd, &response_data)) {
+        bys_uart_emit_response(response_cmd, response_data);
+        return 0u;
     }
 
-    apply_setting(cmd, data);
-    bys_uart_emit_response((uint16)(cmd | 0x8000u), data);
-    return 0u;
+    if (apply_setting(cmd, data)) {
+        applied = setting_confirmation_value(cmd);
+        if (applied != data) {
+            LOG("[MIG145 TEST] normalize cmd=0x%04x %u -> %u\n",
+                cmd, data, applied);
+        }
+        bys_uart_emit_response((uint16)(cmd | 0x8000u), applied);
+        return 0u;
+    }
+
+    LOG("[MIG145 TEST] ignore unsupported cmd=0x%04x\n", cmd);
+    return 1u;
 }
 
 #endif /* BYS_TEST_MODE */

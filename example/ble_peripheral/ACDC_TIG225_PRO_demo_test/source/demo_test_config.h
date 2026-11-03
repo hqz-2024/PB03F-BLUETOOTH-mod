@@ -50,8 +50,8 @@
 #define DEMO_TEST_PULSE_DUTY_MAX            90u
 #define DEMO_TEST_PULSE_FREQ_MIN            5u
 #define DEMO_TEST_PULSE_FREQ_MAX            2000u
-#define DEMO_TEST_TRIANGLE_COUNT_MIN         10u
-#define DEMO_TEST_TRIANGLE_COUNT_MAX         400u
+#define DEMO_TEST_TRIANGLE_CMD_MIN          100u
+#define DEMO_TEST_TRIANGLE_CMD_MAX          4000u
 #define DEMO_TEST_PULSE_VALLEY_MIN          5u
 #define DEMO_TEST_PULSE_VALLEY_MAX          95u
 #define DEMO_TEST_AC_FREQ_MIN               40u

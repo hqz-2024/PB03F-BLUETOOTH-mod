@@ -67,8 +67,10 @@ static uint16 tig_current_max(uint16 input_voltage)
 }
 
 /*
- * In triangle mode, command 0x000E carries triangular cycle count C.
- * Its valid maximum is 2 * AC frequency, capped at the protocol maximum 400.
+ * In triangle mode, command 0x000E carries the encoded triangular cycle
+ * count. The encoded value is ten times the logical count C, so its valid
+ * range is 100..4000, with a maximum 4000 and an AC-dependent maximum of
+ * 20 * AC frequency.
  * The APP converts C to the displayed triangular frequency.
  */
 static uint16 pulse_freq_max(uint16 mode, uint16 ac_freq)
@@ -79,9 +81,9 @@ static uint16 pulse_freq_max(uint16 mode, uint16 ac_freq)
         return DEMO_TEST_PULSE_FREQ_MAX;
     }
 
-    max_count = (uint16)(ac_freq * 2u);
-    if (max_count > DEMO_TEST_TRIANGLE_COUNT_MAX) {
-        max_count = DEMO_TEST_TRIANGLE_COUNT_MAX;
+    max_count = (uint16)(ac_freq * 20u);
+    if (max_count > DEMO_TEST_TRIANGLE_CMD_MAX) {
+        max_count = DEMO_TEST_TRIANGLE_CMD_MAX;
     }
     return max_count;
 }
@@ -89,7 +91,7 @@ static uint16 pulse_freq_max(uint16 mode, uint16 ac_freq)
 static uint16 pulse_freq_min(uint16 mode)
 {
     return mode == DEMO_TEST_MODE_AC_TRIANGLE
-        ? DEMO_TEST_TRIANGLE_COUNT_MIN
+        ? DEMO_TEST_TRIANGLE_CMD_MIN
         : DEMO_TEST_PULSE_FREQ_MIN;
 }
 
@@ -194,83 +196,10 @@ static void normalize_state(void)
     g_bys_state.valid = 1u;
 }
 
-static uint8 validate_setting(uint16 cmd, uint16 data)
+static uint8 apply_setting(uint16 cmd, uint16 data)
 {
-    uint16 max_count;
+    uint8 known = 1u;
 
-    switch (cmd) {
-    case BYS_CMD_SET_MODE:
-        return data <= DEMO_TEST_MODE_MAX ? 1u : 0u;
-    case BYS_CMD_SET_HOT_START:
-        return data <= DEMO_TEST_HOT_START_MAX ? 1u : 0u;
-    case BYS_CMD_SET_THRUST:
-        return data <= DEMO_TEST_THRUST_MAX ? 1u : 0u;
-    case BYS_CMD_SET_VRD:
-        return data <= DEMO_TEST_VRD_MAX ? 1u : 0u;
-    case BYS_CMD_SET_WELD_CURRENT:
-        return (data >= weld_current_min(g_bys_state.mode) &&
-                data <= weld_current_max(g_bys_state.mode,
-                                         g_bys_state.input_voltage)) ? 1u : 0u;
-    case BYS_CMD_SET_T2T4_SPOT:
-        if (g_bys_state.mode == DEMO_TEST_MODE_STICK) {
-            return data == DEMO_TEST_T2T4_2T ? 1u : 0u;
-        }
-        if (!mode_supports_spot(g_bys_state.mode)) {
-            return data <= DEMO_TEST_T2T4_4T ? 1u : 0u;
-        }
-        return data <= DEMO_TEST_T2T4_SPOT_MAX ? 1u : 0u;
-    case BYS_CMD_SET_PULSE:
-        if (data > DEMO_TEST_PULSE_MAX) {
-            return 0u;
-        }
-        if (g_bys_state.mode == DEMO_TEST_MODE_STICK) {
-            return data == 0u ? 1u : 0u;
-        }
-        if (g_bys_state.t2t4_spot == DEMO_TEST_T2T4_SPOT) {
-            return data == 0u ? 1u : 0u;
-        }
-        return 1u;
-    case BYS_CMD_SET_SPOT_TIME:
-        return (data >= DEMO_TEST_SPOT_TIME_MIN &&
-                data <= DEMO_TEST_SPOT_TIME_MAX) ? 1u : 0u;
-    case BYS_CMD_SET_PRE_GAS:
-        return (data >= DEMO_TEST_PRE_GAS_MIN &&
-                data <= DEMO_TEST_PRE_GAS_MAX) ? 1u : 0u;
-    case BYS_CMD_SET_START_CURRENT:
-        return (data >= DEMO_TEST_CURRENT_TIG_MIN &&
-                data <= tig_current_max(g_bys_state.input_voltage)) ? 1u : 0u;
-    case BYS_CMD_SET_UP_SLOPE:
-        return data <= DEMO_TEST_UP_SLOPE_MAX ? 1u : 0u;
-    case BYS_CMD_SET_PULSE_DUTY:
-        return (data >= DEMO_TEST_PULSE_DUTY_MIN &&
-                data <= DEMO_TEST_PULSE_DUTY_MAX) ? 1u : 0u;
-    case BYS_CMD_SET_PULSE_FREQ:
-        max_count = pulse_freq_max(g_bys_state.mode, g_bys_state.ac_freq);
-        return (data >= pulse_freq_min(g_bys_state.mode) &&
-                data <= max_count) ? 1u : 0u;
-    case BYS_CMD_SET_PULSE_VALLEY:
-        return (data >= DEMO_TEST_PULSE_VALLEY_MIN &&
-                data <= DEMO_TEST_PULSE_VALLEY_MAX) ? 1u : 0u;
-    case BYS_CMD_SET_AC_FREQ:
-        return (data >= DEMO_TEST_AC_FREQ_MIN &&
-                data <= DEMO_TEST_AC_FREQ_MAX) ? 1u : 0u;
-    case BYS_CMD_SET_AC_DUTY:
-        return (data >= DEMO_TEST_AC_DUTY_MIN &&
-                data <= DEMO_TEST_AC_DUTY_MAX) ? 1u : 0u;
-    case BYS_CMD_SET_DOWN_SLOPE:
-        return data <= DEMO_TEST_DOWN_SLOPE_MAX ? 1u : 0u;
-    case BYS_CMD_SET_END_CURRENT:
-        return (data >= DEMO_TEST_CURRENT_TIG_MIN &&
-                data <= tig_current_max(g_bys_state.input_voltage)) ? 1u : 0u;
-    case BYS_CMD_SET_POST_GAS:
-        return data <= DEMO_TEST_POST_GAS_MAX ? 1u : 0u;
-    default:
-        return 0u;
-    }
-}
-
-static void apply_setting(uint16 cmd, uint16 data)
-{
     switch (cmd) {
     case BYS_CMD_SET_MODE:
         g_bys_state.mode = data;
@@ -330,80 +259,151 @@ static void apply_setting(uint16 cmd, uint16 data)
         g_bys_state.post_gas = data;
         break;
     default:
+        known = 0u;
         break;
     }
-    normalize_state();
+    if (known) {
+        normalize_state();
+    }
+    return known;
 }
 
-static uint16 query_value(uint16 query_cmd, uint16 *response_cmd)
+static uint16 setting_confirmation_value(uint16 cmd)
+{
+    switch (cmd) {
+    case BYS_CMD_SET_MODE:
+        return g_bys_state.mode;
+    case BYS_CMD_SET_HOT_START:
+        return g_bys_state.hot_start;
+    case BYS_CMD_SET_THRUST:
+        return g_bys_state.thrust;
+    case BYS_CMD_SET_VRD:
+        return g_bys_state.vrd;
+    case BYS_CMD_SET_WELD_CURRENT:
+        return g_bys_state.weld_current;
+    case BYS_CMD_SET_T2T4_SPOT:
+        return g_bys_state.t2t4_spot;
+    case BYS_CMD_SET_PULSE:
+        return g_bys_state.pulse;
+    case BYS_CMD_SET_SPOT_TIME:
+        return g_bys_state.spot_time;
+    case BYS_CMD_SET_PRE_GAS:
+        return g_bys_state.pre_gas;
+    case BYS_CMD_SET_START_CURRENT:
+        return g_bys_state.start_current;
+    case BYS_CMD_SET_UP_SLOPE:
+        return g_bys_state.up_slope;
+    case BYS_CMD_SET_PULSE_DUTY:
+        return g_bys_state.pulse_duty;
+    case BYS_CMD_SET_PULSE_FREQ:
+        return g_bys_state.pulse_freq;
+    case BYS_CMD_SET_PULSE_VALLEY:
+        return g_bys_state.pulse_valley;
+    case BYS_CMD_SET_AC_FREQ:
+        return g_bys_state.ac_freq;
+    case BYS_CMD_SET_AC_DUTY:
+        return g_bys_state.ac_duty;
+    case BYS_CMD_SET_DOWN_SLOPE:
+        return g_bys_state.down_slope;
+    case BYS_CMD_SET_END_CURRENT:
+        return g_bys_state.end_current;
+    case BYS_CMD_SET_POST_GAS:
+        return g_bys_state.post_gas;
+    default:
+        return 0u;
+    }
+}
+
+static uint8 query_response(uint16 query_cmd, uint16 *response_cmd,
+                            uint16 *response_data)
 {
     switch (query_cmd) {
     case BYS_CMD_QUERY_MODE:
         *response_cmd = BYS_RSP_MODE;
-        return g_bys_state.mode;
+        *response_data = g_bys_state.mode;
+        return 1u;
     case BYS_CMD_QUERY_HOT_START:
         *response_cmd = BYS_RSP_HOT_START;
-        return g_bys_state.hot_start;
+        *response_data = g_bys_state.hot_start;
+        return 1u;
     case BYS_CMD_QUERY_THRUST:
         *response_cmd = BYS_RSP_THRUST;
-        return g_bys_state.thrust;
+        *response_data = g_bys_state.thrust;
+        return 1u;
     case BYS_CMD_QUERY_VRD:
         *response_cmd = BYS_RSP_VRD;
-        return g_bys_state.vrd;
+        *response_data = g_bys_state.vrd;
+        return 1u;
     case BYS_CMD_QUERY_WELD_CURRENT:
         *response_cmd = BYS_RSP_WELD_CURRENT;
-        return g_bys_state.weld_current;
+        *response_data = g_bys_state.weld_current;
+        return 1u;
     case BYS_CMD_QUERY_T2T4_SPOT:
         *response_cmd = BYS_RSP_T2T4_SPOT;
-        return g_bys_state.t2t4_spot;
+        *response_data = g_bys_state.t2t4_spot;
+        return 1u;
     case BYS_CMD_QUERY_PULSE:
         *response_cmd = BYS_RSP_PULSE;
-        return g_bys_state.pulse;
+        *response_data = g_bys_state.pulse;
+        return 1u;
     case BYS_CMD_QUERY_SPOT_TIME:
         *response_cmd = BYS_RSP_SPOT_TIME;
-        return g_bys_state.spot_time;
+        *response_data = g_bys_state.spot_time;
+        return 1u;
     case BYS_CMD_QUERY_PRE_GAS:
         *response_cmd = BYS_RSP_PRE_GAS;
-        return g_bys_state.pre_gas;
+        *response_data = g_bys_state.pre_gas;
+        return 1u;
     case BYS_CMD_QUERY_START_CURRENT:
         *response_cmd = BYS_RSP_START_CURRENT;
-        return g_bys_state.start_current;
+        *response_data = g_bys_state.start_current;
+        return 1u;
     case BYS_CMD_QUERY_UP_SLOPE:
         *response_cmd = BYS_RSP_UP_SLOPE;
-        return g_bys_state.up_slope;
+        *response_data = g_bys_state.up_slope;
+        return 1u;
     case BYS_CMD_QUERY_PULSE_DUTY:
         *response_cmd = BYS_RSP_PULSE_DUTY;
-        return g_bys_state.pulse_duty;
+        *response_data = g_bys_state.pulse_duty;
+        return 1u;
     case BYS_CMD_QUERY_PULSE_FREQ:
         *response_cmd = BYS_RSP_PULSE_FREQ;
-        return g_bys_state.pulse_freq;
+        *response_data = g_bys_state.pulse_freq;
+        return 1u;
     case BYS_CMD_QUERY_PULSE_VALLEY:
         *response_cmd = BYS_RSP_PULSE_VALLEY;
-        return g_bys_state.pulse_valley;
+        *response_data = g_bys_state.pulse_valley;
+        return 1u;
     case BYS_CMD_QUERY_AC_FREQ:
         *response_cmd = BYS_RSP_AC_FREQ;
-        return g_bys_state.ac_freq;
+        *response_data = g_bys_state.ac_freq;
+        return 1u;
     case BYS_CMD_QUERY_AC_DUTY:
         *response_cmd = BYS_RSP_AC_DUTY;
-        return g_bys_state.ac_duty;
+        *response_data = g_bys_state.ac_duty;
+        return 1u;
     case BYS_CMD_QUERY_DOWN_SLOPE:
         *response_cmd = BYS_RSP_DOWN_SLOPE;
-        return g_bys_state.down_slope;
+        *response_data = g_bys_state.down_slope;
+        return 1u;
     case BYS_CMD_QUERY_END_CURRENT:
         *response_cmd = BYS_RSP_END_CURRENT;
-        return g_bys_state.end_current;
+        *response_data = g_bys_state.end_current;
+        return 1u;
     case BYS_CMD_QUERY_POST_GAS:
         *response_cmd = BYS_RSP_POST_GAS;
-        return g_bys_state.post_gas;
+        *response_data = g_bys_state.post_gas;
+        return 1u;
     case BYS_CMD_QUERY_ALARM:
         *response_cmd = BYS_RSP_ALARM;
-        return g_bys_state.alarm;
+        *response_data = g_bys_state.alarm;
+        return 1u;
     case BYS_CMD_QUERY_INPUT_VOLTAGE:
         *response_cmd = BYS_RSP_INPUT_VOLTAGE;
-        return g_bys_state.input_voltage;
+        *response_data = g_bys_state.input_voltage;
+        return 1u;
     default:
-        *response_cmd = BYS_RSP_ERROR;
-        return BYS_RSP_ERROR_BUSY;
+        return 0u;
     }
 }
 
@@ -444,8 +444,10 @@ void bys_test_poll_next(void)
     uint16 response_cmd;
     uint16 response_data;
 
-    response_data = query_value(bys_uart_query_cmd(s_poll_idx), &response_cmd);
-    bys_uart_emit_response(response_cmd, response_data);
+    if (query_response(bys_uart_query_cmd(s_poll_idx),
+                       &response_cmd, &response_data)) {
+        bys_uart_emit_response(response_cmd, response_data);
+    }
     s_poll_idx = (uint8)((s_poll_idx + 1u) % BYS_QUERY_COUNT);
 }
 
@@ -513,6 +515,9 @@ uint8 bys_test_handle_app_cmd(uint8 *buf, uint8 len)
 {
     uint16 cmd;
     uint16 data;
+    uint16 response_cmd;
+    uint16 response_data;
+    uint16 applied;
 
     if (len != BYS_PKT_LEN || !bys_packet_valid(buf)) {
         return 1u;
@@ -520,15 +525,25 @@ uint8 bys_test_handle_app_cmd(uint8 *buf, uint8 len)
 
     cmd = BUILD_UINT16(buf[4], buf[5]);
     data = BUILD_UINT16(buf[6], buf[7]);
-    if (!validate_setting(cmd, data)) {
-        LOG("[TIG225 TEST] reject cmd=0x%04x data=0x%04x\n", cmd, data);
-        bys_uart_emit_response(BYS_RSP_ERROR, BYS_RSP_ERROR_BUSY);
-        return 1u;
+
+    /* The App may write query commands to request an immediate report. */
+    if (query_response(cmd, &response_cmd, &response_data)) {
+        bys_uart_emit_response(response_cmd, response_data);
+        return 0u;
     }
 
-    apply_setting(cmd, data);
-    bys_uart_emit_response((uint16)(cmd | 0x8000u), data);
-    return 0u;
+    if (apply_setting(cmd, data)) {
+        applied = setting_confirmation_value(cmd);
+        if (applied != data) {
+            LOG("[TIG225 TEST] normalize cmd=0x%04x %u -> %u\n",
+                cmd, data, applied);
+        }
+        bys_uart_emit_response((uint16)(cmd | 0x8000u), applied);
+        return 0u;
+    }
+
+    LOG("[TIG225 TEST] ignore unsupported cmd=0x%04x\n", cmd);
+    return 1u;
 }
 
 #endif /* BYS_TEST_MODE */

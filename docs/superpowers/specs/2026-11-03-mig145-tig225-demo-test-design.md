@@ -107,8 +107,10 @@ Latest-document rules:
 - STICK current is `20..140 A` at 110 V and `20..180 A` at 220 V.
 - TIG modes use `10..160 A` at 110 V and `10..225 A` at 220 V.
 - AC square and AC triangular modes do not expose spot mode.
-- In triangular mode, query/set command `0x000E` carries triangular cycle count
-  `C`, constrained to `10 <= C <= 2 * AC_frequency` and at most 400.
+- In triangular mode, query/set command `0x000E` carries an encoded triangular
+  cycle count. The encoded value is ten times the logical count `C`, allowing
+  `100 <= encoded_value <= 4000`, while `C` remains limited by
+  `10 <= C <= 2 * AC_frequency`.
 - The APP performs triangular-frequency display conversion. The firmware test
   demo only generates and accepts protocol-valid cycle counts.
 
